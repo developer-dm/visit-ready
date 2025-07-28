@@ -1,6 +1,6 @@
 # Visit Ready
 
-**Visit Ready** is a patient-centered mobile app designed to help users prepare for medical appointments by summarizing symptoms, generating personalized questions, and securely sending this information to healthcare providers ahead of visits.
+**Visit Ready** is a mobile app designed to help users prepare for medical appointments by summarizing symptoms, generating personalized questions, and securely sending this information to healthcare providers ahead of visits.
 
 ---
 
