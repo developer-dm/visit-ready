@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, Keyboard, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 
 export default function login() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState("")
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const handleSignup = () => {
 
@@ -12,35 +12,37 @@ export default function login() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.background}>
-                <View style={styles.inputSection}>
-                    <Image source={require("@/assets/images/signup.png")} style={styles.icon} />
-                    <Text style={styles.title}>Sign Up</Text>
-                    <Text style={styles.subtitle}>Create your account below</Text>
-                    <TextInput
-                        placeholder="Email"
-                        placeholderTextColor={"#000000"}
-                        onChangeText={setEmail}
-                        autoComplete="email"
-                        style={styles.input}
-                    />
-                    <TextInput
-                        placeholder="Password"
-                        placeholderTextColor={"#000000"}
-                        onChangeText={setPassword}
-                        autoComplete="current-password"
-                        secureTextEntry={true}
-                        style={styles.input}
-                    />
-                    {error ? <Text style={styles.error}>{error}</Text> : null}
-                    <TouchableOpacity style={styles.button} onPress={handleSignup}>
-                        <Text style={styles.text}>Create Account</Text>
-                    </TouchableOpacity>
-                    <View style={styles.footerContainer}>
-                        <Text style={styles.footerText}>Visit Ready | v1.0</Text>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={styles.background}>
+                    <View style={styles.inputSection}>
+                        <Image source={require("@/assets/images/signup.png")} style={styles.icon} />
+                        <Text style={styles.title}>Sign Up</Text>
+                        <Text style={styles.subtitle}>Create your account below</Text>
+                        <TextInput
+                            placeholder="Email"
+                            placeholderTextColor={"#000000"}
+                            onChangeText={setEmail}
+                            autoComplete="email"
+                            style={styles.input}
+                        />
+                        <TextInput
+                            placeholder="Password"
+                            placeholderTextColor={"#000000"}
+                            onChangeText={setPassword}
+                            autoComplete="current-password"
+                            secureTextEntry={true}
+                            style={styles.input}
+                        />
+                        {error ? <Text style={styles.error}>{error}</Text> : null}
+                        <TouchableOpacity style={styles.button} onPress={handleSignup}>
+                            <Text style={styles.text}>Create Account</Text>
+                        </TouchableOpacity>
+                        <View style={styles.footerContainer}>
+                            <Text style={styles.footerText}>Visit Ready | v1.0</Text>
+                        </View>
                     </View>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         </SafeAreaView>
     );
 };

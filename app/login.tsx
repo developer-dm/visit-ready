@@ -1,46 +1,50 @@
+import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, Keyboard, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 
 export default function login() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState("")
+    const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const handleLogin = () => {
-
+        router.replace("/(tabs)");
     };
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.background}>
-                <View style={styles.inputSection}>
-                    <Image source={require("@/assets/images/login.png")} style={styles.icon} />
-                    <Text style={styles.title}>Login</Text>
-                    <Text style={styles.subtitle}>Enter your credentials to continue</Text>
-                    <TextInput
-                        placeholder="Email"
-                        placeholderTextColor={"#000000"}
-                        onChangeText={setEmail}
-                        autoComplete="email"
-                        style={styles.input}
-                    />
-                    <TextInput
-                        placeholder="Password"
-                        placeholderTextColor={"#000000"}
-                        onChangeText={setPassword}
-                        autoComplete="current-password"
-                        secureTextEntry={true}
-                        style={styles.input}
-                    />
-                    {error ? <Text style={styles.error}>{error}</Text> : null}
-                    <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                        <Text style={styles.text}>Log In</Text>
-                    </TouchableOpacity>
-                    <View style={styles.footerContainer}>
-                        <Text style={styles.footerText}>Visit Ready | v1.0</Text>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={styles.background}>
+                    <View style={styles.inputSection}>
+                        <Image source={require("@/assets/images/login.png")} style={styles.icon} />
+                        <Text style={styles.title}>Login</Text>
+                        <Text style={styles.subtitle}>Enter your credentials to continue</Text>
+                        <TextInput
+                            placeholder="Email"
+                            placeholderTextColor={"#000000"}
+                            onChangeText={setEmail}
+                            autoComplete="email"
+                            style={styles.input}
+                        />
+                        <TextInput
+                            placeholder="Password"
+                            placeholderTextColor={"#000000"}
+                            onChangeText={setPassword}
+                            autoComplete="current-password"
+                            secureTextEntry={true}
+                            style={styles.input}
+                        />
+                        {error ? <Text style={styles.error}>{error}</Text> : null}
+                        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                            <Text style={styles.text}>Log In</Text>
+                        </TouchableOpacity>
+                        <View style={styles.footerContainer}>
+                            <Text style={styles.footerText}>Visit Ready | v1.0</Text>
+                        </View>
                     </View>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         </SafeAreaView>
     );
 };
