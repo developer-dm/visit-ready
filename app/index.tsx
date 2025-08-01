@@ -1,5 +1,11 @@
+import { Button } from "@/components/Button";
+import { Divider } from "@/components/Divider";
+import { Footer } from "@/components/Footer";
+import { ThemedText } from "@/components/ThemedText";
+
 import { useRouter } from "expo-router";
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function index() {
   const router = useRouter();
@@ -20,21 +26,19 @@ export default function index() {
     <SafeAreaView style={styles.container}>
       <View style={styles.background}>
         <Image source={require("@/assets/images/favicon.png")} style={styles.icon} />
-        <Text style={styles.title}>Visit Ready</Text>
-        <Text style={styles.subtitle}>Make the most of every medical visit</Text>
-        <View style={styles.divider} />
-        <TouchableOpacity style={styles.button} onPress={loginScreen}>
-          <Text style={styles.text}>Log In</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={signupScreen}>
-          <Text style={styles.text}>Create Account</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.aboutButton} onPress={aboutScreen}>
-          <Text style={styles.aboutText}>About & Credits</Text>
-        </TouchableOpacity>
-        <View style={styles.footerContainer}>
-          <Text style={styles.footerText}>Visit Ready | v1.0</Text>
-        </View>
+        <ThemedText type="title">Visit Ready</ThemedText>
+        <ThemedText type="subtitle">Make the most of every medical visit</ThemedText>
+        <Divider />
+        <Button type={"dark"} onPress={loginScreen}>
+          <ThemedText type="default" style={{ color: "#ffffffff" }}>Log In</ThemedText>
+        </Button>
+        <Button type={"dark"} onPress={signupScreen}>
+          <ThemedText type="default" style={{ color: "#ffffffff" }}>Create Account</ThemedText>
+        </Button>
+        <Button type={"light"} onPress={aboutScreen}>
+          <ThemedText type="default" style={{ color: "#323232ff" }}>About & Credits</ThemedText>
+        </Button>
+        <Footer />
       </View>
     </SafeAreaView>
   );
@@ -52,81 +56,11 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: 30,
-  },
-  divider: {
-    backgroundColor: "#ccc",
-    height: 1,
-    width: "100%",
-    marginTop: 20,
-    marginBottom: 30,
-  },
-  title: {
-    fontSize: 48,
-    fontWeight: "bold",
-    fontFamily: "Sans-serif",
-    textAlign: "center",
-    color: "#004678",
-  },
-  subtitle: {
-    fontSize: 16,
-    textAlign: "center",
-    fontFamily: "Sans-serif",
-    fontWeight: "medium",
-    color: "#000000ff",
+    padding: 15,
   },
   icon: {
     width: 100,
     height: 100,
     marginBottom: 10,
-  },
-  button: {
-    height: 50,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#004678",
-    borderRadius: 3,
-    margin: 10,
-  },
-  aboutButton: {
-    height: 50,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 3,
-    margin: 10,
-  },
-  text: {
-    fontSize: 18,
-    textAlign: "center",
-    fontFamily: "Sans-serif",
-    fontWeight: "medium",
-    color: "#ffffffff",
-  },
-  aboutText: {
-    fontSize: 18,
-    textAlign: "center",
-    fontFamily: "Sans-serif",
-    fontWeight: "medium",
-    color: "#323232ff",
-  },
-  footerContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    bottom: 4,
-    width: "100%",
-  },
-  footerText: {
-    fontSize: 12,
-    textAlign: "center",
-    fontFamily: "Sans-serif",
-    fontWeight: "medium",
-    color: "#000000",
   },
 });

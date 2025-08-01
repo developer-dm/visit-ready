@@ -1,32 +1,38 @@
+import { Button } from "@/components/Button";
+import { Divider } from "@/components/Divider";
+import { Footer } from "@/components/Footer";
+import { ThemedText } from "@/components/ThemedText";
+
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useRouter } from "expo-router";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 
 export default function settings() {
-    const handleLogout = () => {
+    const router = useRouter();
 
+    const handleLogout = () => {
+        router.replace("/")
     };
 
     const handleDeleteAccount = () => {
-
+        router.replace("/")
     };
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.background}>
-                <Text style={styles.title}>Settings</Text>
-                <Text style={styles.subtitle}>Edit and delete your account</Text>
-                <View style={styles.divider} />
-                <TouchableOpacity style={styles.button} onPress={handleLogout}>
+                <ThemedText type="title">Settings</ThemedText>
+                <ThemedText type="subtitle">Edit and delete your account</ThemedText>
+                <Divider />
+                <Button type="light" onPress={handleLogout}>
                     <MaterialIcons size={20} name="logout" color={"#323232ff"} style={styles.icon} />
-                    <Text style={styles.buttonText}>Log out</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, {borderColor: "#ff0000ff"}]} onPress={handleDeleteAccount}>
+                    <ThemedText type="default" style={{ color: "#323232ff" }}>Log out</ThemedText>
+                </Button>
+                <Button type="light" onPress={handleDeleteAccount} style={{ borderColor: "#ff0000ff" }}>
                     <MaterialIcons size={20} name="person-remove" color={"#ff0000ff"} style={styles.icon} />
-                    <Text style={[styles.buttonText, {color: "#ff0000ff"}]}>Delete Account</Text>
-                </TouchableOpacity>
-                <View style={styles.footerContainer}>
-                    <Text style={styles.footerText}>Visit Ready | v1.0</Text>
-                </View>
+                    <ThemedText type="default" style={{ color: "#ff0000ff" }}>Delete Account</ThemedText>
+                </Button>
+                <Footer />
             </View>
         </SafeAreaView>
     );
@@ -88,20 +94,5 @@ const styles = StyleSheet.create({
         fontFamily: "Sans-serif",
         fontWeight: "medium",
         color: "#323232ff",
-    },
-    footerContainer: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        position: "absolute",
-        bottom: 4,
-        width: "100%",
-    },
-    footerText: {
-        fontSize: 12,
-        textAlign: "center",
-        fontFamily: "Sans-serif",
-        fontWeight: "medium",
-        color: "#000000",
     },
 });

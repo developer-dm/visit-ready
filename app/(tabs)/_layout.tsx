@@ -1,24 +1,33 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Tabs } from "expo-router";
+import { StatusBar } from 'expo-status-bar';
+
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
+
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Tabs.Screen name="past" options={{
-        title: "Past Visits",
-        tabBarIcon: ({ color }) => <MaterialIcons size={28} name="medical-services" color={color} />,
-      }} />
-      <Tabs.Screen name="index" options={{
-        title: "Home",
-        tabBarIcon: ({ color }) => <MaterialIcons size={28} name="home" color={color} />,
-      }} />
-      <Tabs.Screen name="settings" options={{
-        title: "Settings",
-        tabBarIcon: ({ color }) => <MaterialIcons size={28} name="settings" color={color} />,
-      }} />
-    </Tabs>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Tabs.Screen name="past" options={{
+          title: "Past Visits",
+          tabBarIcon: ({ color }) => <MaterialIcons size={28} name="history" color={color} />,
+        }} />
+        <Tabs.Screen name="dashboard" options={{
+          title: "Home",
+          tabBarIcon: ({ color }) => <MaterialIcons size={28} name="home" color={color} />,
+        }} />
+        <Tabs.Screen name="settings" options={{
+          title: "Settings",
+          tabBarIcon: ({ color }) => <MaterialIcons size={28} name="settings" color={color} />,
+        }} />
+      </Tabs>
+      <StatusBar style="auto" />
+    </ThemeProvider>
   );
 }

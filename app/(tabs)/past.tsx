@@ -1,6 +1,11 @@
+import { Button } from "@/components/Button";
+import { Divider } from "@/components/Divider";
+import { Footer } from "@/components/Footer";
+import { ThemedText } from "@/components/ThemedText";
+
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from "expo-router";
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 
 export default function past() {
     const router = useRouter();
@@ -12,16 +17,14 @@ export default function past() {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.background}>
-                <Text style={styles.title}>Past Visits</Text>
-                <Text style={styles.subtitle}>View your previous medical appointments</Text>
-                <View style={styles.divider} />
-                <TouchableOpacity style={styles.button} onPress={handleDeleteVisit}>
+                <ThemedText type="title">Past Visits</ThemedText>
+                <ThemedText type="subtitle">View your previous medical appointments</ThemedText>
+                <Divider />
+                <Button type={"light"} onPress={handleDeleteVisit}>
                     <MaterialIcons size={20} name="delete" color={"#323232ff"} style={styles.icon} />
-                    <Text style={styles.buttonText}>Delete Visits</Text>
-                </TouchableOpacity>
-                <View style={styles.footerContainer}>
-                    <Text style={styles.footerText}>Visit Ready | v1.0</Text>
-                </View>
+                    <ThemedText type="default" style={{ color: "#323232ff" }}>Delete past visits</ThemedText>
+                </Button>
+                <Footer />
             </View>
         </SafeAreaView>
     );
@@ -41,69 +44,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 30,
     },
-    divider: {
-        backgroundColor: "#ccc",
-        height: 1,
-        width: "100%",
-        marginTop: 20,
-        marginBottom: 30,
-    },
-    title: {
-        fontSize: 48,
-        fontWeight: "bold",
-        fontFamily: "Sans-serif",
-        textAlign: "center",
-        color: "#004678",
-    },
-    subtitle: {
-        fontSize: 16,
-        textAlign: "center",
-        fontFamily: "Sans-serif",
-        fontWeight: "medium",
-        color: "#000000ff",
-    },
     icon: {
         marginRight: 5,
-    },
-    button: {
-        flexDirection: "row",
-        height: 50,
-        width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#ffffff",
-        borderColor: "#ccc",
-        borderWidth: 1,
-        borderRadius: 3,
-        margin: 10,
-    },
-    text: {
-        fontSize: 18,
-        textAlign: "center",
-        fontFamily: "Sans-serif",
-        fontWeight: "medium",
-        color: "#ffffffff",
-    },
-    buttonText: {
-        fontSize: 18,
-        textAlign: "center",
-        fontFamily: "Sans-serif",
-        fontWeight: "medium",
-        color: "#323232ff",
-    },
-    footerContainer: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        position: "absolute",
-        bottom: 4,
-        width: "100%",
-    },
-    footerText: {
-        fontSize: 12,
-        textAlign: "center",
-        fontFamily: "Sans-serif",
-        fontWeight: "medium",
-        color: "#000000",
     },
 });
