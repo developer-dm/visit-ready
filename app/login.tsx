@@ -1,6 +1,7 @@
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Image, Keyboard, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 
 export default function login() {
     const router = useRouter();
@@ -17,7 +18,7 @@ export default function login() {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.background}>
                     <View style={styles.inputSection}>
-                        <Image source={require("@/assets/images/login.png")} style={styles.icon} />
+                        <MaterialIcons size={125} name="login" color={"#004678"} style={styles.icon} />
                         <Text style={styles.title}>Login</Text>
                         <Text style={styles.subtitle}>Enter your credentials to continue</Text>
                         <TextInput
@@ -75,10 +76,7 @@ const styles = StyleSheet.create({
         paddingBlockStart: 60,
     },
     icon: {
-        width: 100,
-        height: 100,
         marginBottom: 10,
-        tintColor: "#004678"
     },
     title: {
         fontSize: 48,
@@ -105,7 +103,7 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     button: {
-        height: 40,
+        height: 50,
         width: "100%",
         justifyContent: "center",
         alignItems: "center",

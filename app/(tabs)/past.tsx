@@ -1,36 +1,31 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function about() {
+export default function past() {
+    const router = useRouter();
+
+    const handleDeleteVisit = () => {
+
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.background}>
-                <MaterialIcons size={125} name="info-outline" color={"#004678"} style={styles.icon} />
-                <Text style={styles.title}>About</Text>
+                <Text style={styles.title}>Past Visits</Text>
+                <Text style={styles.subtitle}>View your previous medical appointments</Text>
                 <View style={styles.divider} />
-                <Text style={styles.subtitle}>What is Visit Ready?</Text>
-                <Text style={styles.text}>
-                    Visit Ready is a mobile app designed to help you prepare for medical appointments ahead of visits.
-                </Text>
-                <Text style={styles.subtitle}>Features</Text>
-                <Text style={styles.text}>
-                    • Symptom Input: Easily enter and track current symptoms with guided prompts
-                    {"\n"}• Question Generation: Get tailored questions to ask your doctor based on your symptoms
-                    {"\n"}• Visit Summary: Create a concise, clinician-friendly summary of your health concerns
-                    {"\n"}• Secure Sharing: Send your summary and questions securely to your healthcare provider before your appointment
-                    {"\n"}• Appointment Reminders: Stay on track with notifications and prep tips
-                </Text>
-                <Text style={styles.subtitle}>Credits</Text>
-                <Text style={styles.creditText}>
-                    By: Dakota M.
-                </Text>
+                <TouchableOpacity style={styles.button} onPress={handleDeleteVisit}>
+                    <MaterialIcons size={20} name="delete" color={"#323232ff"} style={styles.icon} />
+                    <Text style={styles.buttonText}>Delete Visits</Text>
+                </TouchableOpacity>
                 <View style={styles.footerContainer}>
                     <Text style={styles.footerText}>Visit Ready | v1.0</Text>
                 </View>
             </View>
         </SafeAreaView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -64,25 +59,36 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
         fontFamily: "Sans-serif",
-        fontWeight: "bold",
+        fontWeight: "medium",
         color: "#000000ff",
-        margin: 10,
     },
     icon: {
-        marginBottom: 10,
+        marginRight: 5,
+    },
+    button: {
+        flexDirection: "row",
+        height: 50,
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#ffffff",
+        borderColor: "#ccc",
+        borderWidth: 1,
+        borderRadius: 3,
+        margin: 10,
     },
     text: {
-        fontSize: 12,
-        textAlign: "left",
+        fontSize: 18,
+        textAlign: "center",
         fontFamily: "Sans-serif",
-        fontWeight: "semibold",
-        color: "#323232ff",
+        fontWeight: "medium",
+        color: "#ffffffff",
     },
-    creditText: {
-        fontSize: 14,
-        textAlign: "left",
+    buttonText: {
+        fontSize: 18,
+        textAlign: "center",
         fontFamily: "Sans-serif",
-        fontWeight: "bold",
+        fontWeight: "medium",
         color: "#323232ff",
     },
     footerContainer: {

@@ -1,8 +1,13 @@
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from "expo-router";
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function index() {
   const router = useRouter();
+
+  const newVisitScreen = () => {
+
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -10,8 +15,9 @@ export default function index() {
         <Text style={styles.title}>Dashboard</Text>
         <Text style={styles.subtitle}>Prepare for your next visit</Text>
         <View style={styles.divider} />
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text style={styles.text}>Start</Text>
+        <TouchableOpacity style={styles.button} onPress={newVisitScreen}>
+          <MaterialIcons size={30} name="create" color={"#ffffffff"} style={styles.icon} />
+          <Text style={styles.text}>Prep for your next visit</Text>
         </TouchableOpacity>
         <View style={styles.footerContainer}>
           <Text style={styles.footerText}>Visit Ready | v1.0</Text>
@@ -56,9 +62,13 @@ const styles = StyleSheet.create({
     fontWeight: "medium",
     color: "#000000ff",
   },
+  icon: {
+    marginRight: 5,
+  },
   button: {
-    height: 100,
-    width: 100,
+    flexDirection: "row",
+    height: 75,
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#004678",

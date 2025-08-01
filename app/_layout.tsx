@@ -5,12 +5,14 @@ export default function RootLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        gestureEnabled: false,
       }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="login" />
       <Stack.Screen name="signup" />
       <Stack.Screen name="about" />
+      <Stack.Screen name="(tabs)" options={{
+        gestureEnabled: false,
+      }} />
     </Stack>
   );
 }
