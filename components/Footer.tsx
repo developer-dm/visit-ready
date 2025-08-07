@@ -1,11 +1,11 @@
+import { expo } from "@/app.json";
 import { ThemedText } from "@/components/ThemedText";
-import { version } from "@/package.json";
 import { StyleSheet, View } from "react-native";
 
 export function Footer() {
     return (
         <View style={styles.container}>
-            <ThemedText type="footer">Visit Ready | {version}</ThemedText>
+            <ThemedText type="footer">{expo.name} | {expo.version}</ThemedText>
         </View>
     );
 }

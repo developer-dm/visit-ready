@@ -10,7 +10,7 @@ export type ButtonProps = TouchableOpacityProps & {
 export function Button({
   style,
   children,
-  type = "dark",
+  type,
   ...rest
 }: ButtonProps) {
   return (
@@ -23,7 +23,7 @@ export function Button({
       ]}
       {...rest}
     >
-      {type === "return" ? <MaterialIcons size={50} name="navigate-before" color={useThemeColor({}, "icon")} /> : undefined}
+      {type === "return" ? <MaterialIcons size={30} name="arrow-back-ios" color={useThemeColor({}, "icon")} /> : undefined}
       {children}
     </TouchableOpacity>
   );
@@ -37,8 +37,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#004678",
-    borderRadius: 3,
-    margin: 10,
+    borderRadius: 15,
   },
   light: {
     height: 50,
@@ -49,12 +48,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffffff",
     borderColor: "#ccc",
     borderWidth: 1,
-    borderRadius: 3,
-    margin: 10,
+    borderRadius: 15,
   },
   return: {
     position: 'absolute',
-    top: 5,
-    left: 5,
+    top: 15,
+    left: 15,
   },
 });

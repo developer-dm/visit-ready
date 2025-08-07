@@ -20,10 +20,10 @@ export function Textbox({
             style={[
                 type === "default" ? styles.default : undefined,
                 { color: useThemeColor({ light: lightColor, dark: darkColor }, "text") },
-                { borderColor: useThemeColor({ light: lightColor, dark: darkColor }, "icon") },
+                { borderColor: useThemeColor({ light: lightColor, dark: darkColor }, "border") },
                 style,
             ]}
-            placeholderTextColor={useThemeColor({ light: lightColor, dark: darkColor }, "text")}
+            placeholderTextColor={useThemeColor({ light: lightColor, dark: darkColor }, "placeholderText")}
             {...rest}
         />
     );
@@ -34,8 +34,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: "100%",
         borderWidth: 1,
-        borderRadius: 3,
+        borderRadius: 15,
         padding: 10,
-        margin: 10,
     },
 });

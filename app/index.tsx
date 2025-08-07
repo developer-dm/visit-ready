@@ -2,20 +2,17 @@ import { Button } from "@/components/Button";
 import { Divider } from "@/components/Divider";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from "expo-router";
-import { Image, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Image, StyleSheet } from "react-native";
 
 export default function index() {
   const router = useRouter();
 
   const loginScreen = () => {
-    router.push("/login")
-  };
-
-  const signupScreen = () => {
-    router.push("/signup")
+    router.replace("/(setup)/1")
   };
 
   const aboutScreen = () => {
@@ -23,40 +20,28 @@ export default function index() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.background}>
-        <Image source={require("@/assets/images/favicon.png")} style={styles.icon} />
-        <ThemedText type="title">Visit Ready</ThemedText>
-        <ThemedText type="subtitle">Make the most of every medical visit</ThemedText>
-        <Divider />
-        <Button type={"dark"} onPress={loginScreen}>
-          <ThemedText type="default" style={{ color: "#ffffffff" }}>Log In</ThemedText>
-        </Button>
-        <Button type={"dark"} onPress={signupScreen}>
-          <ThemedText type="default" style={{ color: "#ffffffff" }}>Create Account</ThemedText>
-        </Button>
-        <Button type={"light"} onPress={aboutScreen}>
-          <ThemedText type="default" style={{ color: "#323232ff" }}>About & Credits</ThemedText>
-        </Button>
-        <Footer />
-      </View>
-    </SafeAreaView>
+    <ThemedView type="container">
+      <Image source={require("@/assets/images/favicon.png")} style={styles.icon} />
+      <ThemedText type="title">Visit Ready</ThemedText>
+      <ThemedText type="subtitle">Make the most of every medical visit</ThemedText>
+      <Divider />
+      <Button type={"dark"} onPress={loginScreen}>
+        <MaterialIcons size={30} name="login" color={"#ffffffff"} style={styles.buttonIcon} />
+        <ThemedText type="default" style={{ color: "#ffffffff" }}>Get Started</ThemedText>
+      </Button>
+      <Button type={"light"} onPress={aboutScreen} style={{ marginTop: 15 }}>
+        <MaterialIcons size={30} name="info-outline" color={"#323232ff"} style={styles.buttonIcon} />
+        <ThemedText type="default" style={{ color: "#323232ff" }}>About & Credits</ThemedText>
+      </Button>
+      <Footer />
+    </ThemedView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  background: {
-    height: "100%",
-    width: "100%",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 15,
+  buttonIcon: {
+    position: "absolute",
+    left: 15,
   },
   icon: {
     width: 100,

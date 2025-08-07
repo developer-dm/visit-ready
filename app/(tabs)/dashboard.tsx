@@ -5,7 +5,7 @@ import { ThemedText } from "@/components/ThemedText";
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from "expo-router";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 
 export default function index() {
   const router = useRouter();
@@ -25,6 +25,9 @@ export default function index() {
           <ThemedText type="default" style={{ color: "#ffffffff" }}>Prep for your next visit</ThemedText>
         </Button>
         <Footer />
+        <ScrollView style={styles.scroll}>
+          
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -43,6 +46,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 30,
+  },
+  scroll: {
+    maxHeight: "40%",
+    width: "100%",
+    backgroundColor: "#ffffff",
   },
   icon: {
     marginRight: 5,
