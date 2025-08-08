@@ -4,7 +4,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export type ButtonProps = TouchableOpacityProps & {
-  type?: "dark" | "light" | "return";
+  type?: "dark" | "light" | "selection" | "return";
 };
 
 export function Button({
@@ -18,6 +18,7 @@ export function Button({
       style={[
         type === "dark" ? styles.dark : undefined,
         type === "light" ? styles.light : undefined,
+        type === "selection" ? styles.selection : undefined,
         type === "return" ? styles.return : undefined,
         style,
       ]}
@@ -48,6 +49,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffffff",
     borderColor: "#ccc",
     borderWidth: 1,
+    borderRadius: 15,
+  },
+  selection: {
+    height: 50,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000000ff",
     borderRadius: 15,
   },
   return: {

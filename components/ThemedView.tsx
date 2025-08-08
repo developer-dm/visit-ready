@@ -15,10 +15,7 @@ export function ThemedView({
   type = "card",
   ...otherProps
 }: ThemedViewProps) {
-  const backgroundColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    type === "container" ? "container" : "background"
-  );
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, "card");
 
   return (
     <View
@@ -40,6 +37,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "transparent",
     padding: 30,
   },
   card: {

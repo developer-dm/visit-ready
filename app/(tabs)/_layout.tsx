@@ -1,7 +1,6 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Tabs } from "expo-router";
-import { StatusBar } from 'expo-status-bar';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -27,7 +26,6 @@ export default function RootLayout() {
           tabBarIcon: ({ color }) => <MaterialIcons size={28} name="settings" color={color} />,
         }} />
       </Tabs>
-      <StatusBar style="auto" />
     </ThemeProvider>
   );
 }

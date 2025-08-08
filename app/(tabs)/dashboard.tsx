@@ -2,10 +2,11 @@ import { Button } from "@/components/Button";
 import { Divider } from "@/components/Divider";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from "expo-router";
-import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 
 export default function index() {
   const router = useRouter();
@@ -15,8 +16,8 @@ export default function index() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.background}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ThemedView type="container">
         <ThemedText type="title">Dashboard</ThemedText>
         <ThemedText type="subtitle">Prepare for your next visit</ThemedText>
         <Divider />
@@ -28,25 +29,12 @@ export default function index() {
         <ScrollView style={styles.scroll}>
           
         </ScrollView>
-      </View>
+      </ThemedView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  background: {
-    height: "100%",
-    width: "100%",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 30,
-  },
   scroll: {
     maxHeight: "40%",
     width: "100%",
