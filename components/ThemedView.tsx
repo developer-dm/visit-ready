@@ -1,11 +1,10 @@
-import { StyleSheet, View, type ViewProps } from "react-native";
-
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { StyleSheet, View, type ViewProps } from "react-native";
 
 export type ThemedViewProps = ViewProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: "container" | "card";
+  type?: "card";
 };
 
 export function ThemedView({
@@ -22,7 +21,6 @@ export function ThemedView({
       style={[
         { backgroundColor },
         type === "card" ? styles.card : undefined,
-        type === "container" ? styles.container : undefined,
         style,
       ]}
       {...otherProps}
@@ -31,15 +29,6 @@ export function ThemedView({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height: "100%",
-    width: "100%",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "transparent",
-    padding: 30,
-  },
   card: {
     width: "100%",
     height: "auto",

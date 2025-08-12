@@ -1,8 +1,26 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, type ViewProps } from "react-native";
 
-export function Divider() {
+export type DividerProps = ViewProps & {
+    top?: number;
+    bottom?: number;
+};
+
+export function Divider({
+    style,
+    top,
+    bottom,
+    ...otherProps
+}: DividerProps) {
     return (
-        <View style={styles.divider} />
+        <View
+            style={[
+                top ? { marginTop: top } : { marginTop: 20 },
+                bottom ? { marginBottom: bottom } : { marginBottom: 20 },
+                styles.divider,
+                style,
+            ]}
+            {...otherProps}
+        />
     );
 }
 
@@ -11,7 +29,5 @@ const styles = StyleSheet.create({
         backgroundColor: "#ccc",
         height: 1,
         width: "100%",
-        marginTop: 20,
-        marginBottom: 30,
     },
 });

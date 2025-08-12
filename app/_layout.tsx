@@ -1,33 +1,56 @@
-import { UserProvider } from "@/constants/UserContext";
-import { DarkTheme, DefaultTheme, ThemeProvider, } from '@react-navigation/native';
-import { Stack } from "expo-router";
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useAuthStore } from "@/utils/authStore";
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { SplashScreen, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect } from "react";
+import { Platform } from "react-native";
+
+const isWeb = Platform.OS === "web";
+
+if (!isWeb) {
+  SplashScreen.preventAutoHideAsync();
+}
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
+  const {
+    isLoggedIn,
+    shouldCreateAccount,
+    hasCompletedOnboarding,
+    _hasHydrated,
+  } = useAuthStore();
+
+  useEffect(() => {
+    if (_hasHydrated) {
+      SplashScreen.hideAsync();
+    }
+  }, [_hasHydrated]);
+
+  if (!_hasHydrated && !isWeb) {
+    return null;
+  }
+
   return (
-    <UserProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <SafeAreaProvider>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              gestureEnabled: false,
-            }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen name="about" options={{ gestureEnabled: true }} />
-            <Stack.Screen name="auth" />
-            <Stack.Screen name="(setup)/1" />
-            <Stack.Screen name="(setup)/2" />
-            <Stack.Screen name="(setup)/3" />
-            <Stack.Screen name="(setup)/4" />
-            <Stack.Screen name="(tabs)" />
-          </Stack>
-        </SafeAreaProvider>
-      </ThemeProvider >
-    </UserProvider>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <StatusBar style="auto" />
+      <Stack>
+        <Stack.Protected guard={isLoggedIn}>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack.Protected>
+        <Stack.Protected guard={!isLoggedIn && hasCompletedOnboarding}>
+          <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: "modal", title: "About" }} />
+          <Stack.Protected guard={shouldCreateAccount}>
+            <Stack.Screen name="create-account" options={{ headerShown: false }} />
+          </Stack.Protected>
+        </Stack.Protected>
+        <Stack.Protected guard={!hasCompletedOnboarding}>
+          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+        </Stack.Protected>
+        <Stack.Screen name="+not-found" options={{ title: 'Oops!' }} />
+      </Stack>
+    </ThemeProvider>
   );
 }

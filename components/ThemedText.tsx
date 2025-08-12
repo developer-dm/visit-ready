@@ -1,6 +1,5 @@
-import { StyleSheet, Text, type TextProps } from "react-native";
-
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { StyleSheet, Text, type TextProps } from "react-native";
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
@@ -24,7 +23,7 @@ export function ThemedText({
         type === "default" ? styles.default : undefined,
         type === "title" ? styles.title : undefined,
         type === "subtitle" ? styles.subtitle : undefined,
-        type ==="overhead" ? styles.overhead : undefined,
+        type === "overhead" ? styles.overhead : undefined,
         type === "link" ? styles.link : undefined,
         type === "footer" ? styles.footer : undefined,
         type === "error" ? styles.error : undefined,
@@ -75,5 +74,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Sans-serif",
     fontWeight: "medium",
+    position: "absolute",
+    bottom: 5,
+    width: "100%",
   },
 });

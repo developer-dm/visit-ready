@@ -1,7 +1,6 @@
-import { StyleSheet, TouchableOpacity, type TouchableOpacityProps } from "react-native";
-
 import { useThemeColor } from "@/hooks/useThemeColor";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { StyleSheet, TouchableOpacity, type TouchableOpacityProps } from "react-native";
 
 export type ButtonProps = TouchableOpacityProps & {
   type?: "dark" | "light" | "selection" | "return";
@@ -24,8 +23,7 @@ export function Button({
       ]}
       {...rest}
     >
-      {type === "return" ? <MaterialIcons size={30} name="arrow-back-ios" color={useThemeColor({}, "icon")} /> : undefined}
-      {children}
+      {type === "return" ? <MaterialIcons name="arrow-back-ios" size={30} color={useThemeColor({}, "icon")} /> : children}
     </TouchableOpacity>
   );
 }

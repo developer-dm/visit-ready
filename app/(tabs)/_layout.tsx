@@ -1,31 +1,51 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { useAuthStore } from "@/utils/authStore";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Tabs } from "expo-router";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+export default function TabsLayout() {
+  const { isVip } = useAuthStore();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Tabs
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Tabs.Screen name="past" options={{
-          title: "Past Visits",
-          tabBarIcon: ({ color }) => <MaterialIcons size={28} name="history" color={color} />,
-        }} />
-        <Tabs.Screen name="dashboard" options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => <MaterialIcons size={28} name="home" color={color} />,
-        }} />
-        <Tabs.Screen name="settings" options={{
+    <Tabs>
+      <Tabs.Screen name="history"
+        options={{
+          headerShown: true,
+          title: "History",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="history" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen name="index"
+        options={{
+          headerShown: true,
+          title: "Dashboard",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Protected guard={isVip}>
+        <Tabs.Screen name="vip"
+          options={{
+            headerShown: true,
+            title: "Provider",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="medical-services" color={color} size={size} />
+            ),
+          }}
+        />
+      </Tabs.Protected>
+      <Tabs.Screen
+        name="settings"
+        options={{
+          headerShown: true,
           title: "Settings",
-          tabBarIcon: ({ color }) => <MaterialIcons size={28} name="settings" color={color} />,
-        }} />
-      </Tabs>
-    </ThemeProvider>
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="settings" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }
