@@ -4,13 +4,11 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useAuthStore } from "@/utils/authStore";
 import Checkbox from "expo-checkbox";
-import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function Main() {
   const { completeOnboarding } = useAuthStore();
-  const router = useRouter();
 
   const [agreement, setAgreement] = useState(false);
   const firstName = "1";
@@ -28,7 +26,6 @@ export default function Main() {
 
   return (
     <View style={styles.container}>
-      <Button type="return" onPress={() => { router.back() }} />
       <ThemedText type="title" style={styles.title}>Step 3</ThemedText>
       <ThemedText type="subtitle" style={styles.subtitle}>Confirm your information below</ThemedText>
       <ThemedView type="card">
@@ -42,7 +39,7 @@ export default function Main() {
         <ThemedText type="default" style={styles.default}>{sex}</ThemedText>
         <TouchableOpacity style={styles.checkboxList} onPress={() => setAgreement(!agreement)}>
           <Checkbox value={agreement} onValueChange={setAgreement} />
-          <ThemedText type="default" style={{ marginLeft: 10, fontSize: 16 }}>I agree to create an account</ThemedText>
+          <ThemedText type="default" style={{ marginLeft: 10, fontSize: 16 }}>I accept the terms and conditions</ThemedText>
         </TouchableOpacity>
         <Button type={"dark"} onPress={handleNext} style={{ marginTop: 30 }}>
           <ThemedText type="default" style={{ color: "#ffffffff" }}>Finish</ThemedText>
@@ -62,11 +59,11 @@ const styles = StyleSheet.create({
   },
   title: {
     position: "absolute",
-    top: 50
+    top: 40
   },
   subtitle: {
     position: "absolute",
-    top: 105
+    top: 100
   },
   overhead: {
     marginBottom: 10,

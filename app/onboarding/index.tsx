@@ -5,15 +5,15 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Link } from "expo-router";
 import { Image, StyleSheet, View } from "react-native";
 
-export default function OnboardingInitialScreen() {
+export default function PrepInitialScreen() {
     return (
         <View style={styles.container}>
             <Image source={require("@/assets/images/favicon.png")} style={styles.icon} />
             <ThemedText type="title">Visit Ready</ThemedText>
             <ThemedText type="subtitle">Make the most of every medical visit</ThemedText>
             <Divider top={20} bottom={30} />
-            <Link asChild replace href="/onboarding/second">
-                <Button type="dark" style={styles.button}>
+            <Link asChild push href="/onboarding/modal">
+                <Button type="dark" style={{ margin: 10 }}>
                     <MaterialIcons name="arrow-forward" size={30} color={"#fff"} style={styles.buttonIcon} />
                     <ThemedText type="default" style={{ color: "#fff" }}>Begin Setup</ThemedText>
                 </Button>
@@ -28,9 +28,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 30,
-    },
-    button: {
-        margin: 10,
     },
     icon: {
         width: 100,

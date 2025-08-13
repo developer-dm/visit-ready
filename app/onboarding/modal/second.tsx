@@ -1,14 +1,13 @@
 import { Button } from "@/components/Button";
+import { Dropdown } from "@/components/Dropdown";
 import { Footer } from "@/components/Footer";
-import { Textbox } from "@/components/TextBox";
+import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, Platform, Pressable, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
-import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function Main() {
     const router = useRouter();
@@ -37,7 +36,7 @@ export default function Main() {
         showPicker(false);
 
         if (DOB && selection) {
-            router.push("/onboarding/final");
+            router.push("/onboarding/modal/final");
         } else {
             Alert.alert("Error", "Invalid birthdate or sex.");
         }
@@ -81,7 +80,6 @@ export default function Main() {
     return (
         <TouchableWithoutFeedback onPress={() => { setOpen(false); }}>
             <View style={styles.container}>
-                <Button type="return" onPress={() => { router.back() }} />
                 <ThemedText type="title" style={styles.title}>Step 2</ThemedText>
                 <ThemedText type="subtitle" style={styles.subtitle}>Enter your information below</ThemedText>
                 <ThemedView type="card">
@@ -119,17 +117,13 @@ export default function Main() {
                         />
                     )}
                     <ThemedText type="overhead" style={{ marginTop: 10 }}>Sex at birth</ThemedText>
-                    <DropDownPicker
+                    <Dropdown
                         open={open}
                         value={selection}
                         items={items}
                         setOpen={setOpen}
                         setValue={setSelection}
                         setItems={setItems}
-                        style={[styles.dropdown, { backgroundColor: useThemeColor({}, "background"), borderColor: useThemeColor({}, "border") }]}
-                        dropDownContainerStyle={[styles.dropdownContainer, { backgroundColor: useThemeColor({}, "background"), borderColor: useThemeColor({}, "border") }]}
-                        placeholderStyle={[{ color: useThemeColor({}, "placeholderText") }]}
-                        textStyle={[{ fontSize: 14, color: useThemeColor({}, "text") }]}
                     />
                     <Button type={"dark"} onPress={handleNext} style={{ marginTop: 30 }}>
                         <ThemedText type="default" style={{ color: "#ffffffff" }}>Next</ThemedText>
@@ -150,11 +144,11 @@ const styles = StyleSheet.create({
     },
     title: {
         position: "absolute",
-        top: 50
+        top: 40
     },
     subtitle: {
         position: "absolute",
-        top: 110
+        top: 100
     },
     buttonView: {
         flexDirection: "row",
@@ -182,16 +176,4 @@ const styles = StyleSheet.create({
         backgroundColor: "#004678",
         borderRadius: 15,
     },
-    dropdown: {
-        minHeight: 40,
-        borderWidth: 1,
-        borderRadius: 15,
-        marginTop: 10,
-        padding: 10,
-    },
-    dropdownContainer: {
-        borderWidth: 1,
-        borderRadius: 15,
-        marginTop: 10,
-    }
 });

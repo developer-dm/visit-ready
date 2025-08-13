@@ -1,6 +1,6 @@
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
-import { Textbox } from "@/components/TextBox";
+import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useRouter } from "expo-router";
@@ -17,7 +17,7 @@ export default function OnboardingSecondScreen() {
     Keyboard.dismiss();
 
     if (firstName && lastName) {
-      router.push("/onboarding/third");
+      router.push("/onboarding/modal/second");
     } else {
       Alert.alert("Error", "Invalid first or last name.");
     };
@@ -50,7 +50,6 @@ export default function OnboardingSecondScreen() {
         <Footer />
       </View>
     </TouchableWithoutFeedback>
-
   );
 }
 
@@ -63,10 +62,10 @@ const styles = StyleSheet.create({
   },
   title: {
     position: "absolute",
-    top: 50
+    top: 40
   },
   subtitle: {
     position: "absolute",
-    top: 110
+    top: 100
   },
 });

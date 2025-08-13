@@ -7,24 +7,6 @@ export default function TabsLayout() {
 
   return (
     <Tabs>
-      <Tabs.Screen name="history"
-        options={{
-          headerShown: true,
-          title: "History",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="history" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen name="index"
-        options={{
-          headerShown: true,
-          title: "Dashboard",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
       <Tabs.Protected guard={isVip}>
         <Tabs.Screen name="vip"
           options={{
@@ -36,6 +18,24 @@ export default function TabsLayout() {
           }}
         />
       </Tabs.Protected>
+      <Tabs.Screen name="index"
+        options={{
+          headerShown: true,
+          title: "Dashboard",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen name="history"
+        options={{
+          headerShown: true,
+          title: "History",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="history" color={color} size={size} />
+          ),
+        }}
+      />
       <Tabs.Screen
         name="settings"
         options={{

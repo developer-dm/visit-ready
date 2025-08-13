@@ -38,10 +38,11 @@ export default function RootLayout() {
       <Stack>
         <Stack.Protected guard={isLoggedIn}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="prep" options={{ presentation: "modal", headerShown: false }} />
         </Stack.Protected>
         <Stack.Protected guard={!isLoggedIn && hasCompletedOnboarding}>
           <Stack.Screen name="sign-in" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: "modal", title: "About" }} />
+          <Stack.Screen name="modal" options={{ presentation: "modal", headerShown: true, title: "About" }} />
           <Stack.Protected guard={shouldCreateAccount}>
             <Stack.Screen name="create-account" options={{ headerShown: false }} />
           </Stack.Protected>
@@ -49,7 +50,7 @@ export default function RootLayout() {
         <Stack.Protected guard={!hasCompletedOnboarding}>
           <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         </Stack.Protected>
-        <Stack.Screen name="+not-found" options={{ title: 'Oops!' }} />
+        <Stack.Screen name="+not-found" options={{ headerShown: true, title: 'Oops!' }} />
       </Stack>
     </ThemeProvider>
   );
