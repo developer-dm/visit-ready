@@ -82,7 +82,7 @@ export function DatePicker({
                         onChangeText={setDateString}
                         value={dateString}
                         editable={false}
-                        onPressIn={toggleDatePicker}
+                        pointerEvents="none"
                     />
                 </Pressable>
             )}

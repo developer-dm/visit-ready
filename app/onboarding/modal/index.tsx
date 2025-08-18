@@ -1,5 +1,4 @@
 import { Button } from "@/components/Button";
-import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -7,7 +6,7 @@ import { useUser } from "@/utils/userContext";
 import { useRouter } from "expo-router";
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
-export default function OnboardingSecondScreen() {
+export default function OnboardingFirstScreen() {
   const router = useRouter()
 
   const { signup } = useUser();
@@ -46,7 +45,6 @@ export default function OnboardingSecondScreen() {
             <ThemedText type="default" style={{ color: "#ffffffff" }}>Next</ThemedText>
           </Button>
         </ThemedView>
-        <Footer />
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );

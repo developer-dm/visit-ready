@@ -1,7 +1,6 @@
 import { Button } from "@/components/Button";
 import { DatePicker } from "@/components/DatePicker";
 import { Dropdown } from "@/components/Dropdown";
-import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useUser } from "@/utils/userContext";
@@ -9,7 +8,7 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 
-export default function Main() {
+export default function OnboardingSecondScreen() {
     const router = useRouter();
 
     const { signup } = useUser();
@@ -58,7 +57,6 @@ export default function Main() {
                         <ThemedText type="default" style={{ color: "#ffffffff" }}>Next</ThemedText>
                     </Button>
                 </ThemedView>
-                <Footer />
             </View>
         </TouchableWithoutFeedback>
     );

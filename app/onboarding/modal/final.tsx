@@ -1,6 +1,5 @@
 import { Button } from "@/components/Button";
 import { FormatDateString } from "@/components/DatePicker";
-import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useAuthStore } from "@/utils/authStore";
@@ -74,7 +73,6 @@ export default function OnboardingFinalScreen() {
           <ThemedText type="default" style={{ color: "#ffffffff" }}>Finish</ThemedText>
         </Button>
       </ThemedView>
-      <Footer />
     </View>
   );
 };

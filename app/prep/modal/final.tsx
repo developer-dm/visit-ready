@@ -13,6 +13,7 @@ export default function PrepFinalScreen() {
 
     const handleNext = () => {
         router.dismissTo("/(tabs)")
+        router.replace("/final")
         clearUserContext()
     };
 

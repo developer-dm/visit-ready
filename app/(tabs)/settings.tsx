@@ -2,12 +2,13 @@ import { Button } from "@/components/Button";
 import { Divider } from "@/components/Divider";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
+import { logOut } from "@/utils/auth";
 import { useAuthStore } from "@/utils/authStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { StyleSheet, View } from "react-native";
 
 export default function SettingsScreen() {
-  const { logOut, resetOnboarding } = useAuthStore();
+  const { resetOnboarding } = useAuthStore();
 
   const handleDeletion = () => {
     resetOnboarding();
