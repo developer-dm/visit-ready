@@ -32,7 +32,7 @@ export default function SignInScreen() {
           <MaterialIcons name="login" size={30} color={"#fff"} style={styles.buttonIcon} />
           <ThemedText type="default" style={{ color: "#fff" }}>Login</ThemedText>
         </Button>
-        <Link asChild push href="/modal">
+        <Link asChild push href="/about">
           <Button type="light" style={styles.button}>
             <MaterialIcons name="info-outline" size={30} color={"#323232ff"} style={styles.buttonIcon} />
             <ThemedText type="default" style={{ color: "#323232ff" }}>About</ThemedText>

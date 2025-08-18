@@ -3,20 +3,19 @@ import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useUser } from "@/utils/userContext";
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import { Alert, Keyboard, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
 export default function OnboardingSecondScreen() {
   const router = useRouter()
 
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
+  const { signup } = useUser();
 
   const handleNext = () => {
     Keyboard.dismiss();
 
-    if (firstName && lastName) {
+    if (signup.firstName && signup.lastName) {
       router.push("/onboarding/modal/second");
     } else {
       Alert.alert("Error", "Invalid first or last name.");
@@ -25,22 +24,22 @@ export default function OnboardingSecondScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
         <ThemedText type="title" style={styles.title}>Step 1</ThemedText>
         <ThemedText type="subtitle" style={styles.subtitle}>Please enter your name below</ThemedText>
         <ThemedView type="card">
           <ThemedText type="overhead">First Name</ThemedText>
           <Textbox
             placeholder="John"
-            onChangeText={setFirstName}
-            value={firstName}
+            onChangeText={signup.setFirstName}
+            value={signup.firstName}
             style={{ marginTop: 10 }}
           />
           <ThemedText type="overhead" style={{ marginTop: 10 }}>Last Name</ThemedText>
           <Textbox
             placeholder="Doe"
-            onChangeText={setLastName}
-            value={lastName}
+            onChangeText={signup.setLastName}
+            value={signup.lastName}
             style={{ marginTop: 10 }}
           />
           <Button type={"dark"} onPress={handleNext} style={{ marginTop: 30 }}>
@@ -48,7 +47,7 @@ export default function OnboardingSecondScreen() {
           </Button>
         </ThemedView>
         <Footer />
-      </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }
@@ -58,7 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 30,
+    paddingHorizontal: 30,
   },
   title: {
     position: "absolute",

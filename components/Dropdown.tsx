@@ -25,6 +25,7 @@ export function Dropdown({
             ArrowDownIconComponent={() => <MaterialIcons name="keyboard-arrow-down" size={25} color={useThemeColor({}, "icon")} />}
             ArrowUpIconComponent={() => <MaterialIcons name="keyboard-arrow-up" size={25} color={useThemeColor({}, "icon")} />}
             TickIconComponent={() => <MaterialIcons name="check" size={20} color={useThemeColor({}, "icon")} />}
+            listMode="SCROLLVIEW"
             {...rest}
         />
     );

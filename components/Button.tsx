@@ -3,7 +3,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { StyleSheet, TouchableOpacity, type TouchableOpacityProps } from "react-native";
 
 export type ButtonProps = TouchableOpacityProps & {
-  type?: "dark" | "light" | "selection" | "return";
+  type?: "dark" | "light" | "selection" | "return" | "close";
 };
 
 export function Button({
@@ -19,11 +19,14 @@ export function Button({
         type === "light" ? styles.light : undefined,
         type === "selection" ? styles.selection : undefined,
         type === "return" ? styles.return : undefined,
+        type === "close" ? styles.close : undefined,
         style,
       ]}
       {...rest}
     >
-      {type === "return" ? <MaterialIcons name="arrow-back-ios" size={30} color={useThemeColor({}, "icon")} /> : children}
+      {type === "return" ? <MaterialIcons name="arrow-back-ios" size={30} color={useThemeColor({}, "icon")} /> : undefined}
+      {type === "close" ? <MaterialIcons name="close" size={30} color={useThemeColor({}, "icon")} /> : undefined}
+      {children}
     </TouchableOpacity>
   );
 }
@@ -62,5 +65,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 15,
     left: 15,
+  },
+  close: {
+    width: 30,
+    height: 30,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

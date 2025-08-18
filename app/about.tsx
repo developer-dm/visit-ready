@@ -3,7 +3,7 @@ import { ThemedView } from "@/components/ThemedView";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { StyleSheet, View } from "react-native";
 
-export default function ModalScreen() {
+export default function AboutScreen() {
   return (
     <View style={styles.container}>
       <ThemedView type="card">

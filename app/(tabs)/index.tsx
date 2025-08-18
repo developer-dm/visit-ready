@@ -12,7 +12,7 @@ export default function IndexScreen() {
       <ThemedText type="title">Dashboard</ThemedText>
       <ThemedText type="subtitle">Prepare for your next visit</ThemedText>
       <Divider />
-      <Link asChild push href="/prep">
+      <Link asChild push href="/prep/modal">
         <Button type="dark" style={styles.button}>
           <MaterialIcons size={30} name="create" color={"#ffffffff"} style={styles.buttonIcon} />
           <ThemedText type="default" style={{ color: "#ffffffff" }}>Prep for your next visit</ThemedText>
