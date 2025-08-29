@@ -3,13 +3,13 @@ import { FormatDateString } from "@/components/DatePicker";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useAuthStore } from "@/utils/authStore";
+import { saveData } from "@/utils/dataStore";
 import { useUser } from "@/utils/userContext";
 import Checkbox from "expo-checkbox";
 import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function OnboardingFinalScreen() {
   const { completeOnboarding } = useAuthStore();
-
   const { signup, clearUserContext } = useUser();
 
   const labels: Record<string, string> = {
@@ -22,7 +22,7 @@ export default function OnboardingFinalScreen() {
 
   const handleNext = () => {
     if (signup.acceptedTerms) {
-      //Add permanent storage of userContext
+      saveData('user:signup', signup);
       completeOnboarding();
       clearUserContext();
     } else {

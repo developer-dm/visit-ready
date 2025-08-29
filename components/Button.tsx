@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#004678",
-    borderRadius: 15,
+    borderRadius: 6,
   },
   light: {
     height: 50,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffffff",
     borderColor: "#ccc",
     borderWidth: 1,
-    borderRadius: 15,
+    borderRadius: 6,
   },
   selection: {
     height: 50,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#000000ff",
-    borderRadius: 15,
+    borderRadius: 6,
   },
   return: {
     position: 'absolute',

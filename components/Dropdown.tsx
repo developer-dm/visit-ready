@@ -35,13 +35,13 @@ const styles = StyleSheet.create({
     dropdown: {
         minHeight: 40,
         borderWidth: 1,
-        borderRadius: 15,
+        borderRadius: 6,
         marginTop: 10,
         padding: 10,
     },
     dropdownContainer: {
         borderWidth: 1,
-        borderRadius: 15,
+        borderRadius: 6,
         marginTop: 10,
     }
 });

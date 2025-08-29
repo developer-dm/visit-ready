@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffffff",
         borderColor: "#ccc",
         borderWidth: 1,
-        borderRadius: 15,
+        borderRadius: 6,
     },
     dark: {
         height: 40,
@@ -133,6 +133,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#004678",
-        borderRadius: 15,
+        borderRadius: 6,
     },
 });

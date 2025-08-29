@@ -14,7 +14,7 @@ export default function PrepThirdScreen() {
 
     const handleNext = () => {
         if (prep.visitGoal && prep.specificWorries) {
-            router.push("/prep/modal/final")
+            router.push("/appointment-prep/modal/final")
         } else {
             Alert.alert("Error", "Invalid answer");
         }

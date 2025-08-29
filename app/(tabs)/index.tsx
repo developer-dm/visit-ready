@@ -2,10 +2,9 @@ import { Button } from "@/components/Button";
 import { Divider } from "@/components/Divider";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Link } from "expo-router";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 export default function IndexScreen() {
   return (
@@ -13,17 +12,12 @@ export default function IndexScreen() {
       <ThemedText type="title">Dashboard</ThemedText>
       <ThemedText type="subtitle">Prepare for your next visit</ThemedText>
       <Divider bottom={30} />
-      <Link asChild push href="/prep/modal">
+      <Link asChild push href="/appointment-prep/modal">
         <Button type="dark" style={styles.button}>
           <MaterialIcons size={30} name="create" color={"#ffffffff"} style={styles.buttonIcon} />
           <ThemedText type="default" style={{ color: "#ffffffff" }}>Prep for your next visit</ThemedText>
         </Button>
       </Link>
-      <ThemedView type="card">
-        <ScrollView style={styles.scrollContainer}>
-
-        </ScrollView>
-      </ThemedView>
       <Footer />
     </View>
   );
@@ -42,9 +36,5 @@ const styles = StyleSheet.create({
   buttonIcon: {
     position: "absolute",
     left: 10,
-  },
-  scrollContainer: {
-    width: "100%",
-    height: 250,
   },
 });

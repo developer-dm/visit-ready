@@ -1,23 +1,16 @@
-import { Button } from "@/components/Button";
 import { FormatDateString } from "@/components/DatePicker";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useUser } from "@/utils/userContext";
-import { useRouter } from "expo-router";
+import { RouteProp, useRoute } from '@react-navigation/native';
 import { ScrollView, StyleSheet, View } from "react-native";
 
+type RouteParams = {
+    data: string;
+};
+
 export default function PrepFinalScreen() {
-    const router = useRouter();
-
-    const { clearUserContext, prep } = useUser();
-
-    const handleNext = () => {
-        router.dismissTo("/(tabs)")
-        router.replace("/final")
-        clearUserContext()
-    };
-
     const labels: Record<string, string> = {
+        id: "Appointment ID",
         appointmentType: "Appointment Type",
         appointmentDate: "Appointment Date",
         provider: "Provider",
@@ -29,14 +22,22 @@ export default function PrepFinalScreen() {
         miscDiscussion: "Other Information",
     };
 
+    const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
+    const appointment = route.params?.data ? JSON.parse(route.params.data) : null;
+
+    if (!appointment) return (
+        <View style={styles.container}>
+            <ThemedText type="error">No Appointment Found.</ThemedText>
+        </View>
+    );
+
     return (
         <View style={styles.container}>
-            <ThemedText type="title" style={styles.title}>Confirm</ThemedText>
-            <ThemedText type="subtitle" style={styles.subtitle}>Confirm your responses below</ThemedText>
             <ThemedView type="card">
+                <ThemedText type="subtitle" style={styles.subtitle}>Appointment Data</ThemedText>
                 <ScrollView style={styles.scrollContainer}>
-                    {Object.entries(prep).map(([key, value]) => {
-                        if (typeof value === "function") return null;
+                    {Object.entries(appointment).map(([key, value]) => {
+                        if (typeof value === "function" || key === "id") return null;
 
                         //special case: date
                         if (key === "appointmentDate") {
@@ -57,11 +58,17 @@ export default function PrepFinalScreen() {
                         );
                     })}
                 </ScrollView>
-
-                <Button onPress={handleNext} type="dark" style={{ marginTop: 30 }}>
-                    <ThemedText type="default" style={{ color: "#fff" }}>Finish</ThemedText>
-                </Button>
             </ThemedView>
+            <ThemedView type="card" style={styles.questionsCard}>
+                <ThemedText type="subtitle" style={styles.subtitle}>Personalized Questions</ThemedText>
+                <ScrollView style={styles.questionScrollContainer}>
+
+                </ScrollView>
+            </ThemedView>
+            <View style={styles.label}>
+                <ThemedText style={styles.labelTitle}>Appointment ID: </ThemedText>
+                <ThemedText style={styles.labelValue}>{appointment.id || "Error"}</ThemedText>
+            </View>
         </View>
     );
 }
@@ -70,11 +77,21 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
+        alignItems: "center",
         padding: 10,
+    },
+    subtitle: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginBottom: 10,
     },
     scrollContainer: {
         width: "100%",
-        height: 350,
+        maxHeight: 350,
+    },
+    questionScrollContainer: {
+        width: "100%",
+        maxHeight: 150,
     },
     keyView: {
         width: "100%"
@@ -82,16 +99,31 @@ const styles = StyleSheet.create({
     overhead: {
         marginBottom: 5,
     },
+    questionsCard: {
+        marginTop: 15,
+    },
     default: {
         marginBottom: 5,
         textAlign: "left",
         color: "#0095ffff",
         width: "100%",
     },
-    title: {
-        marginBottom: -5
+    label: {
+        flexDirection: "row",
+        justifyContent: "center",
+        width: "100%",
+        marginTop: 10,
     },
-    subtitle: {
-        marginBottom: 50
+    labelTitle: {
+        fontWeight: "600",
+        fontSize: 7,
+        textAlign: "left",
+        color: "#FFFFFF",
+    },
+    labelValue: {
+        fontSize: 8,
+        fontWeight: "500",
+        textAlign: "left",
+        color: "#B0B0B0",
     },
 });

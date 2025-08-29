@@ -70,12 +70,12 @@ const styles = StyleSheet.create({
     color: "#ff0000ff",
   },
   footer: {
-    fontSize: 10,
+    fontSize: 5,
     textAlign: "center",
     fontFamily: "Sans-serif",
     fontWeight: "medium",
     position: "absolute",
-    bottom: 5,
+    bottom: 3,
     width: "100%",
   },
 });

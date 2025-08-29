@@ -14,7 +14,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 export default function ModalScreen() {
   const router = useRouter();
-
   const { prep } = useUser();
 
   const [open, setOpen] = useState(false);
@@ -28,7 +27,7 @@ export default function ModalScreen() {
 
   const handleNext = () => {
     if (prep.appointmentType && prep.appointmentDate) {
-      router.push("/prep/modal/second")
+      router.push("/appointment-prep/modal/second")
     } else {
       Alert.alert("Error", "Invalid appointment type or date");
     }

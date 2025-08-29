@@ -11,6 +11,7 @@ type UserState = {
   hasCompletedOnboarding: boolean;
   isVip: boolean;
   _hasHydrated: boolean;
+
   logIn: () => void;
   logOut: () => void;
   completeOnboarding: () => void;

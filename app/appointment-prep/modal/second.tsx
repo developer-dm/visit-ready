@@ -43,7 +43,7 @@ export default function PrepSecondScreen() {
 
     const handleNext = () => {
         if (prep.mainConcern && prep.concernStart && prep.concernSeverity) {
-            router.push("/prep/modal/third")
+            router.push("/appointment-prep/modal/third")
         } else {
             Alert.alert("Error", "Invalid answer");
         }
