@@ -1,14 +1,16 @@
-import { Button } from "@/components/Button";
-import { FormatDateString } from "@/components/DatePicker";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useAuthStore } from "@/utils/authStore";
+import DataFormatterService from "@/utils/dataFormatterService";
 import { saveData } from "@/utils/dataStore";
 import { useUser } from "@/utils/userContext";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Checkbox from "expo-checkbox";
-import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function OnboardingFinalScreen() {
+  const router = useRouter();
   const { completeOnboarding } = useAuthStore();
   const { signup, clearUserContext } = useUser();
 
@@ -27,93 +29,378 @@ export default function OnboardingFinalScreen() {
       clearUserContext();
     } else {
       Alert.alert("Error", "Please accept the terms and conditions.");
-    };
+    }
   };
 
+  const handleBack = () => {
+    router.back();
+  };
+
+  const userDataEntries = Object.entries(signup).filter(([key, value]) => {
+    return typeof value !== "function" && key !== "acceptedTerms";
+  });
+
   return (
-    <View style={styles.container}>
-      <ThemedText type="title" style={styles.title}>
-        Step 3
-      </ThemedText>
-      <ThemedText type="subtitle" style={styles.subtitle}>
-        Confirm your information below
-      </ThemedText>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.scrollContainer}
+      showsVerticalScrollIndicator={false}
+    >
+      <View style={styles.content}>
+        {/* Header Section */}
+        <View style={styles.header}>
+          <View style={styles.progressContainer}>
+            <View style={styles.progressBar}>
+              <View style={styles.progressFill} />
+              <View style={styles.progressFill} />
+              <View style={styles.progressFill} />
+            </View>
+            <ThemedText style={styles.progressText} lightColor='#64748b' darkColor='#858585ff'>
+              Step 3 of 3
+            </ThemedText>
+          </View>
 
-      <ThemedView type="card">
-        <ScrollView style={styles.scrollContainer}>
-          {Object.entries(signup).map(([key, value]) => {
-            if (typeof value === "function" || key === "acceptedTerms") return null;
+          <ThemedText style={styles.pageTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+            Review & Confirm
+          </ThemedText>
 
-            //special case: date
-            if (key === "DOB") {
-              return (
-                <View key={key} style={styles.keyView}>
-                  <ThemedText type="overhead" style={styles.overhead}>{labels[key]}</ThemedText>
-                  <ThemedText type="default" style={styles.default}>{value ? FormatDateString(value as Date) : "Not Provided"}</ThemedText>
+          <ThemedText style={styles.pageSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+            Please review your information and accept the terms to continue
+          </ThemedText>
+        </View>
+
+        {/* Review Card */}
+        <ThemedView style={styles.reviewCard}>
+          <View style={styles.cardContent}>
+            {/* Info Section */}
+            <View style={styles.infoSection}>
+              <ThemedView style={styles.infoIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                <MaterialIcons name="check-circle" size={24} color="#10b981" />
+              </ThemedView>
+              <ThemedText style={styles.infoTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                Your Information
+              </ThemedText>
+              <ThemedText style={styles.infoSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                Review the details you've provided below
+              </ThemedText>
+            </View>
+
+            {/* User Details */}
+            <View style={styles.detailsSection}>
+              {userDataEntries.length > 0 ? (
+                userDataEntries.map(([key, value]) => {
+                  let formattedValue = value;
+                  if (key === "DOB" && typeof value === 'string') {
+                    formattedValue = new Date(value);
+                  }
+
+                  return (
+                    <ThemedView key={key} style={styles.detailItem}>
+                      <ThemedText style={styles.detailLabel} lightColor='#64748b' darkColor='#858585ff'>
+                        {labels[key] || key}
+                      </ThemedText>
+                      <ThemedText style={styles.detailValue} lightColor='#1e293b' darkColor='#ffffffff'>
+                        {DataFormatterService.toReadableString(formattedValue)}
+                      </ThemedText>
+                    </ThemedView>
+                  );
+                })
+              ) : (
+                <View style={styles.noDataContainer}>
+                  <ThemedText style={styles.noDataText} lightColor='#64748b' darkColor='#858585ff'>
+                    No information available
+                  </ThemedText>
                 </View>
-              );
-            }
+              )}
+            </View>
 
-            //default case
-            return (
-              <View key={key} style={styles.keyView}>
-                <ThemedText type="overhead" style={styles.overhead}>{labels[key]}</ThemedText>
-                <ThemedText type="default" style={styles.default}>{value as string || "Not Provided"}</ThemedText>
+            {/* Terms Section */}
+            <View style={styles.termsSection}>
+              <ThemedView style={styles.termsContainer} lightColor='#f8fafc' darkColor='#1a1a1aff'>
+                <TouchableOpacity
+                  style={styles.checkboxRow}
+                  onPress={() => signup.setAcceptedTerms(!signup.acceptedTerms)}
+                  activeOpacity={0.7}
+                >
+                  <Checkbox
+                    value={signup.acceptedTerms}
+                    onValueChange={signup.setAcceptedTerms}
+                    color={signup.acceptedTerms ? "#3b82f6" : undefined}
+                  />
+                  <View style={styles.termsTextContainer}>
+                    <ThemedText style={styles.termsText} lightColor='#475569' darkColor='#e2e8f0'>
+                      I have read and agree to the{" "}
+                      <ThemedText style={styles.termsLink} lightColor='#3b82f6' darkColor='#60a5fa'>
+                        Terms and Conditions
+                      </ThemedText>
+                      {" "}and{" "}
+                      <ThemedText style={styles.termsLink} lightColor='#3b82f6' darkColor='#60a5fa'>
+                        Privacy Policy
+                      </ThemedText>
+                    </ThemedText>
+                  </View>
+                </TouchableOpacity>
+              </ThemedView>
+            </View>
+          </View>
+        </ThemedView>
+
+        {/* Navigation Section */}
+        <View style={styles.navigationSection}>
+          <View style={styles.buttonRow}>
+            <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+              <MaterialIcons name="arrow-back" size={20} color="#64748b" />
+              <Text style={styles.backButtonText}>Back</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.primaryButton, !signup.acceptedTerms && styles.primaryButtonDisabled]}
+              onPress={handleNext}
+              disabled={!signup.acceptedTerms}
+            >
+              <Text style={[styles.primaryButtonText, !signup.acceptedTerms && styles.primaryButtonTextDisabled]}>
+                Get Started
+              </Text>
+              <View style={styles.buttonIcon}>
+                <MaterialIcons
+                  name="check"
+                  size={20}
+                  color={signup.acceptedTerms ? "#ffffff" : "#94a3b8"}
+                />
               </View>
-            );
-          })}
-        </ScrollView>
+            </TouchableOpacity>
+          </View>
 
-        <TouchableOpacity style={styles.checkboxList} onPress={() => signup.setAcceptedTerms(!signup.acceptedTerms)}>
-          <Checkbox value={signup.acceptedTerms} onValueChange={signup.setAcceptedTerms} />
-          <ThemedText type="default" style={{ marginLeft: 10, fontSize: 10, textAlign: "left" }}>I have read and agree to the Terms and Conditions.</ThemedText>
-        </TouchableOpacity>
+          <ThemedText style={styles.privacyText} lightColor='#64748b' darkColor='#858585ff'>
+            Your information is stored securely on your device
+          </ThemedText>
+        </View>
 
-        <Button type="dark" onPress={handleNext} style={{ marginTop: 30 }}>
-          <ThemedText type="default" style={{ color: "#ffffffff" }}>Finish</ThemedText>
-        </Button>
-      </ThemedView>
-    </View>
+        {/* Bottom Spacer */}
+        <View style={styles.bottomSpacer} />
+      </View>
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 30,
-  },
-  title: {
-    position: "absolute",
-    top: 40
-  },
-  subtitle: {
-    position: "absolute",
-    top: 100
   },
   scrollContainer: {
-    width: "100%",
-    height: 200,
+    flexGrow: 1,
+    paddingBottom: 30,
   },
-  keyView: {
-    width: "100%"
+  content: {
+    flex: 1,
   },
-  overhead: {
-    marginBottom: 5,
+  header: {
+    paddingHorizontal: 24,
+    paddingTop: 40,
+    paddingBottom: 20,
+    alignItems: 'center',
   },
-  default: {
-    marginBottom: 5,
-    textAlign: "left",
-    color: "#0095ffff",
-    width: "100%",
+  progressContainer: {
+    alignItems: 'center',
+    marginBottom: 24,
   },
-  checkboxList: {
-    width: "100%",
-    height: 30,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 10,
+  progressBar: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 8,
+  },
+  progressFill: {
+    width: 24,
+    height: 4,
+    backgroundColor: '#3b82f6',
+    borderRadius: 2,
+  },
+  progressText: {
+    fontSize: 12,
+    fontWeight: '500',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  pageTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  pageSubtitle: {
+    fontSize: 16,
+    fontWeight: '400',
+    textAlign: 'center',
+    lineHeight: 22,
+    maxWidth: 320,
+  },
+  reviewCard: {
+    marginHorizontal: 24,
+    marginBottom: 24,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+  },
+  cardContent: {
+    padding: 24,
+  },
+  infoSection: {
+    alignItems: 'center',
+    marginBottom: 32,
+  },
+  infoIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  infoTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  infoSubtitle: {
+    fontSize: 14,
+    fontWeight: '400',
+    textAlign: 'center',
+    lineHeight: 20,
+    maxWidth: 280,
+  },
+  detailsSection: {
+    gap: 12,
+    marginBottom: 28,
+  },
+  detailItem: {
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+  },
+  detailLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+    marginBottom: 4,
+  },
+  detailValue: {
+    fontSize: 16,
+    fontWeight: '400',
+  },
+  noDataContainer: {
+    paddingVertical: 20,
+    alignItems: 'center',
+  },
+  noDataText: {
+    fontSize: 16,
+    fontStyle: 'italic',
+  },
+  termsSection: {
+    width: '100%',
+  },
+  termsContainer: {
+    borderRadius: 16,
+    borderWidth: 1,
+  },
+  checkboxRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: 20,
+  },
+  termsTextContainer: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  termsText: {
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 20,
+    flexWrap: "wrap"
+  },
+  termsLink: {
+    fontWeight: '500',
+    textDecorationLine: 'underline',
+    flexWrap: "wrap"
+  },
+  navigationSection: {
+    paddingHorizontal: 24,
+    alignItems: 'center',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 16,
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#d1d1d1ff',
+    backgroundColor: '#f8fafc',
+    minWidth: 100,
+    minHeight: 60,
+  },
+  backButtonText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#64748b',
+    marginLeft: 8,
+  },
+  primaryButton: {
+    backgroundColor: '#3b82f6',
+    borderRadius: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#3b82f6',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    minWidth: 160,
+    minHeight: 60,
+  },
+  primaryButtonDisabled: {
+    backgroundColor: '#e2e8f0',
+    shadowOpacity: 0,
+  },
+  primaryButtonText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#ffffff',
+    marginRight: 12,
+  },
+  primaryButtonTextDisabled: {
+    color: '#94a3b8',
+  },
+  buttonIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#ffffff33',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  privacyText: {
+    fontSize: 12,
+    fontWeight: '400',
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
+  bottomSpacer: {
+    height: 40,
   },
 });

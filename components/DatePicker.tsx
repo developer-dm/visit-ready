@@ -1,8 +1,10 @@
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import React, { useEffect, useState } from "react";
 import { Platform, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Textbox } from "./Textbox";
 import { ThemedText } from "./ThemedText";
+import { ThemedView } from "./ThemedView";
 
 export type DatePickerProps = {
     mode?: "date" | "time" | "datetime";
@@ -25,7 +27,7 @@ export function FormatDateString(rawDate: Date) {
 export function DatePicker({
     mode = "date",
     display = "default",
-    value = null,
+    value,
     setValue,
     placeholderText = "mm-dd-yyyy",
     ...otherProps
@@ -75,7 +77,7 @@ export function DatePicker({
             {!open && (
                 <Pressable
                     onPress={toggleDatePicker}
-                    style={{ height: "auto", width: "100%" }}
+                    style={{ width: "100%" }}
                 >
                     <Textbox
                         placeholder={placeholderText}
@@ -86,53 +88,92 @@ export function DatePicker({
                     />
                 </Pressable>
             )}
-            {open && Platform.OS === "ios" && (
-                <View style={styles.buttonView}>
-                    <TouchableOpacity style={styles.light} onPress={toggleDatePicker}>
-                        <ThemedText type="default" style={{ color: "#323232ff" }}>Cancel</ThemedText>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.dark} onPress={confirmIOSDate}>
-                        <ThemedText type="default" style={{ color: "#ffffffff" }}>Confirm</ThemedText>
-                    </TouchableOpacity>
+            {open && (
+                <View style={styles.pickerWrapper}>
+                    <DateTimePicker
+                        mode={mode as any}
+                        display={display}
+                        value={selection}
+                        onChange={onChange}
+                        {...otherProps}
+                    />
                 </View>
             )}
-            {open && (
-                <DateTimePicker
-                    mode={mode as any}
-                    display={display}
-                    value={selection}
-                    onChange={onChange}
-                    {...otherProps}
-                />
+            {open && Platform.OS === "ios" && (
+                <ThemedView style={styles.buttonContainer} lightColor='#ffffff' darkColor='#1d1d1dff'>
+                    <TouchableOpacity style={styles.cancelButton} onPress={toggleDatePicker}>
+                        <ThemedText style={styles.cancelButtonText} lightColor='#64748b' darkColor='#94a3b8'>
+                            Cancel
+                        </ThemedText>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.confirmButton} onPress={confirmIOSDate}>
+                        <ThemedText style={styles.confirmButtonText}>
+                            Confirm
+                        </ThemedText>
+                        <MaterialIcons name="check" size={16} color="#ffffff" />
+                    </TouchableOpacity>
+                </ThemedView>
             )}
         </>
     );
 }
 
 const styles = StyleSheet.create({
-    buttonView: {
-        flexDirection: "row",
-        justifyContent: "space-around",
-        gap: "10%",
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 16,
+        paddingHorizontal: 20,
+        borderRadius: 16,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 16,
     },
-    light: {
-        height: 40,
-        width: "45%",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#ffffffff",
-        borderColor: "#ccc",
+    cancelButton: {
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 12,
         borderWidth: 1,
-        borderRadius: 6,
+        borderColor: '#d1d1d1ff',
+        backgroundColor: '#f8fafc',
+        minWidth: 100,
     },
-    dark: {
-        height: 40,
-        width: "45%",
-        flexDirection: "row",
-        justifyContent: "center",
+    cancelButtonText: {
+        fontSize: 16,
+        fontWeight: '500',
+        textAlign: 'center',
+    },
+    confirmButton: {
+        backgroundColor: '#3b82f6',
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 12,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: '#3b82f6',
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        minWidth: 120,
+    },
+    confirmButtonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#ffffff',
+        marginRight: 8,
+    },
+    pickerWrapper: {
         alignItems: "center",
-        backgroundColor: "#004678",
-        borderRadius: 6,
+        justifyContent: "center",
     },
 });

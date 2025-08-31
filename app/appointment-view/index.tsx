@@ -1,14 +1,16 @@
-import { FormatDateString } from "@/components/DatePicker";
+import { getAppointmentIcon } from "@/components/AppointmentCard";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import DataFormatterService from "@/utils/dataFormatterService";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { ScrollView, StyleSheet, View } from "react-native";
 
-type RouteParams = {
-    data: string;
-};
-
 export default function PrepFinalScreen() {
+    type RouteParams = {
+        data: string;
+    };
+
     const labels: Record<string, string> = {
         id: "Appointment ID",
         appointmentType: "Appointment Type",
@@ -24,106 +26,146 @@ export default function PrepFinalScreen() {
 
     const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
     const appointment = route.params?.data ? JSON.parse(route.params.data) : null;
+    const appointmentType = appointment.appointmentType // For modal icon
 
-    if (!appointment) return (
-        <View style={styles.container}>
-            <ThemedText type="error">No Appointment Found.</ThemedText>
-        </View>
-    );
+    const userDataEntries = Object.entries(appointment).filter(([key, value]) => {
+        return typeof value !== "function" && key !== "id";
+    });
 
     return (
-        <View style={styles.container}>
-            <ThemedView type="card">
-                <ThemedText type="subtitle" style={styles.subtitle}>Appointment Data</ThemedText>
-                <ScrollView style={styles.scrollContainer}>
-                    {Object.entries(appointment).map(([key, value]) => {
-                        if (typeof value === "function" || key === "id") return null;
+        <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.scrollContainer}
+            showsVerticalScrollIndicator={false}
+        >
+            <View style={styles.content}>
+                {/* Review Card */}
+                <ThemedView style={styles.reviewCard}>
+                    <View style={styles.cardContent}>
+                        {/* Info Section */}
+                        <View style={styles.infoSection}>
+                            <ThemedView style={styles.infoIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                                <MaterialIcons name={appointmentType ? getAppointmentIcon(appointmentType) : "event-note"} size={24} color="#3b82f6" />
+                            </ThemedView>
+                            <ThemedText style={styles.infoTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                                Your Visit Information
+                            </ThemedText>
+                            <ThemedText style={styles.infoSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                                Review the details you've provided below
+                            </ThemedText>
+                        </View>
 
-                        //special case: date
-                        if (key === "appointmentDate") {
-                            return (
-                                <View key={key} style={styles.keyView}>
-                                    <ThemedText type="overhead" style={styles.overhead}>{labels[key]}</ThemedText>
-                                    <ThemedText type="default" style={styles.default}>{value ? FormatDateString(value as Date) : "Not Provided"}</ThemedText>
+                        {/* User Details */}
+                        <View style={styles.detailsSection}>
+                            {userDataEntries.length > 0 ? (
+                                userDataEntries.map(([key, value]) => {
+                                    let formattedValue = value;
+                                    if (key === "appointmentDate" && typeof value === 'string') {
+                                        formattedValue = new Date(value);
+                                    }
+
+                                    return (
+                                        <ThemedView key={key} style={styles.detailItem}>
+                                            <ThemedText style={styles.detailLabel} lightColor='#64748b' darkColor='#858585ff'>
+                                                {labels[key] || key}
+                                            </ThemedText>
+                                            <ThemedText style={styles.detailValue} lightColor='#1e293b' darkColor='#ffffffff'>
+                                                {DataFormatterService.toReadableString(formattedValue)}
+                                            </ThemedText>
+                                        </ThemedView>
+                                    );
+                                })
+                            ) : (
+                                <View style={styles.noDataContainer}>
+                                    <ThemedText style={styles.noDataText} lightColor='#64748b' darkColor='#858585ff'>
+                                        No information available
+                                    </ThemedText>
                                 </View>
-                            );
-                        }
-
-                        //default case
-                        return (
-                            <View key={key} style={styles.keyView}>
-                                <ThemedText type="overhead" style={styles.overhead}>{labels[key]}</ThemedText>
-                                <ThemedText type="default" style={styles.default}>{value as string || "Not Provided"}</ThemedText>
-                            </View>
-                        );
-                    })}
-                </ScrollView>
-            </ThemedView>
-            <ThemedView type="card" style={styles.questionsCard}>
-                <ThemedText type="subtitle" style={styles.subtitle}>Personalized Questions</ThemedText>
-                <ScrollView style={styles.questionScrollContainer}>
-
-                </ScrollView>
-            </ThemedView>
-            <View style={styles.label}>
-                <ThemedText style={styles.labelTitle}>Appointment ID: </ThemedText>
-                <ThemedText style={styles.labelValue}>{appointment.id || "Error"}</ThemedText>
+                            )}
+                        </View>
+                    </View>
+                </ThemedView>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 10,
-    },
-    subtitle: {
-        fontSize: 18,
-        fontWeight: "bold",
-        marginBottom: 10,
     },
     scrollContainer: {
-        width: "100%",
-        maxHeight: 350,
+        flexGrow: 1,
+        paddingTop: 40,
+        paddingBottom: 30,
     },
-    questionScrollContainer: {
-        width: "100%",
-        maxHeight: 150,
+    content: {
+        flex: 1,
     },
-    keyView: {
-        width: "100%"
+    reviewCard: {
+        marginHorizontal: 24,
+        marginBottom: 24,
+        borderRadius: 20,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 20,
     },
-    overhead: {
-        marginBottom: 5,
+    cardContent: {
+        padding: 24,
     },
-    questionsCard: {
-        marginTop: 15,
+    infoSection: {
+        alignItems: 'center',
+        marginBottom: 32,
     },
-    default: {
-        marginBottom: 5,
-        textAlign: "left",
-        color: "#0095ffff",
-        width: "100%",
+    infoIconContainer: {
+        width: 56,
+        height: 56,
+        borderRadius: 28,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 16,
     },
-    label: {
-        flexDirection: "row",
-        justifyContent: "center",
-        width: "100%",
-        marginTop: 10,
+    infoTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        textAlign: 'center',
+        marginBottom: 8,
     },
-    labelTitle: {
-        fontWeight: "600",
-        fontSize: 7,
-        textAlign: "left",
-        color: "#FFFFFF",
+    infoSubtitle: {
+        fontSize: 14,
+        fontWeight: '400',
+        textAlign: 'center',
+        lineHeight: 20,
+        maxWidth: 280,
     },
-    labelValue: {
-        fontSize: 8,
-        fontWeight: "500",
-        textAlign: "left",
-        color: "#B0B0B0",
+    detailsSection: {
+        gap: 12,
+        marginBottom: 28,
+    },
+    detailItem: {
+        paddingVertical: 12,
+        borderBottomWidth: 1,
+    },
+    detailLabel: {
+        fontSize: 14,
+        fontWeight: '500',
+        marginBottom: 4,
+    },
+    detailValue: {
+        fontSize: 16,
+        fontWeight: '400',
+    },
+    noDataContainer: {
+        paddingVertical: 20,
+        alignItems: 'center',
+    },
+    noDataText: {
+        fontSize: 16,
+        fontStyle: 'italic',
     },
 });
+

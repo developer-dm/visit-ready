@@ -3,18 +3,30 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { StyleSheet, TouchableOpacity, type TouchableOpacityProps } from "react-native";
 
 export type ButtonProps = TouchableOpacityProps & {
-  type?: "dark" | "light" | "selection" | "return" | "close";
+  lightColor?: string;
+  darkColor?: string;
+  lightBorder?: string;
+  darkBorder?: string;
+  type?: "custom" | "dark" | "light" | "selection" | "return" | "close" | "refresh";
 };
 
 export function Button({
   style,
+  lightColor,
+  darkColor,
+  lightBorder,
+  darkBorder,
   children,
-  type,
+  type = "custom",
   ...rest
 }: ButtonProps) {
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, "card");
+  const borderColor = useThemeColor({ light: lightBorder, dark: darkBorder }, "icon");
+
   return (
     <TouchableOpacity
       style={[
+        type === "custom" ? { backgroundColor, borderWidth: 1, borderColor } : undefined,
         type === "dark" ? styles.dark : undefined,
         type === "light" ? styles.light : undefined,
         type === "selection" ? styles.selection : undefined,
@@ -26,6 +38,7 @@ export function Button({
     >
       {type === "return" ? <MaterialIcons name="arrow-back-ios" size={30} color={useThemeColor({}, "icon")} /> : undefined}
       {type === "close" ? <MaterialIcons name="close" size={30} color={useThemeColor({}, "icon")} /> : undefined}
+      {type === "refresh" ? <MaterialIcons name="refresh" size={25} color={useThemeColor({}, "icon")} /> : undefined}
       {children}
     </TouchableOpacity>
   );

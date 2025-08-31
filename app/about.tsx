@@ -1,37 +1,150 @@
+import { expo } from "@/app.json";
 import { Button } from "@/components/Button";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Stack, useRouter } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { Image, ScrollView, StyleSheet, View } from "react-native";
 
 export default function AboutScreen() {
   const router = useRouter();
+
+  const features = [
+    {
+      icon: "edit-note",
+      title: "Symptom Input",
+      description: "Easily enter and track current symptoms with guided prompts"
+    },
+    {
+      icon: "quiz",
+      title: "Question Generation",
+      description: "Get tailored questions to ask your doctor based on your symptoms"
+    },
+    {
+      icon: "summarize",
+      title: "Visit Summary",
+      description: "Create a concise, clinician-friendly summary of your health concerns"
+    },
+    {
+      icon: "share",
+      title: "Secure Sharing",
+      description: "Send your summary and questions securely to your healthcare provider before your appointment"
+    },
+    {
+      icon: "schedule",
+      title: "Appointment Reminders",
+      description: "Stay on track with notifications and prep tips"
+    }
+  ];
 
   return (
     <>
       <Stack.Screen options={{ headerRight: () => (<Button type="close" onPress={() => router.dismiss()} />), }} />
 
-      <View style={styles.container}>
-        <ThemedView type="card">
-          <MaterialIcons name="info-outline" size={125} color={"#004678"} />
-          <ThemedText type="title" style={styles.title}>About</ThemedText>
-          <ThemedText type="overhead" style={styles.overhead}>What is Visit Ready?</ThemedText>
-          <ThemedText type="default" style={styles.default}>
-            Visit Ready is a mobile app designed to help you prepare for medical appointments ahead of visits.
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Header Section */}
+        <View style={styles.header}>
+          <ThemedView style={styles.logoContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+            <Image source={require("@/assets/images/favicon.png")} style={styles.logo} />
+          </ThemedView>
+          <ThemedText style={styles.appTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+            Visit Ready
           </ThemedText>
-          <ThemedText type="overhead" style={styles.overhead}>Features</ThemedText>
-          <ThemedText type="default" style={styles.default}>
-            • Symptom Input: Easily enter and track current symptoms with guided prompts
-            {"\n"}• Question Generation: Get tailored questions to ask your doctor based on your symptoms
-            {"\n"}• Visit Summary: Create a concise, clinician-friendly summary of your health concerns
-            {"\n"}• Secure Sharing: Send your summary and questions securely to your healthcare provider before your appointment
-            {"\n"}• Appointment Reminders: Stay on track with notifications and prep tips
+          <ThemedText style={styles.version} lightColor='#64748b' darkColor='#858585ff'>
+            Version {expo.version}
           </ThemedText>
-          <ThemedText type="overhead" style={styles.overhead}>Credits</ThemedText>
-          <ThemedText type="default" style={styles.default}>By: Dakota M.</ThemedText>
+        </View>
+
+        {/* About Card */}
+        <ThemedView style={styles.aboutCard}>
+          <View style={styles.cardContent}>
+            <View style={styles.aboutSection}>
+              <ThemedView style={styles.aboutIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                <MaterialIcons name="medical-services" size={24} color="#3b82f6" />
+              </ThemedView>
+              <ThemedText style={styles.sectionTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                What is Visit Ready?
+              </ThemedText>
+              <ThemedText style={styles.description} lightColor='#64748b' darkColor='#858585ff'>
+                Visit Ready is a mobile app designed to help you prepare for medical appointments ahead of visits.
+                Make every healthcare interaction more productive and meaningful.
+              </ThemedText>
+            </View>
+          </View>
         </ThemedView>
-      </View>
+
+        {/* Features Card */}
+        <ThemedView style={styles.featuresCard}>
+          <View style={styles.cardContent}>
+            <View style={styles.featuresHeader}>
+              <ThemedView style={styles.featuresIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                <MaterialIcons name="stars" size={24} color="#10b981" />
+              </ThemedView>
+              <ThemedText style={styles.sectionTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                Key Features
+              </ThemedText>
+              <ThemedText style={styles.featuresSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                Everything you need to prepare for your medical visits
+              </ThemedText>
+            </View>
+
+            <View style={styles.featuresList}>
+              {features.map((feature, index) => (
+                <View key={index} style={styles.featureItem}>
+                  <ThemedView style={styles.featureIconContainer} lightColor='#f8fafc' darkColor='#1a1a1aff'>
+                    <MaterialIcons name={feature.icon as any} size={20} color="#3b82f6" />
+                  </ThemedView>
+                  <View style={styles.featureContent}>
+                    <ThemedText style={styles.featureTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                      {feature.title}
+                    </ThemedText>
+                    <ThemedText style={styles.featureDescription} lightColor='#64748b' darkColor='#858585ff'>
+                      {feature.description}
+                    </ThemedText>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+        </ThemedView>
+
+        {/* Credits Card */}
+        <ThemedView style={styles.creditsCard}>
+          <View style={styles.cardContent}>
+            <View style={styles.creditsSection}>
+              <ThemedView style={styles.creditsIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                <MaterialIcons name="code" size={24} color="#8b5cf6" />
+              </ThemedView>
+              <ThemedText style={styles.sectionTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                Development
+              </ThemedText>
+              <ThemedText style={styles.creditsText} lightColor='#64748b' darkColor='#858585ff'>
+                Developed by Dakota
+              </ThemedText>
+              <ThemedText style={styles.creditsSubtext} lightColor='#94a3b8' darkColor='#6b7280'>
+                Built to improve healthcare experiences for everyone
+              </ThemedText>
+            </View>
+          </View>
+        </ThemedView>
+
+        {/* Contact Section */}
+        <View style={styles.contactSection}>
+          <ThemedText style={styles.contactTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+            Questions or Feedback?
+          </ThemedText>
+          <ThemedText style={styles.contactText} lightColor='#64748b' darkColor='#858585ff'>
+            We'd love to hear from you to make Visit Ready even better.
+          </ThemedText>
+        </View>
+
+        {/* Bottom Spacer */}
+        <View style={styles.bottomSpacer} />
+      </ScrollView>
     </>
   );
 }
@@ -39,20 +152,207 @@ export default function AboutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContainer: {
+    paddingBottom: 30,
+  },
+  header: {
+    paddingHorizontal: 24,
+    paddingTop: 20,
+    paddingBottom: 30,
+    alignItems: 'center',
+  },
+  logoContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 30,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
   },
-  title: {
+  logo: {
+    width: 50,
+    height: 50,
+  },
+  appTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  version: {
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  aboutCard: {
+    marginHorizontal: 24,
     marginBottom: 20,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
   },
-  overhead: {
+  featuresCard: {
+    marginHorizontal: 24,
+    marginBottom: 20,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+  },
+  creditsCard: {
+    marginHorizontal: 24,
+    marginBottom: 24,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+  },
+  cardContent: {
+    padding: 24,
+  },
+  aboutSection: {
+    alignItems: 'center',
+  },
+  aboutIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  description: {
+    fontSize: 15,
+    fontWeight: '400',
+    textAlign: 'left',
+    lineHeight: 22,
+  },
+  featuresHeader: {
+    alignItems: 'center',
+    marginBottom: 28,
+  },
+  featuresIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  featuresSubtitle: {
+    fontSize: 14,
+    fontWeight: '400',
+    textAlign: 'center',
+    lineHeight: 20,
+  },
+  featuresList: {
+    gap: 20,
+  },
+  featureItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  featureIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+    marginTop: 2,
+  },
+  featureContent: {
+    flex: 1,
+  },
+  featureTitle: {
     fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
   },
-  default: {
-    fontSize: 12,
-    textAlign: "left",
-    width: "100%",
-    margin: 10,
+  featureDescription: {
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 20,
+  },
+  missionSection: {
+    alignItems: 'center',
+  },
+  missionIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  creditsSection: {
+    alignItems: 'center',
+  },
+  creditsIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  creditsText: {
+    fontSize: 16,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  creditsSubtext: {
+    fontSize: 14,
+    fontWeight: '400',
+    textAlign: 'left',
+    fontStyle: 'italic',
+  },
+  contactSection: {
+    paddingHorizontal: 24,
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  contactTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  contactText: {
+    fontSize: 14,
+    fontWeight: '400',
+    textAlign: 'left',
+    lineHeight: 20,
+  },
+  bottomSpacer: {
+    height: 40,
   },
 });

@@ -1,11 +1,10 @@
 import { Button } from "@/components/Button";
-import { FormatDateString } from "@/components/DatePicker";
-import { Divider } from "@/components/Divider";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { logOut } from "@/utils/auth";
 import { useAuthStore } from "@/utils/authStore";
+import DataFormatterService from "@/utils/dataFormatterService";
 import { getData, removeData } from "@/utils/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useEffect, useState } from "react";
@@ -65,85 +64,310 @@ export default function SettingsScreen() {
     })();
   }, []);
 
+  const userDataEntries = Object.entries(userSignup ? userSignup : {}).filter(([key, value]) => {
+    return typeof value !== "function" && key !== "acceptedTerms";
+  });
+
   return (
-    <View style={styles.container}>
-      <ThemedText type="title">Settings</ThemedText>
-      <ThemedText type="subtitle">Edit and delete your account</ThemedText>
-      <Divider />
+    <>
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
+        {/* Header Section */}
+        <View style={styles.header}>
+          <ThemedText style={styles.pageTitle} lightColor='#000000ff' darkColor='#ffffffff'>Settings</ThemedText>
+          <ThemedText style={styles.subtitle} lightColor='#64748b' darkColor='#858585ff'>
+            Manage your account and preferences
+          </ThemedText>
+        </View>
 
-      <Button type="light" onPress={handleLogout} style={styles.button}>
-        <MaterialIcons size={30} name="logout" color={"#323232ff"} style={styles.buttonIcon} />
-        <ThemedText type="default" style={{ color: "#323232ff" }}>Log out</ThemedText>
-      </Button>
-      <Button type="light" onPress={handleDeletion} style={{ borderColor: "#ff0000ff", marginTop: 10 }}>
-        <MaterialIcons size={30} name="person-remove" color={"#ff0000ff"} style={styles.buttonIcon} />
-        <ThemedText type="default" style={{ color: "#ff0000ff" }}>Delete Account</ThemedText>
-      </Button>
-      <ThemedView type="card" style={{ marginTop: 20 }}>
-        <ThemedText type="subtitle" style={styles.subtitle}>Signup Data</ThemedText>
-        <ScrollView style={styles.scrollContainer}>
-          {Object.entries(userSignup ? userSignup : {}).map(([key, value]) => {
-            if (typeof value === "function" || key === "acceptedTerms") return null;
-
-            //special case: date
-            if (key === "DOB") {
-              return (
-                <View key={key} style={styles.keyView}>
-                  <ThemedText type="overhead" style={styles.overhead}>{labels[key]}</ThemedText>
-                  <ThemedText type="default" style={styles.default}>{value ? FormatDateString(value as Date) : "Not Provided"}</ThemedText>
-                </View>
-              );
-            }
-
-            //default case
-            return (
-              <View key={key} style={styles.keyView}>
-                <ThemedText type="overhead" style={styles.overhead}>{labels[key]}</ThemedText>
-                <ThemedText type="default" style={styles.default}>{value as string || "Not Provided"}</ThemedText>
+        {/* Profile Information Card */}
+        <ThemedView style={styles.profileCard}>
+          <View style={styles.cardContent}>
+            <View style={styles.cardHeader}>
+              <ThemedView style={styles.profileIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                <MaterialIcons
+                  size={32}
+                  name="person"
+                  color="#3b82f6"
+                />
+              </ThemedView>
+              <View style={styles.profileInfo}>
+                <ThemedText style={styles.cardTitle} lightColor='#1e293b' darkColor='#ffffffff'>Profile Information</ThemedText>
+                <ThemedText style={styles.cardSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                  Your personal details
+                </ThemedText>
               </View>
-            );
-          })}
-        </ScrollView>
-      </ThemedView>
+            </View>
 
+            <View style={styles.profileDetails}>
+              {userDataEntries.length > 0 ? (
+                userDataEntries.map(([key, value]) => {
+                  let formattedValue = value;
+                  if (key === "DOB" && typeof value === 'string') {
+                    formattedValue = new Date(value);
+                  }
+
+                  return (
+                    <ThemedView key={key} style={styles.profileItem}>
+                      <ThemedText style={styles.profileLabel} lightColor='#64748b' darkColor='#858585ff'>
+                        {labels[key] || key}
+                      </ThemedText>
+                      <ThemedText style={styles.profileValue} lightColor='#1e293b' darkColor='#ffffffff'>
+                        {DataFormatterService.toReadableString(formattedValue)}
+                      </ThemedText>
+                    </ThemedView>
+                  );
+                })
+              ) : (
+                <View style={styles.noDataContainer}>
+                  <ThemedText style={styles.noDataText} lightColor='#64748b' darkColor='#858585ff'>
+                    No profile information available
+                  </ThemedText>
+                </View>
+              )}
+            </View>
+          </View>
+        </ThemedView>
+
+        {/* Quick Actions Section */}
+        <View style={styles.actionsSection}>
+          <ThemedText style={styles.sectionTitle} lightColor='#1e293b' darkColor='#ffffffff'>Account Actions</ThemedText>
+
+          <View style={styles.actionGrid}>
+            {/* Logout Action */}
+            <Button style={styles.actionCard} lightBorder='#d1d1d1ff' darkBorder='#393939ff' onPress={handleLogout}>
+              <ThemedView style={styles.actionIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                <MaterialIcons
+                  size={24}
+                  name="logout"
+                  color="#64748b"
+                />
+              </ThemedView>
+              <View style={styles.actionContent}>
+                <ThemedText style={styles.actionTitle} lightColor='#1e293b' darkColor='#ffffffff'>Log Out</ThemedText>
+                <ThemedText style={styles.actionSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                  Sign out of your account
+                </ThemedText>
+              </View>
+              <MaterialIcons
+                size={20}
+                name="chevron-right"
+                color="#94a3b8"
+              />
+            </Button>
+
+            {/* Delete Account Action */}
+            <Button style={[styles.actionCard, styles.dangerCard]} onPress={handleDeletion}>
+              <ThemedView style={styles.dangerIconContainer}>
+                <MaterialIcons
+                  size={24}
+                  name="person-remove"
+                  color="#ef4444"
+                />
+              </ThemedView>
+              <View style={styles.actionContent}>
+                <ThemedText style={[styles.actionTitle, styles.dangerTitle]}>Delete Account</ThemedText>
+                <ThemedText style={styles.actionSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                  Permanently remove your account
+                </ThemedText>
+              </View>
+              <MaterialIcons
+                size={20}
+                name="chevron-right"
+                color="#ef4444"
+              />
+            </Button>
+          </View>
+        </View>
+
+        {/* App Information Section */}
+        <ThemedView style={styles.infoCard}>
+          <View style={styles.cardContent}>
+            <ThemedText style={styles.infoTitle} lightColor='#1e293b' darkColor='#ffffffff'>About Visit Ready</ThemedText>
+            <ThemedText style={styles.infoText} lightColor='#858585ff' darkColor='#858585ff'>
+              Your personal appointment preparation assistant. Track your visits and get ready for your next doctor's appointment with personalized questions.
+            </ThemedText>
+          </View>
+        </ThemedView>
+      </ScrollView>
       <Footer />
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 30,
+  },
+  contentContainer: {
+    paddingBottom: 30,
+  },
+  header: {
+    paddingHorizontal: 24,
+    paddingTop: 40,
+    paddingBottom: 30,
+  },
+  pageTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    textAlign: "left",
+    marginBottom: 8,
   },
   subtitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  scrollContainer: {
-    width: "100%",
-    maxHeight: 200,
-  },
-  keyView: {
-    width: "100%"
-  },
-  overhead: {
-    marginBottom: 5,
-  },
-  default: {
-    marginBottom: 5,
+    fontSize: 16,
+    fontWeight: '400',
     textAlign: "left",
-    color: "#0095ffff",
-    width: "100%",
   },
-  button: {
-    margin: 10,
+  profileCard: {
+    marginHorizontal: 24,
+    marginBottom: 24,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 8,
   },
-  buttonIcon: {
-    position: "absolute",
-    left: 10,
+  cardContent: {
+    padding: 24,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  profileIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+  },
+  profileInfo: {
+    flex: 1,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  cardSubtitle: {
+    fontSize: 14,
+    fontWeight: '400',
+  },
+  profileDetails: {
+    gap: 12,
+    marginBottom: 28,
+  },
+  profileItem: {
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+  },
+  profileLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+    marginBottom: 4,
+  },
+  profileValue: {
+    fontSize: 16,
+    fontWeight: '400',
+  },
+  noDataContainer: {
+    paddingVertical: 20,
+    alignItems: 'center',
+  },
+  noDataText: {
+    fontSize: 16,
+    fontStyle: 'italic',
+  },
+  actionsSection: {
+    paddingHorizontal: 24,
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    textAlign: "left",
+    marginBottom: 16,
+  },
+  actionGrid: {
+    gap: 12,
+  },
+  actionCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 16,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 4,
+    borderWidth: 1,
+  },
+  dangerCard: {
+    backgroundColor: '#fef2f2',
+    borderColor: '#ef4444',
+  },
+  actionIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+  },
+  dangerIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+    backgroundColor: '#ffdadaff',
+  },
+  actionContent: {
+    flex: 1,
+  },
+  actionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 2,
+  },
+  dangerTitle: {
+    color: '#ef4444',
+  },
+  actionSubtitle: {
+    fontSize: 14,
+    fontWeight: '400',
+  },
+  infoCard: {
+    marginHorizontal: 24,
+    marginBottom: 24,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 4,
+  },
+  infoTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  infoText: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '400',
   },
 });

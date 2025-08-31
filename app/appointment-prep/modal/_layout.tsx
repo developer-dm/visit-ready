@@ -1,15 +1,30 @@
 import { Button } from "@/components/Button";
 import { UserProvider } from "@/utils/userContext";
 import { Stack, useRouter } from "expo-router";
+import { Alert } from "react-native";
 
 export default function ModalLayout() {
-    const router = useRouter()
+    const router = useRouter();
+
+    const handleClose = () => {
+        Alert.alert('Close Form', 'Are you sure you want to discard this form?', [
+            {
+                text: 'Discard',
+                onPress: () => router.dismissTo("/(tabs)"),
+                style: "destructive",
+            },
+            {
+                text: 'Cancel',
+                style: 'cancel',
+            },
+        ]);
+    };
 
     return (
         <UserProvider>
             <Stack screenOptions={{
                 headerRight: () => (
-                    <Button type="close" onPress={() => router.dismissTo("/(tabs)")} />
+                    <Button type="close" onPress={handleClose} />
                 ),
             }}>
                 <Stack.Screen name="index" options={{ headerShown: true, title: "Step 1" }} />

@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 export default function NotFoundScreen() {
     return (
         <View style={styles.container}>
-            <ThemedText type="title">This screen does not exist.</ThemedText>
+            <ThemedText>This screen does not exist.</ThemedText>
             <Link asChild replace href="/(tabs)" style={styles.link}>
                 <ThemedText type="link">Go to home screen!</ThemedText>
             </Link>
@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 30,
     },
     link: {
         marginTop: 15,

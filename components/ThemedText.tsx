@@ -4,14 +4,14 @@ import { StyleSheet, Text, type TextProps } from "react-native";
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: "default" | "title" | "subtitle" | "overhead" | "link" | "error" | "footer";
+  type?: "custom" | "default" | "title" | "subtitle" | "overhead" | "link" | "error" | "footer";
 };
 
 export function ThemedText({
   style,
   lightColor,
   darkColor,
-  type = "default",
+  type = "custom",
   ...rest
 }: ThemedTextProps) {
   const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");

@@ -1,8 +1,8 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import DataFormatterService from "@/utils/dataFormatterService";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { StyleSheet, View } from "react-native";
-import { FormatDateString } from "./DatePicker";
 
 type AppointmentCardProps = {
     appointmentType: string;
@@ -10,6 +10,24 @@ type AppointmentCardProps = {
     provider: string;
     mainConcern: string;
     id: string;
+};
+
+// Helper function to get appointment type icon
+export const getAppointmentIcon = (type: string) => {
+    const lowerType = type.toLowerCase();
+    if (lowerType.includes("new-patient")) {
+        return "person-add";
+    } else if (lowerType.includes("annual-physical")) {
+        return "health-and-safety";
+    } else if (lowerType.includes("follow-up")) {
+        return "event-repeat";
+    } else if (lowerType.includes("urgent-concern")) {
+        return "report-problem";
+    } else if (lowerType.includes("specialist") || lowerType.includes("consultation")) {
+        return "psychology";
+    } else {
+        return "event-note";
+    }
 };
 
 export default function AppointmentCard({
@@ -20,73 +38,161 @@ export default function AppointmentCard({
     id,
 }: AppointmentCardProps) {
     return (
-        <ThemedView type="appointmentCard">
-            <View style={styles.headerRow}>
-                <ThemedText type="default" style={styles.appointmentType}>
-                    {appointmentType || "Appointment"}
+        <ThemedView style={styles.card} lightBorder='#d1d1d1ff' darkBorder='#393939ff'>
+            {/* Header Section */}
+            <View style={styles.header}>
+                <View style={styles.headerLeft}>
+                    <ThemedView style={styles.iconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                        <MaterialIcons
+                            name={getAppointmentIcon(appointmentType)}
+                            size={20}
+                            color="#3b82f6"
+                        />
+                    </ThemedView>
+                    <View style={styles.headerInfo}>
+                        <ThemedText style={styles.appointmentType} lightColor='#1e293b' darkColor='#ffffffff'>
+                            {DataFormatterService.toReadableString(appointmentType)}
+                        </ThemedText>
+                        <ThemedText style={styles.dateText} lightColor='#64748b' darkColor='#858585ff'>
+                            {DataFormatterService.toReadableString(appointmentDate)}
+                        </ThemedText>
+                    </View>
+                </View>
+                <MaterialIcons
+                    name="chevron-right"
+                    size={20}
+                    color="#94a3b8"
+                />
+            </View>
+
+            {/* Details Section */}
+            <View style={styles.details}>
+                <View style={styles.detailRow}>
+                    <View style={styles.detailItem}>
+                        <MaterialIcons name="local-hospital" size={16} color="#64748b" style={styles.detailIcon} />
+                        <View>
+                            <ThemedText style={styles.detailLabel} lightColor='#64748b' darkColor='#858585ff'>
+                                Provider
+                            </ThemedText>
+                            <ThemedText style={styles.detailValue} lightColor='#1e293b' darkColor='#ffffffff'>
+                                {DataFormatterService.toReadableString(provider)}
+                            </ThemedText>
+                        </View>
+                    </View>
+                </View>
+
+                <View style={styles.detailRow}>
+                    <View style={styles.detailItem}>
+                        <MaterialIcons name="description" size={16} color="#64748b" style={styles.detailIcon} />
+                        <View style={styles.concernContainer}>
+                            <ThemedText style={styles.detailLabel} lightColor='#64748b' darkColor='#858585ff'>
+                                Main Concern
+                            </ThemedText>
+                            <ThemedText style={styles.detailValue} lightColor='#1e293b' darkColor='#ffffffff' numberOfLines={2}>
+                                {DataFormatterService.toReadableString(mainConcern)}
+                            </ThemedText>
+                        </View>
+                    </View>
+                </View>
+            </View>
+
+            {/* Footer */}
+            <View style={styles.footer}>
+                <ThemedText style={styles.idText} lightColor='#94a3b8' darkColor='#565656ff'>
+                    ID: {DataFormatterService.toReadableString(id)}
                 </ThemedText>
-                <MaterialIcons name="event-note" size={22} color="#0095ffff" />
             </View>
-
-            <View style={styles.label}>
-                <ThemedText style={styles.labelTitle}>Date: </ThemedText>
-                <ThemedText style={styles.labelValue}>{appointmentDate ? FormatDateString(appointmentDate) : "Not Provided"}</ThemedText>
-            </View>
-
-            <View style={styles.label}>
-                <ThemedText style={styles.labelTitle}>Provider: </ThemedText>
-                <ThemedText style={styles.labelValue}>{provider || "Not Provided"}</ThemedText>
-            </View>
-
-            <View style={styles.label}>
-                <ThemedText style={styles.labelTitle}>Main Concern: </ThemedText>
-                <ThemedText style={styles.labelValue}>{mainConcern || "Not Provided"}</ThemedText>
-            </View>
-
-            <ThemedText type="default" style={styles.idText}>
-                ID: {id || "Error Loading ID"}
-            </ThemedText>
         </ThemedView>
     );
 }
 
 const styles = StyleSheet.create({
-    headerRow: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: 12,
+    card: {
+        borderRadius: 16,
+        padding: 16,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.08,
+        shadowRadius: 12,
+        borderWidth: 1,
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 16,
+    },
+    headerLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+    },
+    iconContainer: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 12,
+    },
+    headerInfo: {
+        flex: 1,
     },
     appointmentType: {
-        fontSize: 18,
-        fontWeight: "bold",
-        color: "#0095ffff",
-        marginRight: 10,
+        fontSize: 16,
+        fontWeight: '600',
+        marginBottom: 2,
     },
-    label: {
-        flexDirection: "row",
-        width: "100%",
-        marginBottom: 8,
-    },
-    labelTitle: {
-        fontWeight: "600",
+    dateText: {
         fontSize: 14,
-        textAlign: "left",
-        color: "#B0B0B0",
+        fontWeight: '400',
     },
-    labelValue: {
-        fontSize: 15,
-        fontWeight: "500",
-        textAlign: "left",
-        color: "#FFFFFF",
+    details: {
+        gap: 12,
+        paddingBottom: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: '#f1f5f9',
+    },
+    detailRow: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+    },
+    detailItem: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        flex: 1,
+    },
+    detailIcon: {
+        marginRight: 8,
+        marginTop: 2,
+        opacity: 0.7,
+    },
+    detailLabel: {
+        fontSize: 12,
+        fontWeight: '500',
+        marginBottom: 2,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+    },
+    detailValue: {
+        fontSize: 14,
+        fontWeight: '500',
+        lineHeight: 18,
+    },
+    concernContainer: {
+        flex: 1,
+    },
+    footer: {
+        paddingTop: 12,
+        alignItems: 'flex-start',
     },
     idText: {
-        marginTop: 14,
-        fontSize: 8,
-        color: "#888",
-        fontStyle: "italic",
+        fontSize: 11,
+        fontWeight: '400',
+        fontStyle: 'italic',
         textAlign: "left",
-        width: "100%",
-        alignSelf: "flex-end",
     },
 });
