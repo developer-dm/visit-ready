@@ -7,7 +7,7 @@ import { Link } from "expo-router";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function SignInScreen() {
-  const { logIn, logInAsVip } = useAuthStore();
+  const { logInAsVip } = useAuthStore();
 
   const handleLogin = async () => {
     await authenticateWithBiometrics();
@@ -22,13 +22,13 @@ export default function SignInScreen() {
       {/* Header Section with Branding */}
       <View style={styles.header}>
         <View style={styles.brandingContainer}>
-          <ThemedView style={styles.logoContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+          <ThemedView style={styles.logoContainer} type="dusked">
             <Image source={require("@/assets/images/favicon.png")} style={styles.logo} />
           </ThemedView>
-          <ThemedText style={styles.appTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+          <ThemedText style={styles.appTitle} type="whitened">
             Visit Ready
           </ThemedText>
-          <ThemedText style={styles.appSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+          <ThemedText style={styles.appSubtitle} type="greyed">
             Make the most of every medical visit
           </ThemedText>
         </View>
@@ -38,13 +38,13 @@ export default function SignInScreen() {
       <ThemedView style={styles.welcomeCard}>
         <View style={styles.cardContent}>
           <View style={styles.welcomeSection}>
-            <ThemedView style={styles.welcomeIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+            <ThemedView style={styles.welcomeIconContainer} type="dusked">
               <MaterialIcons name="medical-services" size={24} color="#3b82f6" />
             </ThemedView>
-            <ThemedText style={styles.welcomeTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+            <ThemedText style={styles.welcomeTitle} type="whitened">
               Welcome Back
             </ThemedText>
-            <ThemedText style={styles.welcomeSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+            <ThemedText style={styles.welcomeSubtitle} type="greyed">
               Choose how you'd like to access your account
             </ThemedText>
           </View>
@@ -91,7 +91,7 @@ export default function SignInScreen() {
         <Link asChild push href="/about">
           <TouchableOpacity style={styles.linkButton}>
             <MaterialIcons name="info-outline" size={20} color="#64748b" />
-            <ThemedText style={styles.linkText} lightColor='#64748b' darkColor='#858585ff'>
+            <ThemedText style={styles.linkText} type="greyed">
               About Visit Ready
             </ThemedText>
           </TouchableOpacity>
@@ -100,7 +100,7 @@ export default function SignInScreen() {
 
       {/* Footer */}
       <View style={styles.footer}>
-        <ThemedText style={styles.footerText} lightColor='#64748b' darkColor='#858585ff'>
+        <ThemedText style={styles.footerText} type="greyed">
           Your health data is secure and private
         </ThemedText>
       </View>

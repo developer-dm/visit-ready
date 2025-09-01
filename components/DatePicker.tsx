@@ -1,9 +1,8 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import React, { useEffect, useState } from "react";
-import { Platform, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Textbox } from "./Textbox";
-import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 
 export type DatePickerProps = {
@@ -75,7 +74,7 @@ export function DatePicker({
     return (
         <>
             {!open && (
-                <Pressable
+                <TouchableOpacity
                     onPress={toggleDatePicker}
                     style={{ width: "100%" }}
                 >
@@ -86,7 +85,7 @@ export function DatePicker({
                         editable={false}
                         pointerEvents="none"
                     />
-                </Pressable>
+                </TouchableOpacity>
             )}
             {open && (
                 <View style={styles.pickerWrapper}>
@@ -100,17 +99,17 @@ export function DatePicker({
                 </View>
             )}
             {open && Platform.OS === "ios" && (
-                <ThemedView style={styles.buttonContainer} lightColor='#ffffff' darkColor='#1d1d1dff'>
+                <ThemedView style={styles.buttonContainer} type="dusked">
                     <TouchableOpacity style={styles.cancelButton} onPress={toggleDatePicker}>
-                        <ThemedText style={styles.cancelButtonText} lightColor='#64748b' darkColor='#94a3b8'>
+                        <Text style={styles.cancelButtonText}>
                             Cancel
-                        </ThemedText>
+                        </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.confirmButton} onPress={confirmIOSDate}>
-                        <ThemedText style={styles.confirmButtonText}>
+                        <Text style={styles.confirmButtonText}>
                             Confirm
-                        </ThemedText>
+                        </Text>
                         <MaterialIcons name="check" size={16} color="#ffffff" />
                     </TouchableOpacity>
                 </ThemedView>
@@ -127,13 +126,6 @@ const styles = StyleSheet.create({
         paddingVertical: 16,
         paddingHorizontal: 20,
         borderRadius: 16,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 16,
     },
     cancelButton: {
         paddingVertical: 12,
@@ -148,6 +140,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '500',
         textAlign: 'center',
+        color: '#64748b',
     },
     confirmButton: {
         backgroundColor: '#3b82f6',

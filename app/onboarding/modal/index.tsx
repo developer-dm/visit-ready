@@ -36,16 +36,16 @@ export default function OnboardingFirstScreen() {
             <View style={styles.progressEmpty} />
             <View style={styles.progressEmpty} />
           </View>
-          <ThemedText style={styles.progressText} lightColor='#64748b' darkColor='#858585ff'>
+          <ThemedText style={styles.progressText} type="greyed">
             Step 1 of 3
           </ThemedText>
         </View>
 
-        <ThemedText style={styles.pageTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+        <ThemedText style={styles.pageTitle} type="whitened">
           Let's Get Started
         </ThemedText>
 
-        <ThemedText style={styles.pageSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+        <ThemedText style={styles.pageSubtitle} type="greyed">
           Tell us a bit about yourself to personalize your experience
         </ThemedText>
       </View>
@@ -55,13 +55,13 @@ export default function OnboardingFirstScreen() {
         <View style={styles.cardContent}>
           {/* Welcome Message */}
           <View style={styles.welcomeSection}>
-            <ThemedView style={styles.welcomeIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+            <ThemedView style={styles.welcomeIconContainer} type="dusked">
               <MaterialIcons name="person-add" size={32} color="#3b82f6" />
             </ThemedView>
-            <ThemedText style={styles.welcomeTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+            <ThemedText style={styles.welcomeTitle} type="whitened">
               Create Your Profile
             </ThemedText>
-            <ThemedText style={styles.welcomeSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+            <ThemedText style={styles.welcomeSubtitle} type="greyed">
               We'll use this information to customize your appointment preparation
             </ThemedText>
           </View>
@@ -69,7 +69,7 @@ export default function OnboardingFirstScreen() {
           {/* Form Fields */}
           <View style={styles.formFields}>
             <View style={styles.fieldGroup}>
-              <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
+              <ThemedText style={styles.fieldLabel} type="whitened">
                 First Name
               </ThemedText>
               <Textbox
@@ -80,7 +80,7 @@ export default function OnboardingFirstScreen() {
             </View>
 
             <View style={styles.fieldGroup}>
-              <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
+              <ThemedText style={styles.fieldLabel} type="whitened">
                 Last Name
               </ThemedText>
               <Textbox
@@ -102,7 +102,7 @@ export default function OnboardingFirstScreen() {
           </View>
         </TouchableOpacity>
 
-        <ThemedText style={styles.helpText} lightColor='#64748b' darkColor='#858585ff'>
+        <ThemedText style={styles.helpText} type="greyed">
           Your information is stored securely on your device
         </ThemedText>
       </View>

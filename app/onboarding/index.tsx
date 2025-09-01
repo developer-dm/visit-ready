@@ -15,11 +15,11 @@ export default function PrepInitialScreen() {
                         <Image source={require("@/assets/images/favicon.png")} style={styles.icon} />
                     </ThemedView>
 
-                    <ThemedText style={styles.appTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                    <ThemedText style={styles.appTitle} type="whitened">
                         Visit Ready
                     </ThemedText>
 
-                    <ThemedText style={styles.tagline} lightColor='#64748b' darkColor='#858585ff'>
+                    <ThemedText style={styles.tagline} type="greyed">
                         Make the most of every medical visit
                     </ThemedText>
                 </View>
@@ -27,42 +27,42 @@ export default function PrepInitialScreen() {
                 {/* Features Section */}
                 <View style={styles.featuresSection}>
                     <View style={styles.featureItem}>
-                        <ThemedView style={styles.featureIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                        <ThemedView style={styles.featureIconContainer} type="dusked">
                             <MaterialIcons name="assignment" size={24} color="#3b82f6" />
                         </ThemedView>
                         <View style={styles.featureContent}>
-                            <ThemedText style={styles.featureTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                            <ThemedText style={styles.featureTitle} type="whitened">
                                 Personalized Questions
                             </ThemedText>
-                            <ThemedText style={styles.featureDescription} lightColor='#64748b' darkColor='#858585ff'>
+                            <ThemedText style={styles.featureDescription} type="greyed">
                                 Get tailored questions for your doctor based on your concerns
                             </ThemedText>
                         </View>
                     </View>
 
                     <View style={styles.featureItem}>
-                        <ThemedView style={styles.featureIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                        <ThemedView style={styles.featureIconContainer} type="dusked">
                             <MaterialIcons name="history" size={24} color="#3b82f6" />
                         </ThemedView>
                         <View style={styles.featureContent}>
-                            <ThemedText style={styles.featureTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                            <ThemedText style={styles.featureTitle} type="whitened">
                                 Track Your Visits
                             </ThemedText>
-                            <ThemedText style={styles.featureDescription} lightColor='#64748b' darkColor='#858585ff'>
+                            <ThemedText style={styles.featureDescription} type="greyed">
                                 Keep a record of all your appointments and progress
                             </ThemedText>
                         </View>
                     </View>
 
                     <View style={styles.featureItem}>
-                        <ThemedView style={styles.featureIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                        <ThemedView style={styles.featureIconContainer} type="dusked">
                             <MaterialIcons name="lightbulb" size={24} color="#3b82f6" />
                         </ThemedView>
                         <View style={styles.featureContent}>
-                            <ThemedText style={styles.featureTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                            <ThemedText style={styles.featureTitle} type="whitened">
                                 Be Prepared
                             </ThemedText>
-                            <ThemedText style={styles.featureDescription} lightColor='#64748b' darkColor='#858585ff'>
+                            <ThemedText style={styles.featureDescription} type="greyed">
                                 Never forget important questions or concerns again
                             </ThemedText>
                         </View>
@@ -80,7 +80,7 @@ export default function PrepInitialScreen() {
                         </TouchableOpacity>
                     </Link>
 
-                    <ThemedText style={styles.ctaSubtext} lightColor='#64748b' darkColor='#858585ff'>
+                    <ThemedText style={styles.ctaSubtext} type="greyed">
                         Setup takes less than 2 minutes
                     </ThemedText>
                 </View>
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
         width: 28,
         height: 28,
         borderRadius: 14,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        backgroundColor: '#ffffff33',
         alignItems: 'center',
         justifyContent: 'center',
     },

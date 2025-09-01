@@ -2,29 +2,20 @@ import AppointmentCard from "@/components/AppointmentCard";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { getAppointments, removeData } from "@/utils/dataStore";
+import { useDataStore } from "@/utils/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
 import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function HistoryScreen() {
-    type Appointment = {
-        id: string;
-        appointmentType: string;
-        appointmentDate: Date;
-        provider: string;
-        mainConcern: string;
-    };
-
     const router = useRouter();
-    const [appointments, setAppointments] = useState<Record<string, Appointment> | null>(null);
+    const { appointments, resetAppointments } = useDataStore();
 
     const clearVisits = () => {
         Alert.alert('Clear Visits', 'Are you sure you want to clear all visits? This action CANNOT be reversed.', [
             {
                 text: 'Confirm',
-                onPress: () => { removeData("user:appointments"); refreshAppointments(); },
+                onPress: () => resetAppointments(),
                 style: "destructive",
             },
             {
@@ -34,15 +25,7 @@ export default function HistoryScreen() {
         ]);
     }
 
-    const refreshAppointments = async () => {
-        setAppointments(null)
-        const storedUser = await getAppointments();
-        if (storedUser) setAppointments(storedUser);
-    };
-
-    const expandAppointment = (id: string) => {
-        if (!appointments) return;
-        const appointment = Object.values(appointments).find(a => a.id === id);
+    const handleAppointmentView = (appointment: object) => {
         if (!appointment) return;
         router.push({
             pathname: "/appointment-view",
@@ -52,19 +35,17 @@ export default function HistoryScreen() {
         });
     };
 
-    useEffect(() => {
-        refreshAppointments();
-    }, []);
-
-    const appointmentCount = appointments ? Object.keys(appointments).length : 0;
+    const handleVisitPrep = () => {
+        router.push("/appointment-prep/modal")
+    };
 
     return (
         <>
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
                 {/* Header Section */}
                 <View style={styles.header}>
-                    <ThemedText style={styles.pageTitle} lightColor='#000000ff' darkColor='#ffffffff'>My Visits</ThemedText>
-                    <ThemedText style={styles.subtitle} lightColor='#64748b' darkColor='#858585ff'>
+                    <ThemedText style={styles.pageTitle} type="whitened">My Visits</ThemedText>
+                    <ThemedText style={styles.subtitle} type="greyed">
                         Track and review your appointment history
                     </ThemedText>
                 </View>
@@ -74,22 +55,22 @@ export default function HistoryScreen() {
                     <View style={styles.cardContent}>
                         <View style={styles.statsRow}>
                             <View style={styles.statItem}>
-                                <ThemedText style={styles.statNumber}>{appointmentCount}</ThemedText>
-                                <ThemedText style={styles.statLabel} lightColor='#64748b' darkColor='#858585ff'>
+                                <ThemedText style={styles.statNumber}>{Object.keys(appointments).length}</ThemedText>
+                                <ThemedText style={styles.statLabel} type="greyed">
                                     Total Visits
                                 </ThemedText>
                             </View>
                             <View style={styles.statDivider} />
-                            <TouchableOpacity style={styles.refreshContainer} onPress={() => refreshAppointments()}>
-                                <ThemedView style={styles.refreshIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                            <TouchableOpacity style={styles.addContainer} onPress={handleVisitPrep}>
+                                <ThemedView style={styles.addIconContainer} type="dusked">
                                     <MaterialIcons
                                         size={24}
-                                        name="refresh"
+                                        name="add"
                                         color="#3b82f6"
                                     />
                                 </ThemedView>
-                                <ThemedText style={styles.refreshText} lightColor='#64748b' darkColor='#858585ff'>
-                                    Refresh
+                                <ThemedText style={styles.addText} type="greyed">
+                                    Add Visit
                                 </ThemedText>
                             </TouchableOpacity>
                         </View>
@@ -98,7 +79,7 @@ export default function HistoryScreen() {
 
                 {/* Appointments Section */}
                 <View style={styles.appointmentsSection}>
-                    <ThemedText style={styles.sectionTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                    <ThemedText style={styles.sectionTitle} type="whitened">
                         Recent Appointments
                     </ThemedText>
 
@@ -109,11 +90,11 @@ export default function HistoryScreen() {
                                     return (
                                         <TouchableOpacity
                                             key={value.id}
-                                            onPress={() => expandAppointment(value.id)}
+                                            onPress={() => handleAppointmentView(value)}
                                         >
                                             <AppointmentCard
-                                                appointmentType={value.appointmentType}
-                                                appointmentDate={new Date(value.appointmentDate)}
+                                                appointmentType={value.appointmentType ? value.appointmentType : "other"}
+                                                appointmentDate={value.appointmentDate ? new Date(value.appointmentDate) : new Date()}
                                                 provider={value.provider}
                                                 mainConcern={value.mainConcern}
                                                 id={value.id}
@@ -124,17 +105,17 @@ export default function HistoryScreen() {
                             </ScrollView>
                         ) : (
                             <View style={styles.emptyState}>
-                                <ThemedView style={styles.emptyIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                                <ThemedView style={styles.emptyIconContainer} type="dusked">
                                     <MaterialIcons
                                         size={48}
                                         name="event-note"
                                         color="#94a3b8"
                                     />
                                 </ThemedView>
-                                <ThemedText style={styles.emptyTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                                <ThemedText style={styles.emptyTitle} type="whitened">
                                     No appointments yet
                                 </ThemedText>
-                                <ThemedText style={styles.emptySubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                                <ThemedText style={styles.emptySubtitle} type="greyed">
                                     Go to the dashboard to create your first appointment
                                 </ThemedText>
                             </View>
@@ -154,7 +135,7 @@ export default function HistoryScreen() {
 
                 {/* Disclaimer */}
                 <View style={styles.disclaimerSection}>
-                    <ThemedText style={styles.disclaimer} lightColor='#64748b' darkColor='#858585ff'>
+                    <ThemedText style={styles.disclaimer} type="greyed">
                         Disclaimer: This service does not schedule appointments for you; it is intended only for tracking purposes.
                     </ThemedText>
                 </View>
@@ -198,7 +179,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.1,
         shadowRadius: 20,
-        elevation: 8,
     },
     cardContent: {
         padding: 24,
@@ -229,11 +209,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#e2e8f0',
         marginHorizontal: 20,
     },
-    refreshContainer: {
+    addContainer: {
         alignItems: 'center',
         flex: 1,
     },
-    refreshIconContainer: {
+    addIconContainer: {
         width: 48,
         height: 48,
         borderRadius: 24,
@@ -241,7 +221,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginBottom: 8,
     },
-    refreshText: {
+    addText: {
         fontSize: 14,
         fontWeight: '500',
     },

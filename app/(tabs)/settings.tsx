@@ -5,26 +5,24 @@ import { ThemedView } from "@/components/ThemedView";
 import { logOut } from "@/utils/auth";
 import { useAuthStore } from "@/utils/authStore";
 import DataFormatterService from "@/utils/dataFormatterService";
-import { getData, removeData } from "@/utils/dataStore";
+import { useDataStore } from "@/utils/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useEffect, useState } from "react";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 
 export default function SettingsScreen() {
-  const { resetOnboarding } = useAuthStore();
-  const [userSignup, setUserSignup] = useState(null);
-
   const labels: Record<string, string> = {
     firstName: "First Name",
     lastName: "Last Name",
     DOB: "Date of Birth",
     sex: "Sex",
-    acceptedTerms: "Accepted Terms",
   };
 
+  const { resetOnboarding } = useAuthStore();
+  const { signup, resetAppointments, resetSignup } = useDataStore();
+
   const clearData = () => {
-    removeData("user:signup");
-    removeData("user:appointments");
+    resetAppointments();
+    resetSignup();
     resetOnboarding();
     logOut();
   };
@@ -57,14 +55,7 @@ export default function SettingsScreen() {
     ]);
   };
 
-  useEffect(() => {
-    (async () => {
-      const storedUser = await getData("user:signup");
-      if (storedUser) setUserSignup(storedUser);
-    })();
-  }, []);
-
-  const userDataEntries = Object.entries(userSignup ? userSignup : {}).filter(([key, value]) => {
+  const userDataEntries = Object.entries(signup ? signup : {}).filter(([key, value]) => {
     return typeof value !== "function" && key !== "acceptedTerms";
   });
 
@@ -73,8 +64,8 @@ export default function SettingsScreen() {
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
         {/* Header Section */}
         <View style={styles.header}>
-          <ThemedText style={styles.pageTitle} lightColor='#000000ff' darkColor='#ffffffff'>Settings</ThemedText>
-          <ThemedText style={styles.subtitle} lightColor='#64748b' darkColor='#858585ff'>
+          <ThemedText style={styles.pageTitle} type="whitened">Settings</ThemedText>
+          <ThemedText style={styles.subtitle} type="greyed">
             Manage your account and preferences
           </ThemedText>
         </View>
@@ -83,7 +74,7 @@ export default function SettingsScreen() {
         <ThemedView style={styles.profileCard}>
           <View style={styles.cardContent}>
             <View style={styles.cardHeader}>
-              <ThemedView style={styles.profileIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+              <ThemedView style={styles.profileIconContainer} type="dusked">
                 <MaterialIcons
                   size={32}
                   name="person"
@@ -91,35 +82,32 @@ export default function SettingsScreen() {
                 />
               </ThemedView>
               <View style={styles.profileInfo}>
-                <ThemedText style={styles.cardTitle} lightColor='#1e293b' darkColor='#ffffffff'>Profile Information</ThemedText>
-                <ThemedText style={styles.cardSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                <ThemedText style={styles.cardTitle} type="whitened">Profile Information</ThemedText>
+                <ThemedText style={styles.cardSubtitle} type="greyed">
                   Your personal details
                 </ThemedText>
               </View>
             </View>
 
             <View style={styles.profileDetails}>
-              {userDataEntries.length > 0 ? (
-                userDataEntries.map(([key, value]) => {
-                  let formattedValue = value;
-                  if (key === "DOB" && typeof value === 'string') {
-                    formattedValue = new Date(value);
-                  }
-
-                  return (
-                    <ThemedView key={key} style={styles.profileItem}>
-                      <ThemedText style={styles.profileLabel} lightColor='#64748b' darkColor='#858585ff'>
-                        {labels[key] || key}
-                      </ThemedText>
-                      <ThemedText style={styles.profileValue} lightColor='#1e293b' darkColor='#ffffffff'>
-                        {DataFormatterService.toReadableString(formattedValue)}
-                      </ThemedText>
-                    </ThemedView>
-                  );
-                })
+              {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
+                if (key === "DOB" && typeof value === 'string') {
+                  value = new Date(value);
+                }
+                return (
+                  <ThemedView key={key} style={styles.profileItem}>
+                    <ThemedText style={styles.profileLabel} type="greyed">
+                      {labels[key] || key}
+                    </ThemedText>
+                    <ThemedText style={styles.profileValue} type="whitened">
+                      {DataFormatterService.toReadableString(value)}
+                    </ThemedText>
+                  </ThemedView>
+                );
+              })
               ) : (
                 <View style={styles.noDataContainer}>
-                  <ThemedText style={styles.noDataText} lightColor='#64748b' darkColor='#858585ff'>
+                  <ThemedText style={styles.noDataText} type="greyed">
                     No profile information available
                   </ThemedText>
                 </View>
@@ -130,12 +118,12 @@ export default function SettingsScreen() {
 
         {/* Quick Actions Section */}
         <View style={styles.actionsSection}>
-          <ThemedText style={styles.sectionTitle} lightColor='#1e293b' darkColor='#ffffffff'>Account Actions</ThemedText>
+          <ThemedText style={styles.sectionTitle} type="whitened">Account Actions</ThemedText>
 
           <View style={styles.actionGrid}>
             {/* Logout Action */}
-            <Button style={styles.actionCard} lightBorder='#d1d1d1ff' darkBorder='#393939ff' onPress={handleLogout}>
-              <ThemedView style={styles.actionIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+            <Button style={styles.actionCard} type="bordered" onPress={handleLogout}>
+              <ThemedView style={styles.actionIconContainer} type="dusked">
                 <MaterialIcons
                   size={24}
                   name="logout"
@@ -143,8 +131,8 @@ export default function SettingsScreen() {
                 />
               </ThemedView>
               <View style={styles.actionContent}>
-                <ThemedText style={styles.actionTitle} lightColor='#1e293b' darkColor='#ffffffff'>Log Out</ThemedText>
-                <ThemedText style={styles.actionSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                <ThemedText style={styles.actionTitle} type="whitened">Log Out</ThemedText>
+                <ThemedText style={styles.actionSubtitle} type="greyed">
                   Sign out of your account
                 </ThemedText>
               </View>
@@ -166,7 +154,7 @@ export default function SettingsScreen() {
               </ThemedView>
               <View style={styles.actionContent}>
                 <ThemedText style={[styles.actionTitle, styles.dangerTitle]}>Delete Account</ThemedText>
-                <ThemedText style={styles.actionSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                <ThemedText style={styles.actionSubtitle} type="greyed">
                   Permanently remove your account
                 </ThemedText>
               </View>
@@ -182,8 +170,8 @@ export default function SettingsScreen() {
         {/* App Information Section */}
         <ThemedView style={styles.infoCard}>
           <View style={styles.cardContent}>
-            <ThemedText style={styles.infoTitle} lightColor='#1e293b' darkColor='#ffffffff'>About Visit Ready</ThemedText>
-            <ThemedText style={styles.infoText} lightColor='#858585ff' darkColor='#858585ff'>
+            <ThemedText style={styles.infoTitle} type="whitened">About Visit Ready</ThemedText>
+            <ThemedText style={styles.infoText} type="greyed">
               Your personal appointment preparation assistant. Track your visits and get ready for your next doctor's appointment with personalized questions.
             </ThemedText>
           </View>
@@ -228,7 +216,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 20,
-    elevation: 8,
   },
   cardContent: {
     padding: 24,
@@ -308,12 +295,11 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.08,
     shadowRadius: 12,
-    elevation: 4,
-    borderWidth: 1,
   },
   dangerCard: {
     backgroundColor: '#fef2f2',
     borderColor: '#ef4444',
+    borderWidth: 1,
   },
   actionIconContainer: {
     width: 40,
@@ -358,7 +344,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.08,
     shadowRadius: 12,
-    elevation: 4,
   },
   infoTitle: {
     fontSize: 16,

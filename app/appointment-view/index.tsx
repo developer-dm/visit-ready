@@ -44,13 +44,13 @@ export default function PrepFinalScreen() {
                     <View style={styles.cardContent}>
                         {/* Info Section */}
                         <View style={styles.infoSection}>
-                            <ThemedView style={styles.infoIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                            <ThemedView style={styles.infoIconContainer} type="dusked">
                                 <MaterialIcons name={appointmentType ? getAppointmentIcon(appointmentType) : "event-note"} size={24} color="#3b82f6" />
                             </ThemedView>
-                            <ThemedText style={styles.infoTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                            <ThemedText style={styles.infoTitle} type="whitened">
                                 Your Visit Information
                             </ThemedText>
-                            <ThemedText style={styles.infoSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                            <ThemedText style={styles.infoSubtitle} type="greyed">
                                 Review the details you've provided below
                             </ThemedText>
                         </View>
@@ -66,10 +66,10 @@ export default function PrepFinalScreen() {
 
                                     return (
                                         <ThemedView key={key} style={styles.detailItem}>
-                                            <ThemedText style={styles.detailLabel} lightColor='#64748b' darkColor='#858585ff'>
+                                            <ThemedText style={styles.detailLabel} type="greyed">
                                                 {labels[key] || key}
                                             </ThemedText>
-                                            <ThemedText style={styles.detailValue} lightColor='#1e293b' darkColor='#ffffffff'>
+                                            <ThemedText style={styles.detailValue} type="whitened">
                                                 {DataFormatterService.toReadableString(formattedValue)}
                                             </ThemedText>
                                         </ThemedView>
@@ -77,7 +77,7 @@ export default function PrepFinalScreen() {
                                 })
                             ) : (
                                 <View style={styles.noDataContainer}>
-                                    <ThemedText style={styles.noDataText} lightColor='#64748b' darkColor='#858585ff'>
+                                    <ThemedText style={styles.noDataText} type="greyed">
                                         No information available
                                     </ThemedText>
                                 </View>

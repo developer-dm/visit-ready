@@ -38,11 +38,11 @@ export default function AppointmentCard({
     id,
 }: AppointmentCardProps) {
     return (
-        <ThemedView style={styles.card} lightBorder='#d1d1d1ff' darkBorder='#393939ff'>
+        <ThemedView style={styles.card} type="bordered">
             {/* Header Section */}
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
-                    <ThemedView style={styles.iconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                    <ThemedView style={styles.iconContainer} type="dusked">
                         <MaterialIcons
                             name={getAppointmentIcon(appointmentType)}
                             size={20}
@@ -50,10 +50,10 @@ export default function AppointmentCard({
                         />
                     </ThemedView>
                     <View style={styles.headerInfo}>
-                        <ThemedText style={styles.appointmentType} lightColor='#1e293b' darkColor='#ffffffff'>
+                        <ThemedText style={styles.appointmentType} type="whitened">
                             {DataFormatterService.toReadableString(appointmentType)}
                         </ThemedText>
-                        <ThemedText style={styles.dateText} lightColor='#64748b' darkColor='#858585ff'>
+                        <ThemedText style={styles.dateText} type="greyed">
                             {DataFormatterService.toReadableString(appointmentDate)}
                         </ThemedText>
                     </View>
@@ -71,10 +71,10 @@ export default function AppointmentCard({
                     <View style={styles.detailItem}>
                         <MaterialIcons name="local-hospital" size={16} color="#64748b" style={styles.detailIcon} />
                         <View>
-                            <ThemedText style={styles.detailLabel} lightColor='#64748b' darkColor='#858585ff'>
+                            <ThemedText style={styles.detailLabel} type="greyed">
                                 Provider
                             </ThemedText>
-                            <ThemedText style={styles.detailValue} lightColor='#1e293b' darkColor='#ffffffff'>
+                            <ThemedText style={styles.detailValue} type="whitened">
                                 {DataFormatterService.toReadableString(provider)}
                             </ThemedText>
                         </View>
@@ -85,10 +85,10 @@ export default function AppointmentCard({
                     <View style={styles.detailItem}>
                         <MaterialIcons name="description" size={16} color="#64748b" style={styles.detailIcon} />
                         <View style={styles.concernContainer}>
-                            <ThemedText style={styles.detailLabel} lightColor='#64748b' darkColor='#858585ff'>
+                            <ThemedText style={styles.detailLabel} type="greyed">
                                 Main Concern
                             </ThemedText>
-                            <ThemedText style={styles.detailValue} lightColor='#1e293b' darkColor='#ffffffff' numberOfLines={2}>
+                            <ThemedText style={styles.detailValue} type="whitened" numberOfLines={2}>
                                 {DataFormatterService.toReadableString(mainConcern)}
                             </ThemedText>
                         </View>
@@ -98,7 +98,7 @@ export default function AppointmentCard({
 
             {/* Footer */}
             <View style={styles.footer}>
-                <ThemedText style={styles.idText} lightColor='#94a3b8' darkColor='#565656ff'>
+                <ThemedText style={styles.idText} type="dusked">
                     ID: {DataFormatterService.toReadableString(id)}
                 </ThemedText>
             </View>
@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.08,
         shadowRadius: 12,
-        borderWidth: 1,
     },
     header: {
         flexDirection: 'row',

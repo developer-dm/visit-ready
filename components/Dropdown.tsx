@@ -22,7 +22,7 @@ export function Dropdown({
 }: DropdownProps) {
     const placeholderColor = useThemeColor({}, "placeholderText");
     const selectionColor = useThemeColor({}, "text")
-    const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, "background");
+    const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, "card");
     const borderColor = useThemeColor({ light: lightBorder, dark: darkBorder }, "border");
     const iconColor = useThemeColor({}, "icon")
 

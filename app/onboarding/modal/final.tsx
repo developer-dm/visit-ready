@@ -1,8 +1,9 @@
+import { Button } from "@/components/Button";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useAuthStore } from "@/utils/authStore";
 import DataFormatterService from "@/utils/dataFormatterService";
-import { saveData } from "@/utils/dataStore";
+import { useDataStore } from "@/utils/dataStore";
 import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Checkbox from "expo-checkbox";
@@ -10,10 +11,6 @@ import { useRouter } from "expo-router";
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function OnboardingFinalScreen() {
-  const router = useRouter();
-  const { completeOnboarding } = useAuthStore();
-  const { signup, clearUserContext } = useUser();
-
   const labels: Record<string, string> = {
     firstName: "First Name",
     lastName: "Last Name",
@@ -21,10 +18,15 @@ export default function OnboardingFinalScreen() {
     sex: "Sex",
     acceptedTerms: "Accepted Terms",
   };
+  
+  const router = useRouter();
+  const { completeOnboarding } = useAuthStore();
+  const { addSignupData } = useDataStore();
+  const { signup, clearUserContext } = useUser();
 
   const handleNext = () => {
     if (signup.acceptedTerms) {
-      saveData('user:signup', signup);
+      addSignupData(signup);
       completeOnboarding();
       clearUserContext();
     } else {
@@ -55,16 +57,16 @@ export default function OnboardingFinalScreen() {
               <View style={styles.progressFill} />
               <View style={styles.progressFill} />
             </View>
-            <ThemedText style={styles.progressText} lightColor='#64748b' darkColor='#858585ff'>
+            <ThemedText style={styles.progressText} type="greyed">
               Step 3 of 3
             </ThemedText>
           </View>
 
-          <ThemedText style={styles.pageTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+          <ThemedText style={styles.pageTitle} type="whitened">
             Review & Confirm
           </ThemedText>
 
-          <ThemedText style={styles.pageSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+          <ThemedText style={styles.pageSubtitle} type="greyed">
             Please review your information and accept the terms to continue
           </ThemedText>
         </View>
@@ -74,13 +76,13 @@ export default function OnboardingFinalScreen() {
           <View style={styles.cardContent}>
             {/* Info Section */}
             <View style={styles.infoSection}>
-              <ThemedView style={styles.infoIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+              <ThemedView style={styles.infoIconContainer} type="dusked">
                 <MaterialIcons name="check-circle" size={24} color="#10b981" />
               </ThemedView>
-              <ThemedText style={styles.infoTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+              <ThemedText style={styles.infoTitle} type="whitened">
                 Your Information
               </ThemedText>
-              <ThemedText style={styles.infoSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+              <ThemedText style={styles.infoSubtitle} type="greyed">
                 Review the details you've provided below
               </ThemedText>
             </View>
@@ -89,25 +91,23 @@ export default function OnboardingFinalScreen() {
             <View style={styles.detailsSection}>
               {userDataEntries.length > 0 ? (
                 userDataEntries.map(([key, value]) => {
-                  let formattedValue = value;
                   if (key === "DOB" && typeof value === 'string') {
-                    formattedValue = new Date(value);
+                    value = new Date(value);
                   }
-
                   return (
                     <ThemedView key={key} style={styles.detailItem}>
-                      <ThemedText style={styles.detailLabel} lightColor='#64748b' darkColor='#858585ff'>
+                      <ThemedText style={styles.detailLabel} type="greyed">
                         {labels[key] || key}
                       </ThemedText>
-                      <ThemedText style={styles.detailValue} lightColor='#1e293b' darkColor='#ffffffff'>
-                        {DataFormatterService.toReadableString(formattedValue)}
+                      <ThemedText style={styles.detailValue} type="whitened">
+                        {DataFormatterService.toReadableString(value)}
                       </ThemedText>
                     </ThemedView>
                   );
                 })
               ) : (
                 <View style={styles.noDataContainer}>
-                  <ThemedText style={styles.noDataText} lightColor='#64748b' darkColor='#858585ff'>
+                  <ThemedText style={styles.noDataText} type="greyed">
                     No information available
                   </ThemedText>
                 </View>
@@ -116,31 +116,32 @@ export default function OnboardingFinalScreen() {
 
             {/* Terms Section */}
             <View style={styles.termsSection}>
-              <ThemedView style={styles.termsContainer} lightColor='#f8fafc' darkColor='#1a1a1aff'>
-                <TouchableOpacity
-                  style={styles.checkboxRow}
-                  onPress={() => signup.setAcceptedTerms(!signup.acceptedTerms)}
-                  activeOpacity={0.7}
-                >
-                  <Checkbox
-                    value={signup.acceptedTerms}
-                    onValueChange={signup.setAcceptedTerms}
-                    color={signup.acceptedTerms ? "#3b82f6" : undefined}
-                  />
-                  <View style={styles.termsTextContainer}>
-                    <ThemedText style={styles.termsText} lightColor='#475569' darkColor='#e2e8f0'>
-                      I have read and agree to the{" "}
-                      <ThemedText style={styles.termsLink} lightColor='#3b82f6' darkColor='#60a5fa'>
-                        Terms and Conditions
-                      </ThemedText>
-                      {" "}and{" "}
-                      <ThemedText style={styles.termsLink} lightColor='#3b82f6' darkColor='#60a5fa'>
-                        Privacy Policy
-                      </ThemedText>
+              <Button
+                type="bordered"
+                lightColor="#f8fafc"
+                darkColor="#1a1a1aff"
+                style={styles.termsContainer}
+                onPress={() => signup.setAcceptedTerms(!signup.acceptedTerms)}
+                activeOpacity={0.7}
+              >
+                <Checkbox
+                  value={signup.acceptedTerms}
+                  onValueChange={signup.setAcceptedTerms}
+                  color={signup.acceptedTerms ? "#3b82f6" : undefined}
+                />
+                <View style={styles.termsTextContainer}>
+                  <ThemedText style={styles.termsText} type="whitened">
+                    I have read and agree to the{" "}
+                    <ThemedText style={styles.termsLink} lightColor='#3b82f6' darkColor='#60a5fa'>
+                      Terms and Conditions
+                    </ThemedText >
+                    {" "}and{" "}
+                    <ThemedText style={styles.termsLink} lightColor='#3b82f6' darkColor='#60a5fa'>
+                      Privacy Policy
                     </ThemedText>
-                  </View>
-                </TouchableOpacity>
-              </ThemedView>
+                  </ThemedText>
+                </View>
+              </Button>
             </View>
           </View>
         </ThemedView>
@@ -171,7 +172,7 @@ export default function OnboardingFinalScreen() {
             </TouchableOpacity>
           </View>
 
-          <ThemedText style={styles.privacyText} lightColor='#64748b' darkColor='#858585ff'>
+          <ThemedText style={styles.privacyText} type="greyed">
             Your information is stored securely on your device
           </ThemedText>
         </View>
@@ -305,8 +306,6 @@ const styles = StyleSheet.create({
   termsContainer: {
     borderRadius: 16,
     borderWidth: 1,
-  },
-  checkboxRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     padding: 20,

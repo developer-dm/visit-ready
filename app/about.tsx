@@ -48,13 +48,13 @@ export default function AboutScreen() {
       >
         {/* Header Section */}
         <View style={styles.header}>
-          <ThemedView style={styles.logoContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+          <ThemedView style={styles.logoContainer} type="dusked">
             <Image source={require("@/assets/images/favicon.png")} style={styles.logo} />
           </ThemedView>
-          <ThemedText style={styles.appTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+          <ThemedText style={styles.appTitle} type="whitened">
             Visit Ready
           </ThemedText>
-          <ThemedText style={styles.version} lightColor='#64748b' darkColor='#858585ff'>
+          <ThemedText style={styles.version} type="greyed">
             Version {expo.version}
           </ThemedText>
         </View>
@@ -63,13 +63,13 @@ export default function AboutScreen() {
         <ThemedView style={styles.aboutCard}>
           <View style={styles.cardContent}>
             <View style={styles.aboutSection}>
-              <ThemedView style={styles.aboutIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+              <ThemedView style={styles.aboutIconContainer} type="dusked">
                 <MaterialIcons name="medical-services" size={24} color="#3b82f6" />
               </ThemedView>
-              <ThemedText style={styles.sectionTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+              <ThemedText style={styles.sectionTitle} type="whitened">
                 What is Visit Ready?
               </ThemedText>
-              <ThemedText style={styles.description} lightColor='#64748b' darkColor='#858585ff'>
+              <ThemedText style={styles.description} type="greyed">
                 Visit Ready is a mobile app designed to help you prepare for medical appointments ahead of visits.
                 Make every healthcare interaction more productive and meaningful.
               </ThemedText>
@@ -81,13 +81,13 @@ export default function AboutScreen() {
         <ThemedView style={styles.featuresCard}>
           <View style={styles.cardContent}>
             <View style={styles.featuresHeader}>
-              <ThemedView style={styles.featuresIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+              <ThemedView style={styles.featuresIconContainer} type="dusked">
                 <MaterialIcons name="stars" size={24} color="#10b981" />
               </ThemedView>
-              <ThemedText style={styles.sectionTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+              <ThemedText style={styles.sectionTitle} type="whitened">
                 Key Features
               </ThemedText>
-              <ThemedText style={styles.featuresSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+              <ThemedText style={styles.featuresSubtitle} type="greyed">
                 Everything you need to prepare for your medical visits
               </ThemedText>
             </View>
@@ -95,14 +95,14 @@ export default function AboutScreen() {
             <View style={styles.featuresList}>
               {features.map((feature, index) => (
                 <View key={index} style={styles.featureItem}>
-                  <ThemedView style={styles.featureIconContainer} lightColor='#f8fafc' darkColor='#1a1a1aff'>
+                  <ThemedView style={styles.featureIconContainer} type="dusked">
                     <MaterialIcons name={feature.icon as any} size={20} color="#3b82f6" />
                   </ThemedView>
                   <View style={styles.featureContent}>
-                    <ThemedText style={styles.featureTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                    <ThemedText style={styles.featureTitle} type="whitened">
                       {feature.title}
                     </ThemedText>
-                    <ThemedText style={styles.featureDescription} lightColor='#64748b' darkColor='#858585ff'>
+                    <ThemedText style={styles.featureDescription} type="greyed">
                       {feature.description}
                     </ThemedText>
                   </View>
@@ -116,16 +116,16 @@ export default function AboutScreen() {
         <ThemedView style={styles.creditsCard}>
           <View style={styles.cardContent}>
             <View style={styles.creditsSection}>
-              <ThemedView style={styles.creditsIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+              <ThemedView style={styles.creditsIconContainer} type="dusked">
                 <MaterialIcons name="code" size={24} color="#8b5cf6" />
               </ThemedView>
-              <ThemedText style={styles.sectionTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+              <ThemedText style={styles.sectionTitle} type="whitened">
                 Development
               </ThemedText>
-              <ThemedText style={styles.creditsText} lightColor='#64748b' darkColor='#858585ff'>
+              <ThemedText style={styles.creditsText} type="greyed">
                 Developed by Dakota
               </ThemedText>
-              <ThemedText style={styles.creditsSubtext} lightColor='#94a3b8' darkColor='#6b7280'>
+              <ThemedText style={styles.creditsSubtext} type="greyed">
                 Built to improve healthcare experiences for everyone
               </ThemedText>
             </View>
@@ -134,10 +134,10 @@ export default function AboutScreen() {
 
         {/* Contact Section */}
         <View style={styles.contactSection}>
-          <ThemedText style={styles.contactTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+          <ThemedText style={styles.contactTitle} type="whitened">
             Questions or Feedback?
           </ThemedText>
-          <ThemedText style={styles.contactText} lightColor='#64748b' darkColor='#858585ff'>
+          <ThemedText style={styles.contactText} type="greyed">
             We'd love to hear from you to make Visit Ready even better.
           </ThemedText>
         </View>

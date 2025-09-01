@@ -52,16 +52,16 @@ export default function OnboardingSecondScreen() {
                                 <View style={styles.progressFill} />
                                 <View style={styles.progressEmpty} />
                             </View>
-                            <ThemedText style={styles.progressText} lightColor='#64748b' darkColor='#858585ff'>
+                            <ThemedText style={styles.progressText} type="greyed">
                                 Step 2 of 3
                             </ThemedText>
                         </View>
 
-                        <ThemedText style={styles.pageTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                        <ThemedText style={styles.pageTitle} type="whitened">
                             Personal Details
                         </ThemedText>
 
-                        <ThemedText style={styles.pageSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                        <ThemedText style={styles.pageSubtitle} type="greyed">
                             This helps us provide more personalized health insights
                         </ThemedText>
                     </View>
@@ -71,13 +71,13 @@ export default function OnboardingSecondScreen() {
                         <View style={styles.cardContent}>
                             {/* Info Section */}
                             <View style={styles.infoSection}>
-                                <ThemedView style={styles.infoIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                                <ThemedView style={styles.infoIconContainer} type="dusked">
                                     <MaterialIcons name="info" size={24} color="#3b82f6" />
                                 </ThemedView>
-                                <ThemedText style={styles.infoTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                                <ThemedText style={styles.infoTitle} type="whitened">
                                     Demographic Information
                                 </ThemedText>
-                                <ThemedText style={styles.infoSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                                <ThemedText style={styles.infoSubtitle} type="greyed">
                                     Age and biological sex help us customize health recommendations
                                 </ThemedText>
                             </View>
@@ -85,10 +85,10 @@ export default function OnboardingSecondScreen() {
                             {/* Form Fields */}
                             <View style={styles.formFields}>
                                 <View style={styles.fieldGroup}>
-                                    <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
+                                    <ThemedText style={styles.fieldLabel} type="whitened">
                                         Date of Birth
                                     </ThemedText>
-                                    <ThemedText style={styles.fieldHint} lightColor='#64748b' darkColor='#858585ff'>
+                                    <ThemedText style={styles.fieldHint} type="greyed">
                                         Used to calculate age-appropriate health recommendations
                                     </ThemedText>
                                     <DatePicker
@@ -100,10 +100,10 @@ export default function OnboardingSecondScreen() {
                                 </View>
 
                                 <View style={styles.fieldGroup}>
-                                    <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
+                                    <ThemedText style={styles.fieldLabel} type="whitened">
                                         Sex at Birth
                                     </ThemedText>
-                                    <ThemedText style={styles.fieldHint} lightColor='#64748b' darkColor='#858585ff'>
+                                    <ThemedText style={styles.fieldHint} type="greyed">
                                         Helps determine relevant health screening guidelines
                                     </ThemedText>
                                     <Dropdown
@@ -136,7 +136,7 @@ export default function OnboardingSecondScreen() {
                             </TouchableOpacity>
                         </View>
 
-                        <ThemedText style={styles.privacyText} lightColor='#64748b' darkColor='#858585ff'>
+                        <ThemedText style={styles.privacyText} type="greyed">
                             Your information is stored securely on your device
                         </ThemedText>
                     </View>

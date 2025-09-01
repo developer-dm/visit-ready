@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 export default function VipScreen() {
   return (
     <View style={styles.container}>
-      <ThemedText type="title">
+      <ThemedText type="whitened">
         VIP Screen
       </ThemedText>
     </View>

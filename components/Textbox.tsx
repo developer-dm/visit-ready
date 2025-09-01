@@ -1,5 +1,3 @@
-//Adds custom border/inside colors
-
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { StyleSheet, TextInput, type TextInputProps } from "react-native";
 
@@ -20,8 +18,9 @@ export function Textbox({
     type = "default",
     ...rest
 }: TextboxProps) {
+    const placeholderColor = useThemeColor({}, "placeholderText");
     const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
-    const borderColor = useThemeColor({ light: lightBorder, dark: darkBorder }, "icon");
+    const borderColor = useThemeColor({ light: lightBorder, dark: darkBorder }, "border");
 
     return (
         <TextInput
@@ -30,6 +29,7 @@ export function Textbox({
                 type === "default" ? styles.default : undefined,
                 style,
             ]}
+            placeholderTextColor={placeholderColor}
             {...rest}
         />
     );

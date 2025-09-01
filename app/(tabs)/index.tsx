@@ -2,14 +2,16 @@ import { Button } from '@/components/Button';
 import { Footer } from '@/components/Footer';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useDataStore } from '@/utils/dataStore';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from 'expo-router';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function DashboardScreen() {
-  const router = useRouter()
+  const router = useRouter();
+  const { signup, appointments } = useDataStore();
 
-  const handlePrepForVisit = () => {
+  const handleVisitPrep = () => {
     router.push("/appointment-prep/modal")
   };
 
@@ -23,22 +25,26 @@ export default function DashboardScreen() {
 
   return (
     <>
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header Section */}
         <View style={styles.header}>
-          <ThemedText style={styles.welcomeText} lightColor='#64748b' darkColor='#858585ff'>Welcome back</ThemedText>
-          <ThemedText style={styles.appTitle} lightColor='#000000ff' darkColor='#ffffffff'>Visit Ready</ThemedText>
-          <ThemedText style={styles.subtitle} lightColor='#64748b' darkColor='#858585ff'>Get ready for your next appointment</ThemedText>
+          <ThemedText style={styles.welcomeText} type="greyed">Welcome back,</ThemedText>
+          <ThemedText style={styles.appTitle} type="whitened">{signup?.firstName ?? "Visit Ready"}</ThemedText>
+          <ThemedText style={styles.subtitle} type="greyed">Get ready for your next appointment</ThemedText>
         </View>
 
         {/* Main Action Card */}
         <ThemedView style={styles.mainCard}>
           <View style={styles.cardContent}>
-            <ThemedText style={styles.cardTitle} lightColor='#1e293b' darkColor='#ffffffff'>Ready for Your Visit?</ThemedText>
-            <ThemedText style={styles.cardSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+            <ThemedText style={styles.cardTitle} type="whitened">Ready for Your Visit?</ThemedText>
+            <ThemedText style={styles.cardSubtitle} type="greyed">
               Fill out a 5-minute form to get personalized questions for your doctor
             </ThemedText>
-            <TouchableOpacity style={styles.primaryButton} onPress={handlePrepForVisit}>
+            <TouchableOpacity style={styles.primaryButton} onPress={handleVisitPrep}>
               <Text style={styles.primaryButtonText}>Prep for Visit</Text>
               <View style={styles.buttonIcon}>
                 <Text style={styles.iconText}>→</Text>
@@ -53,29 +59,29 @@ export default function DashboardScreen() {
 
           <View style={styles.actionGrid}>
             {/* History Card */}
-            <Button style={styles.actionCard} onPress={handleHistory} lightBorder='#d1d1d1ff' darkBorder='#393939ff'>
-              <ThemedView style={styles.actionIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+            <Button style={styles.actionCard} onPress={handleHistory} type="bordered">
+              <ThemedView style={styles.actionIconContainer} type="dusked">
                 <MaterialIcons
                   size={28}
                   name="history"
                   color="#3b82f6"
                 />
               </ThemedView>
-              <ThemedText style={styles.actionTitle} lightColor='#1e293b' darkColor='#ffffffff'>History</ThemedText>
-              <ThemedText style={styles.actionSubtitle} lightColor='#64748b' darkColor='#858585ff'>View past visits</ThemedText>
+              <ThemedText style={styles.actionTitle} type="whitened">History</ThemedText>
+              <ThemedText style={styles.actionSubtitle} type="greyed">View past visits</ThemedText>
             </Button>
 
             {/* Settings Card */}
-            <Button style={styles.actionCard} onPress={handleSettings} lightBorder='#d1d1d1ff' darkBorder='#393939ff'>
-              <ThemedView style={styles.actionIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+            <Button style={styles.actionCard} onPress={handleSettings} type="bordered">
+              <ThemedView style={styles.actionIconContainer} type="dusked">
                 <MaterialIcons
                   size={28}
                   name="settings"
                   color="#3b82f6"
                 />
               </ThemedView>
-              <ThemedText style={styles.actionTitle} lightColor='#1e293b' darkColor='#ffffffff'>Settings</ThemedText>
-              <ThemedText style={styles.actionSubtitle} lightColor='#64748b' darkColor='#858585ff'>App preferences</ThemedText>
+              <ThemedText style={styles.actionTitle} type="whitened">Settings</ThemedText>
+              <ThemedText style={styles.actionSubtitle} type="greyed">App preferences</ThemedText>
             </Button>
           </View>
         </View>
@@ -85,16 +91,12 @@ export default function DashboardScreen() {
           <ThemedText style={styles.sectionTitle}>Your Progress</ThemedText>
           <View style={styles.statsGrid}>
             <ThemedView style={styles.statCard}>
-              <ThemedText style={styles.statNumber}>x</ThemedText>
-              <ThemedText style={styles.statLabel} lightColor='#64748b' darkColor='#ffffffff'>Visits This Month</ThemedText>
-            </ThemedView>
-            <ThemedView style={styles.statCard}>
-              <ThemedText style={styles.statNumber}>x</ThemedText>
-              <ThemedText style={styles.statLabel} lightColor='#64748b' darkColor='#ffffffff'>Total Visits</ThemedText>
+              <ThemedText style={styles.statNumber}>{Object.keys(appointments).length}</ThemedText>
+              <ThemedText style={styles.statLabel} type="greyed">Total Visits</ThemedText>
             </ThemedView>
           </View>
         </View>
-      </ScrollView>
+      </ScrollView >
       <Footer />
     </>
   );
@@ -111,7 +113,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 40,
     paddingBottom: 30,
-    backgroundColor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   },
   welcomeText: {
     fontSize: 16,
@@ -142,7 +143,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 20,
-    elevation: 8,
   },
   cardContent: {
     padding: 24,
@@ -172,7 +172,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 12,
-    elevation: 6,
   },
   primaryButtonText: {
     fontSize: 18,
@@ -184,7 +183,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: '#ffffff33',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -220,7 +219,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.08,
     shadowRadius: 12,
-    elevation: 4,
   },
   actionIconContainer: {
     width: 48,
@@ -261,7 +259,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.08,
     shadowRadius: 12,
-    elevation: 4,
   },
   statNumber: {
     fontSize: 28,

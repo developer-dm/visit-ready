@@ -1,3 +1,4 @@
+import * as Crypto from "expo-crypto";
 import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
 
 //-------------------- TYPES --------------------
@@ -15,6 +16,8 @@ type SignupContextType = {
 };
 
 type PrepContextType = {
+    id: string;
+    setId: (id: string) => void;
     appointmentType: string | null;
     setAppointmentType: Dispatch<SetStateAction<string | null>>;
     appointmentDate: Date | null;
@@ -54,6 +57,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [acceptedTerms, setAcceptedTerms] = useState(false);
 
     //prep state
+    const [id, setId] = useState(Crypto.randomUUID());
     const [appointmentType, setAppointmentType] = useState<string | null>(null);
     const [appointmentDate, setAppointmentDate] = useState<Date | null>(null);
     const [provider, setProvider] = useState("");
@@ -73,6 +77,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setAcceptedTerms(false);
 
         //prep reset
+        setId("");
         setAppointmentType(null);
         setAppointmentDate(null);
         setProvider("");
@@ -100,6 +105,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                     setAcceptedTerms,
                 },
                 prep: {
+                    id,
+                    setId,
                     appointmentType,
                     setAppointmentType,
                     appointmentDate,

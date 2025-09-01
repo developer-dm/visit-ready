@@ -70,16 +70,16 @@ export default function PrepSecondScreen() {
                                 <View style={styles.progressEmpty} />
                                 <View style={styles.progressEmpty} />
                             </View>
-                            <ThemedText style={styles.progressText} lightColor='#64748b' darkColor='#858585ff'>
+                            <ThemedText style={styles.progressText} type="greyed">
                                 Step 2 of 4
                             </ThemedText>
                         </View>
 
-                        <ThemedText style={styles.pageTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                        <ThemedText style={styles.pageTitle} type="whitened">
                             Health Concerns
                         </ThemedText>
 
-                        <ThemedText style={styles.pageSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                        <ThemedText style={styles.pageSubtitle} type="greyed">
                             Tell us about your main health concerns for this visit
                         </ThemedText>
                     </View>
@@ -89,13 +89,13 @@ export default function PrepSecondScreen() {
                         <View style={styles.cardContent}>
                             {/* Welcome Message */}
                             <View style={styles.welcomeSection}>
-                                <ThemedView style={styles.welcomeIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                                <ThemedView style={styles.welcomeIconContainer} type="dusked">
                                     <MaterialIcons name="favorite" size={32} color="#3b82f6" />
                                 </ThemedView>
-                                <ThemedText style={styles.welcomeTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                                <ThemedText style={styles.welcomeTitle} type="whitened">
                                     Your Health Focus
                                 </ThemedText>
-                                <ThemedText style={styles.welcomeSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                                <ThemedText style={styles.welcomeSubtitle} type="greyed">
                                     Help us understand your current health concerns and symptoms
                                 </ThemedText>
                             </View>
@@ -103,7 +103,7 @@ export default function PrepSecondScreen() {
                             {/* Form Fields */}
                             <View style={styles.formFields}>
                                 <View style={styles.fieldGroup}>
-                                    <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
+                                    <ThemedText style={styles.fieldLabel} type="whitened">
                                         What's the main health issue or concern you'd like to discuss?
                                     </ThemedText>
                                     <Textbox
@@ -114,7 +114,7 @@ export default function PrepSecondScreen() {
                                 </View>
 
                                 <View style={[styles.fieldGroup, { zIndex: 4000, elevation: 4000 }]}>
-                                    <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
+                                    <ThemedText style={styles.fieldLabel} type="whitened">
                                         When did this start?
                                     </ThemedText>
                                     <Dropdown
@@ -128,7 +128,7 @@ export default function PrepSecondScreen() {
                                 </View>
 
                                 <View style={[styles.fieldGroup, { zIndex: 3000, elevation: 3000 }]}>
-                                    <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
+                                    <ThemedText style={styles.fieldLabel} type="whitened">
                                         How would you rate the severity from 1-10?
                                     </ThemedText>
                                     <Dropdown
@@ -160,7 +160,7 @@ export default function PrepSecondScreen() {
                             </TouchableOpacity>
                         </View>
 
-                        <ThemedText style={styles.privacyText} lightColor='#64748b' darkColor='#858585ff'>
+                        <ThemedText style={styles.privacyText} type="greyed">
                             We'll use this information to generate personalized questions
                         </ThemedText>
                     </View>

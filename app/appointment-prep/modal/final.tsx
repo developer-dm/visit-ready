@@ -1,16 +1,13 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import DataFormatterService from "@/utils/dataFormatterService";
-import { saveAppointment } from "@/utils/dataStore";
+import { useDataStore } from "@/utils/dataStore";
 import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function PrepFinalScreen() {
-    const router = useRouter();
-    const { prep, clearUserContext } = useUser();
-
     const labels: Record<string, string> = {
         appointmentType: "Appointment Type",
         appointmentDate: "Appointment Date",
@@ -23,12 +20,12 @@ export default function PrepFinalScreen() {
         miscDiscussion: "Other Information",
     };
 
-    const userDataEntries = Object.entries(prep).filter(([key, value]) => {
-        return typeof value !== "function";
-    });
+    const router = useRouter();
+    const { prep, clearUserContext } = useUser();
+    const { addAppointment } = useDataStore();
 
     const handleNext = () => {
-        saveAppointment(prep);
+        addAppointment(prep);
         clearUserContext();
         router.dismissTo("/(tabs)");
         router.replace("/question-generator");
@@ -37,6 +34,10 @@ export default function PrepFinalScreen() {
     const handleBack = () => {
         router.back();
     };
+
+    const userDataEntries = Object.entries(prep).filter(([key, value]) => {
+        return typeof value !== "function" && key !== "id";
+    });
 
     return (
         <ScrollView
@@ -54,16 +55,16 @@ export default function PrepFinalScreen() {
                             <View style={styles.progressFill} />
                             <View style={styles.progressFill} />
                         </View>
-                        <ThemedText style={styles.progressText} lightColor='#64748b' darkColor='#858585ff'>
+                        <ThemedText style={styles.progressText} type="greyed">
                             Step 4 of 4
                         </ThemedText>
                     </View>
 
-                    <ThemedText style={styles.pageTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                    <ThemedText style={styles.pageTitle} type="whitened">
                         Review & Confirm
                     </ThemedText>
 
-                    <ThemedText style={styles.pageSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                    <ThemedText style={styles.pageSubtitle} type="greyed">
                         Please review your information and accept the terms to continue
                     </ThemedText>
                 </View>
@@ -73,40 +74,37 @@ export default function PrepFinalScreen() {
                     <View style={styles.cardContent}>
                         {/* Info Section */}
                         <View style={styles.infoSection}>
-                            <ThemedView style={styles.infoIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                            <ThemedView style={styles.infoIconContainer} type="dusked">
                                 <MaterialIcons name="check-circle" size={24} color="#10b981" />
                             </ThemedView>
-                            <ThemedText style={styles.infoTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                            <ThemedText style={styles.infoTitle} type="whitened">
                                 Your Visit Information
                             </ThemedText>
-                            <ThemedText style={styles.infoSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                            <ThemedText style={styles.infoSubtitle} type="greyed">
                                 Review the details you've provided below
                             </ThemedText>
                         </View>
 
                         {/* User Details */}
                         <View style={styles.detailsSection}>
-                            {userDataEntries.length > 0 ? (
-                                userDataEntries.map(([key, value]) => {
-                                    let formattedValue = value;
-                                    if (key === "DOB" && typeof value === 'string') {
-                                        formattedValue = new Date(value);
-                                    }
-
-                                    return (
-                                        <ThemedView key={key} style={styles.detailItem}>
-                                            <ThemedText style={styles.detailLabel} lightColor='#64748b' darkColor='#858585ff'>
-                                                {labels[key] || key}
-                                            </ThemedText>
-                                            <ThemedText style={styles.detailValue} lightColor='#1e293b' darkColor='#ffffffff'>
-                                                {DataFormatterService.toReadableString(formattedValue)}
-                                            </ThemedText>
-                                        </ThemedView>
-                                    );
-                                })
+                            {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
+                                if (key === "appointmentDate" && typeof value === 'string') {
+                                    value = new Date(value);
+                                }
+                                return (
+                                    <ThemedView key={key} style={styles.detailItem}>
+                                        <ThemedText style={styles.detailLabel} type="greyed">
+                                            {labels[key] || key}
+                                        </ThemedText>
+                                        <ThemedText style={styles.detailValue} type="whitened">
+                                            {DataFormatterService.toReadableString(value)}
+                                        </ThemedText>
+                                    </ThemedView>
+                                );
+                            })
                             ) : (
                                 <View style={styles.noDataContainer}>
-                                    <ThemedText style={styles.noDataText} lightColor='#64748b' darkColor='#858585ff'>
+                                    <ThemedText style={styles.noDataText} type="greyed">
                                         No information available
                                     </ThemedText>
                                 </View>
@@ -140,7 +138,7 @@ export default function PrepFinalScreen() {
                         </TouchableOpacity>
                     </View>
 
-                    <ThemedText style={styles.privacyText} lightColor='#64748b' darkColor='#858585ff'>
+                    <ThemedText style={styles.privacyText} type="greyed">
                         Your information is stored securely on your device
                     </ThemedText>
                 </View>

@@ -49,16 +49,16 @@ export default function ModalScreen() {
                 <View style={styles.progressEmpty} />
                 <View style={styles.progressEmpty} />
               </View>
-              <ThemedText style={styles.progressText} lightColor='#64748b' darkColor='#858585ff'>
+              <ThemedText style={styles.progressText} type="greyed">
                 Step 1 of 4
               </ThemedText>
             </View>
 
-            <ThemedText style={styles.pageTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+            <ThemedText style={styles.pageTitle} type="whitened">
               Appointment Details
             </ThemedText>
 
-            <ThemedText style={styles.pageSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+            <ThemedText style={styles.pageSubtitle} type="greyed">
               Let's gather information about your upcoming appointment
             </ThemedText>
           </View>
@@ -68,13 +68,13 @@ export default function ModalScreen() {
             <View style={styles.cardContent}>
               {/* Welcome Message */}
               <View style={styles.welcomeSection}>
-                <ThemedView style={styles.welcomeIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                <ThemedView style={styles.welcomeIconContainer} type="dusked">
                   <MaterialIcons name="create" size={32} color="#3b82f6" />
                 </ThemedView>
-                <ThemedText style={styles.welcomeTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                <ThemedText style={styles.welcomeTitle} type="whitened">
                   Preparation Details
                 </ThemedText>
-                <ThemedText style={styles.welcomeSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                <ThemedText style={styles.welcomeSubtitle} type="greyed">
                   Help us prepare the most relevant questions and resources for your visit
                 </ThemedText>
               </View>
@@ -82,7 +82,7 @@ export default function ModalScreen() {
               {/* Form Fields */}
               <View style={styles.formFields}>
                 <View style={styles.fieldGroup}>
-                  <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
+                  <ThemedText style={styles.fieldLabel} type="whitened">
                     What type of appointment is this?
                   </ThemedText>
                   <Dropdown
@@ -96,7 +96,7 @@ export default function ModalScreen() {
                 </View>
 
                 <View style={styles.fieldGroup}>
-                  <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
+                  <ThemedText style={styles.fieldLabel} type="whitened">
                     When is your next appointment?
                   </ThemedText>
                   <DatePicker
@@ -108,8 +108,8 @@ export default function ModalScreen() {
                 </View>
 
                 <View style={styles.fieldGroup}>
-                  <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
-                    Who is your provider? <ThemedText style={styles.optionalText} lightColor='#94a3b8' darkColor='#71717a'>(optional)</ThemedText>
+                  <ThemedText style={styles.fieldLabel} type="whitened">
+                    Who is your provider? <ThemedText style={styles.optionalText} type="dusked">(optional)</ThemedText>
                   </ThemedText>
                   <Textbox
                     placeholder="e.g. Dr. Smith"
@@ -130,7 +130,7 @@ export default function ModalScreen() {
               </View>
             </TouchableOpacity>
 
-            <ThemedText style={styles.helpText} lightColor='#64748b' darkColor='#858585ff'>
+            <ThemedText style={styles.helpText} type="greyed">
               We'll use this information to customize your preparation checklist
             </ThemedText>
           </View>

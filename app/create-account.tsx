@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 export default function CreateAccountScreen() {
   return (
     <View style={styles.container}>
-      <ThemedText>Create Account Screen</ThemedText>
+      <ThemedText type="whitened">Create Account Screen</ThemedText>
     </View>
   );
 }

@@ -40,16 +40,16 @@ export default function PrepThirdScreen() {
                             <View style={styles.progressFill} />
                             <View style={styles.progressEmpty} />
                         </View>
-                        <ThemedText style={styles.progressText} lightColor='#64748b' darkColor='#858585ff'>
+                        <ThemedText style={styles.progressText} type="greyed">
                             Step 3 of 4
                         </ThemedText>
                     </View>
 
-                    <ThemedText style={styles.pageTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                    <ThemedText style={styles.pageTitle} type="whitened">
                         Visit Goals
                     </ThemedText>
 
-                    <ThemedText style={styles.pageSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                    <ThemedText style={styles.pageSubtitle} type="greyed">
                         Help us understand what you hope to achieve from this appointment
                     </ThemedText>
                 </View>
@@ -59,13 +59,13 @@ export default function PrepThirdScreen() {
                     <View style={styles.cardContent}>
                         {/* Welcome Message */}
                         <View style={styles.welcomeSection}>
-                            <ThemedView style={styles.welcomeIconContainer} lightColor='#f1f5f9' darkColor='#1d1d1dff'>
+                            <ThemedView style={styles.welcomeIconContainer} type="dusked">
                                 <MaterialIcons name="track-changes" size={32} color="#3b82f6" />
                             </ThemedView>
-                            <ThemedText style={styles.welcomeTitle} lightColor='#1e293b' darkColor='#ffffffff'>
+                            <ThemedText style={styles.welcomeTitle} type="whitened">
                                 Your Expectations
                             </ThemedText>
-                            <ThemedText style={styles.welcomeSubtitle} lightColor='#64748b' darkColor='#858585ff'>
+                            <ThemedText style={styles.welcomeSubtitle} type="greyed">
                                 Share your goals and concerns to help your provider better understand your needs
                             </ThemedText>
                         </View>
@@ -73,7 +73,7 @@ export default function PrepThirdScreen() {
                         {/* Form Fields */}
                         <View style={styles.formFields}>
                             <View style={styles.fieldGroup}>
-                                <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
+                                <ThemedText style={styles.fieldLabel} type="whitened">
                                     What do you hope to get out of this visit?
                                 </ThemedText>
                                 <Textbox
@@ -84,7 +84,7 @@ export default function PrepThirdScreen() {
                             </View>
 
                             <View style={styles.fieldGroup}>
-                                <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
+                                <ThemedText style={styles.fieldLabel} type="whitened">
                                     Do you have any specific worries?
                                 </ThemedText>
                                 <Textbox
@@ -95,8 +95,8 @@ export default function PrepThirdScreen() {
                             </View>
 
                             <View style={styles.fieldGroup}>
-                                <ThemedText style={styles.fieldLabel} lightColor='#1e293b' darkColor='#ffffffff'>
-                                    Anything else you want to discuss? <ThemedText style={styles.optionalText} lightColor='#94a3b8' darkColor='#71717a'>(optional)</ThemedText>
+                                <ThemedText style={styles.fieldLabel} type="whitened">
+                                    Anything else you want to discuss? <ThemedText style={styles.optionalText} type="dusked">(optional)</ThemedText>
                                 </ThemedText>
                                 <Textbox
                                     placeholder="e.g. lifestyle changes"
@@ -124,7 +124,7 @@ export default function PrepThirdScreen() {
                         </TouchableOpacity>
                     </View>
 
-                    <ThemedText style={styles.privacyText} lightColor='#64748b' darkColor='#858585ff'>
+                    <ThemedText style={styles.privacyText} type="greyed">
                         Your responses help create a personalized preparation checklist
                     </ThemedText>
                 </View>
