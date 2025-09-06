@@ -42,7 +42,7 @@ export default function PrepSecondScreen() {
 
     const handleNext = () => {
         if (prep.mainConcern && prep.concernStart && prep.concernSeverity) {
-            router.push("/appointment-prep/modal/third")
+            router.push("/prep/third")
         } else {
             Alert.alert("Error", "Invalid answer");
         }
@@ -50,6 +50,20 @@ export default function PrepSecondScreen() {
 
     const handleBack = () => {
         router.back();
+    };
+
+    const handleOpenFirst = () => {
+        setOpen(prev => {
+            if (!prev) setOpenSecond(false);
+            return !prev;
+        });
+    };
+
+    const handleOpenSecond = () => {
+        setOpenSecond(prev => {
+            if (!prev) setOpen(false);
+            return !prev;
+        });
     };
 
     return (
@@ -113,7 +127,12 @@ export default function PrepSecondScreen() {
                                     />
                                 </View>
 
-                                <View style={[styles.fieldGroup, { zIndex: 4000, elevation: 4000 }]}>
+                                <View style={[styles.fieldGroup,
+                                {
+                                    zIndex: open ? 4000 : 3000,
+                                    elevation: open ? 4000 : 3000,
+                                    position: 'relative',
+                                }]}>
                                     <ThemedText style={styles.fieldLabel} type="whitened">
                                         When did this start?
                                     </ThemedText>
@@ -121,13 +140,18 @@ export default function PrepSecondScreen() {
                                         open={open}
                                         value={prep.concernStart}
                                         items={items}
-                                        setOpen={setOpen}
+                                        setOpen={handleOpenFirst}
                                         setValue={prep.setConcernStart}
                                         setItems={setItems}
                                     />
                                 </View>
 
-                                <View style={[styles.fieldGroup, { zIndex: 3000, elevation: 3000 }]}>
+                                <View style={[styles.fieldGroup,
+                                {
+                                    zIndex: open ? 3000 : 4000,
+                                    elevation: open ? 3000 : 4000,
+                                    position: 'relative',
+                                }]}>
                                     <ThemedText style={styles.fieldLabel} type="whitened">
                                         How would you rate the severity from 1-10?
                                     </ThemedText>
@@ -135,7 +159,7 @@ export default function PrepSecondScreen() {
                                         open={openSecond}
                                         value={prep.concernSeverity}
                                         items={itemsSecond}
-                                        setOpen={setOpenSecond}
+                                        setOpen={handleOpenSecond}
                                         setValue={prep.setConcernSeverity}
                                         setItems={setItemsSecond}
                                     />

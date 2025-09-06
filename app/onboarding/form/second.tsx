@@ -25,7 +25,7 @@ export default function OnboardingSecondScreen() {
         setOpen(false);
 
         if (signup.DOB && signup.sex) {
-            router.push("/onboarding/modal/final");
+            router.push("/onboarding/form/final");
         } else {
             Alert.alert("Error", "Invalid birthdate or sex.");
         }

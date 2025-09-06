@@ -1,24 +1,65 @@
 import { Button } from "@/components/Button";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useDataStore } from "@/utils/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { RouteProp, useRoute } from '@react-navigation/native';
+import * as Clipboard from 'expo-clipboard';
 import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Flow } from 'react-native-animated-spinkit';
+//import { LLAMA3_2_1B, Message, useLLM } from 'react-native-executorch';
 
 export default function FinalScreen() {
+    type RouteParams = {
+        data: string;
+    };
+
     const router = useRouter();
+    const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
+    const prep = route.params?.data ? JSON.parse(route.params.data) : null;
+    const [copied, setCopied] = useState(false);
+
+    const [response, setResponse] = useState('aslkdf');
+    const { addAppointment } = useDataStore();
+
+    /*
+    const llm = useLLM({ model: LLAMA3_2_1B });
+    const SYSTEM_ROLE = ''
+    const USER_ROLE = ''
+
+    const handleGenerate = async () => {
+        const chat: Message[] = [
+            { role: 'system', content: SYSTEM_ROLE },
+            { role: 'user', content: USER_ROLE }
+        ];
+
+        await llm.generate(chat);
+        setResponse(llm.response);
+    };
+
+    useEffect(() => {
+        handleGenerate();
+    }, []);
+    */
+
+    const copyToClipboard = async () => {
+        await Clipboard.setStringAsync(response);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1000);
+    };
 
     const handleReturn = () => {
-        router.dismissTo("/(tabs)")
+        addAppointment(prep);
+        router.replace("/(tabs)");
     }
 
-    const generatedQuestions = [
-        "What are the potential side effects of my current medication?",
-        "Based on my symptoms, what lifestyle changes would you recommend?",
-        "Should I be concerned about the frequency of my headaches?",
-        "Are there any preventive measures I should take given my family history?",
-        "What follow-up tests or appointments do you recommend?"
-    ];
+    useEffect(() => {
+        if (prep) {
+            console.log("received prep: " + prep.id)
+        }
+    }, []);
 
     return (
         <ScrollView
@@ -40,63 +81,65 @@ export default function FinalScreen() {
             </View>
 
             {/* Loading State */}
-            <ThemedView style={styles.loadingCard}>
-                <View style={styles.loadingContent}>
-                    <ThemedView style={styles.loadingIconContainer} type="dusked">
-                        <MaterialIcons name="auto-awesome" size={24} color="#3b82f6" />
-                    </ThemedView>
-                    <ThemedText style={styles.loadingText} type="whitened">
-                        Generating Questions...
-                    </ThemedText>
-                    <ThemedText style={styles.loadingSubtext} type="greyed">
-                        Creating personalized questions based on your appointment details
-                    </ThemedText>
+            {!response && (
+                <ThemedView style={styles.loadingCard}>
+                    <View style={styles.loadingContent}>
+                        <ThemedView style={styles.loadingIconContainer} type="dusked">
+                            <MaterialIcons name="auto-awesome" size={24} color="#3b82f6" />
+                        </ThemedView>
+                        <ThemedText style={styles.loadingText} type="whitened">
+                            Generating Questions...
+                        </ThemedText>
+                        <ThemedText style={styles.loadingSubtext} type="greyed">
+                            Creating personalized questions based on your appointment details
+                        </ThemedText>
 
-                    {/* Loading Animation Placeholder */}
-                    <View style={styles.loadingAnimation}>
-                        <View style={[styles.dot, styles.dot1]} />
-                        <View style={[styles.dot, styles.dot2]} />
-                        <View style={[styles.dot, styles.dot3]} />
+                        {/* Loading Animation Placeholder */}
+                        <Flow size={70} color="#3b82f6" />
                     </View>
-                </View>
-            </ThemedView>
+                </ThemedView>
+            )}
 
             {/* Generated Questions Section (Hidden initially, shown after generation) */}
-            <View style={styles.questionsSection}>
-                <ThemedText style={styles.sectionTitle}>Questions to Ask Your Doctor</ThemedText>
+            {response && (
+                <View style={styles.questionsSection}>
 
-                {generatedQuestions.map((question, index) => (
-                    <ThemedView key={index} style={styles.questionCard}>
+                    <ThemedText style={styles.sectionTitle}>Questions to Ask Your Doctor</ThemedText>
+
+                    <ThemedView style={styles.questionCard}>
                         <View style={styles.questionContent}>
                             <View style={styles.questionNumber}>
-                                <ThemedText style={styles.questionNumberText}>{index + 1}</ThemedText>
+                                <ThemedText style={styles.questionNumberText}>1</ThemedText>
                             </View>
                             <ThemedText style={styles.questionText} type="whitened">
-                                {question}
+                                {response}
                             </ThemedText>
                         </View>
                     </ThemedView>
-                ))}
-            </View>
+                </View>
+            )}
 
             {/* Action Buttons */}
-            <View style={styles.buttonContainer}>
-                <Button
-                    style={[styles.actionButton, styles.primaryButton]}
-                    onPress={() => {}}
-                >
-                    <MaterialIcons name="content-copy" size={20} color="#ffffff" style={styles.buttonIcon} />
-                    <ThemedText style={styles.primaryButtonText}>Copy Questions</ThemedText>
-                </Button>
+            {response && (
+                <View style={styles.buttonContainer}>
+                    <Button
+                        style={styles.actionButton}
+                        type="bordered"
+                        onPress={copyToClipboard}
+                    >
+                        <MaterialIcons name="content-copy" size={20} color={copied ? '#3b82f6' : '#64748b'} style={styles.buttonIcon} />
+                        <ThemedText style={[styles.copyButtonText, { color: copied ? '#3b82f6' : '#64748b' }]}>{copied ? 'Copied to Clipboard!' : 'Copy Questions'}</ThemedText>
+                    </Button>
 
-                <Button
-                    style={styles.actionButton}
-                    type="bordered"
-                    onPress={handleReturn}
-                >
-                    <Text style={styles.backButtonText}>Back</Text>
-                </Button>
-            </View>
+                    <Button
+                        style={[styles.actionButton, styles.backButton]}
+                        onPress={handleReturn}
+                    >
+                        <MaterialIcons name="save" size={20} color="#ffffffff" style={styles.buttonIcon} />
+                        <Text style={styles.backButtonText}>Return & Save</Text>
+                    </Button>
+                </View>
+            )}
         </ScrollView>
     );
 }
@@ -112,7 +155,7 @@ const styles = StyleSheet.create({
     header: {
         alignItems: 'center',
         paddingHorizontal: 24,
-        paddingTop: 80,
+        paddingTop: 160,
         paddingBottom: 30,
     },
     headerIconContainer: {
@@ -180,30 +223,9 @@ const styles = StyleSheet.create({
         lineHeight: 20,
         marginBottom: 24,
     },
-    loadingAnimation: {
-        flexDirection: 'row',
-        gap: 8,
-    },
-    dot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: '#3b82f6',
-        opacity: 0.4,
-    },
-    dot1: {
-        opacity: 1,
-    },
-    dot2: {
-        opacity: 0.7,
-    },
-    dot3: {
-        opacity: 0.4,
-    },
     questionsSection: {
         paddingHorizontal: 24,
         marginBottom: 24,
-        display: 'none', //hide questions
     },
     sectionTitle: {
         fontSize: 20,
@@ -269,18 +291,17 @@ const styles = StyleSheet.create({
         shadowRadius: 12,
         minHeight: 60,
     },
-    backButtonText: {
+    copyButtonText: {
         fontSize: 16,
         fontWeight: '500',
-        color: '#64748b',
         marginLeft: 8,
     },
-    primaryButton: {
+    backButton: {
         backgroundColor: '#3b82f6',
         shadowColor: '#3b82f6',
         shadowOpacity: 0.3,
     },
-    primaryButtonText: {
+    backButtonText: {
         fontSize: 16,
         fontWeight: '600',
         color: '#ffffff',

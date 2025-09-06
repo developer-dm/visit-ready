@@ -15,7 +15,7 @@ export default function OnboardingFirstScreen() {
     Keyboard.dismiss();
 
     if (signup.firstName && signup.lastName) {
-      router.push("/onboarding/modal/second");
+      router.push("/onboarding/form/second");
     } else {
       Alert.alert("Error", "Invalid first or last name.");
     };

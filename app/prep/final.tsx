@@ -1,36 +1,53 @@
-import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import DataFormatterService from "@/utils/dataFormatterService";
 import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function PrepThirdScreen() {
+export default function PrepFinalScreen() {
+    const labels: Record<string, string> = {
+        appointmentType: "Appointment Type",
+        appointmentDate: "Appointment Date",
+        provider: "Provider",
+        mainConcern: "Main Concern",
+        concernStart: "Concern Start Date",
+        concernSeverity: "Severity",
+        visitGoal: "Appointment Goal",
+        specificWorries: "Specific Worries",
+        miscDiscussion: "Other Information",
+    };
+
     const router = useRouter();
     const { prep } = useUser();
 
     const handleNext = () => {
-        if (prep.visitGoal && prep.specificWorries) {
-            router.push("/appointment-prep/modal/final")
-        } else {
-            Alert.alert("Error", "Invalid answer");
-        }
+        if (!prep) return;
+        router.dismissTo("/(tabs)")
+        router.replace({
+            pathname: "/questions",
+            params: {
+                data: JSON.stringify(prep)
+            },
+        });
     };
 
     const handleBack = () => {
         router.back();
     };
 
+    const userDataEntries = Object.entries(prep).filter(([key, value]) => {
+        return typeof value !== "function" && key !== "id";
+    });
+
     return (
-        <KeyboardAwareScrollView
+        <ScrollView
             style={styles.container}
             contentContainerStyle={styles.scrollContainer}
-            keyboardShouldPersistTaps="never"
             showsVerticalScrollIndicator={false}
         >
-            <View style={{ flex: 1 }}>
+            <View style={styles.content}>
                 {/* Header Section */}
                 <View style={styles.header}>
                     <View style={styles.progressContainer}>
@@ -38,72 +55,62 @@ export default function PrepThirdScreen() {
                             <View style={styles.progressFill} />
                             <View style={styles.progressFill} />
                             <View style={styles.progressFill} />
-                            <View style={styles.progressEmpty} />
+                            <View style={styles.progressFill} />
                         </View>
                         <ThemedText style={styles.progressText} type="greyed">
-                            Step 3 of 4
+                            Step 4 of 4
                         </ThemedText>
                     </View>
 
                     <ThemedText style={styles.pageTitle} type="whitened">
-                        Visit Goals
+                        Review & Confirm
                     </ThemedText>
 
                     <ThemedText style={styles.pageSubtitle} type="greyed">
-                        Help us understand what you hope to achieve from this appointment
+                        Please review your information and accept the terms to continue
                     </ThemedText>
                 </View>
 
-                {/* Form Card */}
-                <ThemedView style={styles.formCard}>
+                {/* Review Card */}
+                <ThemedView style={styles.reviewCard}>
                     <View style={styles.cardContent}>
-                        {/* Welcome Message */}
-                        <View style={styles.welcomeSection}>
-                            <ThemedView style={styles.welcomeIconContainer} type="dusked">
-                                <MaterialIcons name="track-changes" size={32} color="#3b82f6" />
+                        {/* Info Section */}
+                        <View style={styles.infoSection}>
+                            <ThemedView style={styles.infoIconContainer} type="dusked">
+                                <MaterialIcons name="check-circle" size={24} color="#10b981" />
                             </ThemedView>
-                            <ThemedText style={styles.welcomeTitle} type="whitened">
-                                Your Expectations
+                            <ThemedText style={styles.infoTitle} type="whitened">
+                                Your Visit Information
                             </ThemedText>
-                            <ThemedText style={styles.welcomeSubtitle} type="greyed">
-                                Share your goals and concerns to help your provider better understand your needs
+                            <ThemedText style={styles.infoSubtitle} type="greyed">
+                                Review the details you've provided below
                             </ThemedText>
                         </View>
 
-                        {/* Form Fields */}
-                        <View style={styles.formFields}>
-                            <View style={styles.fieldGroup}>
-                                <ThemedText style={styles.fieldLabel} type="whitened">
-                                    What do you hope to get out of this visit?
-                                </ThemedText>
-                                <Textbox
-                                    placeholder="e.g. relief from pain"
-                                    onChangeText={prep.setVisitGoal}
-                                    value={prep.visitGoal}
-                                />
-                            </View>
-
-                            <View style={styles.fieldGroup}>
-                                <ThemedText style={styles.fieldLabel} type="whitened">
-                                    Do you have any specific worries?
-                                </ThemedText>
-                                <Textbox
-                                    placeholder="e.g. side effects of medication"
-                                    onChangeText={prep.setSpecificWorries}
-                                    value={prep.specificWorries}
-                                />
-                            </View>
-
-                            <View style={styles.fieldGroup}>
-                                <ThemedText style={styles.fieldLabel} type="whitened">
-                                    Anything else you want to discuss? <ThemedText style={styles.optionalText} type="dusked">(optional)</ThemedText>
-                                </ThemedText>
-                                <Textbox
-                                    placeholder="e.g. lifestyle changes"
-                                    onChangeText={prep.setMiscDiscussion}
-                                    value={prep.miscDiscussion}
-                                />
-                            </View>
+                        {/* User Details */}
+                        <View style={styles.detailsSection}>
+                            {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
+                                if (key === "appointmentDate" && typeof value === 'string') {
+                                    value = new Date(value);
+                                }
+                                return (
+                                    <ThemedView key={key} style={styles.detailItem}>
+                                        <ThemedText style={styles.detailLabel} type="greyed">
+                                            {labels[key] || key}
+                                        </ThemedText>
+                                        <ThemedText style={styles.detailValue} type="whitened">
+                                            {DataFormatterService.toReadableString(value)}
+                                        </ThemedText>
+                                    </ThemedView>
+                                );
+                            })
+                            ) : (
+                                <View style={styles.noDataContainer}>
+                                    <ThemedText style={styles.noDataText} type="greyed">
+                                        No information available
+                                    </ThemedText>
+                                </View>
+                            )}
                         </View>
                     </View>
                 </ThemedView>
@@ -116,23 +123,32 @@ export default function PrepThirdScreen() {
                             <Text style={styles.backButtonText}>Back</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
-                            <Text style={styles.primaryButtonText}>Continue</Text>
+                        <TouchableOpacity
+                            style={styles.primaryButton}
+                            onPress={handleNext}
+                        >
+                            <Text style={styles.primaryButtonText}>
+                                Finish
+                            </Text>
                             <View style={styles.buttonIcon}>
-                                <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
+                                <MaterialIcons
+                                    name="check"
+                                    size={20}
+                                    color="#ffffff"
+                                />
                             </View>
                         </TouchableOpacity>
                     </View>
 
                     <ThemedText style={styles.privacyText} type="greyed">
-                        Your responses help create a personalized preparation checklist
+                        Your information is stored securely on your device
                     </ThemedText>
                 </View>
 
                 {/* Bottom Spacer */}
                 <View style={styles.bottomSpacer} />
             </View>
-        </KeyboardAwareScrollView>
+        </ScrollView>
     );
 }
 
@@ -143,6 +159,9 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         paddingBottom: 30,
+    },
+    content: {
+        flex: 1,
     },
     header: {
         paddingHorizontal: 24,
@@ -165,12 +184,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#3b82f6',
         borderRadius: 2,
     },
-    progressEmpty: {
-        width: 24,
-        height: 4,
-        backgroundColor: '#e2e8f0',
-        borderRadius: 2,
-    },
     progressText: {
         fontSize: 12,
         fontWeight: '500',
@@ -188,9 +201,9 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         textAlign: 'center',
         lineHeight: 22,
-        maxWidth: 300,
+        maxWidth: 320,
     },
-    formCard: {
+    reviewCard: {
         marginHorizontal: 24,
         marginBottom: 24,
         borderRadius: 20,
@@ -205,45 +218,82 @@ const styles = StyleSheet.create({
     cardContent: {
         padding: 24,
     },
-    welcomeSection: {
+    infoSection: {
         alignItems: 'center',
         marginBottom: 32,
     },
-    welcomeIconContainer: {
-        width: 64,
-        height: 64,
-        borderRadius: 32,
+    infoIconContainer: {
+        width: 56,
+        height: 56,
+        borderRadius: 28,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 16,
     },
-    welcomeTitle: {
-        fontSize: 20,
+    infoTitle: {
+        fontSize: 18,
         fontWeight: '600',
         textAlign: 'center',
         marginBottom: 8,
     },
-    welcomeSubtitle: {
+    infoSubtitle: {
         fontSize: 14,
         fontWeight: '400',
         textAlign: 'center',
         lineHeight: 20,
         maxWidth: 280,
     },
-    formFields: {
-        gap: 24,
+    detailsSection: {
+        gap: 12,
+        marginBottom: 28,
     },
-    fieldGroup: {
+    detailItem: {
+        paddingVertical: 12,
+        borderBottomWidth: 1,
+    },
+    detailLabel: {
+        fontSize: 14,
+        fontWeight: '500',
+        marginBottom: 4,
+    },
+    detailValue: {
+        fontSize: 16,
+        fontWeight: '400',
+    },
+    noDataContainer: {
+        paddingVertical: 20,
+        alignItems: 'center',
+    },
+    noDataText: {
+        fontSize: 16,
+        fontStyle: 'italic',
+    },
+    termsSection: {
         width: '100%',
     },
-    fieldLabel: {
-        fontSize: 16,
-        fontWeight: '600',
-        marginBottom: 8,
+    termsContainer: {
+        borderRadius: 16,
+        borderWidth: 1,
     },
-    optionalText: {
-        fontWeight: '400',
+    checkboxRow: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        padding: 20,
+    },
+    termsTextContainer: {
+        flex: 1,
+        marginLeft: 12,
+    },
+    termsText: {
         fontSize: 14,
+        fontWeight: '400',
+        lineHeight: 20,
+        flexWrap: "wrap"
+    },
+    termsLink: {
+        fontWeight: '500',
+        textDecorationLine: 'underline',
+        flexWrap: "wrap"
     },
     navigationSection: {
         paddingHorizontal: 24,
@@ -292,11 +342,18 @@ const styles = StyleSheet.create({
         minWidth: 160,
         minHeight: 60,
     },
+    primaryButtonDisabled: {
+        backgroundColor: '#e2e8f0',
+        shadowOpacity: 0,
+    },
     primaryButtonText: {
         fontSize: 18,
         fontWeight: '600',
         color: '#ffffff',
         marginRight: 12,
+    },
+    primaryButtonTextDisabled: {
+        color: '#94a3b8',
     },
     buttonIcon: {
         width: 28,
@@ -316,3 +373,4 @@ const styles = StyleSheet.create({
         height: 40,
     },
 });
+

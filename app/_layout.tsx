@@ -1,5 +1,7 @@
+import LoadingScreen from '@/components/Loading';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useAuthStore } from "@/utils/authStore";
+import { useLoadingStore } from '@/utils/loadingStore';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -14,6 +16,7 @@ if (!isWeb) {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const { showLoading, hideLoading, isLoading, message, subMessage } = useLoadingStore();
 
   const {
     isLoggedIn,
@@ -32,15 +35,27 @@ export default function RootLayout() {
     return null;
   }
 
+  useEffect(() => {
+    showLoading('Loading...', 'Switching pages');
+
+    const timer = setTimeout(() => {
+      hideLoading();
+    }, 400);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isLoggedIn, hasCompletedOnboarding]);
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <StatusBar style="auto" />
       <Stack>
         <Stack.Protected guard={isLoggedIn}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="appointment-prep" options={{ presentation: "modal", headerShown: false, gestureEnabled: false }} />
-          <Stack.Screen name="question-generator" options={{ headerShown: false }} />
-          <Stack.Screen name="appointment-view" options={{ presentation: "modal", headerShown: false, gestureEnabled: true }} />
+          <Stack.Screen name="prep" options={{ presentation: "modal", headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name="past" options={{ presentation: "modal", headerShown: false, gestureEnabled: true }} />
+          <Stack.Screen name="questions" options={{ headerShown: false }} />
         </Stack.Protected>
         <Stack.Protected guard={!isLoggedIn && hasCompletedOnboarding}>
           <Stack.Screen name="sign-in" options={{ headerShown: false }} />
@@ -54,6 +69,12 @@ export default function RootLayout() {
         </Stack.Protected>
         <Stack.Screen name="+not-found" options={{ headerShown: true, title: 'Oops!' }} />
       </Stack>
+      {isLoading && (
+        <LoadingScreen
+          message={message}
+          subMessage={subMessage}
+        />
+      )}
     </ThemeProvider>
   );
 }

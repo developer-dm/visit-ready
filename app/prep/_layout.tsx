@@ -3,7 +3,7 @@ import { UserProvider } from "@/utils/userContext";
 import { Stack, useRouter } from "expo-router";
 import { Alert } from "react-native";
 
-export default function ModalLayout() {
+export default function AppointmentPrepLayout() {
     const router = useRouter();
 
     const handleClose = () => {

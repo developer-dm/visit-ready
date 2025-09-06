@@ -10,7 +10,7 @@ export default function ModalLayout() {
                 <Button type="close" onPress={() => router.dismiss()} />
             ),
         }}>
-            <Stack.Screen name="index" options={{ presentation: "modal", headerShown: true, title: "Appointment View", gestureEnabled: false }} />
+            <Stack.Screen name="index" options={{ presentation: "modal", headerShown: true, title: "Appointment", gestureEnabled: false }} />
         </Stack>
     );
 }

@@ -28,15 +28,15 @@ export default function HistoryScreen() {
     const handleAppointmentView = (appointment: object) => {
         if (!appointment) return;
         router.push({
-            pathname: "/appointment-view",
+            pathname: "/past",
             params: {
                 data: JSON.stringify(appointment)
-            }
+            },
         });
     };
 
     const handleVisitPrep = () => {
-        router.push("/appointment-prep/modal")
+        router.push("/prep")
     };
 
     return (
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#fef2f2',
+        backgroundColor: '#ffdbdbff',
         borderRadius: 12,
         paddingVertical: 12,
         paddingHorizontal: 20,

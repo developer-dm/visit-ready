@@ -12,7 +12,7 @@ export default function DashboardScreen() {
   const { signup, appointments } = useDataStore();
 
   const handleVisitPrep = () => {
-    router.push("/appointment-prep/modal")
+    router.push("/prep")
   };
 
   const handleHistory = () => {

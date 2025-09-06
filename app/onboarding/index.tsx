@@ -69,9 +69,9 @@ export default function PrepInitialScreen() {
                     </View>
                 </View>
 
-                {/* CTA Section */}
+                {/* Start Section */}
                 <View style={styles.ctaSection}>
-                    <Link asChild push href="/onboarding/modal">
+                    <Link asChild push href="/onboarding/form">
                         <TouchableOpacity style={styles.primaryButton}>
                             <Text style={styles.primaryButtonText}>Get Started</Text>
                             <View style={styles.buttonIcon}>

@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
   },
   dangerCard: {
-    backgroundColor: '#fef2f2',
+    backgroundColor: '#ffdbdbff',
     borderColor: '#ef4444',
     borderWidth: 1,
   },
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 16,
-    backgroundColor: '#ffdadaff',
+    backgroundColor: '#ffb5b5ff',
   },
   actionContent: {
     flex: 1,

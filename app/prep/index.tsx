@@ -25,7 +25,7 @@ export default function ModalScreen() {
 
   const handleNext = () => {
     if (prep.appointmentType && prep.appointmentDate) {
-      router.push("/appointment-prep/modal/second")
+      router.push("/prep/second")
     } else {
       Alert.alert("Error", "Invalid appointment type or date");
     }
