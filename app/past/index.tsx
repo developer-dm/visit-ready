@@ -72,10 +72,7 @@ export default function PrepFinalScreen() {
                     </View>
                 </ThemedView>
 
-                <Footer type="modal" />
-
-                {/* Bottom Spacer */}
-                <View style={styles.bottomSpacer} />
+                <Footer hasSpacer={true} />
             </View>
         </ScrollView>
     );
@@ -157,9 +154,6 @@ const styles = StyleSheet.create({
     noDataText: {
         fontSize: 16,
         fontStyle: 'italic',
-    },
-    bottomSpacer: {
-        height: 40,
     },
 });
 

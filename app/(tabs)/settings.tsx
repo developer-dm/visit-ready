@@ -174,7 +174,7 @@ export default function SettingsScreen() {
           </View>
         </ThemedView>
       </ScrollView>
-      <Footer />
+      <Footer type="absolute" />
     </>
   );
 }

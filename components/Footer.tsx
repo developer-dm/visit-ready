@@ -4,29 +4,32 @@ import { StyleSheet, TextProps } from "react-native";
 
 export type FooterTextProps = TextProps & {
     text?: string;
-    type?: "page" | "modal";
+    type?: "absolute" | "relative";
+    hasSpacer?: boolean;
 };
 
 export function Footer({
     text,
-    type = "page",
+    type = "relative",
+    hasSpacer = false,
 }: FooterTextProps) {
     return (
         <ThemedText
             type="greyed"
             style={[
-                type === "page" ? styles.pageFooterText : undefined,
-                type === "modal" ? styles.modalFooterText : undefined,
+                type === "absolute" ? styles.absoluteFooterText : undefined,
+                type === "relative" ? styles.relativeFooterText : undefined,
+                hasSpacer ? styles.bottomSpacer : undefined,
             ]}
         >
-            {text ? text : `${expo.name} | ${expo.version}`}
+            {text ? text : `${expo.name} ${expo.version}`}
         </ThemedText>
     );
 }
 
 const styles = StyleSheet.create({
-    pageFooterText: {
-        fontSize: 5,
+    absoluteFooterText: {
+        fontSize: 6,
         fontWeight: '400',
         textAlign: 'center',
         fontStyle: 'italic',
@@ -34,10 +37,13 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 3,
     },
-    modalFooterText: {
-        fontSize: 12,
+    relativeFooterText: {
+        fontSize: 10,
         fontWeight: '400',
         textAlign: 'center',
         fontStyle: 'italic',
+    },
+    bottomSpacer: {
+        marginBottom: 40,
     },
 })

@@ -97,7 +97,7 @@ export default function DashboardScreen() {
           </View>
         </View>
       </ScrollView >
-      <Footer />
+      <Footer type="absolute" />
     </>
   );
 };

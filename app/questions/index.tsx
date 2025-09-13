@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useDataStore } from "@/utils/dataStore";
@@ -62,85 +63,88 @@ export default function FinalScreen() {
     }, []);
 
     return (
-        <ScrollView
-            style={styles.container}
-            contentContainerStyle={styles.scrollContainer}
-            showsVerticalScrollIndicator={false}
-        >
-            {/* Header Section */}
-            <View style={styles.header}>
-                <ThemedView style={styles.headerIconContainer} type="dusked">
-                    <MaterialIcons name="psychology" size={32} color="#3b82f6" />
-                </ThemedView>
-                <ThemedText style={styles.headerTitle} type="whitened">
-                    Your Personalized Questions
-                </ThemedText>
-                <ThemedText style={styles.headerSubtitle} type="greyed">
-                    AI-generated questions tailored to your visit information
-                </ThemedText>
-            </View>
+        <>
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.scrollContainer}
+                showsVerticalScrollIndicator={false}
+            >
+                {/* Header Section */}
+                <View style={styles.header}>
+                    <ThemedView style={styles.headerIconContainer} type="dusked">
+                        <MaterialIcons name="psychology" size={32} color="#3b82f6" />
+                    </ThemedView>
+                    <ThemedText style={styles.headerTitle} type="whitened">
+                        Your Personalized Questions
+                    </ThemedText>
+                    <ThemedText style={styles.headerSubtitle} type="greyed">
+                        AI-generated questions tailored to your visit information
+                    </ThemedText>
+                </View>
 
-            {/* Loading State */}
-            {!response && (
-                <ThemedView style={styles.loadingCard}>
-                    <View style={styles.loadingContent}>
-                        <ThemedView style={styles.loadingIconContainer} type="dusked">
-                            <MaterialIcons name="auto-awesome" size={24} color="#3b82f6" />
-                        </ThemedView>
-                        <ThemedText style={styles.loadingText} type="whitened">
-                            Generating Questions...
-                        </ThemedText>
-                        <ThemedText style={styles.loadingSubtext} type="greyed">
-                            Creating personalized questions based on your appointment details
-                        </ThemedText>
-
-                        {/* Loading Animation Placeholder */}
-                        <Flow size={70} color="#3b82f6" />
-                    </View>
-                </ThemedView>
-            )}
-
-            {/* Generated Questions Section (Hidden initially, shown after generation) */}
-            {response && (
-                <View style={styles.questionsSection}>
-
-                    <ThemedText style={styles.sectionTitle}>Questions to Ask Your Doctor</ThemedText>
-
-                    <ThemedView style={styles.questionCard}>
-                        <View style={styles.questionContent}>
-                            <View style={styles.questionNumber}>
-                                <ThemedText style={styles.questionNumberText}>1</ThemedText>
-                            </View>
-                            <ThemedText style={styles.questionText} type="whitened">
-                                {response}
+                {/* Loading State */}
+                {!response && (
+                    <ThemedView style={styles.loadingCard}>
+                        <View style={styles.loadingContent}>
+                            <ThemedView style={styles.loadingIconContainer} type="dusked">
+                                <MaterialIcons name="auto-awesome" size={24} color="#3b82f6" />
+                            </ThemedView>
+                            <ThemedText style={styles.loadingText} type="whitened">
+                                Generating Questions...
                             </ThemedText>
+                            <ThemedText style={styles.loadingSubtext} type="greyed">
+                                Creating personalized questions based on your appointment details
+                            </ThemedText>
+
+                            {/* Loading Animation Placeholder */}
+                            <Flow size={70} color="#3b82f6" />
                         </View>
                     </ThemedView>
-                </View>
-            )}
+                )}
 
-            {/* Action Buttons */}
-            {response && (
-                <View style={styles.buttonContainer}>
-                    <Button
-                        style={styles.actionButton}
-                        type="bordered"
-                        onPress={copyToClipboard}
-                    >
-                        <MaterialIcons name="content-copy" size={20} color={copied ? '#3b82f6' : '#64748b'} style={styles.buttonIcon} />
-                        <ThemedText style={[styles.copyButtonText, { color: copied ? '#3b82f6' : '#64748b' }]}>{copied ? 'Copied to Clipboard!' : 'Copy Questions'}</ThemedText>
-                    </Button>
+                {/* Generated Questions Section (Hidden initially, shown after generation) */}
+                {response && (
+                    <View style={styles.questionsSection}>
 
-                    <Button
-                        style={[styles.actionButton, styles.backButton]}
-                        onPress={handleReturn}
-                    >
-                        <MaterialIcons name="save" size={20} color="#ffffffff" style={styles.buttonIcon} />
-                        <Text style={styles.backButtonText}>Return & Save</Text>
-                    </Button>
-                </View>
-            )}
-        </ScrollView>
+                        <ThemedText style={styles.sectionTitle}>Questions to Ask Your Doctor</ThemedText>
+
+                        <ThemedView style={styles.questionCard}>
+                            <View style={styles.questionContent}>
+                                <View style={styles.questionNumber}>
+                                    <ThemedText style={styles.questionNumberText}>1</ThemedText>
+                                </View>
+                                <ThemedText style={styles.questionText} type="whitened">
+                                    {response}
+                                </ThemedText>
+                            </View>
+                        </ThemedView>
+                    </View>
+                )}
+
+                {/* Action Buttons */}
+                {response && (
+                    <View style={styles.buttonContainer}>
+                        <Button
+                            style={styles.actionButton}
+                            type="bordered"
+                            onPress={copyToClipboard}
+                        >
+                            <MaterialIcons name="content-copy" size={20} color={copied ? '#3b82f6' : '#64748b'} style={styles.buttonIcon} />
+                            <ThemedText style={[styles.copyButtonText, { color: copied ? '#3b82f6' : '#64748b' }]}>{copied ? 'Copied to Clipboard!' : 'Copy Questions'}</ThemedText>
+                        </Button>
+
+                        <Button
+                            style={[styles.actionButton, styles.backButton]}
+                            onPress={handleReturn}
+                        >
+                            <MaterialIcons name="save" size={20} color="#ffffffff" style={styles.buttonIcon} />
+                            <Text style={styles.backButtonText}>Return & Save</Text>
+                        </Button>
+                    </View>
+                )}
+            </ScrollView>
+            <Footer type="absolute" text="AI can make mistakes. Check important info." hasSpacer={true} />
+        </>
     );
 }
 

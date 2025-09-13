@@ -1,3 +1,4 @@
+import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { authenticateWithBiometrics } from "@/utils/auth";
@@ -13,13 +14,14 @@ export default function SignInScreen() {
     await authenticateWithBiometrics();
   };
 
+  /*
   const handleVipLogin = () => {
     logInAsVip();
   };
+  */
 
   return (
     <View style={styles.content}>
-      {/* Header */}
       <View style={styles.header}>
         <View style={styles.brandingContainer}>
           <ThemedView style={styles.logoContainer} type="dusked">
@@ -34,7 +36,6 @@ export default function SignInScreen() {
         </View>
       </View>
 
-      {/* Welcome Card */}
       <ThemedView style={styles.welcomeCard}>
         <View style={styles.cardContent}>
           <View style={styles.welcomeSection}>
@@ -49,7 +50,6 @@ export default function SignInScreen() {
             </ThemedText>
           </View>
 
-          {/* Login Options */}
           <View style={styles.loginOptions}>
             {/* Biometric Login */}
             <TouchableOpacity style={styles.primaryLoginButton} onPress={handleLogin}>
@@ -65,7 +65,9 @@ export default function SignInScreen() {
               </View>
             </TouchableOpacity>
 
-            {/* Future Provider Login
+            {/*
+              --Future Provider Login--
+
               <TouchableOpacity
                 style={[styles.secondaryLoginButton, styles.vipButton]}
                 onPress={handleVipLogin}
@@ -81,6 +83,7 @@ export default function SignInScreen() {
                   <MaterialIcons name="arrow-forward" size={20} color="#f59e0b" />
                 </View>
               </TouchableOpacity>
+
               */}
           </View>
         </View>
@@ -98,15 +101,7 @@ export default function SignInScreen() {
         </Link>
       </View>
 
-      {/* Footer */}
-      <View style={styles.footer}>
-        <ThemedText style={styles.footerText} type="greyed">
-          Your health data is secure and private
-        </ThemedText>
-      </View>
-
-      {/* Bottom Spacer */}
-      <View style={styles.bottomSpacer} />
+      <Footer text="Your health data is secure and private" />
     </View>
   );
 }
@@ -319,18 +314,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     marginLeft: 8,
-  },
-  footer: {
-    paddingHorizontal: 24,
-    alignItems: 'center',
-  },
-  footerText: {
-    fontSize: 12,
-    fontWeight: '400',
-    textAlign: 'center',
-    fontStyle: 'italic',
-  },
-  bottomSpacer: {
-    height: 40,
   },
 });

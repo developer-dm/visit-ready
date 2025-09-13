@@ -1,3 +1,4 @@
+import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -7,24 +8,21 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 export default function PrepInitialScreen() {
     return (
         <View style={styles.container}>
-            {/* Main Content */}
             <View style={styles.content}>
-                {/* Hero Section */}
-                <View style={styles.heroSection}>
+                {/* Info */}
+                <View style={styles.infoSection}>
                     <ThemedView style={styles.logoContainer}>
                         <Image source={require("@/assets/images/favicon.png")} style={styles.icon} />
                     </ThemedView>
-
                     <ThemedText style={styles.appTitle} type="whitened">
                         Visit Ready
                     </ThemedText>
-
                     <ThemedText style={styles.tagline} type="greyed">
                         Make the most of every medical visit
                     </ThemedText>
                 </View>
 
-                {/* Features Section */}
+                {/* Features */}
                 <View style={styles.featuresSection}>
                     <View style={styles.featureItem}>
                         <ThemedView style={styles.featureIconContainer} type="dusked">
@@ -69,8 +67,8 @@ export default function PrepInitialScreen() {
                     </View>
                 </View>
 
-                {/* Start Section */}
-                <View style={styles.ctaSection}>
+                {/* Start */}
+                <View style={styles.startSection}>
                     <Link asChild push href="/onboarding/form">
                         <TouchableOpacity style={styles.primaryButton}>
                             <Text style={styles.primaryButtonText}>Get Started</Text>
@@ -80,9 +78,7 @@ export default function PrepInitialScreen() {
                         </TouchableOpacity>
                     </Link>
 
-                    <ThemedText style={styles.ctaSubtext} type="greyed">
-                        Setup takes less than 2 minutes
-                    </ThemedText>
+                    <Footer text="Setup takes less than 2 minutes" hasSpacer={true} />
                 </View>
             </View>
         </View>
@@ -100,7 +96,7 @@ const styles = StyleSheet.create({
         paddingBottom: 40,
         justifyContent: 'space-between',
     },
-    heroSection: {
+    infoSection: {
         alignItems: 'center',
         paddingTop: 40,
     },
@@ -174,7 +170,7 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         lineHeight: 20,
     },
-    ctaSection: {
+    startSection: {
         alignItems: 'center',
         paddingBottom: 20,
     },
@@ -195,6 +191,7 @@ const styles = StyleSheet.create({
         shadowRadius: 16,
         minWidth: 200,
         minHeight: 60,
+        marginBottom: 16,
     },
     primaryButtonText: {
         fontSize: 18,
@@ -209,11 +206,5 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff33',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    ctaSubtext: {
-        fontSize: 14,
-        fontWeight: '400',
-        textAlign: 'center',
-        marginTop: 16,
     },
 });

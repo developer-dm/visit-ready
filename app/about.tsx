@@ -1,5 +1,6 @@
 import { expo } from "@/app.json";
 import { Button } from "@/components/Button";
+import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -142,8 +143,7 @@ export default function AboutScreen() {
           </ThemedText>
         </View>
 
-        {/* Bottom Spacer */}
-        <View style={styles.bottomSpacer} />
+        <Footer hasSpacer={true} />
       </ScrollView>
     </>
   );
@@ -351,8 +351,5 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     textAlign: 'left',
     lineHeight: 20,
-  },
-  bottomSpacer: {
-    height: 40,
   },
 });

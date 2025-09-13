@@ -77,7 +77,6 @@ export default function OnboardingFirstScreen() {
                 <ThemedText style={styles.welcomeSubtitle} type="greyed">We'll use this information to customize your appointment preparation</ThemedText>
               </View>
 
-              {/* Form Part */}
               <View style={styles.formFields}>
                 <View style={styles.fieldGroup}>
                   <ThemedText type="overheader">First Name</ThemedText>
@@ -132,11 +131,8 @@ export default function OnboardingFirstScreen() {
               </View>
             </TouchableOpacity>
 
-            <Footer type="modal" />
+            <Footer hasSpacer={true} />
           </View>
-
-          {/* Bottom Spacer */}
-          <View style={styles.bottomSpacer} />
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAwareScrollView>
@@ -284,8 +280,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff33',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  bottomSpacer: {
-    height: 40,
   },
 });

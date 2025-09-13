@@ -130,12 +130,9 @@ export default function ModalScreen() {
                 <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
               </View>
             </TouchableOpacity>
-
-            <Footer type="modal" />
           </View>
-
-          {/* Bottom Spacer */}
-          <View style={styles.bottomSpacer} />
+          
+          <Footer hasSpacer={true} />
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAwareScrollView>
@@ -285,8 +282,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff33',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  bottomSpacer: {
-    height: 40,
   },
 });

@@ -148,11 +148,8 @@ export default function OnboardingFinalScreen() {
             </TouchableOpacity>
           </View>
 
-          <Footer type="modal" text="Your responses are stored securely on your device" />
+          <Footer text="Your responses are stored securely on your device" hasSpacer={true} />
         </View>
-
-        {/* Bottom Spacer */}
-        <View style={styles.bottomSpacer} />
       </View>
     </ScrollView>
   );
@@ -366,8 +363,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff33',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  bottomSpacer: {
-    height: 40,
   },
 });

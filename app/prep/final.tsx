@@ -132,12 +132,9 @@ export default function PrepFinalScreen() {
                             </View>
                         </TouchableOpacity>
                     </View>
-
-                    <Footer type="modal" />
                 </View>
 
-                {/* Bottom Spacer */}
-                <View style={styles.bottomSpacer} />
+                <Footer hasSpacer={true} />
             </View>
         </ScrollView>
     );
@@ -353,9 +350,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff33',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    bottomSpacer: {
-        height: 40,
     },
 });
 

@@ -188,10 +188,8 @@ export default function OnboardingSecondScreen() {
                             </TouchableOpacity>
                         </View>
 
-                        <Footer type="modal" />
+                        <Footer hasSpacer={true} />
                     </View>
-
-                    <View style={styles.bottomSpacer} />
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAwareScrollView>
@@ -371,9 +369,5 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff33',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-
-    bottomSpacer: {
-        height: 40,
     },
 });

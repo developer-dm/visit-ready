@@ -140,7 +140,7 @@ export default function HistoryScreen() {
                     </ThemedText>
                 </View>
             </ScrollView>
-            <Footer />
+            <Footer type="absolute" />
         </>
     );
 }
