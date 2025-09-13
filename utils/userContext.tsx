@@ -11,6 +11,12 @@ type SignupContextType = {
     setDOB: (date: Date) => void;
     sex: string | null;
     setSex: Dispatch<SetStateAction<string | null>>;
+    motivation: string | null;
+    setMotivation: Dispatch<SetStateAction<string | null>>;
+    confidence: string | null;
+    setConfidence: Dispatch<SetStateAction<string | null>>;
+    anxiety: string | null;
+    setAnxienty: Dispatch<SetStateAction<string | null>>;
     acceptedTerms: boolean;
     setAcceptedTerms: (accepted: boolean) => void;
 };
@@ -54,6 +60,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [lastName, setLastName] = useState("");
     const [DOB, setDOB] = useState<Date | null>(null);
     const [sex, setSex] = useState<string | null>(null);
+    const [motivation, setMotivation] = useState<string | null>(null);
+    const [confidence, setConfidence] = useState<string | null>(null);
+    const [anxiety, setAnxienty] = useState<string | null>(null);
     const [acceptedTerms, setAcceptedTerms] = useState(false);
 
     //prep state
@@ -74,6 +83,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setLastName("");
         setDOB(null);
         setSex(null);
+        setMotivation(null);
+        setConfidence(null);
+        setAnxienty(null);
         setAcceptedTerms(false);
 
         //prep reset
@@ -101,6 +113,12 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                     setDOB,
                     sex,
                     setSex,
+                    motivation,
+                    setMotivation,
+                    confidence,
+                    setConfidence,
+                    anxiety,
+                    setAnxienty,
                     acceptedTerms,
                     setAcceptedTerms,
                 },

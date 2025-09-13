@@ -1,4 +1,5 @@
 import { Dropdown } from "@/components/Dropdown";
+import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -13,8 +14,9 @@ export default function PrepSecondScreen() {
     const router = useRouter();
     const { prep } = useUser();
 
-    const [open, setOpen] = useState(false);
-    const [items, setItems] = useState([
+    // Dropdown states
+    const [concernStartOpen, setConcernStartOpen] = useState(false);
+    const [concernStartItems] = useState([
         { label: 'Today', value: 'today' },
         { label: 'Within the Past Week', value: 'past-week' },
         { label: 'Within the Past Month', value: 'past-month' },
@@ -26,8 +28,8 @@ export default function PrepSecondScreen() {
         { label: 'Other', value: 'other' },
     ]);
 
-    const [openSecond, setOpenSecond] = useState(false);
-    const [itemsSecond, setItemsSecond] = useState([
+    const [concernSeverityOpen, setConcerSeverityOpen] = useState(false);
+    const [concernSeverityItems] = useState([
         { label: '1 - Very Mild', value: '1' },
         { label: '2', value: '2' },
         { label: '3', value: '3' },
@@ -41,29 +43,19 @@ export default function PrepSecondScreen() {
     ]);
 
     const handleNext = () => {
-        if (prep.mainConcern && prep.concernStart && prep.concernSeverity) {
+        if (
+            prep.mainConcern
+            && prep.concernStart
+            && prep.concernSeverity
+        ) {
             router.push("/prep/third")
         } else {
-            Alert.alert("Error", "Invalid answer");
+            Alert.alert("Error", "Please answer all questions.");
         }
     };
 
     const handleBack = () => {
         router.back();
-    };
-
-    const handleOpenFirst = () => {
-        setOpen(prev => {
-            if (!prev) setOpenSecond(false);
-            return !prev;
-        });
-    };
-
-    const handleOpenSecond = () => {
-        setOpenSecond(prev => {
-            if (!prev) setOpen(false);
-            return !prev;
-        });
     };
 
     return (
@@ -72,10 +64,15 @@ export default function PrepSecondScreen() {
             contentContainerStyle={styles.scrollContainer}
             keyboardShouldPersistTaps="never"
             showsVerticalScrollIndicator={false}
+            enableResetScrollToCoords={false}
+            extraScrollHeight={5}
         >
-            <TouchableWithoutFeedback onPress={() => { setOpen(false), setOpenSecond(false) }}>
-                <View style={{ flex: 1 }}>
-                    {/* Header Section */}
+            <TouchableWithoutFeedback onPress={() => {
+                setConcernStartOpen(false);
+                setConcerSeverityOpen(false);
+            }}>
+                <View style={styles.content}>
+                    {/* Header */}
                     <View style={styles.header}>
                         <View style={styles.progressContainer}>
                             <View style={styles.progressBar}>
@@ -84,18 +81,10 @@ export default function PrepSecondScreen() {
                                 <View style={styles.progressEmpty} />
                                 <View style={styles.progressEmpty} />
                             </View>
-                            <ThemedText style={styles.progressText} type="greyed">
-                                Step 2 of 4
-                            </ThemedText>
+                            <ThemedText style={styles.progressText} type="greyed">Step 2 of 4</ThemedText>
                         </View>
-
-                        <ThemedText style={styles.pageTitle} type="whitened">
-                            Health Concerns
-                        </ThemedText>
-
-                        <ThemedText style={styles.pageSubtitle} type="greyed">
-                            Tell us about your main health concerns for this visit
-                        </ThemedText>
+                        <ThemedText style={styles.pageTitle} type="whitened">Health Concerns</ThemedText>
+                        <ThemedText style={styles.pageSubtitle} type="greyed">Tell us about your main health concerns for this visit</ThemedText>
                     </View>
 
                     {/* Form Card */}
@@ -106,20 +95,14 @@ export default function PrepSecondScreen() {
                                 <ThemedView style={styles.welcomeIconContainer} type="dusked">
                                     <MaterialIcons name="favorite" size={32} color="#3b82f6" />
                                 </ThemedView>
-                                <ThemedText style={styles.welcomeTitle} type="whitened">
-                                    Your Health Focus
-                                </ThemedText>
-                                <ThemedText style={styles.welcomeSubtitle} type="greyed">
-                                    Help us understand your current health concerns and symptoms
-                                </ThemedText>
+                                <ThemedText style={styles.welcomeTitle} type="whitened">Your Health Focus</ThemedText>
+                                <ThemedText style={styles.welcomeSubtitle} type="greyed">Help us understand your current health concerns and symptoms</ThemedText>
                             </View>
 
                             {/* Form Fields */}
                             <View style={styles.formFields}>
                                 <View style={styles.fieldGroup}>
-                                    <ThemedText style={styles.fieldLabel} type="whitened">
-                                        What's the main health issue or concern you'd like to discuss?
-                                    </ThemedText>
+                                    <ThemedText type="overheader">What's the main health issue or concern you'd like to discuss?</ThemedText>
                                     <Textbox
                                         placeholder="e.g. headaches, chest pain, fatigue"
                                         onChangeText={prep.setMainConcern}
@@ -129,39 +112,43 @@ export default function PrepSecondScreen() {
 
                                 <View style={[styles.fieldGroup,
                                 {
-                                    zIndex: open ? 4000 : 3000,
-                                    elevation: open ? 4000 : 3000,
-                                    position: 'relative',
+                                    zIndex: concernStartOpen ? 4000 : 3000,
+                                    elevation: concernStartOpen ? 4000 : 3000,
                                 }]}>
-                                    <ThemedText style={styles.fieldLabel} type="whitened">
+                                    <ThemedText type="overheader">
                                         When did this start?
                                     </ThemedText>
                                     <Dropdown
-                                        open={open}
+                                        open={concernStartOpen}
                                         value={prep.concernStart}
-                                        items={items}
-                                        setOpen={handleOpenFirst}
+                                        items={concernStartItems}
+                                        setOpen={(open) => {
+                                            setConcernStartOpen(open);
+                                            setConcerSeverityOpen(false);
+                                        }}
                                         setValue={prep.setConcernStart}
-                                        setItems={setItems}
+                                        setItems={() => { }}
                                     />
                                 </View>
 
                                 <View style={[styles.fieldGroup,
                                 {
-                                    zIndex: open ? 3000 : 4000,
-                                    elevation: open ? 3000 : 4000,
-                                    position: 'relative',
+                                    zIndex: concernSeverityOpen ? 4000 : 3000,
+                                    elevation: concernSeverityOpen ? 4000 : 3000,
                                 }]}>
-                                    <ThemedText style={styles.fieldLabel} type="whitened">
+                                    <ThemedText type="overheader">
                                         How would you rate the severity from 1-10?
                                     </ThemedText>
                                     <Dropdown
-                                        open={openSecond}
+                                        open={concernSeverityOpen}
                                         value={prep.concernSeverity}
-                                        items={itemsSecond}
-                                        setOpen={handleOpenSecond}
+                                        items={concernSeverityItems}
+                                        setOpen={(open) => {
+                                            setConcerSeverityOpen(open);
+                                            setConcernStartOpen(false);
+                                        }}
                                         setValue={prep.setConcernSeverity}
-                                        setItems={setItemsSecond}
+                                        setItems={() => { }}
                                     />
                                 </View>
                             </View>
@@ -184,9 +171,7 @@ export default function PrepSecondScreen() {
                             </TouchableOpacity>
                         </View>
 
-                        <ThemedText style={styles.privacyText} type="greyed">
-                            We'll use this information to generate personalized questions
-                        </ThemedText>
+                        <Footer type="modal" />
                     </View>
 
                     {/* Bottom Spacer */}
@@ -199,6 +184,9 @@ export default function PrepSecondScreen() {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+    },
+    content: {
         flex: 1,
     },
     scrollContainer: {
@@ -299,11 +287,6 @@ const styles = StyleSheet.create({
     fieldGroup: {
         width: '100%',
     },
-    fieldLabel: {
-        fontSize: 16,
-        fontWeight: '600',
-        marginBottom: 8,
-    },
     navigationSection: {
         paddingHorizontal: 24,
         alignItems: 'center',
@@ -367,12 +350,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    privacyText: {
-        fontSize: 12,
-        fontWeight: '400',
-        textAlign: 'center',
-        fontStyle: 'italic',
-    },
+
     bottomSpacer: {
         height: 40,
     },

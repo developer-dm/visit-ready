@@ -1,23 +1,41 @@
+import { DatePicker } from "@/components/DatePicker";
+import { Dropdown } from "@/components/Dropdown";
+import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
-import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
+import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function OnboardingFirstScreen() {
   const router = useRouter()
   const { signup } = useUser();
 
+  // Dropdown state
+  const [sexOpen, setSexOpen] = useState(false);
+  const [sexItems] = useState([
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
+    { label: 'Other', value: 'other' },
+  ]);
+
   const handleNext = () => {
     Keyboard.dismiss();
+    setSexOpen(false);
 
-    if (signup.firstName && signup.lastName) {
+    if (
+      signup.firstName
+      && signup.lastName
+      && signup.DOB
+      && signup.sex
+    ) {
       router.push("/onboarding/form/second");
     } else {
-      Alert.alert("Error", "Invalid first or last name.");
+      Alert.alert("Error", "Please answer all questions.");
     };
   };
 
@@ -27,94 +45,109 @@ export default function OnboardingFirstScreen() {
       contentContainerStyle={styles.scrollContainer}
       keyboardShouldPersistTaps="never"
       showsVerticalScrollIndicator={false}
+      enableResetScrollToCoords={false}
+      extraScrollHeight={5}
     >
-      {/* Header Section */}
-      <View style={styles.header}>
-        <View style={styles.progressContainer}>
-          <View style={styles.progressBar}>
-            <View style={styles.progressFill} />
-            <View style={styles.progressEmpty} />
-            <View style={styles.progressEmpty} />
-          </View>
-          <ThemedText style={styles.progressText} type="greyed">
-            Step 1 of 3
-          </ThemedText>
-        </View>
-
-        <ThemedText style={styles.pageTitle} type="whitened">
-          Let's Get Started
-        </ThemedText>
-
-        <ThemedText style={styles.pageSubtitle} type="greyed">
-          Tell us a bit about yourself to personalize your experience
-        </ThemedText>
-      </View>
-
-      {/* Form Card */}
-      <ThemedView style={styles.formCard}>
-        <View style={styles.cardContent}>
-          {/* Welcome Message */}
-          <View style={styles.welcomeSection}>
-            <ThemedView style={styles.welcomeIconContainer} type="dusked">
-              <MaterialIcons name="person-add" size={32} color="#3b82f6" />
-            </ThemedView>
-            <ThemedText style={styles.welcomeTitle} type="whitened">
-              Create Your Profile
-            </ThemedText>
-            <ThemedText style={styles.welcomeSubtitle} type="greyed">
-              We'll use this information to customize your appointment preparation
-            </ThemedText>
-          </View>
-
-          {/* Form Fields */}
-          <View style={styles.formFields}>
-            <View style={styles.fieldGroup}>
-              <ThemedText style={styles.fieldLabel} type="whitened">
-                First Name
-              </ThemedText>
-              <Textbox
-                placeholder="Enter your first name"
-                onChangeText={signup.setFirstName}
-                value={signup.firstName}
-              />
+      <TouchableWithoutFeedback onPress={() => {
+        setSexOpen(false);
+      }}>
+        <View style={styles.content}>
+          {/* Header */}
+          <View style={styles.header}>
+            <View style={styles.progressContainer}>
+              <View style={styles.progressBar}>
+                <View style={styles.progressFill} />
+                <View style={styles.progressEmpty} />
+                <View style={styles.progressEmpty} />
+              </View>
+              <ThemedText style={styles.progressText} type="greyed">Step 1 of 3</ThemedText>
             </View>
+            <ThemedText style={styles.pageTitle} type="whitened">Let's Get Started</ThemedText>
+            <ThemedText style={styles.pageSubtitle} type="greyed">Tell us a bit about yourself to personalize your experience</ThemedText>
+          </View>
 
-            <View style={styles.fieldGroup}>
-              <ThemedText style={styles.fieldLabel} type="whitened">
-                Last Name
-              </ThemedText>
-              <Textbox
-                placeholder="Enter your last name"
-                onChangeText={signup.setLastName}
-                value={signup.lastName}
-              />
+          {/* Form */}
+          <ThemedView style={styles.formCard}>
+            <View style={styles.cardContent}>
+              <View style={styles.welcomeSection}>
+                <ThemedView style={styles.welcomeIconContainer} type="dusked">
+                  <MaterialIcons name="person-add" size={32} color="#3b82f6" />
+                </ThemedView>
+                <ThemedText style={styles.welcomeTitle} type="whitened">Create Your Profile</ThemedText>
+                <ThemedText style={styles.welcomeSubtitle} type="greyed">We'll use this information to customize your appointment preparation</ThemedText>
+              </View>
+
+              {/* Form Part */}
+              <View style={styles.formFields}>
+                <View style={styles.fieldGroup}>
+                  <ThemedText type="overheader">First Name</ThemedText>
+                  <Textbox
+                    placeholder="Enter your first name"
+                    onChangeText={signup.setFirstName}
+                    value={signup.firstName}
+                  />
+                </View>
+
+                <View style={styles.fieldGroup}>
+                  <ThemedText type="overheader">Last Name</ThemedText>
+                  <Textbox
+                    placeholder="Enter your last name"
+                    onChangeText={signup.setLastName}
+                    value={signup.lastName}
+                  />
+                </View>
+
+                <View style={styles.fieldGroup}>
+                  <ThemedText type="overheader">Date of Birth</ThemedText>
+                  <DatePicker
+                    mode="date"
+                    display="spinner"
+                    value={signup.DOB}
+                    setValue={signup.setDOB}
+                  />
+                </View>
+
+                <View style={styles.fieldGroup}>
+                  <ThemedText type="overheader">Sex at Birth</ThemedText>
+                  <Dropdown
+                    open={sexOpen}
+                    value={signup.sex}
+                    items={sexItems}
+                    setOpen={setSexOpen}
+                    setValue={signup.setSex}
+                    setItems={() => { }}
+                    placeholder="Select your biological sex"
+                  />
+                </View>
+              </View>
             </View>
+          </ThemedView>
+
+          {/* Navigation */}
+          <View style={styles.navigationSection}>
+            <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
+              <Text style={styles.primaryButtonText}>Continue</Text>
+              <View style={styles.buttonIcon}>
+                <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
+              </View>
+            </TouchableOpacity>
+
+            <Footer type="modal" />
           </View>
+
+          {/* Bottom Spacer */}
+          <View style={styles.bottomSpacer} />
         </View>
-      </ThemedView>
-
-      {/* Action Section */}
-      <View style={styles.actionSection}>
-        <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
-          <Text style={styles.primaryButtonText}>Continue</Text>
-          <View style={styles.buttonIcon}>
-            <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
-          </View>
-        </TouchableOpacity>
-
-        <ThemedText style={styles.helpText} type="greyed">
-          Your information is stored securely on your device
-        </ThemedText>
-      </View>
-
-      {/* Bottom Spacer */}
-      <View style={styles.bottomSpacer} />
+      </TouchableWithoutFeedback>
     </KeyboardAwareScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  content: {
     flex: 1,
   },
   scrollContainer: {
@@ -178,6 +211,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 20,
+    zIndex: 1000,
+    elevation: 1000,
   },
   cardContent: {
     padding: 24,
@@ -213,12 +248,7 @@ const styles = StyleSheet.create({
   fieldGroup: {
     width: '100%',
   },
-  fieldLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  actionSection: {
+  navigationSection: {
     paddingHorizontal: 24,
     alignItems: 'center',
   },
@@ -254,12 +284,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff33',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  helpText: {
-    fontSize: 12,
-    fontWeight: '400',
-    textAlign: 'center',
-    fontStyle: 'italic',
   },
   bottomSpacer: {
     height: 40,

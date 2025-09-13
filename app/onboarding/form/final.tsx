@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useAuthStore } from "@/utils/authStore";
@@ -11,14 +12,6 @@ import { useRouter } from "expo-router";
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function OnboardingFinalScreen() {
-  const labels: Record<string, string> = {
-    firstName: "First Name",
-    lastName: "Last Name",
-    DOB: "Date of Birth",
-    sex: "Sex",
-    acceptedTerms: "Accepted Terms",
-  };
-  
   const router = useRouter();
   const { completeOnboarding } = useAuthStore();
   const { addSignupData } = useDataStore();
@@ -30,7 +23,7 @@ export default function OnboardingFinalScreen() {
       completeOnboarding();
       clearUserContext();
     } else {
-      Alert.alert("Error", "Please accept the terms and conditions.");
+      Alert.alert("Error", "Please accept the agreement.");
     }
   };
 
@@ -57,18 +50,10 @@ export default function OnboardingFinalScreen() {
               <View style={styles.progressFill} />
               <View style={styles.progressFill} />
             </View>
-            <ThemedText style={styles.progressText} type="greyed">
-              Step 3 of 3
-            </ThemedText>
+            <ThemedText style={styles.progressText} type="greyed">Step 3 of 3</ThemedText>
           </View>
-
-          <ThemedText style={styles.pageTitle} type="whitened">
-            Review & Confirm
-          </ThemedText>
-
-          <ThemedText style={styles.pageSubtitle} type="greyed">
-            Please review your information and accept the terms to continue
-          </ThemedText>
+          <ThemedText style={styles.pageTitle} type="whitened">Review & Confirm</ThemedText>
+          <ThemedText style={styles.pageSubtitle} type="greyed">Please review your information and accept the terms to continue</ThemedText>
         </View>
 
         {/* Review Card */}
@@ -79,12 +64,8 @@ export default function OnboardingFinalScreen() {
               <ThemedView style={styles.infoIconContainer} type="dusked">
                 <MaterialIcons name="check-circle" size={24} color="#10b981" />
               </ThemedView>
-              <ThemedText style={styles.infoTitle} type="whitened">
-                Your Information
-              </ThemedText>
-              <ThemedText style={styles.infoSubtitle} type="greyed">
-                Review the details you've provided below
-              </ThemedText>
+              <ThemedText style={styles.infoTitle} type="whitened">Your Information</ThemedText>
+              <ThemedText style={styles.infoSubtitle} type="greyed">Review the details you've provided below</ThemedText>
             </View>
 
             {/* User Details */}
@@ -97,19 +78,21 @@ export default function OnboardingFinalScreen() {
                   return (
                     <ThemedView key={key} style={styles.detailItem}>
                       <ThemedText style={styles.detailLabel} type="greyed">
-                        {labels[key] || key}
+                        {DataFormatterService.toReadableString(key)}
                       </ThemedText>
                       <ThemedText style={styles.detailValue} type="whitened">
-                        {DataFormatterService.toReadableString(value)}
+                        {
+                          ["confidence", "anxiety"].includes(key)
+                            ? DataFormatterService.toReadableString(value, key as "confidence" | "anxiety")
+                            : DataFormatterService.toReadableString(value)
+                        }
                       </ThemedText>
                     </ThemedView>
                   );
                 })
               ) : (
                 <View style={styles.noDataContainer}>
-                  <ThemedText style={styles.noDataText} type="greyed">
-                    No information available
-                  </ThemedText>
+                  <ThemedText style={styles.noDataText} type="greyed">No information available</ThemedText>
                 </View>
               )}
             </View>
@@ -131,14 +114,7 @@ export default function OnboardingFinalScreen() {
                 />
                 <View style={styles.termsTextContainer}>
                   <ThemedText style={styles.termsText} type="whitened">
-                    I have read and agree to the{" "}
-                    <ThemedText style={styles.termsLink} lightColor='#3b82f6' darkColor='#60a5fa'>
-                      Terms and Conditions
-                    </ThemedText >
-                    {" "}and{" "}
-                    <ThemedText style={styles.termsLink} lightColor='#3b82f6' darkColor='#60a5fa'>
-                      Privacy Policy
-                    </ThemedText>
+                    I agree that my anonymized app activity can be collected for research and app enhancement.
                   </ThemedText>
                 </View>
               </Button>
@@ -146,7 +122,7 @@ export default function OnboardingFinalScreen() {
           </View>
         </ThemedView>
 
-        {/* Navigation Section */}
+        {/* Navigation */}
         <View style={styles.navigationSection}>
           <View style={styles.buttonRow}>
             <TouchableOpacity style={styles.backButton} onPress={handleBack}>
@@ -172,9 +148,7 @@ export default function OnboardingFinalScreen() {
             </TouchableOpacity>
           </View>
 
-          <ThemedText style={styles.privacyText} type="greyed">
-            Your information is stored securely on your device
-          </ThemedText>
+          <Footer type="modal" text="Your responses are stored securely on your device" />
         </View>
 
         {/* Bottom Spacer */}
@@ -318,7 +292,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 20,
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   termsLink: {
     fontWeight: '500',
@@ -392,12 +366,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff33',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  privacyText: {
-    fontSize: 12,
-    fontWeight: '400',
-    textAlign: 'center',
-    fontStyle: 'italic',
   },
   bottomSpacer: {
     height: 40,

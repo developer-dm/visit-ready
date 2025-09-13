@@ -4,7 +4,7 @@ import { StyleSheet, Text, type TextProps } from "react-native";
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: "custom" | "whitened" | "greyed" | "dusked" | "overhead" | "link" | "error" | "footer";
+  type?: "custom" | "whitened" | "greyed" | "dusked" | "overheader" | "subheader" | "link" | "error";
 };
 
 const typeColors: Record<
@@ -15,10 +15,10 @@ const typeColors: Record<
   whitened: { light: "#212e43ff", dark: "#ffffffff" },
   greyed: { light: "#64748b", dark: "#858585ff" },
   dusked: { light: '#94a3b8', dark: '#56565aff' },
-  overhead: undefined,
+  overheader: { light: "#212e43ff", dark: "#ffffffff" },
+  subheader: { light: "#64748b", dark: "#858585ff" },
   link: undefined,
   error: undefined,
-  footer: undefined,
 };
 
 export function ThemedText({
@@ -35,9 +35,9 @@ export function ThemedText({
     <Text
       style={[
         { color },
-        type === "overhead" ? styles.overhead : undefined,
+        type === "overheader" ? styles.overheader : undefined,
+        type === "subheader" ? styles.subheader : undefined,
         type === "link" ? styles.link : undefined,
-        type === "footer" ? styles.footer : undefined,
         type === "error" ? styles.error : undefined,
         style,
       ]}
@@ -47,8 +47,16 @@ export function ThemedText({
 }
 
 const styles = StyleSheet.create({
-  overhead: {
-
+  overheader: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  subheader: {
+    fontSize: 13,
+    fontWeight: '400',
+    marginBottom: 12,
+    lineHeight: 18,
   },
   link: {
     fontSize: 16,
@@ -57,14 +65,5 @@ const styles = StyleSheet.create({
   error: {
     fontSize: 12,
     color: "#ff0000ff",
-  },
-  footer: {
-    width: "100%",
-    fontSize: 5,
-    fontFamily: "Sans-serif",
-    fontWeight: "medium",
-    textAlign: "center",
-    position: "absolute",
-    bottom: 3,
   },
 });

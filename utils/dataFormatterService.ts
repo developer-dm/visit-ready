@@ -1,21 +1,37 @@
-import { FormatDateString } from "@/components/DatePicker";
+import { FormatDateString } from '@/components/DatePicker';
 
-interface LabelValuePair {
-  label: string;
-  value: string;
-}
+export const DataFormatterService = {
+  // All conversions are in lower case
+  labels: {
+    'firstname': 'First Name',
+    'lastname': 'Last Name',
+    'dob': 'Date of Birth',
+    'sex': 'Sex',
+    'motivation': 'Reason for Use',
+    'confidence': 'Confidence',
+    'anxiety': 'Anxiety',
 
-export class DataFormatterService {
-  // Mapping objects for quick lookups
-  private static readonly appointmentTypes: Record<string, string> = {
+    'id': "Appointment ID",
+    'appointmenttype': 'Appointment Type',
+    'appointmentdate': 'Appointment Date',
+    'provider': 'Provider',
+    'mainconcern': 'Main Concern',
+    'concernstart': 'Concern Start Date',
+    'concernseverity': 'Severity',
+    'visitgoal': 'Appointment Goal',
+    'specificworries': 'Specific Worries',
+    'miscdiscussion': 'Other Information',
+  } as Record<string, string>,
+
+  appointmentTypes: {
     'new-patient': 'New Patient',
     'follow-up': 'Follow-Up',
     'annual-physical': 'Annual Physical',
     'urgent-concern': 'Urgent Concern',
     'other': 'Other',
-  };
+  } as Record<string, string>,
 
-  private static readonly timeFrames: Record<string, string> = {
+  timeFrames: {
     'today': 'Today',
     'past-week': 'Within the Past Week',
     'past-month': 'Within the Past Month',
@@ -25,9 +41,9 @@ export class DataFormatterService {
     'chronic': 'Ongoing / Chronic',
     'unsure': 'Unsure',
     'other': 'Other',
-  };
+  } as Record<string, string>,
 
-  private static readonly painLevels: Record<string, string> = {
+  painLevels: {
     '1': '1 - Very Mild',
     '2': '2',
     '3': '3',
@@ -38,112 +54,100 @@ export class DataFormatterService {
     '8': '8',
     '9': '9',
     '10': '10 - Severe / Worst Pain',
-  };
+  } as Record<string, string>,
 
-  private static readonly sex: Record<string, string> = {
+  sex: {
     'male': 'Male',
     'female': 'Female',
     'other': 'Other',
-  };
+  } as Record<string, string>,
 
-  // Converts any input data to a readable string format
-  static toReadableString(
+  motivation: {
+    'prepared': 'Feel more prepared',
+    'anxiety': 'Reduce anxiety',
+    'time': 'Save time during appointments',
+    'other': 'Other',
+  } as Record<string, string>,
+
+  confidence: {
+    '1': '1 - Not confident',
+    '2': '2',
+    '3': '3',
+    '4': '4',
+    '5': '5 - Very confident',
+  } as Record<string, string>,
+
+  anxiety: {
+    '1': '1 - Very anxious',
+    '2': '2',
+    '3': '3',
+    '4': '4',
+    '5': '5 - Not anxious',
+  } as Record<string, string>,
+
+
+  toReadableString(
     input: any,
-    type?: 'date' | 'appointment-type' | 'time-frame' | 'pain-level' | 'sex'
+    type?: 'date' | 'appointment-type' | 'time-frame' | 'pain-level' | 'sex' | 'label' | 'motivation' | 'confidence' | 'anxiety',
   ): string {
-    // Handle null, undefined, or empty string cases
     if (input === null || input === undefined || input === '') {
-      return 'Not Provided';
+      return 'N/A';
     }
 
-    // Handle dates
     if (input instanceof Date || type === 'date') {
       try {
         return FormatDateString(input);
-      } catch (error) {
-        return 'Not Provided';
+      } catch {
+        return 'N/A';
       }
     }
 
-    // Convert input to string for mapping lookups
     const inputString = String(input).toLowerCase();
 
-    // Handle specific type conversions
     switch (type) {
       case 'appointment-type':
-        return this.appointmentTypes[inputString] || 'Not Provided';
+        return this.appointmentTypes[inputString] || 'N/A';
       case 'time-frame':
-        return this.timeFrames[inputString] || 'Not Provided';
+        return this.timeFrames[inputString] || 'N/A';
       case 'pain-level':
-        return this.painLevels[inputString] || 'Not Provided';
+        return this.painLevels[inputString] || 'N/A';
       case 'sex':
-        return this.sex[inputString] || 'Not Provided';
+        return this.sex[inputString] || 'N/A';
+      case 'label':
+        return this.labels[inputString] || inputString;
+      case 'motivation':
+        return this.motivation[inputString] || 'N/A';
+      case 'confidence':
+        return this.confidence[inputString] || 'N/A';
+      case 'anxiety':
+        return this.anxiety[inputString] || 'N/A';
     }
 
-    // Auto-detect and convert based on value
     const autoDetected = this.autoDetectAndConvert(inputString);
-    if (autoDetected !== null) {
-      return autoDetected;
-    }
+    if (autoDetected !== null) return autoDetected;
 
-    // If it's already a readable string (not a mapped value), return as is
     const originalString = String(input);
-    if (originalString.trim() !== '') {
-      return originalString;
-    }
+    return originalString.trim() !== '' ? originalString : 'N/A';
+  },
 
-    return 'Not Provided';
-  }
-
-  private static autoDetectAndConvert(input: string): string | null {
-    // Check appointment types
-    if (this.appointmentTypes[input]) {
-      return this.appointmentTypes[input];
-    }
-
-    // Check time frames
-    if (this.timeFrames[input]) {
-      return this.timeFrames[input];
-    }
-
-    // Check pain levels
-    if (this.painLevels[input]) {
-      return this.painLevels[input];
-    }
-
-    // Check sex
-    if (this.sex[input]) {
-      return this.sex[input];
-    }
-
+  autoDetectAndConvert(input: string): string | null {
+    if (this.appointmentTypes[input]) return this.appointmentTypes[input];
+    if (this.timeFrames[input]) return this.timeFrames[input];
+    if (this.painLevels[input]) return this.painLevels[input];
+    if (this.sex[input]) return this.sex[input];
+    if (this.labels[input]) return this.labels[input];
+    if (this.motivation[input]) return this.motivation[input];
+    if (this.confidence[input]) return this.confidence[input];
+    if (this.anxiety[input]) return this.anxiety[input];
     return null;
-  }
-  static toReadableStrings(
+  },
+
+  toReadableStrings(
     inputs: any[],
-    type?: 'date' | 'appointment-type' | 'time-frame' | 'pain-level' | 'sex'
+    type?: 'date' | 'appointment-type' | 'time-frame' | 'pain-level' | 'sex' | 'label' | 'motivation' | 'confidence' | 'anxiety',
   ): string[] {
     return inputs.map(input => this.toReadableString(input, type));
-  }
-
-  static formatAppointmentType(value: any): string {
-    return this.toReadableString(value, 'appointment-type');
-  }
-
-  static formatTimeFrame(value: any): string {
-    return this.toReadableString(value, 'time-frame');
-  }
-
-  static formatPainLevel(value: any): string {
-    return this.toReadableString(value, 'pain-level');
-  }
-
-  static formatDate(date: any): string {
-    return this.toReadableString(date, 'date');
-  }
-
-  static formatSex(value: any): string {
-    return this.toReadableString(value, 'sex');
-  }
-}
+  },
+};
 
 export default DataFormatterService;

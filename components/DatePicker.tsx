@@ -20,7 +20,7 @@ export function FormatDateString(rawDate: Date) {
     let month = date.getMonth() + 1;
     let day = date.getDate();
 
-    return `${month}-${day}-${year}`
+    return `${month} / ${day} / ${year}`
 };
 
 export function DatePicker({
@@ -28,7 +28,7 @@ export function DatePicker({
     display = "default",
     value,
     setValue,
-    placeholderText = "mm-dd-yyyy",
+    placeholderText = "mm / dd / yyyy",
     ...otherProps
 }: DatePickerProps) {
     const [dateString, setDateString] = useState("");

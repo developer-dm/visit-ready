@@ -1,3 +1,4 @@
+import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import DataFormatterService from "@/utils/dataFormatterService";
@@ -7,18 +8,6 @@ import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function PrepFinalScreen() {
-    const labels: Record<string, string> = {
-        appointmentType: "Appointment Type",
-        appointmentDate: "Appointment Date",
-        provider: "Provider",
-        mainConcern: "Main Concern",
-        concernStart: "Concern Start Date",
-        concernSeverity: "Severity",
-        visitGoal: "Appointment Goal",
-        specificWorries: "Specific Worries",
-        miscDiscussion: "Other Information",
-    };
-
     const router = useRouter();
     const { prep } = useUser();
 
@@ -96,10 +85,14 @@ export default function PrepFinalScreen() {
                                 return (
                                     <ThemedView key={key} style={styles.detailItem}>
                                         <ThemedText style={styles.detailLabel} type="greyed">
-                                            {labels[key] || key}
+                                            {DataFormatterService.toReadableString(key)}
                                         </ThemedText>
                                         <ThemedText style={styles.detailValue} type="whitened">
-                                            {DataFormatterService.toReadableString(value)}
+                                            {
+                                                ["concernSeverity"].includes(key)
+                                                    ? DataFormatterService.toReadableString(value, key as "pain-level")
+                                                    : DataFormatterService.toReadableString(value)
+                                            }
                                         </ThemedText>
                                     </ThemedView>
                                 );
@@ -140,9 +133,7 @@ export default function PrepFinalScreen() {
                         </TouchableOpacity>
                     </View>
 
-                    <ThemedText style={styles.privacyText} type="greyed">
-                        Your information is stored securely on your device
-                    </ThemedText>
+                    <Footer type="modal" />
                 </View>
 
                 {/* Bottom Spacer */}
@@ -362,12 +353,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff33',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    privacyText: {
-        fontSize: 12,
-        fontWeight: '400',
-        textAlign: 'center',
-        fontStyle: 'italic',
     },
     bottomSpacer: {
         height: 40,

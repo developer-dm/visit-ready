@@ -19,7 +19,7 @@ export default function SignInScreen() {
 
   return (
     <View style={styles.content}>
-      {/* Header Section with Branding */}
+      {/* Header */}
       <View style={styles.header}>
         <View style={styles.brandingContainer}>
           <ThemedView style={styles.logoContainer} type="dusked">

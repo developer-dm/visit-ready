@@ -1,3 +1,4 @@
+import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -15,7 +16,7 @@ export default function PrepThirdScreen() {
         if (prep.visitGoal && prep.specificWorries) {
             router.push("/prep/final")
         } else {
-            Alert.alert("Error", "Invalid answer");
+            Alert.alert("Error", "Please answer all questions.");
         }
     };
 
@@ -29,8 +30,10 @@ export default function PrepThirdScreen() {
             contentContainerStyle={styles.scrollContainer}
             keyboardShouldPersistTaps="never"
             showsVerticalScrollIndicator={false}
+            enableResetScrollToCoords={false}
+            extraScrollHeight={5}
         >
-            <View style={{ flex: 1 }}>
+            <View style={styles.content}>
                 {/* Header Section */}
                 <View style={styles.header}>
                     <View style={styles.progressContainer}>
@@ -44,14 +47,8 @@ export default function PrepThirdScreen() {
                             Step 3 of 4
                         </ThemedText>
                     </View>
-
-                    <ThemedText style={styles.pageTitle} type="whitened">
-                        Visit Goals
-                    </ThemedText>
-
-                    <ThemedText style={styles.pageSubtitle} type="greyed">
-                        Help us understand what you hope to achieve from this appointment
-                    </ThemedText>
+                    <ThemedText style={styles.pageTitle} type="whitened">Visit Goals</ThemedText>
+                    <ThemedText style={styles.pageSubtitle} type="greyed">Help us understand what you hope to achieve from this appointment</ThemedText>
                 </View>
 
                 {/* Form Card */}
@@ -73,7 +70,7 @@ export default function PrepThirdScreen() {
                         {/* Form Fields */}
                         <View style={styles.formFields}>
                             <View style={styles.fieldGroup}>
-                                <ThemedText style={styles.fieldLabel} type="whitened">
+                                <ThemedText type="overheader">
                                     What do you hope to get out of this visit?
                                 </ThemedText>
                                 <Textbox
@@ -84,7 +81,7 @@ export default function PrepThirdScreen() {
                             </View>
 
                             <View style={styles.fieldGroup}>
-                                <ThemedText style={styles.fieldLabel} type="whitened">
+                                <ThemedText type="overheader">
                                     Do you have any specific worries?
                                 </ThemedText>
                                 <Textbox
@@ -95,7 +92,7 @@ export default function PrepThirdScreen() {
                             </View>
 
                             <View style={styles.fieldGroup}>
-                                <ThemedText style={styles.fieldLabel} type="whitened">
+                                <ThemedText type="overheader">
                                     Anything else you want to discuss? <ThemedText style={styles.optionalText} type="dusked">(optional)</ThemedText>
                                 </ThemedText>
                                 <Textbox
@@ -124,9 +121,7 @@ export default function PrepThirdScreen() {
                         </TouchableOpacity>
                     </View>
 
-                    <ThemedText style={styles.privacyText} type="greyed">
-                        Your responses help create a personalized preparation checklist
-                    </ThemedText>
+                    <Footer type="modal" />
                 </View>
 
                 {/* Bottom Spacer */}
@@ -138,6 +133,9 @@ export default function PrepThirdScreen() {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+    },
+    content: {
         flex: 1,
     },
     scrollContainer: {
@@ -236,11 +234,6 @@ const styles = StyleSheet.create({
     fieldGroup: {
         width: '100%',
     },
-    fieldLabel: {
-        fontSize: 16,
-        fontWeight: '600',
-        marginBottom: 8,
-    },
     optionalText: {
         fontWeight: '400',
         fontSize: 14,
@@ -306,12 +299,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    privacyText: {
-        fontSize: 12,
-        fontWeight: '400',
-        textAlign: 'center',
-        fontStyle: 'italic',
-    },
+
     bottomSpacer: {
         height: 40,
     },

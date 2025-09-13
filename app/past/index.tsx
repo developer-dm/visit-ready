@@ -1,4 +1,5 @@
 import { getAppointmentIcon } from "@/components/AppointmentCard";
+import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import DataFormatterService from "@/utils/dataFormatterService";
@@ -9,19 +10,6 @@ import { ScrollView, StyleSheet, View } from "react-native";
 export default function PrepFinalScreen() {
     type RouteParams = {
         data: string;
-    };
-
-    const labels: Record<string, string> = {
-        id: "Appointment ID",
-        appointmentType: "Appointment Type",
-        appointmentDate: "Appointment Date",
-        provider: "Provider",
-        mainConcern: "Main Concern",
-        concernStart: "Concern Start Date",
-        concernSeverity: "Severity",
-        visitGoal: "Appointment Goal",
-        specificWorries: "Specific Worries",
-        miscDiscussion: "Other Information",
     };
 
     const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
@@ -47,30 +35,28 @@ export default function PrepFinalScreen() {
                             <ThemedView style={styles.infoIconContainer} type="dusked">
                                 <MaterialIcons name={appointmentType ? getAppointmentIcon(appointmentType) : "event-note"} size={24} color="#3b82f6" />
                             </ThemedView>
-                            <ThemedText style={styles.infoTitle} type="whitened">
-                                Your Visit Information
-                            </ThemedText>
-                            <ThemedText style={styles.infoSubtitle} type="greyed">
-                                Review the details you've provided below
-                            </ThemedText>
+                            <ThemedText style={styles.infoTitle} type="whitened">Your Visit Information</ThemedText>
+                            <ThemedText style={styles.infoSubtitle} type="greyed">Review the details you've provided below</ThemedText>
                         </View>
 
                         {/* User Details */}
                         <View style={styles.detailsSection}>
                             {userDataEntries.length > 0 ? (
                                 userDataEntries.map(([key, value]) => {
-                                    let formattedValue = value;
                                     if (key === "appointmentDate" && typeof value === 'string') {
-                                        formattedValue = new Date(value);
+                                        value = new Date(value);
                                     }
-
                                     return (
                                         <ThemedView key={key} style={styles.detailItem}>
                                             <ThemedText style={styles.detailLabel} type="greyed">
-                                                {labels[key] || key}
+                                                {DataFormatterService.toReadableString(key)}
                                             </ThemedText>
                                             <ThemedText style={styles.detailValue} type="whitened">
-                                                {DataFormatterService.toReadableString(formattedValue)}
+                                                {
+                                                    ["concernSeverity"].includes(key)
+                                                        ? DataFormatterService.toReadableString(value, key as "pain-level")
+                                                        : DataFormatterService.toReadableString(value)
+                                                }
                                             </ThemedText>
                                         </ThemedView>
                                     );
@@ -85,6 +71,11 @@ export default function PrepFinalScreen() {
                         </View>
                     </View>
                 </ThemedView>
+
+                <Footer type="modal" />
+
+                {/* Bottom Spacer */}
+                <View style={styles.bottomSpacer} />
             </View>
         </ScrollView>
     );
@@ -166,6 +157,9 @@ const styles = StyleSheet.create({
     noDataText: {
         fontSize: 16,
         fontStyle: 'italic',
+    },
+    bottomSpacer: {
+        height: 40,
     },
 });
 

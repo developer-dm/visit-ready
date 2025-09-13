@@ -1,5 +1,6 @@
 import { DatePicker } from "@/components/DatePicker";
 import { Dropdown } from "@/components/Dropdown";
+import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -14,8 +15,9 @@ export default function ModalScreen() {
   const router = useRouter();
   const { prep } = useUser();
 
-  const [open, setOpen] = useState(false);
-  const [items, setItems] = useState([
+  // Dropdown state
+  const [appointmentTypeOpen, setAppointmentTypeOpen] = useState(false);
+  const [appointmentTypeItems] = useState([
     { label: 'New Patient', value: 'new-patient' },
     { label: 'Follow-Up', value: 'follow-up' },
     { label: 'Annual Physical', value: 'annual-physical' },
@@ -24,10 +26,13 @@ export default function ModalScreen() {
   ]);
 
   const handleNext = () => {
-    if (prep.appointmentType && prep.appointmentDate) {
+    if (
+      prep.appointmentType
+      && prep.appointmentDate
+    ) {
       router.push("/prep/second")
     } else {
-      Alert.alert("Error", "Invalid appointment type or date");
+      Alert.alert("Error", "Please answer all questions.");
     }
   };
 
@@ -37,9 +42,13 @@ export default function ModalScreen() {
       contentContainerStyle={styles.scrollContainer}
       keyboardShouldPersistTaps="never"
       showsVerticalScrollIndicator={false}
+      enableResetScrollToCoords={false}
+      extraScrollHeight={5}
     >
-      <TouchableWithoutFeedback onPress={() => { setOpen(false) }}>
-        <View style={{ flex: 1 }}>
+      <TouchableWithoutFeedback onPress={() => {
+        setAppointmentTypeOpen(false);
+      }}>
+        <View style={styles.content}>
           {/* Header Section */}
           <View style={styles.header}>
             <View style={styles.progressContainer}>
@@ -49,18 +58,10 @@ export default function ModalScreen() {
                 <View style={styles.progressEmpty} />
                 <View style={styles.progressEmpty} />
               </View>
-              <ThemedText style={styles.progressText} type="greyed">
-                Step 1 of 4
-              </ThemedText>
+              <ThemedText style={styles.progressText} type="greyed">Step 1 of 4</ThemedText>
             </View>
-
-            <ThemedText style={styles.pageTitle} type="whitened">
-              Appointment Details
-            </ThemedText>
-
-            <ThemedText style={styles.pageSubtitle} type="greyed">
-              Let's gather information about your upcoming appointment
-            </ThemedText>
+            <ThemedText style={styles.pageTitle} type="whitened">Appointment Details</ThemedText>
+            <ThemedText style={styles.pageSubtitle} type="greyed">Let's gather information about your upcoming appointment</ThemedText>
           </View>
 
           {/* Form Card */}
@@ -82,21 +83,21 @@ export default function ModalScreen() {
               {/* Form Fields */}
               <View style={styles.formFields}>
                 <View style={styles.fieldGroup}>
-                  <ThemedText style={styles.fieldLabel} type="whitened">
+                  <ThemedText type="overheader">
                     What type of appointment is this?
                   </ThemedText>
                   <Dropdown
-                    open={open}
+                    open={appointmentTypeOpen}
                     value={prep.appointmentType}
-                    items={items}
-                    setOpen={setOpen}
+                    items={appointmentTypeItems}
+                    setOpen={setAppointmentTypeOpen}
                     setValue={prep.setAppointmentType}
-                    setItems={setItems}
+                    setItems={() => { }}
                   />
                 </View>
 
                 <View style={styles.fieldGroup}>
-                  <ThemedText style={styles.fieldLabel} type="whitened">
+                  <ThemedText type="overheader">
                     When is your next appointment?
                   </ThemedText>
                   <DatePicker
@@ -108,7 +109,7 @@ export default function ModalScreen() {
                 </View>
 
                 <View style={styles.fieldGroup}>
-                  <ThemedText style={styles.fieldLabel} type="whitened">
+                  <ThemedText type="overheader">
                     Who is your provider? <ThemedText style={styles.optionalText} type="dusked">(optional)</ThemedText>
                   </ThemedText>
                   <Textbox
@@ -130,9 +131,7 @@ export default function ModalScreen() {
               </View>
             </TouchableOpacity>
 
-            <ThemedText style={styles.helpText} type="greyed">
-              We'll use this information to customize your preparation checklist
-            </ThemedText>
+            <Footer type="modal" />
           </View>
 
           {/* Bottom Spacer */}
@@ -145,6 +144,9 @@ export default function ModalScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  content: {
     flex: 1,
   },
   scrollContainer: {
@@ -243,11 +245,6 @@ const styles = StyleSheet.create({
   fieldGroup: {
     width: '100%',
   },
-  fieldLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
   optionalText: {
     fontWeight: '400',
     fontSize: 14,
@@ -288,12 +285,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff33',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  helpText: {
-    fontSize: 12,
-    fontWeight: '400',
-    textAlign: 'center',
-    fontStyle: 'italic',
   },
   bottomSpacer: {
     height: 40,

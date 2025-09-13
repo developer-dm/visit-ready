@@ -10,13 +10,6 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 
 export default function SettingsScreen() {
-  const labels: Record<string, string> = {
-    firstName: "First Name",
-    lastName: "Last Name",
-    DOB: "Date of Birth",
-    sex: "Sex",
-  };
-
   const { resetOnboarding } = useAuthStore();
   const { signup, resetAppointments, resetSignup } = useDataStore();
 
@@ -97,10 +90,14 @@ export default function SettingsScreen() {
                 return (
                   <ThemedView key={key} style={styles.profileItem}>
                     <ThemedText style={styles.profileLabel} type="greyed">
-                      {labels[key] || key}
+                      {DataFormatterService.toReadableString(key)}
                     </ThemedText>
                     <ThemedText style={styles.profileValue} type="whitened">
-                      {DataFormatterService.toReadableString(value)}
+                      {
+                        ["confidence", "anxiety"].includes(key)
+                          ? DataFormatterService.toReadableString(value, key as "confidence" | "anxiety")
+                          : DataFormatterService.toReadableString(value)
+                      }
                     </ThemedText>
                   </ThemedView>
                 );
@@ -116,12 +113,12 @@ export default function SettingsScreen() {
           </View>
         </ThemedView>
 
-        {/* Quick Actions Section */}
+        {/* Action Section */}
         <View style={styles.actionsSection}>
           <ThemedText style={styles.sectionTitle} type="whitened">Account Actions</ThemedText>
 
           <View style={styles.actionGrid}>
-            {/* Logout Action */}
+            {/* Logout */}
             <Button style={styles.actionCard} type="bordered" onPress={handleLogout}>
               <ThemedView style={styles.actionIconContainer} type="dusked">
                 <MaterialIcons
@@ -143,7 +140,7 @@ export default function SettingsScreen() {
               />
             </Button>
 
-            {/* Delete Account Action */}
+            {/* Delete Account */}
             <Button style={[styles.actionCard, styles.dangerCard]} onPress={handleDeletion}>
               <ThemedView style={styles.dangerIconContainer}>
                 <MaterialIcons
@@ -167,7 +164,7 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {/* App Information Section */}
+        {/* App Info Section */}
         <ThemedView style={styles.infoCard}>
           <View style={styles.cardContent}>
             <ThemedText style={styles.infoTitle} type="whitened">About Visit Ready</ThemedText>

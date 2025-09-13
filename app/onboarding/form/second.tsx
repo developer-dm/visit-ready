@@ -1,5 +1,5 @@
-import { DatePicker } from "@/components/DatePicker";
 import { Dropdown } from "@/components/Dropdown";
+import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useUser } from "@/utils/userContext";
@@ -13,21 +13,45 @@ export default function OnboardingSecondScreen() {
     const router = useRouter();
     const { signup } = useUser();
 
-    // Dropdown variables
-    const [open, setOpen] = useState(false);
-    const [items, setItems] = useState([
-        { label: 'Male', value: 'male' },
-        { label: 'Female', value: 'female' },
+    // Dropdown states
+    const [motivationOpen, setMotivationOpen] = useState(false);
+    const [motivationItems] = useState([
+        { label: 'Feel more prepared', value: 'prepared' },
+        { label: 'Reduce anxiety', value: 'anxiety' },
+        { label: 'Save time during appointments', value: 'time' },
         { label: 'Other', value: 'other' },
     ]);
 
-    const handleNext = () => {
-        setOpen(false);
+    const [confidenceOpen, setConfidenceOpen] = useState(false);
+    const [confidenceItems] = useState([
+        { label: '1 - Not confident', value: 1 },
+        { label: '2', value: 2 },
+        { label: '3', value: 3 },
+        { label: '4', value: 4 },
+        { label: '5 - Very confident', value: 5 },
+    ]);
 
-        if (signup.DOB && signup.sex) {
+    const [anxietyOpen, setAnxietyOpen] = useState(false);
+    const [anxietyItems] = useState([
+        { label: '1 - Very anxious', value: 1 },
+        { label: '2', value: 2 },
+        { label: '3', value: 3 },
+        { label: '4', value: 4 },
+        { label: '5 - Not anxious', value: 5 },
+    ]);
+
+    const handleNext = () => {
+        setMotivationOpen(false);
+        setConfidenceOpen(false);
+        setAnxietyOpen(false);
+
+        if (signup.motivation
+            && signup.confidence != null
+            && signup.anxiety != null
+        ) {
             router.push("/onboarding/form/final");
         } else {
-            Alert.alert("Error", "Invalid birthdate or sex.");
+            Alert.alert("Error", "Please answer all questions.");
         }
     };
 
@@ -41,10 +65,16 @@ export default function OnboardingSecondScreen() {
             contentContainerStyle={styles.scrollContainer}
             keyboardShouldPersistTaps="never"
             showsVerticalScrollIndicator={false}
+            enableResetScrollToCoords={false}
+            extraScrollHeight={5}
         >
-            <TouchableWithoutFeedback onPress={() => { setOpen(false); }}>
+            <TouchableWithoutFeedback onPress={() => {
+                setMotivationOpen(false);
+                setConfidenceOpen(false);
+                setAnxietyOpen(false);
+            }}>
                 <View style={styles.content}>
-                    {/* Header Section */}
+                    {/* Header */}
                     <View style={styles.header}>
                         <View style={styles.progressContainer}>
                             <View style={styles.progressBar}>
@@ -52,75 +82,97 @@ export default function OnboardingSecondScreen() {
                                 <View style={styles.progressFill} />
                                 <View style={styles.progressEmpty} />
                             </View>
-                            <ThemedText style={styles.progressText} type="greyed">
-                                Step 2 of 3
-                            </ThemedText>
+                            <ThemedText style={styles.progressText} type="greyed">Step 2 of 3</ThemedText>
                         </View>
-
-                        <ThemedText style={styles.pageTitle} type="whitened">
-                            Personal Details
-                        </ThemedText>
-
-                        <ThemedText style={styles.pageSubtitle} type="greyed">
-                            This helps us provide more personalized health insights
-                        </ThemedText>
+                        <ThemedText style={styles.pageTitle} type="whitened">Diagnostic Questions</ThemedText>
+                        <ThemedText style={styles.pageSubtitle} type="greyed">This helps us understand your needs and personalize your experience</ThemedText>
                     </View>
 
-                    {/* Form Card */}
+                    {/* Form */}
                     <ThemedView style={styles.formCard}>
                         <View style={styles.cardContent}>
-                            {/* Info Section */}
                             <View style={styles.infoSection}>
                                 <ThemedView style={styles.infoIconContainer} type="dusked">
-                                    <MaterialIcons name="info" size={24} color="#3b82f6" />
+                                    <MaterialIcons name="question-answer" size={32} color="#3b82f6" />
                                 </ThemedView>
-                                <ThemedText style={styles.infoTitle} type="whitened">
-                                    Demographic Information
-                                </ThemedText>
-                                <ThemedText style={styles.infoSubtitle} type="greyed">
-                                    Age and biological sex help us customize health recommendations
-                                </ThemedText>
+                                <ThemedText style={styles.infoTitle} type="whitened">Diagnostic questions</ThemedText>
+                                <ThemedText style={styles.infoSubtitle} type="greyed"> We'll use this information to personalize your appointment preparation</ThemedText>
                             </View>
 
-                            {/* Form Fields */}
                             <View style={styles.formFields}>
-                                <View style={styles.fieldGroup}>
-                                    <ThemedText style={styles.fieldLabel} type="whitened">
-                                        Date of Birth
-                                    </ThemedText>
-                                    <ThemedText style={styles.fieldHint} type="greyed">
-                                        Used to calculate age-appropriate health recommendations
-                                    </ThemedText>
-                                    <DatePicker
-                                        mode="date"
-                                        display="spinner"
-                                        value={signup.DOB}
-                                        setValue={signup.setDOB}
+                                {/* Motivation */}
+                                <View style={[
+                                    styles.fieldGroup,
+                                    {
+                                        zIndex: motivationOpen ? 4000 : 3000,
+                                        elevation: motivationOpen ? 4000 : 3000,
+                                    }]}>
+                                    <ThemedText type="overheader">What do you hope to get from this app?</ThemedText>
+                                    <Dropdown
+                                        open={motivationOpen}
+                                        value={signup.motivation}
+                                        items={motivationItems}
+                                        setOpen={(open) => {
+                                            setMotivationOpen(open);
+                                            setConfidenceOpen(false);
+                                            setAnxietyOpen(false);
+                                        }}
+                                        setValue={signup.setMotivation}
+                                        setItems={() => { }}
+                                        placeholder="Select your motivation"
                                     />
                                 </View>
 
-                                <View style={styles.fieldGroup}>
-                                    <ThemedText style={styles.fieldLabel} type="whitened">
-                                        Sex at Birth
-                                    </ThemedText>
-                                    <ThemedText style={styles.fieldHint} type="greyed">
-                                        Helps determine relevant health screening guidelines
-                                    </ThemedText>
+                                {/* Confidence */}
+                                <View style={[
+                                    styles.fieldGroup,
+                                    {
+                                        zIndex: confidenceOpen ? 4000 : 3000,
+                                        elevation: confidenceOpen ? 4000 : 3000,
+                                    }]}>
+                                    <ThemedText type="overheader">How confident are you in communicating with your provider?</ThemedText>
                                     <Dropdown
-                                        open={open}
-                                        value={signup.sex}
-                                        items={items}
-                                        setOpen={setOpen}
-                                        setValue={signup.setSex}
-                                        setItems={setItems}
-                                        placeholder="Select your biological sex"
+                                        open={confidenceOpen}
+                                        value={signup.confidence}
+                                        items={confidenceItems}
+                                        setOpen={(open) => {
+                                            setConfidenceOpen(open);
+                                            setAnxietyOpen(false);
+                                            setMotivationOpen(false);
+                                        }}
+                                        setValue={signup.setConfidence}
+                                        setItems={() => { }}
+                                        placeholder="Select confidence level"
+                                    />
+                                </View>
+
+                                {/* Anxiety */}
+                                <View style={[
+                                    styles.fieldGroup,
+                                    {
+                                        zIndex: anxietyOpen ? 4000 : 3000,
+                                        elevation: anxietyOpen ? 4000 : 3000,
+                                    }]}>
+                                    <ThemedText type="overheader">How anxious do you feel before appointments?</ThemedText>
+                                    <Dropdown
+                                        open={anxietyOpen}
+                                        value={signup.anxiety}
+                                        items={anxietyItems}
+                                        setOpen={(open) => {
+                                            setAnxietyOpen(open);
+                                            setMotivationOpen(false);
+                                            setConfidenceOpen(false);
+                                        }}
+                                        setValue={signup.setAnxienty}
+                                        setItems={() => { }}
+                                        placeholder="Select anxiety level"
                                     />
                                 </View>
                             </View>
                         </View>
                     </ThemedView>
 
-                    {/* Navigation Section */}
+                    {/* Navigation */}
                     <View style={styles.navigationSection}>
                         <View style={styles.buttonRow}>
                             <TouchableOpacity style={styles.backButton} onPress={handleBack}>
@@ -136,12 +188,9 @@ export default function OnboardingSecondScreen() {
                             </TouchableOpacity>
                         </View>
 
-                        <ThemedText style={styles.privacyText} type="greyed">
-                            Your information is stored securely on your device
-                        </ThemedText>
+                        <Footer type="modal" />
                     </View>
 
-                    {/* Bottom Spacer */}
                     <View style={styles.bottomSpacer} />
                 </View>
             </TouchableWithoutFeedback>
@@ -254,11 +303,6 @@ const styles = StyleSheet.create({
     fieldGroup: {
         width: '100%',
     },
-    fieldLabel: {
-        fontSize: 16,
-        fontWeight: '600',
-        marginBottom: 4,
-    },
     fieldHint: {
         fontSize: 13,
         fontWeight: '400',
@@ -328,12 +372,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    privacyText: {
-        fontSize: 12,
-        fontWeight: '400',
-        textAlign: 'center',
-        fontStyle: 'italic',
-    },
+
     bottomSpacer: {
         height: 40,
     },
