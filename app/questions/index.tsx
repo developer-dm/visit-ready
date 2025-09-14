@@ -10,7 +10,6 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Flow } from 'react-native-animated-spinkit';
-//import { LLAMA3_2_1B, Message, useLLM } from 'react-native-executorch';
 
 export default function FinalScreen() {
     type RouteParams = {
@@ -21,29 +20,16 @@ export default function FinalScreen() {
     const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
     const prep = route.params?.data ? JSON.parse(route.params.data) : null;
     const [copied, setCopied] = useState(false);
-
-    const [response, setResponse] = useState('aslkdf');
+    const [response, setResponse] = useState('test');
     const { addAppointment } = useDataStore();
 
-    /*
-    const llm = useLLM({ model: LLAMA3_2_1B });
-    const SYSTEM_ROLE = ''
-    const USER_ROLE = ''
-
     const handleGenerate = async () => {
-        const chat: Message[] = [
-            { role: 'system', content: SYSTEM_ROLE },
-            { role: 'user', content: USER_ROLE }
-        ];
-
-        await llm.generate(chat);
-        setResponse(llm.response);
+        
     };
 
     useEffect(() => {
         handleGenerate();
     }, []);
-    */
 
     const copyToClipboard = async () => {
         await Clipboard.setStringAsync(response);
@@ -69,7 +55,6 @@ export default function FinalScreen() {
                 contentContainerStyle={styles.scrollContainer}
                 showsVerticalScrollIndicator={false}
             >
-                {/* Header Section */}
                 <View style={styles.header}>
                     <ThemedView style={styles.headerIconContainer} type="dusked">
                         <MaterialIcons name="psychology" size={32} color="#3b82f6" />
@@ -82,7 +67,7 @@ export default function FinalScreen() {
                     </ThemedText>
                 </View>
 
-                {/* Loading State */}
+                {/* Loading */}
                 {!response && (
                     <ThemedView style={styles.loadingCard}>
                         <View style={styles.loadingContent}>
@@ -95,19 +80,15 @@ export default function FinalScreen() {
                             <ThemedText style={styles.loadingSubtext} type="greyed">
                                 Creating personalized questions based on your appointment details
                             </ThemedText>
-
-                            {/* Loading Animation Placeholder */}
                             <Flow size={70} color="#3b82f6" />
                         </View>
                     </ThemedView>
                 )}
 
-                {/* Generated Questions Section (Hidden initially, shown after generation) */}
+                {/* Generated Questions */}
                 {response && (
                     <View style={styles.questionsSection}>
-
                         <ThemedText style={styles.sectionTitle}>Questions to Ask Your Doctor</ThemedText>
-
                         <ThemedView style={styles.questionCard}>
                             <View style={styles.questionContent}>
                                 <View style={styles.questionNumber}>

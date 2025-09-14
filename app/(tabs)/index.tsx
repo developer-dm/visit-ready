@@ -47,7 +47,11 @@ export default function DashboardScreen() {
             <TouchableOpacity style={styles.primaryButton} onPress={handleVisitPrep}>
               <Text style={styles.primaryButtonText}>Prep for Visit</Text>
               <View style={styles.buttonIcon}>
-                <Text style={styles.iconText}>→</Text>
+                <MaterialIcons
+                  size={16}
+                  name="arrow-forward"
+                  color="#ffffffff"
+                />
               </View>
             </TouchableOpacity>
           </View>
@@ -186,11 +190,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff33',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  iconText: {
-    fontSize: 16,
-    color: '#ffffff',
-    fontWeight: '600',
   },
   quickActions: {
     marginTop: 32,

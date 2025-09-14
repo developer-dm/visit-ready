@@ -1,75 +1,70 @@
-import { ThemedText } from '@/components/ThemedText';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Modal, StyleSheet, Text, View } from 'react-native';
 import { CircleFade } from 'react-native-animated-spinkit';
 
 type LoadingScreenProps = {
+    visible: boolean;
     message?: string;
     subMessage?: string;
     spinnerSize?: number;
     spinnerColor?: string;
+    animationType?: 'none' | 'slide' | 'fade';
 };
 
 export default function LoadingScreen({
+    visible,
     message = 'Loading...',
     subMessage,
     spinnerSize = 70,
     spinnerColor = '#3b82f6',
+    animationType = 'fade',
 }: LoadingScreenProps) {
     return (
-        <View style={styles.container}>
-            <View style={styles.content}>
-                <ThemedText style={styles.message} type="whitened">{message}</ThemedText>
-                {subMessage && (
-                    <ThemedText style={styles.subMessage} type="greyed">{subMessage}</ThemedText>
-                )}
-
-                <View style={styles.midSpacer} />
-
-                <View style={styles.spinnerContainer}>
+        <Modal
+            visible={visible}
+            animationType={animationType}
+            statusBarTranslucent={true}
+        >
+            <View style={styles.overlay}>
+                <View style={styles.content}>
+                    <Text style={styles.message}>{message}</Text>
+                    {subMessage && (
+                        <Text style={styles.subMessage}>{subMessage}</Text>
+                    )}
+                    <View style={styles.midSpacer} />
                     <CircleFade size={spinnerSize} color={spinnerColor} />
                 </View>
             </View>
-        </View>
+        </Modal>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
+    overlay: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 24,
-        backgroundColor: '#000000',
-        opacity: 0.9,
-        zIndex: 9999,
+        backgroundColor: '#000000e6',
+        zIndex: 10000,
+        elevation: 10000,
     },
     content: {
         alignItems: 'center',
         paddingVertical: 40,
-        paddingHorizontal: 32,
+        paddingHorizontal: 100,
         borderRadius: 20,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 20,
-        maxWidth: 320,
-        width: '100%',
+        backgroundColor: '#000000cc',
     },
     message: {
+        color: '#ffffffff',
         fontSize: 24,
         fontWeight: '700',
         textAlign: 'center',
         marginBottom: 8,
     },
     subMessage: {
+        color: '#858585ff',
         fontSize: 16,
         fontWeight: '400',
         textAlign: 'center',
@@ -77,9 +72,5 @@ const styles = StyleSheet.create({
     },
     midSpacer: {
         height: 40,
-    },
-    spinnerContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
     },
 });

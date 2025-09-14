@@ -8,7 +8,7 @@ import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, Platform, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function ModalScreen() {
@@ -16,7 +16,6 @@ export default function ModalScreen() {
   const { prep } = useUser();
 
   // Dropdown state
-  const [appointmentTypeOpen, setAppointmentTypeOpen] = useState(false);
   const [appointmentTypeItems] = useState([
     { label: 'New Patient', value: 'new-patient' },
     { label: 'Follow-Up', value: 'follow-up' },
@@ -45,96 +44,89 @@ export default function ModalScreen() {
       enableResetScrollToCoords={false}
       extraScrollHeight={5}
     >
-      <TouchableWithoutFeedback onPress={() => {
-        setAppointmentTypeOpen(false);
-      }}>
-        <View style={styles.content}>
-          {/* Header Section */}
-          <View style={styles.header}>
-            <View style={styles.progressContainer}>
-              <View style={styles.progressBar}>
-                <View style={styles.progressFill} />
-                <View style={styles.progressEmpty} />
-                <View style={styles.progressEmpty} />
-                <View style={styles.progressEmpty} />
-              </View>
-              <ThemedText style={styles.progressText} type="greyed">Step 1 of 4</ThemedText>
+      <View style={styles.content}>
+        {/* Header Section */}
+        <View style={styles.header}>
+          <View style={styles.progressContainer}>
+            <View style={styles.progressBar}>
+              <View style={styles.progressFill} />
+              <View style={styles.progressEmpty} />
+              <View style={styles.progressEmpty} />
+              <View style={styles.progressEmpty} />
             </View>
-            <ThemedText style={styles.pageTitle} type="whitened">Appointment Details</ThemedText>
-            <ThemedText style={styles.pageSubtitle} type="greyed">Let's gather information about your upcoming appointment</ThemedText>
+            <ThemedText style={styles.progressText} type="greyed">Step 1 of 4</ThemedText>
           </View>
-
-          {/* Form Card */}
-          <ThemedView style={styles.formCard}>
-            <View style={styles.cardContent}>
-              {/* Welcome Message */}
-              <View style={styles.welcomeSection}>
-                <ThemedView style={styles.welcomeIconContainer} type="dusked">
-                  <MaterialIcons name="create" size={32} color="#3b82f6" />
-                </ThemedView>
-                <ThemedText style={styles.welcomeTitle} type="whitened">
-                  Preparation Details
-                </ThemedText>
-                <ThemedText style={styles.welcomeSubtitle} type="greyed">
-                  Help us prepare the most relevant questions and resources for your visit
-                </ThemedText>
-              </View>
-
-              {/* Form Fields */}
-              <View style={styles.formFields}>
-                <View style={styles.fieldGroup}>
-                  <ThemedText type="overheader">
-                    What type of appointment is this?
-                  </ThemedText>
-                  <Dropdown
-                    open={appointmentTypeOpen}
-                    value={prep.appointmentType}
-                    items={appointmentTypeItems}
-                    setOpen={setAppointmentTypeOpen}
-                    setValue={prep.setAppointmentType}
-                    setItems={() => { }}
-                  />
-                </View>
-
-                <View style={styles.fieldGroup}>
-                  <ThemedText type="overheader">
-                    When is your next appointment?
-                  </ThemedText>
-                  <DatePicker
-                    value={prep.appointmentDate}
-                    setValue={prep.setAppointmentDate}
-                    mode="date"
-                    display={Platform.OS === "ios" ? "inline" : "default"}
-                  />
-                </View>
-
-                <View style={styles.fieldGroup}>
-                  <ThemedText type="overheader">
-                    Who is your provider? <ThemedText style={styles.optionalText} type="dusked">(optional)</ThemedText>
-                  </ThemedText>
-                  <Textbox
-                    placeholder="e.g. Dr. Smith"
-                    onChangeText={prep.setProvider}
-                    value={prep.provider}
-                  />
-                </View>
-              </View>
-            </View>
-          </ThemedView>
-
-          {/* Action Section */}
-          <View style={styles.actionSection}>
-            <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
-              <Text style={styles.primaryButtonText}>Continue</Text>
-              <View style={styles.buttonIcon}>
-                <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
-              </View>
-            </TouchableOpacity>
-          </View>
-          
-          <Footer hasSpacer={true} />
+          <ThemedText style={styles.pageTitle} type="whitened">Appointment Details</ThemedText>
+          <ThemedText style={styles.pageSubtitle} type="greyed">Let's gather information about your upcoming appointment</ThemedText>
         </View>
-      </TouchableWithoutFeedback>
+
+        {/* Form Card */}
+        <ThemedView style={styles.formCard}>
+          <View style={styles.cardContent}>
+            {/* Welcome Message */}
+            <View style={styles.welcomeSection}>
+              <ThemedView style={styles.welcomeIconContainer} type="dusked">
+                <MaterialIcons name="create" size={32} color="#3b82f6" />
+              </ThemedView>
+              <ThemedText style={styles.welcomeTitle} type="whitened">
+                Preparation Details
+              </ThemedText>
+              <ThemedText style={styles.welcomeSubtitle} type="greyed">
+                Help us prepare the most relevant questions and resources for your visit
+              </ThemedText>
+            </View>
+
+            {/* Form Fields */}
+            <View style={styles.formFields}>
+              <View style={styles.fieldGroup}>
+                <ThemedText type="overheader">
+                  What type of appointment is this?
+                </ThemedText>
+                <Dropdown
+                  items={appointmentTypeItems}
+                  value={prep.appointmentType}
+                  setValue={prep.setAppointmentType}
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <ThemedText type="overheader">
+                  When is your next appointment?
+                </ThemedText>
+                <DatePicker
+                  value={prep.appointmentDate}
+                  setValue={prep.setAppointmentDate}
+                  mode="date"
+                  display={Platform.OS === "ios" ? "inline" : "default"}
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <ThemedText type="overheader">
+                  Who is your provider? <ThemedText style={styles.optionalText} type="dusked">(optional)</ThemedText>
+                </ThemedText>
+                <Textbox
+                  placeholder="e.g. Dr. Smith"
+                  onChangeText={prep.setProvider}
+                  value={prep.provider}
+                />
+              </View>
+            </View>
+          </View>
+        </ThemedView>
+
+        {/* Action Section */}
+        <View style={styles.actionSection}>
+          <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
+            <Text style={styles.primaryButtonText}>Continue</Text>
+            <View style={styles.buttonIcon}>
+              <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        <Footer hasSpacer={true} />
+      </View>
     </KeyboardAwareScrollView>
   );
 }

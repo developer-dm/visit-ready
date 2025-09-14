@@ -1,11 +1,10 @@
 import LoadingScreen from '@/components/Loading';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useAuthStore } from "@/utils/authStore";
-import { useLoadingStore } from '@/utils/loadingStore';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Platform } from "react-native";
 
 const isWeb = Platform.OS === "web";
@@ -16,7 +15,7 @@ if (!isWeb) {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const { showLoading, hideLoading, isLoading, message, subMessage } = useLoadingStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     isLoggedIn,
@@ -31,21 +30,30 @@ export default function RootLayout() {
     }
   }, [_hasHydrated]);
 
-  if (!_hasHydrated && !isWeb) {
-    return null;
-  }
-
   useEffect(() => {
-    showLoading('Loading...', 'Switching pages');
+    setIsLoading(true);
 
     const timer = setTimeout(() => {
-      hideLoading();
+      setIsLoading(false);
     }, 400);
 
     return () => {
       clearTimeout(timer);
     };
   }, [isLoggedIn, hasCompletedOnboarding]);
+
+  if (!_hasHydrated && !isWeb) {
+    return (
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <StatusBar style="auto" />
+        <LoadingScreen
+          visible={true}
+          message="Starting up..."
+          subMessage="Loading your data"
+        />
+      </ThemeProvider>
+    );
+  }
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -71,8 +79,9 @@ export default function RootLayout() {
       </Stack>
       {isLoading && (
         <LoadingScreen
-          message={message}
-          subMessage={subMessage}
+          visible={isLoading}
+          message={'Loading...'}
+          subMessage={'Switching pages'}
         />
       )}
     </ThemeProvider>

@@ -6,7 +6,7 @@ import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function OnboardingSecondScreen() {
@@ -14,37 +14,28 @@ export default function OnboardingSecondScreen() {
     const { signup } = useUser();
 
     // Dropdown states
-    const [motivationOpen, setMotivationOpen] = useState(false);
     const [motivationItems] = useState([
         { label: 'Feel more prepared', value: 'prepared' },
         { label: 'Reduce anxiety', value: 'anxiety' },
         { label: 'Save time during appointments', value: 'time' },
         { label: 'Other', value: 'other' },
     ]);
-
-    const [confidenceOpen, setConfidenceOpen] = useState(false);
     const [confidenceItems] = useState([
-        { label: '1 - Not confident', value: 1 },
-        { label: '2', value: 2 },
-        { label: '3', value: 3 },
-        { label: '4', value: 4 },
-        { label: '5 - Very confident', value: 5 },
+        { label: '1 - Not confident', value: '1' },
+        { label: '2', value: '2' },
+        { label: '3', value: '3' },
+        { label: '4', value: '4' },
+        { label: '5 - Very confident', value: '5' },
     ]);
-
-    const [anxietyOpen, setAnxietyOpen] = useState(false);
     const [anxietyItems] = useState([
-        { label: '1 - Very anxious', value: 1 },
-        { label: '2', value: 2 },
-        { label: '3', value: 3 },
-        { label: '4', value: 4 },
-        { label: '5 - Not anxious', value: 5 },
+        { label: '1 - Very anxious', value: '1' },
+        { label: '2', value: '2' },
+        { label: '3', value: '3' },
+        { label: '4', value: '4' },
+        { label: '5 - Not anxious', value: '5' },
     ]);
 
     const handleNext = () => {
-        setMotivationOpen(false);
-        setConfidenceOpen(false);
-        setAnxietyOpen(false);
-
         if (signup.motivation
             && signup.confidence != null
             && signup.anxiety != null
@@ -68,130 +59,88 @@ export default function OnboardingSecondScreen() {
             enableResetScrollToCoords={false}
             extraScrollHeight={5}
         >
-            <TouchableWithoutFeedback onPress={() => {
-                setMotivationOpen(false);
-                setConfidenceOpen(false);
-                setAnxietyOpen(false);
-            }}>
-                <View style={styles.content}>
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <View style={styles.progressContainer}>
-                            <View style={styles.progressBar}>
-                                <View style={styles.progressFill} />
-                                <View style={styles.progressFill} />
-                                <View style={styles.progressEmpty} />
-                            </View>
-                            <ThemedText style={styles.progressText} type="greyed">Step 2 of 3</ThemedText>
+            <View style={styles.content}>
+                {/* Header */}
+                <View style={styles.header}>
+                    <View style={styles.progressContainer}>
+                        <View style={styles.progressBar}>
+                            <View style={styles.progressFill} />
+                            <View style={styles.progressFill} />
+                            <View style={styles.progressEmpty} />
                         </View>
-                        <ThemedText style={styles.pageTitle} type="whitened">Diagnostic Questions</ThemedText>
-                        <ThemedText style={styles.pageSubtitle} type="greyed">This helps us understand your needs and personalize your experience</ThemedText>
+                        <ThemedText style={styles.progressText} type="greyed">Step 2 of 3</ThemedText>
                     </View>
-
-                    {/* Form */}
-                    <ThemedView style={styles.formCard}>
-                        <View style={styles.cardContent}>
-                            <View style={styles.infoSection}>
-                                <ThemedView style={styles.infoIconContainer} type="dusked">
-                                    <MaterialIcons name="question-answer" size={32} color="#3b82f6" />
-                                </ThemedView>
-                                <ThemedText style={styles.infoTitle} type="whitened">Diagnostic questions</ThemedText>
-                                <ThemedText style={styles.infoSubtitle} type="greyed"> We'll use this information to personalize your appointment preparation</ThemedText>
-                            </View>
-
-                            <View style={styles.formFields}>
-                                {/* Motivation */}
-                                <View style={[
-                                    styles.fieldGroup,
-                                    {
-                                        zIndex: motivationOpen ? 4000 : 3000,
-                                        elevation: motivationOpen ? 4000 : 3000,
-                                    }]}>
-                                    <ThemedText type="overheader">What do you hope to get from this app?</ThemedText>
-                                    <Dropdown
-                                        open={motivationOpen}
-                                        value={signup.motivation}
-                                        items={motivationItems}
-                                        setOpen={(open) => {
-                                            setMotivationOpen(open);
-                                            setConfidenceOpen(false);
-                                            setAnxietyOpen(false);
-                                        }}
-                                        setValue={signup.setMotivation}
-                                        setItems={() => { }}
-                                        placeholder="Select your motivation"
-                                    />
-                                </View>
-
-                                {/* Confidence */}
-                                <View style={[
-                                    styles.fieldGroup,
-                                    {
-                                        zIndex: confidenceOpen ? 4000 : 3000,
-                                        elevation: confidenceOpen ? 4000 : 3000,
-                                    }]}>
-                                    <ThemedText type="overheader">How confident are you in communicating with your provider?</ThemedText>
-                                    <Dropdown
-                                        open={confidenceOpen}
-                                        value={signup.confidence}
-                                        items={confidenceItems}
-                                        setOpen={(open) => {
-                                            setConfidenceOpen(open);
-                                            setAnxietyOpen(false);
-                                            setMotivationOpen(false);
-                                        }}
-                                        setValue={signup.setConfidence}
-                                        setItems={() => { }}
-                                        placeholder="Select confidence level"
-                                    />
-                                </View>
-
-                                {/* Anxiety */}
-                                <View style={[
-                                    styles.fieldGroup,
-                                    {
-                                        zIndex: anxietyOpen ? 4000 : 3000,
-                                        elevation: anxietyOpen ? 4000 : 3000,
-                                    }]}>
-                                    <ThemedText type="overheader">How anxious do you feel before appointments?</ThemedText>
-                                    <Dropdown
-                                        open={anxietyOpen}
-                                        value={signup.anxiety}
-                                        items={anxietyItems}
-                                        setOpen={(open) => {
-                                            setAnxietyOpen(open);
-                                            setMotivationOpen(false);
-                                            setConfidenceOpen(false);
-                                        }}
-                                        setValue={signup.setAnxienty}
-                                        setItems={() => { }}
-                                        placeholder="Select anxiety level"
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </ThemedView>
-
-                    {/* Navigation */}
-                    <View style={styles.navigationSection}>
-                        <View style={styles.buttonRow}>
-                            <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-                                <MaterialIcons name="arrow-back" size={20} color="#64748b" />
-                                <Text style={styles.backButtonText}>Back</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
-                                <Text style={styles.primaryButtonText}>Continue</Text>
-                                <View style={styles.buttonIcon}>
-                                    <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-
-                        <Footer hasSpacer={true} />
-                    </View>
+                    <ThemedText style={styles.pageTitle} type="whitened">Diagnostic Questions</ThemedText>
+                    <ThemedText style={styles.pageSubtitle} type="greyed">This helps us understand your needs and personalize your experience</ThemedText>
                 </View>
-            </TouchableWithoutFeedback>
+
+                {/* Form */}
+                <ThemedView style={styles.formCard}>
+                    <View style={styles.cardContent}>
+                        <View style={styles.infoSection}>
+                            <ThemedView style={styles.infoIconContainer} type="dusked">
+                                <MaterialIcons name="question-answer" size={32} color="#3b82f6" />
+                            </ThemedView>
+                            <ThemedText style={styles.infoTitle} type="whitened">Diagnostic questions</ThemedText>
+                            <ThemedText style={styles.infoSubtitle} type="greyed"> We'll use this information to personalize your appointment preparation</ThemedText>
+                        </View>
+
+                        <View style={styles.formFields}>
+                            {/* Motivation */}
+                            <View style={styles.fieldGroup}>
+                                <ThemedText type="overheader">What do you hope to get from this app?</ThemedText>
+                                <Dropdown
+                                    items={motivationItems}
+                                    value={signup.motivation}
+                                    setValue={signup.setMotivation}
+                                    placeholder="Select your motivation"
+                                />
+                            </View>
+
+                            {/* Confidence */}
+                            <View style={styles.fieldGroup}>
+                                <ThemedText type="overheader">How confident are you in communicating with your provider?</ThemedText>
+                                <Dropdown
+                                    items={confidenceItems}
+                                    value={signup.confidence}
+                                    setValue={signup.setConfidence}
+                                    placeholder="Select confidence level"
+                                />
+                            </View>
+
+                            {/* Anxiety */}
+                            <View style={styles.fieldGroup}>
+                                <ThemedText type="overheader">How anxious do you feel before appointments?</ThemedText>
+                                <Dropdown
+                                    items={anxietyItems}
+                                    value={signup.anxiety}
+                                    setValue={signup.setAnxienty}
+                                    placeholder="Select anxiety level"
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </ThemedView>
+
+                {/* Navigation */}
+                <View style={styles.navigationSection}>
+                    <View style={styles.buttonRow}>
+                        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+                            <MaterialIcons name="arrow-back" size={20} color="#64748b" />
+                            <Text style={styles.backButtonText}>Back</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
+                            <Text style={styles.primaryButtonText}>Continue</Text>
+                            <View style={styles.buttonIcon}>
+                                <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
+                    <Footer hasSpacer={true} />
+                </View>
+            </View>
         </KeyboardAwareScrollView>
     );
 }

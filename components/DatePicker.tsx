@@ -73,7 +73,7 @@ export function DatePicker({
 
     return (
         <>
-            {!open && (
+            {(!open || Platform.OS === "android") && (
                 <TouchableOpacity
                     onPress={toggleDatePicker}
                     style={{ width: "100%" }}

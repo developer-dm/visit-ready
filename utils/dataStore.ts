@@ -1,8 +1,5 @@
-/*
-
-Encryption with react-native-quick-crypto
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Buffer } from 'buffer';
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 import crypto from "react-native-quick-crypto";
@@ -136,17 +133,13 @@ type Appointment = {
     miscDiscussion: string;
 };
 
-// Combined User State
 type UserState = {
-    // App data
     signup: SignupData | null;
     appointments: Appointment[];
 
-    // Hydration
     _hasHydrated: boolean;
     _dataHasHydrated: boolean;
 
-    // App data actions
     addSignupData: (data: SignupData) => void;
     resetSignup: () => void;
     addAppointment: (appointment: Appointment) => void;
@@ -186,17 +179,14 @@ export const useDataStore = create(
     ),
 );
 
-// Combined hook
 export const useUserStore = () => {
     const data = useDataStore();
 
     return {
-        // App data
         signup: data.signup,
         appointments: data.appointments,
         _dataHasHydrated: data._dataHasHydrated,
 
-        // Data actions
         addSignupData: data.addSignupData,
         resetSignup: data.resetSignup,
         addAppointment: data.addAppointment,
@@ -205,8 +195,8 @@ export const useUserStore = () => {
     };
 };
 
-*/
 
+/*
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Crypto from "expo-crypto";
 import * as SecureStore from "expo-secure-store";
@@ -401,3 +391,4 @@ export const useUserStore = () => {
         setDataHasHydrated: data.setDataHasHydrated,
     };
 };
+*/

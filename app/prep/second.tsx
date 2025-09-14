@@ -7,7 +7,7 @@ import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function PrepSecondScreen() {
@@ -15,7 +15,6 @@ export default function PrepSecondScreen() {
     const { prep } = useUser();
 
     // Dropdown states
-    const [concernStartOpen, setConcernStartOpen] = useState(false);
     const [concernStartItems] = useState([
         { label: 'Today', value: 'today' },
         { label: 'Within the Past Week', value: 'past-week' },
@@ -27,8 +26,6 @@ export default function PrepSecondScreen() {
         { label: 'Unsure', value: 'unsure' },
         { label: 'Other', value: 'other' },
     ]);
-
-    const [concernSeverityOpen, setConcerSeverityOpen] = useState(false);
     const [concernSeverityItems] = useState([
         { label: '1 - Very Mild', value: '1' },
         { label: '2', value: '2' },
@@ -67,114 +64,89 @@ export default function PrepSecondScreen() {
             enableResetScrollToCoords={false}
             extraScrollHeight={5}
         >
-            <TouchableWithoutFeedback onPress={() => {
-                setConcernStartOpen(false);
-                setConcerSeverityOpen(false);
-            }}>
-                <View style={styles.content}>
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <View style={styles.progressContainer}>
-                            <View style={styles.progressBar}>
-                                <View style={styles.progressFill} />
-                                <View style={styles.progressFill} />
-                                <View style={styles.progressEmpty} />
-                                <View style={styles.progressEmpty} />
-                            </View>
-                            <ThemedText style={styles.progressText} type="greyed">Step 2 of 4</ThemedText>
+            <View style={styles.content}>
+                {/* Header */}
+                <View style={styles.header}>
+                    <View style={styles.progressContainer}>
+                        <View style={styles.progressBar}>
+                            <View style={styles.progressFill} />
+                            <View style={styles.progressFill} />
+                            <View style={styles.progressEmpty} />
+                            <View style={styles.progressEmpty} />
                         </View>
-                        <ThemedText style={styles.pageTitle} type="whitened">Health Concerns</ThemedText>
-                        <ThemedText style={styles.pageSubtitle} type="greyed">Tell us about your main health concerns for this visit</ThemedText>
+                        <ThemedText style={styles.progressText} type="greyed">Step 2 of 4</ThemedText>
                     </View>
-
-                    {/* Form Card */}
-                    <ThemedView style={styles.formCard}>
-                        <View style={styles.cardContent}>
-                            {/* Welcome Message */}
-                            <View style={styles.welcomeSection}>
-                                <ThemedView style={styles.welcomeIconContainer} type="dusked">
-                                    <MaterialIcons name="favorite" size={32} color="#3b82f6" />
-                                </ThemedView>
-                                <ThemedText style={styles.welcomeTitle} type="whitened">Your Health Focus</ThemedText>
-                                <ThemedText style={styles.welcomeSubtitle} type="greyed">Help us understand your current health concerns and symptoms</ThemedText>
-                            </View>
-
-                            {/* Form Fields */}
-                            <View style={styles.formFields}>
-                                <View style={styles.fieldGroup}>
-                                    <ThemedText type="overheader">What's the main health issue or concern you'd like to discuss?</ThemedText>
-                                    <Textbox
-                                        placeholder="e.g. headaches, chest pain, fatigue"
-                                        onChangeText={prep.setMainConcern}
-                                        value={prep.mainConcern}
-                                    />
-                                </View>
-
-                                <View style={[styles.fieldGroup,
-                                {
-                                    zIndex: concernStartOpen ? 4000 : 3000,
-                                    elevation: concernStartOpen ? 4000 : 3000,
-                                }]}>
-                                    <ThemedText type="overheader">
-                                        When did this start?
-                                    </ThemedText>
-                                    <Dropdown
-                                        open={concernStartOpen}
-                                        value={prep.concernStart}
-                                        items={concernStartItems}
-                                        setOpen={(open) => {
-                                            setConcernStartOpen(open);
-                                            setConcerSeverityOpen(false);
-                                        }}
-                                        setValue={prep.setConcernStart}
-                                        setItems={() => { }}
-                                    />
-                                </View>
-
-                                <View style={[styles.fieldGroup,
-                                {
-                                    zIndex: concernSeverityOpen ? 4000 : 3000,
-                                    elevation: concernSeverityOpen ? 4000 : 3000,
-                                }]}>
-                                    <ThemedText type="overheader">
-                                        How would you rate the severity from 1-10?
-                                    </ThemedText>
-                                    <Dropdown
-                                        open={concernSeverityOpen}
-                                        value={prep.concernSeverity}
-                                        items={concernSeverityItems}
-                                        setOpen={(open) => {
-                                            setConcerSeverityOpen(open);
-                                            setConcernStartOpen(false);
-                                        }}
-                                        setValue={prep.setConcernSeverity}
-                                        setItems={() => { }}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </ThemedView>
-
-                    {/* Navigation Section */}
-                    <View style={styles.navigationSection}>
-                        <View style={styles.buttonRow}>
-                            <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-                                <MaterialIcons name="arrow-back" size={20} color="#64748b" />
-                                <Text style={styles.backButtonText}>Back</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
-                                <Text style={styles.primaryButtonText}>Continue</Text>
-                                <View style={styles.buttonIcon}>
-                                    <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    <Footer hasSpacer={true} />
+                    <ThemedText style={styles.pageTitle} type="whitened">Health Concerns</ThemedText>
+                    <ThemedText style={styles.pageSubtitle} type="greyed">Tell us about your main health concerns for this visit</ThemedText>
                 </View>
-            </TouchableWithoutFeedback>
+
+                {/* Form Card */}
+                <ThemedView style={styles.formCard}>
+                    <View style={styles.cardContent}>
+                        {/* Welcome Message */}
+                        <View style={styles.welcomeSection}>
+                            <ThemedView style={styles.welcomeIconContainer} type="dusked">
+                                <MaterialIcons name="favorite" size={32} color="#3b82f6" />
+                            </ThemedView>
+                            <ThemedText style={styles.welcomeTitle} type="whitened">Your Health Focus</ThemedText>
+                            <ThemedText style={styles.welcomeSubtitle} type="greyed">Help us understand your current health concerns and symptoms</ThemedText>
+                        </View>
+
+                        {/* Form Fields */}
+                        <View style={styles.formFields}>
+                            <View style={styles.fieldGroup}>
+                                <ThemedText type="overheader">What's the main health issue or concern you'd like to discuss?</ThemedText>
+                                <Textbox
+                                    placeholder="e.g. headaches, chest pain, fatigue"
+                                    onChangeText={prep.setMainConcern}
+                                    value={prep.mainConcern}
+                                />
+                            </View>
+
+                            <View style={styles.fieldGroup}>
+                                <ThemedText type="overheader">
+                                    When did this start?
+                                </ThemedText>
+                                <Dropdown
+                                    items={concernStartItems}
+                                    value={prep.concernStart}
+                                    setValue={prep.setConcernStart}
+                                />
+                            </View>
+
+                            <View style={styles.fieldGroup}>
+                                <ThemedText type="overheader">
+                                    How would you rate the severity from 1-10?
+                                </ThemedText>
+                                <Dropdown
+                                    items={concernSeverityItems}
+                                    value={prep.concernSeverity}
+                                    setValue={prep.setConcernSeverity}
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </ThemedView>
+
+                {/* Navigation Section */}
+                <View style={styles.navigationSection}>
+                    <View style={styles.buttonRow}>
+                        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+                            <MaterialIcons name="arrow-back" size={20} color="#64748b" />
+                            <Text style={styles.backButtonText}>Back</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
+                            <Text style={styles.primaryButtonText}>Continue</Text>
+                            <View style={styles.buttonIcon}>
+                                <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                <Footer hasSpacer={true} />
+            </View>
         </KeyboardAwareScrollView>
     );
 }

@@ -1,24 +1,102 @@
 import { Footer } from "@/components/Footer";
+import LoadingScreen from "@/components/Loading";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { authenticateWithBiometrics } from "@/utils/auth";
 import { useAuthStore } from "@/utils/authStore";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import * as LocalAuthentication from 'expo-local-authentication';
 import { Link } from "expo-router";
+import { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function SignInScreen() {
   const { logInAsVip } = useAuthStore();
+  const [authType, setAuthType] = useState<'biometric' | 'passcode' | 'none'>('none');
+  const [isLoading, setIsLoading] = useState(true);
+
+  const checkAuthenticationCapabilities = async () => {
+    try {
+      const hasHardware = await LocalAuthentication.hasHardwareAsync();
+
+      if (!hasHardware) {
+        setAuthType('none');
+        setIsLoading(false);
+        return;
+      }
+
+      const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+
+      if (isEnrolled) {
+        const authTypes = await LocalAuthentication.supportedAuthenticationTypesAsync();
+
+        if ( // Has biometrics
+          authTypes.includes(LocalAuthentication.AuthenticationType.FINGERPRINT) ||
+          authTypes.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION) ||
+          authTypes.includes(LocalAuthentication.AuthenticationType.IRIS)) {
+          setAuthType('biometric');
+        } else {
+          setAuthType('passcode');
+        }
+      } else {
+        const securityLevel = await LocalAuthentication.getEnrolledLevelAsync();
+
+        if (securityLevel === LocalAuthentication.SecurityLevel.SECRET) { // Has password
+          setAuthType('passcode');
+        } else {
+          setAuthType('none');
+        }
+      }
+    } catch (error) {
+      console.error('Error checking authentication capabilities:', error);
+      setAuthType('none');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleLogin = async () => {
     await authenticateWithBiometrics();
   };
 
-  /*
-  const handleVipLogin = () => {
-    logInAsVip();
+  const getAuthButtonConfig = () => {
+    switch (authType) {
+      case 'biometric':
+        return {
+          icon: 'fingerprint',
+          title: 'Biometric Login',
+          subtitle: 'Use fingerprint or face recognition'
+        };
+      case 'passcode':
+        return {
+          icon: 'lock',
+          title: 'Device Passcode',
+          subtitle: 'Use your device passcode to sign in'
+        };
+      default:
+        return {
+          icon: 'login',
+          title: 'Sign In',
+          subtitle: 'Authentication not available on this device'
+        };
+    }
   };
-  */
+
+  const authConfig = getAuthButtonConfig();
+
+  useEffect(() => {
+    checkAuthenticationCapabilities();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <LoadingScreen
+        visible={true}
+        message={'Loading...'}
+        subMessage={'Getting authentication method'}
+      />
+    );
+  }
 
   return (
     <View style={styles.content}>
@@ -50,41 +128,36 @@ export default function SignInScreen() {
             </ThemedText>
           </View>
 
+          {/* Login Options */}
           <View style={styles.loginOptions}>
-            {/* Biometric Login */}
-            <TouchableOpacity style={styles.primaryLoginButton} onPress={handleLogin}>
+            <TouchableOpacity
+              style={[
+                styles.primaryLoginButton,
+                authType === 'none' && styles.disabledButton
+              ]}
+              onPress={handleLogin}
+              disabled={authType === 'none'}
+            >
               <View style={styles.loginButtonContent}>
                 <ThemedView style={styles.loginIconContainer} lightColor='#ffffff33' darkColor='#ffffff33'>
-                  <MaterialIcons name="fingerprint" size={24} color="#ffffff" />
+                  <MaterialIcons name={authConfig.icon as 'fingerprint' | 'lock' | 'login'} size={24} color="#ffffff" />
                 </ThemedView>
                 <View style={styles.loginTextContainer}>
-                  <Text style={styles.primaryLoginText}>Biometric Login</Text>
-                  <Text style={styles.loginSubtext}>Use fingerprint or face recognition (if supported)</Text>
+                  <Text style={styles.primaryLoginText}>{authConfig.title}</Text>
+                  <Text style={styles.loginSubtext}>{authConfig.subtitle}</Text>
                 </View>
                 <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
               </View>
             </TouchableOpacity>
 
-            {/*
-              --Future Provider Login--
-
-              <TouchableOpacity
-                style={[styles.secondaryLoginButton, styles.vipButton]}
-                onPress={handleVipLogin}
-              >
-                <View style={styles.loginButtonContent}>
-                  <ThemedView style={styles.vipIconContainer}>
-                    <MaterialIcons name="star" size={24} color="#f59e0b" />
-                  </ThemedView>
-                  <View style={styles.loginTextContainer}>
-                    <Text style={styles.vipLoginText}>VIP Access</Text>
-                    <Text style={styles.vipSubtext}>Premium features available</Text>
-                  </View>
-                  <MaterialIcons name="arrow-forward" size={20} color="#f59e0b" />
-                </View>
-              </TouchableOpacity>
-
-              */}
+            {authType === 'none' && (
+              <View style={styles.infoContainer}>
+                <MaterialIcons name="info-outline" size={16} color="#64748b" />
+                <ThemedText style={styles.infoText} type="greyed">
+                  This device doesn't support secure authentication. Please enable device lock screen security in your device settings.
+                </ThemedText>
+              </View>
+            )}
           </View>
         </View>
       </ThemedView>
@@ -117,6 +190,9 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: 'center',
+  },
+  loadingContainer: {
+    alignItems: 'center',
   },
   header: {
     paddingHorizontal: 24,
@@ -213,6 +289,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 12,
+  },
+  disabledButton: {
+    backgroundColor: '#94a3b8',
+    shadowOpacity: 0.1,
   },
   secondaryLoginButton: {
     borderRadius: 16,
@@ -314,5 +394,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     marginLeft: 8,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: 16,
+    backgroundColor: '#f8fafc',
+    borderRadius: 12,
+    gap: 8,
+  },
+  infoText: {
+    fontSize: 13,
+    lineHeight: 18,
+    flex: 1,
   },
 });

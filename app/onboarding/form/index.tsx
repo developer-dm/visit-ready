@@ -8,7 +8,7 @@ import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function OnboardingFirstScreen() {
@@ -16,7 +16,6 @@ export default function OnboardingFirstScreen() {
   const { signup } = useUser();
 
   // Dropdown state
-  const [sexOpen, setSexOpen] = useState(false);
   const [sexItems] = useState([
     { label: 'Male', value: 'male' },
     { label: 'Female', value: 'female' },
@@ -25,7 +24,6 @@ export default function OnboardingFirstScreen() {
 
   const handleNext = () => {
     Keyboard.dismiss();
-    setSexOpen(false);
 
     if (
       signup.firstName
@@ -48,93 +46,86 @@ export default function OnboardingFirstScreen() {
       enableResetScrollToCoords={false}
       extraScrollHeight={5}
     >
-      <TouchableWithoutFeedback onPress={() => {
-        setSexOpen(false);
-      }}>
-        <View style={styles.content}>
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={styles.progressContainer}>
-              <View style={styles.progressBar}>
-                <View style={styles.progressFill} />
-                <View style={styles.progressEmpty} />
-                <View style={styles.progressEmpty} />
-              </View>
-              <ThemedText style={styles.progressText} type="greyed">Step 1 of 3</ThemedText>
+      <View style={styles.content}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.progressContainer}>
+            <View style={styles.progressBar}>
+              <View style={styles.progressFill} />
+              <View style={styles.progressEmpty} />
+              <View style={styles.progressEmpty} />
             </View>
-            <ThemedText style={styles.pageTitle} type="whitened">Let's Get Started</ThemedText>
-            <ThemedText style={styles.pageSubtitle} type="greyed">Tell us a bit about yourself to personalize your experience</ThemedText>
+            <ThemedText style={styles.progressText} type="greyed">Step 1 of 3</ThemedText>
           </View>
-
-          {/* Form */}
-          <ThemedView style={styles.formCard}>
-            <View style={styles.cardContent}>
-              <View style={styles.welcomeSection}>
-                <ThemedView style={styles.welcomeIconContainer} type="dusked">
-                  <MaterialIcons name="person-add" size={32} color="#3b82f6" />
-                </ThemedView>
-                <ThemedText style={styles.welcomeTitle} type="whitened">Create Your Profile</ThemedText>
-                <ThemedText style={styles.welcomeSubtitle} type="greyed">We'll use this information to customize your appointment preparation</ThemedText>
-              </View>
-
-              <View style={styles.formFields}>
-                <View style={styles.fieldGroup}>
-                  <ThemedText type="overheader">First Name</ThemedText>
-                  <Textbox
-                    placeholder="Enter your first name"
-                    onChangeText={signup.setFirstName}
-                    value={signup.firstName}
-                  />
-                </View>
-
-                <View style={styles.fieldGroup}>
-                  <ThemedText type="overheader">Last Name</ThemedText>
-                  <Textbox
-                    placeholder="Enter your last name"
-                    onChangeText={signup.setLastName}
-                    value={signup.lastName}
-                  />
-                </View>
-
-                <View style={styles.fieldGroup}>
-                  <ThemedText type="overheader">Date of Birth</ThemedText>
-                  <DatePicker
-                    mode="date"
-                    display="spinner"
-                    value={signup.DOB}
-                    setValue={signup.setDOB}
-                  />
-                </View>
-
-                <View style={styles.fieldGroup}>
-                  <ThemedText type="overheader">Sex at Birth</ThemedText>
-                  <Dropdown
-                    open={sexOpen}
-                    value={signup.sex}
-                    items={sexItems}
-                    setOpen={setSexOpen}
-                    setValue={signup.setSex}
-                    setItems={() => { }}
-                    placeholder="Select your biological sex"
-                  />
-                </View>
-              </View>
-            </View>
-          </ThemedView>
-
-          {/* Navigation */}
-          <View style={styles.navigationSection}>
-            <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
-              <Text style={styles.primaryButtonText}>Continue</Text>
-              <View style={styles.buttonIcon}>
-                <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
-              </View>
-            </TouchableOpacity>
-
-            <Footer hasSpacer={true} />
-          </View>
+          <ThemedText style={styles.pageTitle} type="whitened">Let's Get Started</ThemedText>
+          <ThemedText style={styles.pageSubtitle} type="greyed">Tell us a bit about yourself to personalize your experience</ThemedText>
         </View>
-      </TouchableWithoutFeedback>
+
+        {/* Form */}
+        <ThemedView style={styles.formCard}>
+          <View style={styles.cardContent}>
+            <View style={styles.welcomeSection}>
+              <ThemedView style={styles.welcomeIconContainer} type="dusked">
+                <MaterialIcons name="person-add" size={32} color="#3b82f6" />
+              </ThemedView>
+              <ThemedText style={styles.welcomeTitle} type="whitened">Create Your Profile</ThemedText>
+              <ThemedText style={styles.welcomeSubtitle} type="greyed">We'll use this information to customize your appointment preparation</ThemedText>
+            </View>
+
+            <View style={styles.formFields}>
+              <View style={styles.fieldGroup}>
+                <ThemedText type="overheader">First Name</ThemedText>
+                <Textbox
+                  placeholder="Enter your first name"
+                  onChangeText={signup.setFirstName}
+                  value={signup.firstName}
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <ThemedText type="overheader">Last Name</ThemedText>
+                <Textbox
+                  placeholder="Enter your last name"
+                  onChangeText={signup.setLastName}
+                  value={signup.lastName}
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <ThemedText type="overheader">Date of Birth</ThemedText>
+                <DatePicker
+                  mode="date"
+                  display="spinner"
+                  value={signup.DOB}
+                  setValue={signup.setDOB}
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <ThemedText type="overheader">Sex at Birth</ThemedText>
+                <Dropdown
+                  items={sexItems}
+                  value={signup.sex}
+                  setValue={signup.setSex}
+                  placeholder="Select your biological sex"
+                />
+              </View>
+            </View>
+          </View>
+        </ThemedView>
+
+        {/* Navigation */}
+        <View style={styles.navigationSection}>
+          <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
+            <Text style={styles.primaryButtonText}>Continue</Text>
+            <View style={styles.buttonIcon}>
+              <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
+            </View>
+          </TouchableOpacity>
+
+          <Footer hasSpacer={true} />
+        </View>
+      </View>
     </KeyboardAwareScrollView>
   );
 }
