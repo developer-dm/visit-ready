@@ -29,7 +29,7 @@ export type CustomDropdownProps = {
 
 export function Dropdown({
     items,
-    placeholder = "Select an option",
+    placeholder = "Optional",
     value,
     setValue,
     lightColor,

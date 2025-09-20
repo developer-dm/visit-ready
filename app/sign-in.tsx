@@ -2,10 +2,9 @@ import { Footer } from "@/components/Footer";
 import LoadingScreen from "@/components/Loading";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { authenticateWithBiometrics } from "@/utils/auth";
+import { authenticateWithBiometrics, checkAuthenticationCapabilities } from "@/utils/auth";
 import { useAuthStore } from "@/utils/authStore";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import * as LocalAuthentication from 'expo-local-authentication';
 import { Link } from "expo-router";
 import { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -14,46 +13,6 @@ export default function SignInScreen() {
   const { logInAsVip } = useAuthStore();
   const [authType, setAuthType] = useState<'biometric' | 'passcode' | 'none'>('none');
   const [isLoading, setIsLoading] = useState(true);
-
-  const checkAuthenticationCapabilities = async () => {
-    try {
-      const hasHardware = await LocalAuthentication.hasHardwareAsync();
-
-      if (!hasHardware) {
-        setAuthType('none');
-        setIsLoading(false);
-        return;
-      }
-
-      const isEnrolled = await LocalAuthentication.isEnrolledAsync();
-
-      if (isEnrolled) {
-        const authTypes = await LocalAuthentication.supportedAuthenticationTypesAsync();
-
-        if ( // Has biometrics
-          authTypes.includes(LocalAuthentication.AuthenticationType.FINGERPRINT) ||
-          authTypes.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION) ||
-          authTypes.includes(LocalAuthentication.AuthenticationType.IRIS)) {
-          setAuthType('biometric');
-        } else {
-          setAuthType('passcode');
-        }
-      } else {
-        const securityLevel = await LocalAuthentication.getEnrolledLevelAsync();
-
-        if (securityLevel === LocalAuthentication.SecurityLevel.SECRET) { // Has password
-          setAuthType('passcode');
-        } else {
-          setAuthType('none');
-        }
-      }
-    } catch (error) {
-      console.error('Error checking authentication capabilities:', error);
-      setAuthType('none');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleLogin = async () => {
     await authenticateWithBiometrics();
@@ -84,8 +43,14 @@ export default function SignInScreen() {
 
   const authConfig = getAuthButtonConfig();
 
+  const preliminaryCheck = async () => {
+    const result = await checkAuthenticationCapabilities();
+    setAuthType(result)
+    setIsLoading(false);
+  }
+
   useEffect(() => {
-    checkAuthenticationCapabilities();
+    preliminaryCheck();
   }, []);
 
   if (isLoading) {
@@ -109,7 +74,7 @@ export default function SignInScreen() {
             Visit Ready
           </ThemedText>
           <ThemedText style={styles.appSubtitle} type="greyed">
-            Make the most of every medical visit
+            Your health, your questions
           </ThemedText>
         </View>
       </View>
@@ -124,7 +89,7 @@ export default function SignInScreen() {
               Welcome Back
             </ThemedText>
             <ThemedText style={styles.welcomeSubtitle} type="greyed">
-              Choose how you'd like to access your account
+              Sign in to access your account
             </ThemedText>
           </View>
 
@@ -174,7 +139,7 @@ export default function SignInScreen() {
         </Link>
       </View>
 
-      <Footer text="Your health data is secure and private" />
+      <Footer type="absolute" hasSpacer={true} text="Your health data is secure and private" />
     </View>
   );
 }

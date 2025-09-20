@@ -8,7 +8,7 @@ import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function OnboardingFirstScreen() {
@@ -24,17 +24,8 @@ export default function OnboardingFirstScreen() {
 
   const handleNext = () => {
     Keyboard.dismiss();
+    router.push("/onboarding/form/second");
 
-    if (
-      signup.firstName
-      && signup.lastName
-      && signup.DOB
-      && signup.sex
-    ) {
-      router.push("/onboarding/form/second");
-    } else {
-      Alert.alert("Error", "Please answer all questions.");
-    };
   };
 
   return (
@@ -57,8 +48,6 @@ export default function OnboardingFirstScreen() {
             </View>
             <ThemedText style={styles.progressText} type="greyed">Step 1 of 3</ThemedText>
           </View>
-          <ThemedText style={styles.pageTitle} type="whitened">Let's Get Started</ThemedText>
-          <ThemedText style={styles.pageSubtitle} type="greyed">Tell us a bit about yourself to personalize your experience</ThemedText>
         </View>
 
         {/* Form */}
@@ -76,7 +65,6 @@ export default function OnboardingFirstScreen() {
               <View style={styles.fieldGroup}>
                 <ThemedText type="overheader">First Name</ThemedText>
                 <Textbox
-                  placeholder="Enter your first name"
                   onChangeText={signup.setFirstName}
                   value={signup.firstName}
                 />
@@ -85,7 +73,6 @@ export default function OnboardingFirstScreen() {
               <View style={styles.fieldGroup}>
                 <ThemedText type="overheader">Last Name</ThemedText>
                 <Textbox
-                  placeholder="Enter your last name"
                   onChangeText={signup.setLastName}
                   value={signup.lastName}
                 />
@@ -107,7 +94,6 @@ export default function OnboardingFirstScreen() {
                   items={sexItems}
                   value={signup.sex}
                   setValue={signup.setSex}
-                  placeholder="Select your biological sex"
                 />
               </View>
             </View>

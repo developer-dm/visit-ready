@@ -40,14 +40,10 @@ export default function PrepSecondScreen() {
     ]);
 
     const handleNext = () => {
-        if (
-            prep.mainConcern
-            && prep.concernStart
-            && prep.concernSeverity
-        ) {
+        if (prep.mainConcern) {
             router.push("/prep/third")
         } else {
-            Alert.alert("Error", "Please answer all questions.");
+            Alert.alert("Error", "Please add an appointment type.");
         }
     };
 
@@ -97,7 +93,7 @@ export default function PrepSecondScreen() {
                             <View style={styles.fieldGroup}>
                                 <ThemedText type="overheader">What's the main health issue or concern you'd like to discuss?</ThemedText>
                                 <Textbox
-                                    placeholder="e.g. headaches, chest pain, fatigue"
+                                    placeholder="Required"
                                     onChangeText={prep.setMainConcern}
                                     value={prep.mainConcern}
                                 />

@@ -1,6 +1,5 @@
 import { expo } from "@/app.json";
 import { Button } from "@/components/Button";
-import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -12,9 +11,9 @@ export default function AboutScreen() {
 
   const features = [
     {
-      icon: "edit-note",
-      title: "Symptom Input",
-      description: "Easily enter and track current symptoms with guided prompts"
+      icon: "history",
+      title: "Track Your Visits",
+      description: "Keep a record of all your appointments and progress"
     },
     {
       icon: "quiz",
@@ -22,20 +21,10 @@ export default function AboutScreen() {
       description: "Get tailored questions to ask your doctor based on your symptoms"
     },
     {
-      icon: "summarize",
-      title: "Visit Summary",
-      description: "Create a concise, clinician-friendly summary of your health concerns"
+      icon: "lock",
+      title: "Your Health Data is Secure",
+      description: "All health data is encrypted and stored on your device"
     },
-    {
-      icon: "share",
-      title: "Secure Sharing",
-      description: "Send your summary and questions securely to your healthcare provider before your appointment"
-    },
-    {
-      icon: "schedule",
-      title: "Appointment Reminders",
-      description: "Stay on track with notifications and prep tips"
-    }
   ];
 
   return (
@@ -142,8 +131,6 @@ export default function AboutScreen() {
             We'd love to hear from you to make Visit Ready even better.
           </ThemedText>
         </View>
-
-        <Footer hasSpacer={true} />
       </ScrollView>
     </>
   );
@@ -349,7 +336,7 @@ const styles = StyleSheet.create({
   contactText: {
     fontSize: 14,
     fontWeight: '400',
-    textAlign: 'left',
+    textAlign: 'center',
     lineHeight: 20,
   },
 });

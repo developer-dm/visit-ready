@@ -2,9 +2,7 @@ import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useAuthStore } from "@/utils/authStore";
 import DataFormatterService from "@/utils/dataFormatterService";
-import { useDataStore } from "@/utils/dataStore";
 import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Checkbox from "expo-checkbox";
@@ -13,14 +11,17 @@ import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "rea
 
 export default function OnboardingFinalScreen() {
   const router = useRouter();
-  const { completeOnboarding } = useAuthStore();
-  const { addSignupData } = useDataStore();
   const { signup, clearUserContext } = useUser();
 
   const handleNext = () => {
     if (signup.acceptedTerms) {
-      addSignupData(signup);
-      completeOnboarding();
+      router.dismissTo("/onboarding")
+      router.replace({
+        pathname: "/onboarding/sign-in",
+        params: {
+          data: JSON.stringify(signup)
+        },
+      });
       clearUserContext();
     } else {
       Alert.alert("Error", "Please accept the agreement.");
@@ -81,11 +82,7 @@ export default function OnboardingFinalScreen() {
                         {DataFormatterService.toReadableString(key)}
                       </ThemedText>
                       <ThemedText style={styles.detailValue} type="whitened">
-                        {
-                          ["confidence", "anxiety"].includes(key)
-                            ? DataFormatterService.toReadableString(value, key as "confidence" | "anxiety")
-                            : DataFormatterService.toReadableString(value)
-                        }
+                        {DataFormatterService.toReadableString(value)}
                       </ThemedText>
                     </ThemedView>
                   );
@@ -114,7 +111,7 @@ export default function OnboardingFinalScreen() {
                 />
                 <View style={styles.termsTextContainer}>
                   <ThemedText style={styles.termsText} type="whitened">
-                    I agree that my anonymized app activity can be collected for research and app enhancement.
+                    I agree to the terms of service
                   </ThemedText>
                 </View>
               </Button>

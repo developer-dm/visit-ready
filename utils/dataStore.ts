@@ -111,7 +111,6 @@ const createEncryptedAsyncStorage = () => ({
     },
 });
 
-// Types
 type SignupData = {
     firstName: string;
     lastName: string;
@@ -147,7 +146,6 @@ type UserState = {
     setDataHasHydrated: (value: boolean) => void;
 };
 
-// App data store
 export const useDataStore = create(
     persist<Pick<UserState, 'signup' | 'appointments' | '_dataHasHydrated' | 'addSignupData' | 'resetSignup' | 'addAppointment' | 'resetAppointments' | 'setDataHasHydrated'>>(
         (set, get) => ({

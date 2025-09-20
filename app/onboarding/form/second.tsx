@@ -1,9 +1,11 @@
+import { Button } from "@/components/Button";
 import { Dropdown } from "@/components/Dropdown";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Checkbox from "expo-checkbox";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -14,35 +16,25 @@ export default function OnboardingSecondScreen() {
     const { signup } = useUser();
 
     // Dropdown states
-    const [motivationItems] = useState([
-        { label: 'Feel more prepared', value: 'prepared' },
-        { label: 'Reduce anxiety', value: 'anxiety' },
-        { label: 'Save time during appointments', value: 'time' },
-        { label: 'Other', value: 'other' },
-    ]);
-    const [confidenceItems] = useState([
-        { label: '1 - Not confident', value: '1' },
-        { label: '2', value: '2' },
-        { label: '3', value: '3' },
-        { label: '4', value: '4' },
-        { label: '5 - Very confident', value: '5' },
-    ]);
-    const [anxietyItems] = useState([
-        { label: '1 - Very anxious', value: '1' },
-        { label: '2', value: '2' },
-        { label: '3', value: '3' },
-        { label: '4', value: '4' },
-        { label: '5 - Not anxious', value: '5' },
+    const [languageItems] = useState([
+        { label: 'English', value: 'en' },
+        { label: 'Spanish (Español)', value: 'es' },
+        { label: 'Chinese (中文)', value: 'zh' },
+        { label: 'Tagalog (Filipino)', value: 'tl' },
+        { label: 'Vietnamese (Tiếng Việt)', value: 'vi' },
+        { label: 'Arabic (العربية)', value: 'ar' },
+        { label: 'French (Français)', value: 'fr' },
+        { label: 'Haitian Creole (Kreyòl Ayisyen)', value: 'ht' },
+        { label: 'Korean (한국어)', value: 'ko' },
+        { label: 'Russian (Русский)', value: 'ru' },
     ]);
 
+
     const handleNext = () => {
-        if (signup.motivation
-            && signup.confidence != null
-            && signup.anxiety != null
-        ) {
+        if (signup.language) {
             router.push("/onboarding/form/final");
         } else {
-            Alert.alert("Error", "Please answer all questions.");
+            Alert.alert("Error", "Please enter a preferred language.");
         }
     };
 
@@ -70,8 +62,6 @@ export default function OnboardingSecondScreen() {
                         </View>
                         <ThemedText style={styles.progressText} type="greyed">Step 2 of 3</ThemedText>
                     </View>
-                    <ThemedText style={styles.pageTitle} type="whitened">Diagnostic Questions</ThemedText>
-                    <ThemedText style={styles.pageSubtitle} type="greyed">This helps us understand your needs and personalize your experience</ThemedText>
                 </View>
 
                 {/* Form */}
@@ -81,42 +71,42 @@ export default function OnboardingSecondScreen() {
                             <ThemedView style={styles.infoIconContainer} type="dusked">
                                 <MaterialIcons name="question-answer" size={32} color="#3b82f6" />
                             </ThemedView>
-                            <ThemedText style={styles.infoTitle} type="whitened">Diagnostic questions</ThemedText>
+                            <ThemedText style={styles.infoTitle} type="whitened">Preferences</ThemedText>
                             <ThemedText style={styles.infoSubtitle} type="greyed"> We'll use this information to personalize your appointment preparation</ThemedText>
                         </View>
 
                         <View style={styles.formFields}>
-                            {/* Motivation */}
+                            {/* Language */}
                             <View style={styles.fieldGroup}>
-                                <ThemedText type="overheader">What do you hope to get from this app?</ThemedText>
+                                <ThemedText type="overheader">Primary language spoken</ThemedText>
                                 <Dropdown
-                                    items={motivationItems}
-                                    value={signup.motivation}
-                                    setValue={signup.setMotivation}
-                                    placeholder="Select your motivation"
+                                    placeholder="Required"
+                                    items={languageItems}
+                                    value={signup.language}
+                                    setValue={signup.setLanguage}
                                 />
                             </View>
 
-                            {/* Confidence */}
+                            {/* Notifications */}
                             <View style={styles.fieldGroup}>
-                                <ThemedText type="overheader">How confident are you in communicating with your provider?</ThemedText>
-                                <Dropdown
-                                    items={confidenceItems}
-                                    value={signup.confidence}
-                                    setValue={signup.setConfidence}
-                                    placeholder="Select confidence level"
-                                />
-                            </View>
-
-                            {/* Anxiety */}
-                            <View style={styles.fieldGroup}>
-                                <ThemedText type="overheader">How anxious do you feel before appointments?</ThemedText>
-                                <Dropdown
-                                    items={anxietyItems}
-                                    value={signup.anxiety}
-                                    setValue={signup.setAnxienty}
-                                    placeholder="Select anxiety level"
-                                />
+                                <ThemedText type="overheader">Allow notifications</ThemedText>
+                                <Button
+                                    type="bordered"
+                                    style={styles.notificationsContainer}
+                                    onPress={() => signup.setNotifications(!signup.notifications)}
+                                    activeOpacity={0.7}
+                                >
+                                    <Checkbox
+                                        value={signup.notifications}
+                                        onValueChange={signup.setNotifications}
+                                        color={signup.notifications ? "#3b82f6" : undefined}
+                                    />
+                                    <View style={styles.notificationsTextContainer}>
+                                        <ThemedText style={styles.notificationsText} type="greyed">
+                                            I want to receive notifications
+                                        </ThemedText>
+                                    </View>
+                                </Button>
                             </View>
                         </View>
                     </View>
@@ -255,6 +245,23 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         marginBottom: 12,
         lineHeight: 18,
+    },
+    notificationsContainer: {
+        borderRadius: 16,
+        borderWidth: 1,
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        padding: 16,
+    },
+    notificationsTextContainer: {
+        flex: 1,
+        marginLeft: 12,
+    },
+    notificationsText: {
+        fontSize: 14,
+        fontWeight: '400',
+        lineHeight: 20,
+        flexWrap: "wrap",
     },
     navigationSection: {
         paddingHorizontal: 24,

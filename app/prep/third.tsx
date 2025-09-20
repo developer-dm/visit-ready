@@ -5,7 +5,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function PrepThirdScreen() {
@@ -13,11 +13,7 @@ export default function PrepThirdScreen() {
     const { prep } = useUser();
 
     const handleNext = () => {
-        if (prep.visitGoal && prep.specificWorries) {
-            router.push("/prep/final")
-        } else {
-            Alert.alert("Error", "Please answer all questions.");
-        }
+        router.push("/prep/final")
     };
 
     const handleBack = () => {
@@ -74,7 +70,6 @@ export default function PrepThirdScreen() {
                                     What do you hope to get out of this visit?
                                 </ThemedText>
                                 <Textbox
-                                    placeholder="e.g. relief from pain"
                                     onChangeText={prep.setVisitGoal}
                                     value={prep.visitGoal}
                                 />
@@ -85,7 +80,6 @@ export default function PrepThirdScreen() {
                                     Do you have any specific worries?
                                 </ThemedText>
                                 <Textbox
-                                    placeholder="e.g. side effects of medication"
                                     onChangeText={prep.setSpecificWorries}
                                     value={prep.specificWorries}
                                 />
@@ -93,10 +87,9 @@ export default function PrepThirdScreen() {
 
                             <View style={styles.fieldGroup}>
                                 <ThemedText type="overheader">
-                                    Anything else you want to discuss? <ThemedText style={styles.optionalText} type="dusked">(optional)</ThemedText>
+                                    Anything else you want to discuss?
                                 </ThemedText>
                                 <Textbox
-                                    placeholder="e.g. lifestyle changes"
                                     onChangeText={prep.setMiscDiscussion}
                                     value={prep.miscDiscussion}
                                 />
@@ -230,10 +223,6 @@ const styles = StyleSheet.create({
     },
     fieldGroup: {
         width: '100%',
-    },
-    optionalText: {
-        fontWeight: '400',
-        fontSize: 14,
     },
     navigationSection: {
         paddingHorizontal: 24,

@@ -94,7 +94,7 @@ export default function HistoryScreen() {
                                         >
                                             <AppointmentCard
                                                 appointmentType={value.appointmentType ? value.appointmentType : "other"}
-                                                appointmentDate={value.appointmentDate ? new Date(value.appointmentDate) : new Date()}
+                                                appointmentDate={value.appointmentDate ? new Date(value.appointmentDate) : ""}
                                                 provider={value.provider}
                                                 mainConcern={value.mainConcern}
                                                 id={value.id}

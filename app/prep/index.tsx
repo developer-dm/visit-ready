@@ -25,13 +25,10 @@ export default function ModalScreen() {
   ]);
 
   const handleNext = () => {
-    if (
-      prep.appointmentType
-      && prep.appointmentDate
-    ) {
+    if (prep.appointmentType) {
       router.push("/prep/second")
     } else {
-      Alert.alert("Error", "Please answer all questions.");
+      Alert.alert("Error", "Please enter an appointment type.");
     }
   };
 
@@ -83,6 +80,7 @@ export default function ModalScreen() {
                   What type of appointment is this?
                 </ThemedText>
                 <Dropdown
+                  placeholder="Required"
                   items={appointmentTypeItems}
                   value={prep.appointmentType}
                   setValue={prep.setAppointmentType}
@@ -103,10 +101,9 @@ export default function ModalScreen() {
 
               <View style={styles.fieldGroup}>
                 <ThemedText type="overheader">
-                  Who is your provider? <ThemedText style={styles.optionalText} type="dusked">(optional)</ThemedText>
+                  Who is your provider?
                 </ThemedText>
                 <Textbox
-                  placeholder="e.g. Dr. Smith"
                   onChangeText={prep.setProvider}
                   value={prep.provider}
                 />
@@ -233,10 +230,6 @@ const styles = StyleSheet.create({
   },
   fieldGroup: {
     width: '100%',
-  },
-  optionalText: {
-    fontWeight: '400',
-    fontSize: 14,
   },
   actionSection: {
     paddingHorizontal: 24,

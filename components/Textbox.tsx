@@ -29,6 +29,7 @@ export function Textbox({
                 type === "default" ? styles.default : undefined,
                 style,
             ]}
+            placeholder="Optional"
             placeholderTextColor={placeholderColor}
             {...rest}
         />

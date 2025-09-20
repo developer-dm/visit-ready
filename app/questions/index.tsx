@@ -20,16 +20,12 @@ export default function FinalScreen() {
     const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
     const prep = route.params?.data ? JSON.parse(route.params.data) : null;
     const [copied, setCopied] = useState(false);
-    const [response, setResponse] = useState('test');
+    const [response, setResponse] = useState('Test');
     const { addAppointment } = useDataStore();
 
-    const handleGenerate = async () => {
-        
-    };
+    const handleGenerate = () => {
 
-    useEffect(() => {
-        handleGenerate();
-    }, []);
+    };
 
     const copyToClipboard = async () => {
         await Clipboard.setStringAsync(response);
@@ -43,9 +39,7 @@ export default function FinalScreen() {
     }
 
     useEffect(() => {
-        if (prep) {
-            console.log("received prep: " + prep.id)
-        }
+        handleGenerate();
     }, []);
 
     return (

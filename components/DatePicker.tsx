@@ -28,7 +28,7 @@ export function DatePicker({
     display = "default",
     value,
     setValue,
-    placeholderText = "mm / dd / yyyy",
+    placeholderText = "Optional",
     ...otherProps
 }: DatePickerProps) {
     const [dateString, setDateString] = useState("");

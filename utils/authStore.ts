@@ -7,7 +7,6 @@ const isWeb = Platform.OS === "web";
 
 type UserState = {
   isLoggedIn: boolean;
-  shouldCreateAccount: boolean;
   hasCompletedOnboarding: boolean;
   isVip: boolean;
   _hasHydrated: boolean;
@@ -24,7 +23,6 @@ export const useAuthStore = create(
   persist<UserState>(
     (set) => ({
       isLoggedIn: false,
-      shouldCreateAccount: false,
       hasCompletedOnboarding: false,
       isVip: false,
       _hasHydrated: false,
@@ -84,11 +82,11 @@ export const useAuthStore = create(
       storage: isWeb
         ? createJSONStorage(() => localStorage)
         : createJSONStorage(() => ({
-            setItem: (key: string, value: string) =>
-              SecureStore.setItemAsync(key, value),
-            getItem: (key: string) => SecureStore.getItemAsync(key),
-            removeItem: (key: string) => SecureStore.deleteItemAsync(key),
-          })),
+          setItem: (key: string, value: string) =>
+            SecureStore.setItemAsync(key, value),
+          getItem: (key: string) => SecureStore.getItemAsync(key),
+          removeItem: (key: string) => SecureStore.deleteItemAsync(key),
+        })),
       onRehydrateStorage: () => {
         return (state) => {
           state?.setHasHydrated(true);

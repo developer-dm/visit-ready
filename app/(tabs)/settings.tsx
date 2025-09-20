@@ -7,7 +7,8 @@ import { useAuthStore } from "@/utils/authStore";
 import DataFormatterService from "@/utils/dataFormatterService";
 import { useDataStore } from "@/utils/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Alert, ScrollView, StyleSheet, View } from "react-native";
+import { Link } from "expo-router";
+import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function SettingsScreen() {
   const { resetOnboarding } = useAuthStore();
@@ -63,7 +64,7 @@ export default function SettingsScreen() {
           </ThemedText>
         </View>
 
-        {/* Profile Information Card */}
+        {/* Profile Information */}
         <ThemedView style={styles.profileCard}>
           <View style={styles.cardContent}>
             <View style={styles.cardHeader}>
@@ -93,11 +94,7 @@ export default function SettingsScreen() {
                       {DataFormatterService.toReadableString(key)}
                     </ThemedText>
                     <ThemedText style={styles.profileValue} type="whitened">
-                      {
-                        ["confidence", "anxiety"].includes(key)
-                          ? DataFormatterService.toReadableString(value, key as "confidence" | "anxiety")
-                          : DataFormatterService.toReadableString(value)
-                      }
+                      {DataFormatterService.toReadableString(value)}
                     </ThemedText>
                   </ThemedView>
                 );
@@ -164,15 +161,16 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {/* App Info Section */}
-        <ThemedView style={styles.infoCard}>
-          <View style={styles.cardContent}>
-            <ThemedText style={styles.infoTitle} type="whitened">About Visit Ready</ThemedText>
-            <ThemedText style={styles.infoText} type="greyed">
-              Your personal appointment preparation assistant. Track your visits and get ready for your next doctor's appointment with personalized questions.
-            </ThemedText>
-          </View>
-        </ThemedView>
+        <View style={styles.additionalOptions}>
+          <Link asChild push href="/about">
+            <TouchableOpacity style={styles.linkButton}>
+              <MaterialIcons name="info-outline" size={20} color="#64748b" />
+              <ThemedText style={styles.linkText} type="greyed">
+                About Visit Ready
+              </ThemedText>
+            </TouchableOpacity>
+          </Link>
+        </View>
       </ScrollView>
       <Footer type="absolute" />
     </>
@@ -315,6 +313,23 @@ const styles = StyleSheet.create({
     marginRight: 16,
     backgroundColor: '#ffb5b5ff',
   },
+  additionalOptions: {
+    paddingHorizontal: 24,
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 24,
+  },
+  linkButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  linkText: {
+    fontSize: 14,
+    fontWeight: '500',
+    marginLeft: 8,
+  },
   actionContent: {
     flex: 1,
   },
@@ -328,28 +343,6 @@ const styles = StyleSheet.create({
   },
   actionSubtitle: {
     fontSize: 14,
-    fontWeight: '400',
-  },
-  infoCard: {
-    marginHorizontal: 24,
-    marginBottom: 24,
-    borderRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-  },
-  infoTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  infoText: {
-    fontSize: 14,
-    lineHeight: 20,
     fontWeight: '400',
   },
 });

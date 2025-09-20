@@ -7,9 +7,8 @@ export const DataFormatterService = {
     'lastname': 'Last Name',
     'dob': 'Date of Birth',
     'sex': 'Sex',
-    'motivation': 'Reason for Use',
-    'confidence': 'Confidence',
-    'anxiety': 'Anxiety',
+    'language': 'Language',
+    'notifications': 'Notifications',
 
     'id': "Appointment ID",
     'appointmenttype': 'Appointment Type',
@@ -62,33 +61,27 @@ export const DataFormatterService = {
     'other': 'Other',
   } as Record<string, string>,
 
-  motivation: {
-    'prepared': 'Feel more prepared',
-    'anxiety': 'Reduce anxiety',
-    'time': 'Save time during appointments',
-    'other': 'Other',
+  language: {
+    'en': 'English',
+    'es': 'Spanish (Español)',
+    'zh': 'Chinese (中文)',
+    'tl': 'Tagalog (Filipino)',
+    'vi': 'Vietnamese (Tiếng Việt)',
+    'ar': 'Arabic (العربية)',
+    'fr': 'French (Français)',
+    'ht': 'Haitian Creole (Kreyòl Ayisyen)',
+    'ko': 'Korean (한국어)',
+    'ru': 'Russian (Русский)',
   } as Record<string, string>,
 
-  confidence: {
-    '1': '1 - Not confident',
-    '2': '2',
-    '3': '3',
-    '4': '4',
-    '5': '5 - Very confident',
+  notifications: {
+    'false': 'Denied',
+    'true': 'Allowed',
   } as Record<string, string>,
-
-  anxiety: {
-    '1': '1 - Very anxious',
-    '2': '2',
-    '3': '3',
-    '4': '4',
-    '5': '5 - Not anxious',
-  } as Record<string, string>,
-
 
   toReadableString(
     input: any,
-    type?: 'date' | 'appointment-type' | 'time-frame' | 'pain-level' | 'sex' | 'label' | 'motivation' | 'confidence' | 'anxiety',
+    type?: 'date' | 'appointment-type' | 'time-frame' | 'pain-level' | 'sex' | 'label' | 'language' | 'notifications',
   ): string {
     if (input === null || input === undefined || input === '') {
       return 'N/A';
@@ -115,12 +108,10 @@ export const DataFormatterService = {
         return this.sex[inputString] || 'N/A';
       case 'label':
         return this.labels[inputString] || inputString;
-      case 'motivation':
-        return this.motivation[inputString] || 'N/A';
-      case 'confidence':
-        return this.confidence[inputString] || 'N/A';
-      case 'anxiety':
-        return this.anxiety[inputString] || 'N/A';
+      case 'language':
+        return this.language[inputString] || 'N/A';
+      case 'notifications':
+        return this.notifications[inputString] || 'N/A';
     }
 
     const autoDetected = this.autoDetectAndConvert(inputString);
@@ -136,15 +127,14 @@ export const DataFormatterService = {
     if (this.painLevels[input]) return this.painLevels[input];
     if (this.sex[input]) return this.sex[input];
     if (this.labels[input]) return this.labels[input];
-    if (this.motivation[input]) return this.motivation[input];
-    if (this.confidence[input]) return this.confidence[input];
-    if (this.anxiety[input]) return this.anxiety[input];
+    if (this.language[input]) return this.language[input];
+    if (this.notifications[input]) return this.notifications[input];
     return null;
   },
 
   toReadableStrings(
     inputs: any[],
-    type?: 'date' | 'appointment-type' | 'time-frame' | 'pain-level' | 'sex' | 'label' | 'motivation' | 'confidence' | 'anxiety',
+    type?: 'date' | 'appointment-type' | 'time-frame' | 'pain-level' | 'sex' | 'label' | 'language' | 'notifications',
   ): string[] {
     return inputs.map(input => this.toReadableString(input, type));
   },

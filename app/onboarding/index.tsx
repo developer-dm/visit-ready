@@ -18,7 +18,7 @@ export default function PrepInitialScreen() {
                         Visit Ready
                     </ThemedText>
                     <ThemedText style={styles.tagline} type="greyed">
-                        Make the most of every medical visit
+                        Your health, your questions
                     </ThemedText>
                 </View>
 
@@ -54,14 +54,14 @@ export default function PrepInitialScreen() {
 
                     <View style={styles.featureItem}>
                         <ThemedView style={styles.featureIconContainer} type="dusked">
-                            <MaterialIcons name="lightbulb" size={24} color="#3b82f6" />
+                            <MaterialIcons name="lock" size={24} color="#3b82f6" />
                         </ThemedView>
                         <View style={styles.featureContent}>
                             <ThemedText style={styles.featureTitle} type="whitened">
-                                Be Prepared
+                                Your Health Data is Secure
                             </ThemedText>
                             <ThemedText style={styles.featureDescription} type="greyed">
-                                Never forget important questions or concerns again
+                                All your health data is encrypted and stored on your device
                             </ThemedText>
                         </View>
                     </View>
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         textAlign: 'center',
         lineHeight: 24,
-        maxWidth: 280,
+        maxWidth: 400,
     },
     featuresSection: {
         paddingVertical: 20,

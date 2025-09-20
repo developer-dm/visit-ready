@@ -6,7 +6,7 @@ import { StyleSheet, View } from "react-native";
 
 type AppointmentCardProps = {
     appointmentType: string;
-    appointmentDate: Date;
+    appointmentDate: Date | string;
     provider: string;
     mainConcern: string;
     id: string;

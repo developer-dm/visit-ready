@@ -33,7 +33,9 @@ export default function DashboardScreen() {
         {/* Header Section */}
         <View style={styles.header}>
           <ThemedText style={styles.welcomeText} type="greyed">Welcome back,</ThemedText>
-          <ThemedText style={styles.appTitle} type="whitened">{signup?.firstName ?? "Visit Ready"}</ThemedText>
+          <ThemedText style={styles.appTitle} type="whitened">
+            {signup?.firstName?.trim() || "Visit Ready"}
+          </ThemedText>
           <ThemedText style={styles.subtitle} type="greyed">Get ready for your next appointment</ThemedText>
         </View>
 

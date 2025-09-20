@@ -11,12 +11,10 @@ type SignupContextType = {
     setDOB: (date: Date) => void;
     sex: string | null;
     setSex: Dispatch<SetStateAction<string | null>>;
-    motivation: string | null;
-    setMotivation: Dispatch<SetStateAction<string | null>>;
-    confidence: string | null;
-    setConfidence: Dispatch<SetStateAction<string | null>>;
-    anxiety: string | null;
-    setAnxienty: Dispatch<SetStateAction<string | null>>;
+    language: string | null;
+    setLanguage: Dispatch<SetStateAction<string | null>>;
+    notifications: boolean;
+    setNotifications: (notification: boolean) => void;
     acceptedTerms: boolean;
     setAcceptedTerms: (accepted: boolean) => void;
 };
@@ -50,19 +48,18 @@ type UserContextType = {
     clearUserContext: () => void;
 };
 
-//-------------------- CONTEXT --------------------
+// Context
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-//-------------------- PROVIDER --------------------
+// Provider
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     //signup state
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [DOB, setDOB] = useState<Date | null>(null);
     const [sex, setSex] = useState<string | null>(null);
-    const [motivation, setMotivation] = useState<string | null>(null);
-    const [confidence, setConfidence] = useState<string | null>(null);
-    const [anxiety, setAnxienty] = useState<string | null>(null);
+    const [language, setLanguage] = useState<string | null>(null);
+    const [notifications, setNotifications] = useState(false);
     const [acceptedTerms, setAcceptedTerms] = useState(false);
 
     //prep state
@@ -83,9 +80,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setLastName("");
         setDOB(null);
         setSex(null);
-        setMotivation(null);
-        setConfidence(null);
-        setAnxienty(null);
+        setLanguage(null);
+        setNotifications(false);
         setAcceptedTerms(false);
 
         //prep reset
@@ -113,12 +109,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                     setDOB,
                     sex,
                     setSex,
-                    motivation,
-                    setMotivation,
-                    confidence,
-                    setConfidence,
-                    anxiety,
-                    setAnxienty,
+                    language,
+                    setLanguage,
+                    notifications,
+                    setNotifications,
                     acceptedTerms,
                     setAcceptedTerms,
                 },
@@ -152,7 +146,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
-//-------------------- HOOK --------------------
+// Hook
 export const useUser = () => {
     const context = useContext(UserContext);
     if (!context) throw new Error("useUser must be used within a UserProvider");
