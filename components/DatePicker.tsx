@@ -1,8 +1,9 @@
+import { useThemeColor } from "@/hooks/useThemeColor";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import React, { useEffect, useState } from "react";
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Textbox } from "./Textbox";
+import { Button } from "./Button";
 import { ThemedView } from "./ThemedView";
 
 export type DatePickerProps = {
@@ -31,12 +32,17 @@ export function DatePicker({
     placeholderText = "Optional",
     ...otherProps
 }: DatePickerProps) {
+    const iconColor = useThemeColor({}, "icon");
+    const placeholderColor = useThemeColor({}, "placeholderText");
+    const selectionColor = useThemeColor({}, "text");
+    const textColor = value ? selectionColor : placeholderColor;
+
     const [dateString, setDateString] = useState("");
     const [selection, setSelection] = useState(new Date())
-    const [open, setOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const toggleDatePicker = () => {
-        setOpen(!open);
+        setIsOpen(!isOpen);
     };
 
     const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
@@ -73,21 +79,23 @@ export function DatePicker({
 
     return (
         <>
-            {(!open || Platform.OS === "android") && (
-                <TouchableOpacity
+            {(!isOpen || Platform.OS === "android") && (
+                <Button
+                    type="bordered"
+                    style={styles.buttonContainer}
                     onPress={toggleDatePicker}
-                    style={{ width: "100%" }}
                 >
-                    <Textbox
-                        placeholder={placeholderText}
-                        onChangeText={setDateString}
-                        value={dateString}
-                        editable={false}
-                        pointerEvents="none"
+                    <Text style={[styles.text, { color: textColor }]}>
+                        {dateString ? dateString : placeholderText}
+                    </Text>
+                    <MaterialIcons
+                        name={isOpen ? "keyboard-arrow-up" : "keyboard-arrow-down"}
+                        size={25}
+                        color={iconColor}
                     />
-                </TouchableOpacity>
+                </Button>
             )}
-            {open && (
+            {isOpen && (
                 <View style={styles.pickerWrapper}>
                     <DateTimePicker
                         mode={mode as any}
@@ -98,7 +106,7 @@ export function DatePicker({
                     />
                 </View>
             )}
-            {open && Platform.OS === "ios" && (
+            {isOpen && Platform.OS === "ios" && (
                 <ThemedView style={styles.buttonContainer} type="dusked">
                     <TouchableOpacity style={styles.cancelButton} onPress={toggleDatePicker}>
                         <Text style={styles.cancelButtonText}>
@@ -119,13 +127,18 @@ export function DatePicker({
 }
 
 const styles = StyleSheet.create({
+    text: {
+        fontSize: 16,
+        flex: 1,
+    },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 16,
+        paddingVertical: 12,
         paddingHorizontal: 20,
-        borderRadius: 16,
+        borderRadius: 12,
+        minHeight: 48,
     },
     cancelButton: {
         paddingVertical: 12,

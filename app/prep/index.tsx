@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { DataTypes } from "@/utils/dataFormatterService";
 import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
@@ -14,15 +15,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 export default function ModalScreen() {
   const router = useRouter();
   const { prep } = useUser();
-
-  // Dropdown state
-  const [appointmentTypeItems] = useState([
-    { label: 'New Patient', value: 'new-patient' },
-    { label: 'Follow-Up', value: 'follow-up' },
-    { label: 'Annual Physical', value: 'annual-physical' },
-    { label: 'Urgent Concern', value: 'urgent-concern' },
-    { label: 'Other', value: 'other' },
-  ]);
+  const [appointmentTypeItems] = useState(DataTypes.appointmentTypeItems);
 
   const handleNext = () => {
     if (prep.appointmentType) {
@@ -53,8 +46,6 @@ export default function ModalScreen() {
             </View>
             <ThemedText style={styles.progressText} type="greyed">Step 1 of 4</ThemedText>
           </View>
-          <ThemedText style={styles.pageTitle} type="whitened">Appointment Details</ThemedText>
-          <ThemedText style={styles.pageSubtitle} type="greyed">Let's gather information about your upcoming appointment</ThemedText>
         </View>
 
         {/* Form Card */}
@@ -63,13 +54,13 @@ export default function ModalScreen() {
             {/* Welcome Message */}
             <View style={styles.welcomeSection}>
               <ThemedView style={styles.welcomeIconContainer} type="dusked">
-                <MaterialIcons name="create" size={32} color="#3b82f6" />
+                <MaterialIcons name="calendar-month" size={32} color="#3b82f6" />
               </ThemedView>
               <ThemedText style={styles.welcomeTitle} type="whitened">
-                Preparation Details
+                Appointment Details
               </ThemedText>
               <ThemedText style={styles.welcomeSubtitle} type="greyed">
-                Help us prepare the most relevant questions and resources for your visit
+                All information is encrypted on your device
               </ThemedText>
             </View>
 
@@ -89,7 +80,7 @@ export default function ModalScreen() {
 
               <View style={styles.fieldGroup}>
                 <ThemedText type="overheader">
-                  When is your next appointment?
+                  When is your appointment?
                 </ThemedText>
                 <DatePicker
                   value={prep.appointmentDate}
@@ -101,7 +92,7 @@ export default function ModalScreen() {
 
               <View style={styles.fieldGroup}>
                 <ThemedText type="overheader">
-                  Who is your provider?
+                  Who is the provider in your appointment?
                 </ThemedText>
                 <Textbox
                   onChangeText={prep.setProvider}
@@ -171,19 +162,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
-  },
-  pageTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  pageSubtitle: {
-    fontSize: 16,
-    fontWeight: '400',
-    textAlign: 'center',
-    lineHeight: 22,
-    maxWidth: 300,
   },
   formCard: {
     marginHorizontal: 24,

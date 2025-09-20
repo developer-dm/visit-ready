@@ -50,14 +50,6 @@ export default function PrepFinalScreen() {
                             Step 4 of 4
                         </ThemedText>
                     </View>
-
-                    <ThemedText style={styles.pageTitle} type="whitened">
-                        Review & Confirm
-                    </ThemedText>
-
-                    <ThemedText style={styles.pageSubtitle} type="greyed">
-                        Please review your information and accept the terms to continue
-                    </ThemedText>
                 </View>
 
                 {/* Review Card */}
@@ -69,10 +61,10 @@ export default function PrepFinalScreen() {
                                 <MaterialIcons name="check-circle" size={24} color="#10b981" />
                             </ThemedView>
                             <ThemedText style={styles.infoTitle} type="whitened">
-                                Your Visit Information
+                                Confirm your information
                             </ThemedText>
                             <ThemedText style={styles.infoSubtitle} type="greyed">
-                                Review the details you've provided below
+                                All information is encrypted on your device
                             </ThemedText>
                         </View>
 
@@ -85,7 +77,7 @@ export default function PrepFinalScreen() {
                                 return (
                                     <ThemedView key={key} style={styles.detailItem}>
                                         <ThemedText style={styles.detailLabel} type="greyed">
-                                            {DataFormatterService.toReadableString(key)}
+                                            {DataFormatterService.toReadableString(key, 'label')}
                                         </ThemedText>
                                         <ThemedText style={styles.detailValue} type="whitened">
                                             {
@@ -177,19 +169,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         textTransform: 'uppercase',
         letterSpacing: 0.5,
-    },
-    pageTitle: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 8,
-    },
-    pageSubtitle: {
-        fontSize: 16,
-        fontWeight: '400',
-        textAlign: 'center',
-        lineHeight: 22,
-        maxWidth: 320,
     },
     reviewCard: {
         marginHorizontal: 24,

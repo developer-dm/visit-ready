@@ -1,45 +1,47 @@
 import * as Crypto from "expo-crypto";
-import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
+import React, { createContext, ReactNode, useContext, useState } from "react";
 
 //-------------------- TYPES --------------------
 type SignupContextType = {
     firstName: string;
-    setFirstName: (name: string) => void;
+    setFirstName: (value: string) => void;
     lastName: string;
-    setLastName: (name: string) => void;
+    setLastName: (value: string) => void;
     DOB: Date | null;
-    setDOB: (date: Date) => void;
-    sex: string | null;
-    setSex: Dispatch<SetStateAction<string | null>>;
-    language: string | null;
-    setLanguage: Dispatch<SetStateAction<string | null>>;
+    setDOB: (value: Date) => void;
+    sex: string;
+    setSex: (value: string) => void;
+    language: string;
+    setLanguage: (value: string) => void;
     notifications: boolean;
-    setNotifications: (notification: boolean) => void;
+    setNotifications: (value: boolean) => void;
     acceptedTerms: boolean;
-    setAcceptedTerms: (accepted: boolean) => void;
+    setAcceptedTerms: (value: boolean) => void;
 };
 
 type PrepContextType = {
     id: string;
     setId: (id: string) => void;
-    appointmentType: string | null;
-    setAppointmentType: Dispatch<SetStateAction<string | null>>;
+    appointmentType: string;
+    setAppointmentType: (value: string) => void;
     appointmentDate: Date | null;
-    setAppointmentDate: (date: Date) => void;
+    setAppointmentDate: (value: Date) => void;
     provider: string;
-    setProvider: (name: string) => void;
+    setProvider: (value: string) => void;
     mainConcern: string;
-    setMainConcern: (concern: string) => void;
-    concernStart: string | null;
-    setConcernStart: Dispatch<SetStateAction<string | null>>;
-    concernSeverity: string | null;
-    setConcernSeverity: Dispatch<SetStateAction<string | null>>;
+    setMainConcern: (value: string) => void;
+    concernStart: string;
+    setConcernStart: (value: string) => void;
+    concernSeverity: string;
+    setConcernSeverity: (value: string) => void;
+    remedies: string;
+    setRemedies: (value: string) => void;
     visitGoal: string;
-    setVisitGoal: (goal: string) => void;
+    setVisitGoal: (value: string) => void;
     specificWorries: string;
-    setSpecificWorries: (worries: string) => void;
+    setSpecificWorries: (value: string) => void;
     miscDiscussion: string;
-    setMiscDiscussion: (misc: string) => void;
+    setMiscDiscussion: (value: string) => void;
 };
 
 type UserContextType = {
@@ -57,19 +59,20 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [DOB, setDOB] = useState<Date | null>(null);
-    const [sex, setSex] = useState<string | null>(null);
-    const [language, setLanguage] = useState<string | null>(null);
+    const [sex, setSex] = useState("");
+    const [language, setLanguage] = useState("");
     const [notifications, setNotifications] = useState(false);
     const [acceptedTerms, setAcceptedTerms] = useState(false);
 
     //prep state
     const [id, setId] = useState(Crypto.randomUUID());
-    const [appointmentType, setAppointmentType] = useState<string | null>(null);
+    const [appointmentType, setAppointmentType] = useState("");
     const [appointmentDate, setAppointmentDate] = useState<Date | null>(null);
     const [provider, setProvider] = useState("");
     const [mainConcern, setMainConcern] = useState("");
-    const [concernStart, setConcernStart] = useState<string | null>(null);
-    const [concernSeverity, setConcernSeverity] = useState<string | null>(null);
+    const [concernStart, setConcernStart] = useState("");
+    const [concernSeverity, setConcernSeverity] = useState("");
+    const [remedies, setRemedies] = useState("");
     const [visitGoal, setVisitGoal] = useState("");
     const [specificWorries, setSpecificWorries] = useState("");
     const [miscDiscussion, setMiscDiscussion] = useState("");
@@ -79,19 +82,20 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setFirstName("");
         setLastName("");
         setDOB(null);
-        setSex(null);
-        setLanguage(null);
+        setSex("");
+        setLanguage("");
         setNotifications(false);
         setAcceptedTerms(false);
 
         //prep reset
         setId("");
-        setAppointmentType(null);
+        setAppointmentType("");
         setAppointmentDate(null);
         setProvider("");
         setMainConcern("");
-        setConcernStart(null);
-        setConcernSeverity(null);
+        setConcernStart("");
+        setConcernSeverity("");
+        setRemedies("")
         setVisitGoal("");
         setSpecificWorries("");
         setMiscDiscussion("");
@@ -131,6 +135,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                     setConcernStart,
                     concernSeverity,
                     setConcernSeverity,
+                    remedies,
+                    setRemedies,
                     visitGoal,
                     setVisitGoal,
                     specificWorries,

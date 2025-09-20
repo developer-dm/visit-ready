@@ -1,16 +1,21 @@
+import { Dropdown } from "@/components/Dropdown";
 import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { DataTypes } from "@/utils/dataFormatterService";
 import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
+import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function PrepThirdScreen() {
     const router = useRouter();
     const { prep } = useUser();
+    const [visitGoalItems] = useState(DataTypes.visitGoalItems)
+    const [specificWorryItems] = useState(DataTypes.specificWorryItems)
 
     const handleNext = () => {
         router.push("/prep/final")
@@ -43,8 +48,6 @@ export default function PrepThirdScreen() {
                             Step 3 of 4
                         </ThemedText>
                     </View>
-                    <ThemedText style={styles.pageTitle} type="whitened">Visit Goals</ThemedText>
-                    <ThemedText style={styles.pageSubtitle} type="greyed">Help us understand what you hope to achieve from this appointment</ThemedText>
                 </View>
 
                 {/* Form Card */}
@@ -59,7 +62,7 @@ export default function PrepThirdScreen() {
                                 Your Expectations
                             </ThemedText>
                             <ThemedText style={styles.welcomeSubtitle} type="greyed">
-                                Share your goals and concerns to help your provider better understand your needs
+                                All information is encrypted on your device
                             </ThemedText>
                         </View>
 
@@ -69,9 +72,10 @@ export default function PrepThirdScreen() {
                                 <ThemedText type="overheader">
                                     What do you hope to get out of this visit?
                                 </ThemedText>
-                                <Textbox
-                                    onChangeText={prep.setVisitGoal}
+                                <Dropdown
+                                    items={visitGoalItems}
                                     value={prep.visitGoal}
+                                    setValue={prep.setVisitGoal}
                                 />
                             </View>
 
@@ -79,15 +83,16 @@ export default function PrepThirdScreen() {
                                 <ThemedText type="overheader">
                                     Do you have any specific worries?
                                 </ThemedText>
-                                <Textbox
-                                    onChangeText={prep.setSpecificWorries}
+                                <Dropdown
+                                    items={specificWorryItems}
                                     value={prep.specificWorries}
+                                    setValue={prep.setSpecificWorries}
                                 />
                             </View>
 
                             <View style={styles.fieldGroup}>
                                 <ThemedText type="overheader">
-                                    Anything else you want to discuss?
+                                    Any other issues you would like to discuss?
                                 </ThemedText>
                                 <Textbox
                                     onChangeText={prep.setMiscDiscussion}
@@ -164,19 +169,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         textTransform: 'uppercase',
         letterSpacing: 0.5,
-    },
-    pageTitle: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 8,
-    },
-    pageSubtitle: {
-        fontSize: 16,
-        fontWeight: '400',
-        textAlign: 'center',
-        lineHeight: 22,
-        maxWidth: 300,
     },
     formCard: {
         marginHorizontal: 24,

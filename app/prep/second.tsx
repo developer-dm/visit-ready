@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { DataTypes } from "@/utils/dataFormatterService";
 import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
@@ -13,37 +14,14 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 export default function PrepSecondScreen() {
     const router = useRouter();
     const { prep } = useUser();
-
-    // Dropdown states
-    const [concernStartItems] = useState([
-        { label: 'Today', value: 'today' },
-        { label: 'Within the Past Week', value: 'past-week' },
-        { label: 'Within the Past Month', value: 'past-month' },
-        { label: '1-3 Months Ago', value: '1-3-months' },
-        { label: '3-6 Months Ago', value: '3-6-months' },
-        { label: 'Over 6 Months Ago', value: 'over-6-months' },
-        { label: 'Ongoing / Chronic', value: 'chronic' },
-        { label: 'Unsure', value: 'unsure' },
-        { label: 'Other', value: 'other' },
-    ]);
-    const [concernSeverityItems] = useState([
-        { label: '1 - Very Mild', value: '1' },
-        { label: '2', value: '2' },
-        { label: '3', value: '3' },
-        { label: '4', value: '4' },
-        { label: '5 - Moderate', value: '5' },
-        { label: '6', value: '6' },
-        { label: '7', value: '7' },
-        { label: '8', value: '8' },
-        { label: '9', value: '9' },
-        { label: '10 - Severe / Worst Pain', value: '10' },
-    ]);
+    const [concernStartItems] = useState(DataTypes.concernStartItems);
+    const [concernSeverityItems] = useState(DataTypes.concernSeverityItems);
 
     const handleNext = () => {
         if (prep.mainConcern) {
             router.push("/prep/third")
         } else {
-            Alert.alert("Error", "Please add an appointment type.");
+            Alert.alert("Error", "Please add a main health concern.");
         }
     };
 
@@ -72,8 +50,6 @@ export default function PrepSecondScreen() {
                         </View>
                         <ThemedText style={styles.progressText} type="greyed">Step 2 of 4</ThemedText>
                     </View>
-                    <ThemedText style={styles.pageTitle} type="whitened">Health Concerns</ThemedText>
-                    <ThemedText style={styles.pageSubtitle} type="greyed">Tell us about your main health concerns for this visit</ThemedText>
                 </View>
 
                 {/* Form Card */}
@@ -84,14 +60,14 @@ export default function PrepSecondScreen() {
                             <ThemedView style={styles.welcomeIconContainer} type="dusked">
                                 <MaterialIcons name="favorite" size={32} color="#3b82f6" />
                             </ThemedView>
-                            <ThemedText style={styles.welcomeTitle} type="whitened">Your Health Focus</ThemedText>
-                            <ThemedText style={styles.welcomeSubtitle} type="greyed">Help us understand your current health concerns and symptoms</ThemedText>
+                            <ThemedText style={styles.welcomeTitle} type="whitened">Appointment Focus</ThemedText>
+                            <ThemedText style={styles.welcomeSubtitle} type="greyed">All information is encrypted on your device</ThemedText>
                         </View>
 
                         {/* Form Fields */}
                         <View style={styles.formFields}>
                             <View style={styles.fieldGroup}>
-                                <ThemedText type="overheader">What's the main health issue or concern you'd like to discuss?</ThemedText>
+                                <ThemedText type="overheader">What are the main health concerns of your appointment?</ThemedText>
                                 <Textbox
                                     placeholder="Required"
                                     onChangeText={prep.setMainConcern}
@@ -101,7 +77,7 @@ export default function PrepSecondScreen() {
 
                             <View style={styles.fieldGroup}>
                                 <ThemedText type="overheader">
-                                    When did this start?
+                                    When did your concerns begin?
                                 </ThemedText>
                                 <Dropdown
                                     items={concernStartItems}
@@ -112,12 +88,20 @@ export default function PrepSecondScreen() {
 
                             <View style={styles.fieldGroup}>
                                 <ThemedText type="overheader">
-                                    How would you rate the severity from 1-10?
+                                    How would you rate the severity of your concerns 1-10?
                                 </ThemedText>
                                 <Dropdown
                                     items={concernSeverityItems}
                                     value={prep.concernSeverity}
                                     setValue={prep.setConcernSeverity}
+                                />
+                            </View>
+
+                            <View style={styles.fieldGroup}>
+                                <ThemedText type="overheader">Have you tried any treatments or remedies?</ThemedText>
+                                <Textbox
+                                    onChangeText={prep.setRemedies}
+                                    value={prep.remedies}
                                 />
                             </View>
                         </View>
@@ -190,19 +174,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         textTransform: 'uppercase',
         letterSpacing: 0.5,
-    },
-    pageTitle: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 8,
-    },
-    pageSubtitle: {
-        fontSize: 16,
-        fontWeight: '400',
-        textAlign: 'center',
-        lineHeight: 22,
-        maxWidth: 300,
     },
     formCard: {
         marginHorizontal: 24,

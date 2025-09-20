@@ -8,9 +8,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function PrepFinalScreen() {
-    type RouteParams = {
-        data: string;
-    };
+    type RouteParams = { data: string };
 
     const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
     const appointment = route.params?.data ? JSON.parse(route.params.data) : null;
@@ -49,7 +47,7 @@ export default function PrepFinalScreen() {
                                     return (
                                         <ThemedView key={key} style={styles.detailItem}>
                                             <ThemedText style={styles.detailLabel} type="greyed">
-                                                {DataFormatterService.toReadableString(key)}
+                                                {DataFormatterService.toReadableString(key, 'label')}
                                             </ThemedText>
                                             <ThemedText style={styles.detailValue} type="whitened">
                                                 {

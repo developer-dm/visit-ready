@@ -91,7 +91,7 @@ export default function SettingsScreen() {
                 return (
                   <ThemedView key={key} style={styles.profileItem}>
                     <ThemedText style={styles.profileLabel} type="greyed">
-                      {DataFormatterService.toReadableString(key)}
+                      {DataFormatterService.toReadableString(key, 'label')}
                     </ThemedText>
                     <ThemedText style={styles.profileValue} type="whitened">
                       {DataFormatterService.toReadableString(value)}

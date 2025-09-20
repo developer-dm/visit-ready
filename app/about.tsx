@@ -11,14 +11,14 @@ export default function AboutScreen() {
 
   const features = [
     {
+      icon: "quiz",
+      title: "Question Generation",
+      description: "Get personalized questions to ask your doctor based on your symptoms"
+    },
+    {
       icon: "history",
       title: "Track Your Visits",
       description: "Keep a record of all your appointments and progress"
-    },
-    {
-      icon: "quiz",
-      title: "Question Generation",
-      description: "Get tailored questions to ask your doctor based on your symptoms"
     },
     {
       icon: "lock",
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
   creditsSubtext: {
     fontSize: 14,
     fontWeight: '400',
-    textAlign: 'left',
+    textAlign: 'center',
     fontStyle: 'italic',
   },
   contactSection: {

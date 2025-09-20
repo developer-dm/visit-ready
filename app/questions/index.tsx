@@ -8,13 +8,11 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Flow } from 'react-native-animated-spinkit';
 
-export default function FinalScreen() {
-    type RouteParams = {
-        data: string;
-    };
+export default function QuestionsScreen() {
+    type RouteParams = { data: string };
 
     const router = useRouter();
     const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
@@ -23,7 +21,7 @@ export default function FinalScreen() {
     const [response, setResponse] = useState('Test');
     const { addAppointment } = useDataStore();
 
-    const handleGenerate = () => {
+    const handleGenerate = async () => {
 
     };
 
@@ -34,8 +32,20 @@ export default function FinalScreen() {
     };
 
     const handleReturn = () => {
-        addAppointment(prep);
-        router.replace("/(tabs)");
+        Alert.alert('Exit', 'Are you sure you want to exit?', [
+            {
+                text: 'Exit',
+                onPress: () => {
+                    addAppointment(prep);
+                    router.replace("/(tabs)");
+                },
+                style: "destructive",
+            },
+            {
+                text: 'Cancel',
+                style: 'cancel',
+            },
+        ]);
     }
 
     useEffect(() => {
@@ -79,15 +89,12 @@ export default function FinalScreen() {
                     </ThemedView>
                 )}
 
-                {/* Generated Questions */}
+                {/* Generation */}
                 {response && (
                     <View style={styles.questionsSection}>
                         <ThemedText style={styles.sectionTitle}>Questions to Ask Your Doctor</ThemedText>
                         <ThemedView style={styles.questionCard}>
                             <View style={styles.questionContent}>
-                                <View style={styles.questionNumber}>
-                                    <ThemedText style={styles.questionNumberText}>1</ThemedText>
-                                </View>
                                 <ThemedText style={styles.questionText} type="whitened">
                                     {response}
                                 </ThemedText>
@@ -96,7 +103,7 @@ export default function FinalScreen() {
                     </View>
                 )}
 
-                {/* Action Buttons */}
+                {/* Buttons */}
                 {response && (
                     <View style={styles.buttonContainer}>
                         <Button
@@ -228,20 +235,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         gap: 12,
-    },
-    questionNumber: {
-        width: 24,
-        height: 24,
-        borderRadius: 12,
-        backgroundColor: '#3b82f6',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 2,
-    },
-    questionNumberText: {
-        fontSize: 12,
-        fontWeight: '600',
-        color: '#ffffff',
     },
     questionText: {
         flex: 1,

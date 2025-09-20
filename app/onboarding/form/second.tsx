@@ -3,6 +3,7 @@ import { Dropdown } from "@/components/Dropdown";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { DataTypes } from "@/utils/dataFormatterService";
 import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Checkbox from "expo-checkbox";
@@ -14,21 +15,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 export default function OnboardingSecondScreen() {
     const router = useRouter();
     const { signup } = useUser();
-
-    // Dropdown states
-    const [languageItems] = useState([
-        { label: 'English', value: 'en' },
-        { label: 'Spanish (Español)', value: 'es' },
-        { label: 'Chinese (中文)', value: 'zh' },
-        { label: 'Tagalog (Filipino)', value: 'tl' },
-        { label: 'Vietnamese (Tiếng Việt)', value: 'vi' },
-        { label: 'Arabic (العربية)', value: 'ar' },
-        { label: 'French (Français)', value: 'fr' },
-        { label: 'Haitian Creole (Kreyòl Ayisyen)', value: 'ht' },
-        { label: 'Korean (한국어)', value: 'ko' },
-        { label: 'Russian (Русский)', value: 'ru' },
-    ]);
-
+    const [languageItems] = useState(DataTypes.languageItems);
 
     const handleNext = () => {
         if (signup.language) {
@@ -72,7 +59,7 @@ export default function OnboardingSecondScreen() {
                                 <MaterialIcons name="question-answer" size={32} color="#3b82f6" />
                             </ThemedView>
                             <ThemedText style={styles.infoTitle} type="whitened">Preferences</ThemedText>
-                            <ThemedText style={styles.infoSubtitle} type="greyed"> We'll use this information to personalize your appointment preparation</ThemedText>
+                            <ThemedText style={styles.infoSubtitle} type="greyed"> All information is encrypted on your device</ThemedText>
                         </View>
 
                         <View style={styles.formFields}>

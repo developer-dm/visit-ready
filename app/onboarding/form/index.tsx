@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { DataTypes } from "@/utils/dataFormatterService";
 import { useUser } from "@/utils/userContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
@@ -14,18 +15,11 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 export default function OnboardingFirstScreen() {
   const router = useRouter()
   const { signup } = useUser();
-
-  // Dropdown state
-  const [sexItems] = useState([
-    { label: 'Male', value: 'male' },
-    { label: 'Female', value: 'female' },
-    { label: 'Other', value: 'other' },
-  ]);
+  const [sexItems] = useState(DataTypes.sexItems);
 
   const handleNext = () => {
     Keyboard.dismiss();
     router.push("/onboarding/form/second");
-
   };
 
   return (
@@ -58,7 +52,7 @@ export default function OnboardingFirstScreen() {
                 <MaterialIcons name="person-add" size={32} color="#3b82f6" />
               </ThemedView>
               <ThemedText style={styles.welcomeTitle} type="whitened">Create Your Profile</ThemedText>
-              <ThemedText style={styles.welcomeSubtitle} type="greyed">We'll use this information to customize your appointment preparation</ThemedText>
+              <ThemedText style={styles.welcomeSubtitle} type="greyed">All information is encrypted on your device</ThemedText>
             </View>
 
             <View style={styles.formFields}>

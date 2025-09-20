@@ -53,8 +53,6 @@ export default function OnboardingFinalScreen() {
             </View>
             <ThemedText style={styles.progressText} type="greyed">Step 3 of 3</ThemedText>
           </View>
-          <ThemedText style={styles.pageTitle} type="whitened">Review & Confirm</ThemedText>
-          <ThemedText style={styles.pageSubtitle} type="greyed">Please review your information and accept the terms to continue</ThemedText>
         </View>
 
         {/* Review Card */}
@@ -65,8 +63,8 @@ export default function OnboardingFinalScreen() {
               <ThemedView style={styles.infoIconContainer} type="dusked">
                 <MaterialIcons name="check-circle" size={24} color="#10b981" />
               </ThemedView>
-              <ThemedText style={styles.infoTitle} type="whitened">Your Information</ThemedText>
-              <ThemedText style={styles.infoSubtitle} type="greyed">Review the details you've provided below</ThemedText>
+              <ThemedText style={styles.infoTitle} type="whitened">Confirm your information</ThemedText>
+              <ThemedText style={styles.infoSubtitle} type="greyed">All information is encrypted on your device</ThemedText>
             </View>
 
             {/* User Details */}
@@ -79,7 +77,7 @@ export default function OnboardingFinalScreen() {
                   return (
                     <ThemedView key={key} style={styles.detailItem}>
                       <ThemedText style={styles.detailLabel} type="greyed">
-                        {DataFormatterService.toReadableString(key)}
+                        {DataFormatterService.toReadableString(key, 'label')}
                       </ThemedText>
                       <ThemedText style={styles.detailValue} type="whitened">
                         {DataFormatterService.toReadableString(value)}
@@ -145,7 +143,7 @@ export default function OnboardingFinalScreen() {
             </TouchableOpacity>
           </View>
 
-          <Footer text="Your responses are stored securely on your device" hasSpacer={true} />
+          <Footer hasSpacer={true} />
         </View>
       </View>
     </ScrollView>
@@ -189,19 +187,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
-  },
-  pageTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  pageSubtitle: {
-    fontSize: 16,
-    fontWeight: '400',
-    textAlign: 'center',
-    lineHeight: 22,
-    maxWidth: 320,
   },
   reviewCard: {
     marginHorizontal: 24,

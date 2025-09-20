@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
+import { Button } from "./Button";
 
 export type DropdownItem = {
     label: string;
@@ -19,8 +20,8 @@ export type DropdownItem = {
 export type CustomDropdownProps = {
     items: DropdownItem[];
     placeholder?: string;
-    value?: string | null;
-    setValue: (value: string | null) => void;
+    value?: string;
+    setValue: (value: string) => void;
     lightColor?: string;
     darkColor?: string;
     lightBorder?: string;
@@ -51,15 +52,19 @@ export function Dropdown({
 
     const handleSelect = (itemValue: string) => {
         setValue(itemValue);
-        setIsOpen(false);
+        toggleDropdown();
+    };
+
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
     };
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity
-                style={[styles.dropdown, { backgroundColor, borderColor }]}
-                onPress={() => setIsOpen(true)}
-                activeOpacity={0.7}
+            <Button
+                type="bordered"
+                style={styles.dropdown}
+                onPress={toggleDropdown}
             >
                 <Text style={[styles.text, { color: textColor }]}>
                     {displayText}
@@ -69,17 +74,17 @@ export function Dropdown({
                     size={25}
                     color={iconColor}
                 />
-            </TouchableOpacity>
+            </Button>
 
             <Modal
                 visible={isOpen}
                 transparent
                 animationType="fade"
-                onRequestClose={() => setIsOpen(false)}
+                onRequestClose={toggleDropdown}
             >
                 <Pressable
                     style={styles.overlay}
-                    onPress={() => setIsOpen(false)}
+                    onPress={toggleDropdown}
                 >
                     <View style={styles.modalContainer}>
                         <View style={[styles.dropdownList, { backgroundColor, borderColor }]}>
@@ -132,7 +137,7 @@ const styles = StyleSheet.create({
     },
     overlay: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: '#0000008c',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -144,14 +149,6 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         borderWidth: 1,
         maxHeight: 300,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
     },
     listItem: {
         paddingHorizontal: 16,

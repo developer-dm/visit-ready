@@ -25,6 +25,8 @@ export const getAppointmentIcon = (type: string) => {
         return "report-problem";
     } else if (lowerType.includes("specialist") || lowerType.includes("consultation")) {
         return "psychology";
+    } else if (lowerType.includes("no-response")) {
+        return "question-mark";
     } else {
         return "event-note";
     }
