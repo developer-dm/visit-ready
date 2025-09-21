@@ -88,7 +88,7 @@ export default function QuestionsScreen() {
 					<ThemedView style={styles.loadingCard}>
 						<View style={styles.loadingContent}>
 							<ThemedText style={styles.loadingText} type="whitened">
-								Confirmation
+								Confirm
 							</ThemedText>
 							<ThemedText style={styles.loadingSubtext} type="greyed">
 								Would you like to generate personalized questions to ask your provider during your appointment?

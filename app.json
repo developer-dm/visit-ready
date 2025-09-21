@@ -22,6 +22,7 @@
       "bundleIdentifier": "com.developerdm.visitready"
     },
     "android": {
+      "label": "Visit Ready",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "monochromeImage": "./assets/images/adaptive-icon.png",
@@ -59,6 +60,12 @@
         "expo-local-authentication",
         {
           "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
+        }
+      ],
+      [
+        "expo-router",
+        {
+          "origin": "https://visit-ready.expo.app"
         }
       ],
       "expo-font",

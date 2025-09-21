@@ -7,6 +7,7 @@ import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { Platform } from "react-native";
+import WebScreen from './web';
 
 const isWeb = Platform.OS === "web";
 
@@ -15,6 +16,10 @@ if (!isWeb) {
 }
 
 export default function RootLayout() {
+  if (Platform.OS === 'web') {
+    return <WebScreen />;
+  }
+
   const colorScheme = useColorScheme();
   const [isLoading, setIsLoading] = useState(false);
 

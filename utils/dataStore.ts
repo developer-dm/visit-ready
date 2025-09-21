@@ -1,4 +1,4 @@
-/*
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Buffer } from 'buffer';
 import * as SecureStore from "expo-secure-store";
@@ -116,21 +116,25 @@ type SignupData = {
     firstName: string;
     lastName: string;
     DOB: Date | null;
-    sex: string | null;
+    sex: string;
+    language: string;
+    notifications: boolean;
     acceptedTerms: boolean;
 };
 
 type Appointment = {
     id: string;
-    appointmentType: string | null;
+    appointmentType: string;
     appointmentDate: Date | null;
     provider: string;
     mainConcern: string;
-    concernStart: string | null;
-    concernSeverity: string | null;
+    concernStart: string;
+    concernSeverity: string;
+    remedies: string;
     visitGoal: string;
     specificWorries: string;
     miscDiscussion: string;
+    question: string;
 };
 
 type UserState = {
@@ -193,8 +197,9 @@ export const useUserStore = () => {
         setDataHasHydrated: data.setDataHasHydrated,
     };
 };
-*/
 
+
+/*
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Crypto from "expo-crypto";
 import * as SecureStore from "expo-secure-store";
@@ -393,3 +398,4 @@ export const useUserStore = () => {
         setDataHasHydrated: data.setDataHasHydrated,
     };
 };
+*/
