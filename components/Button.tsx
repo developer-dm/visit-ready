@@ -44,7 +44,6 @@ export function Button({
       {...rest}
     >
       {type === "close" ? <MaterialIcons name="close" size={30} color={useThemeColor({}, "icon")} /> : undefined}
-
       {children}
     </TouchableOpacity >
   );
@@ -52,8 +51,8 @@ export function Button({
 
 const styles = StyleSheet.create({
   close: {
-    width: 30,
-    height: 30,
+    width: 40,
+    height: 40,
     justifyContent: "center",
     alignItems: "center",
   },

@@ -1,6 +1,7 @@
 import LoadingScreen from '@/components/Loading';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useAuthStore } from "@/utils/authStore";
+import '@/utils/polyfills';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";

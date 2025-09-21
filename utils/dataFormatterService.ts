@@ -29,6 +29,7 @@ export const DataTypes = {
     { label: 'Follow-Up', value: 'follow-up' },
     { label: 'Annual Physical', value: 'annual-physical' },
     { label: 'Urgent Concern', value: 'urgent-concern' },
+    { label: 'Telehealth', value: 'telehealth' },
     { label: 'Other', value: 'other' },
     { label: 'I do not wish to respond', value: 'no-response' },
   ],
@@ -109,6 +110,7 @@ export const DataFormatterService = {
     'visitgoal': 'Appointment Goal',
     'specificworries': 'Specific Worries',
     'miscdiscussion': 'Other Information',
+    'questions': 'Personalized Questions',
   } as Record<string, string>,
 
   appointmentType: {
@@ -118,6 +120,7 @@ export const DataFormatterService = {
     'follow-up': 'Follow-Up',
     'annual-physical': 'Annual Physical',
     'urgent-concern': 'Urgent Concern',
+    'telehealth': 'Telehealth',
     'other': 'Other',
     'no-response': 'Unknown',
   } as Record<string, string>,

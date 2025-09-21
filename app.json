@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "visit-ready",
+    "name": "Visit Ready",
     "slug": "visit-ready",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -36,7 +36,7 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
+      "output": "server",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [

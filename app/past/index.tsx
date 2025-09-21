@@ -50,11 +50,7 @@ export default function PrepFinalScreen() {
                                                 {DataFormatterService.toReadableString(key, 'label')}
                                             </ThemedText>
                                             <ThemedText style={styles.detailValue} type="whitened">
-                                                {
-                                                    ["concernSeverity"].includes(key)
-                                                        ? DataFormatterService.toReadableString(value, key as "pain-level")
-                                                        : DataFormatterService.toReadableString(value)
-                                                }
+                                                {DataFormatterService.toReadableString(value)}
                                             </ThemedText>
                                         </ThemedView>
                                     );

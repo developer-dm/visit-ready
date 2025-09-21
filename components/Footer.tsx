@@ -22,7 +22,7 @@ export function Footer({
                 hasSpacer ? styles.bottomSpacer : undefined,
             ]}
         >
-            {text ? text : `${expo.name} ${expo.version}`}
+            {text ? text : `${expo.slug} ${expo.version}`}
         </ThemedText>
     );
 }

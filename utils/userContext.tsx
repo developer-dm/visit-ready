@@ -42,6 +42,8 @@ type PrepContextType = {
     setSpecificWorries: (value: string) => void;
     miscDiscussion: string;
     setMiscDiscussion: (value: string) => void;
+    questions: string;
+    setQuestions: (value: string) => void;
 };
 
 type UserContextType = {
@@ -76,6 +78,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [visitGoal, setVisitGoal] = useState("");
     const [specificWorries, setSpecificWorries] = useState("");
     const [miscDiscussion, setMiscDiscussion] = useState("");
+    const [questions, setQuestions] = useState("");
 
     const clearUserContext = () => {
         //signup reset
@@ -99,6 +102,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setVisitGoal("");
         setSpecificWorries("");
         setMiscDiscussion("");
+        setQuestions("");
     };
 
     return (
@@ -143,6 +147,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                     setSpecificWorries,
                     miscDiscussion,
                     setMiscDiscussion,
+                    questions,
+                    setQuestions,
                 },
                 clearUserContext,
             }}
