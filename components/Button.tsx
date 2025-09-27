@@ -1,13 +1,12 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { StyleSheet, TouchableOpacity, type TouchableOpacityProps } from "react-native";
+import { TouchableOpacity, type TouchableOpacityProps } from "react-native";
 
 export type ButtonProps = TouchableOpacityProps & {
   lightColor?: string;
   darkColor?: string;
   lightBorder?: string;
   darkBorder?: string;
-  type?: "custom" | "bordered" | "close";
+  type?: "custom" | "bordered";
 };
 
 const typeColors: Record<
@@ -16,7 +15,6 @@ const typeColors: Record<
 > = {
   custom: undefined,
   bordered: { lightBorder: "#d1d1d1ff", darkBorder: "#393939ff" },
-  close: undefined,
 };
 
 export function Button({
@@ -38,22 +36,11 @@ export function Button({
       style={[
         type === "custom" ? { backgroundColor, borderColor } : undefined,
         type === "bordered" ? { borderWidth: 1, backgroundColor, borderColor } : undefined,
-        type === "close" ? styles.close : undefined,
         style,
       ]}
       {...rest}
     >
-      {type === "close" ? <MaterialIcons name="close" size={30} color={useThemeColor({}, "icon")} /> : undefined}
       {children}
     </TouchableOpacity >
   );
 }
-
-const styles = StyleSheet.create({
-  close: {
-    width: 40,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

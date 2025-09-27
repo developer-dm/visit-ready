@@ -5,7 +5,7 @@ export async function POST(req: Request) {
     const { prompt } = await req.json();
 
     const result = await generateText({
-        model: google('gemini-1.5-flash'),
+        model: google('gemini-2.5-flash-lite'),
         prompt,
         system: `
 You are a medical assistant AI for the Visit Ready app, a tool that helps patients prepare for medical appointments. Your role is to generate personalized questions for patients to ask their healthcare providers based on their specific health concerns and appointment details.

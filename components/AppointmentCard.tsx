@@ -1,6 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import DataFormatterService from "@/utils/dataFormatterService";
+import DataFormatterService from "@/services/dataFormatter";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { StyleSheet, View } from "react-native";
 
@@ -110,7 +110,7 @@ export default function AppointmentCard({
 
 const styles = StyleSheet.create({
     card: {
-        borderRadius: 16,
+        borderRadius: 10,
         padding: 16,
         shadowColor: '#000',
         shadowOffset: {
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
             height: 2,
         },
         shadowOpacity: 0.08,
-        shadowRadius: 12,
+        shadowRadius: 10,
     },
     header: {
         flexDirection: 'row',

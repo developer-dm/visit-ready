@@ -2,12 +2,12 @@ import { Button } from '@/components/Button';
 import { Footer } from '@/components/Footer';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useDataStore } from '@/utils/dataStore';
-import { generateMedicalQuestionsPrompt } from '@/utils/prompter';
+import { generateMedicalQuestionsPrompt } from '@/services/prompter';
+import { useDataStore } from '@/stores/dataStore';
+import { useTempStore } from '@/stores/tempStore';
 import { generateAPIUrl } from '@/utils/utils';
 import { useCompletion } from '@ai-sdk/react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { RouteProp, useRoute } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
 import { fetch as expoFetch } from 'expo/fetch';
@@ -16,13 +16,10 @@ import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Flow } from 'react-native-animated-spinkit';
 
 export default function QuestionsScreen() {
-	type RouteParams = { data: string };
-
 	const router = useRouter();
-	const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
-	const prep = route.params?.data ? JSON.parse(route.params.data) : null;
 	const [copied, setCopied] = useState(false);
 	const [hasSubmitted, setHasSubmitted] = useState(false);
+	const { appointment, clearUserContext } = useTempStore();
 	const { addAppointment } = useDataStore();
 
 	const { complete, completion } = useCompletion({
@@ -36,7 +33,7 @@ export default function QuestionsScreen() {
 		if (hasSubmitted) return;
 		setHasSubmitted(true)
 
-		const message = generateMedicalQuestionsPrompt(prep);
+		const message = generateMedicalQuestionsPrompt(appointment);
 		complete(message);
 	};
 
@@ -51,8 +48,9 @@ export default function QuestionsScreen() {
 			{
 				text: 'Exit',
 				onPress: () => {
-					prep.questions = completion;
-					addAppointment(prep);
+					appointment.questions = completion;
+					addAppointment(appointment);
+					clearUserContext();
 					router.replace("/(tabs)");
 				},
 				style: "destructive",
@@ -128,7 +126,7 @@ export default function QuestionsScreen() {
 							Generating Questions...
 						</ThemedText>
 						<ThemedText style={styles.loadingSubtext} type="greyed">
-							Creating personalized questions based on your appointment details
+							AI can make mistakes. Check important info.
 						</ThemedText>
 						<Flow size={70} color="#3b82f6" />
 					</View>
@@ -221,14 +219,14 @@ const styles = StyleSheet.create({
 	loadingCard: {
 		marginHorizontal: 24,
 		marginBottom: 24,
-		borderRadius: 20,
+		borderRadius: 10,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
 			height: 4,
 		},
 		shadowOpacity: 0.1,
-		shadowRadius: 20,
+		shadowRadius: 10,
 	},
 	loadingContent: {
 		padding: 32,
@@ -267,14 +265,14 @@ const styles = StyleSheet.create({
 	},
 	questionCard: {
 		marginBottom: 12,
-		borderRadius: 16,
+		borderRadius: 10,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
 			height: 2,
 		},
 		shadowOpacity: 0.08,
-		shadowRadius: 12,
+		shadowRadius: 10,
 	},
 	questionContent: {
 		padding: 16,
@@ -299,14 +297,14 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		paddingVertical: 12,
 		paddingHorizontal: 16,
-		borderRadius: 16,
+		borderRadius: 10,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
 			height: 2,
 		},
 		shadowOpacity: 0.08,
-		shadowRadius: 12,
+		shadowRadius: 10,
 		minHeight: 60,
 	},
 	copyButtonText: {

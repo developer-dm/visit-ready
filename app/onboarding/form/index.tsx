@@ -4,22 +4,23 @@ import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { DataTypes } from "@/utils/dataFormatterService";
-import { useUser } from "@/utils/userContext";
+import { useTempStore } from "@/stores/tempStore";
+import { DropdownValues } from "@/types/dropdown";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function OnboardingFirstScreen() {
   const router = useRouter()
-  const { signup } = useUser();
-  const [sexItems] = useState(DataTypes.sexItems);
+  const { signup, setFirstName, setLastName, setDOB, setSex, setLanguage } = useTempStore();
 
   const handleNext = () => {
-    Keyboard.dismiss();
-    router.push("/onboarding/form/second");
+    if (signup.language) {
+      router.push("/onboarding/form/final");
+    } else {
+      Alert.alert("Error", "Please enter a preferred language.");
+    }
   };
 
   return (
@@ -38,9 +39,8 @@ export default function OnboardingFirstScreen() {
             <View style={styles.progressBar}>
               <View style={styles.progressFill} />
               <View style={styles.progressEmpty} />
-              <View style={styles.progressEmpty} />
             </View>
-            <ThemedText style={styles.progressText} type="greyed">Step 1 of 3</ThemedText>
+            <ThemedText style={styles.progressText} type="greyed">Step 1 of 2</ThemedText>
           </View>
         </View>
 
@@ -59,7 +59,7 @@ export default function OnboardingFirstScreen() {
               <View style={styles.fieldGroup}>
                 <ThemedText type="overheader">First Name</ThemedText>
                 <Textbox
-                  onChangeText={signup.setFirstName}
+                  onChangeText={setFirstName}
                   value={signup.firstName}
                 />
               </View>
@@ -67,7 +67,7 @@ export default function OnboardingFirstScreen() {
               <View style={styles.fieldGroup}>
                 <ThemedText type="overheader">Last Name</ThemedText>
                 <Textbox
-                  onChangeText={signup.setLastName}
+                  onChangeText={setLastName}
                   value={signup.lastName}
                 />
               </View>
@@ -78,16 +78,26 @@ export default function OnboardingFirstScreen() {
                   mode="date"
                   display="spinner"
                   value={signup.DOB}
-                  setValue={signup.setDOB}
+                  setValue={setDOB}
                 />
               </View>
 
               <View style={styles.fieldGroup}>
                 <ThemedText type="overheader">Sex at Birth</ThemedText>
                 <Dropdown
-                  items={sexItems}
+                  items={DropdownValues.sex}
                   value={signup.sex}
-                  setValue={signup.setSex}
+                  setValue={setSex}
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <ThemedText type="overheader">Primary language spoken</ThemedText>
+                <Dropdown
+                  placeholder="Required"
+                  items={DropdownValues.language}
+                  value={signup.language}
+                  setValue={setLanguage}
                 />
               </View>
             </View>
@@ -170,14 +180,14 @@ const styles = StyleSheet.create({
   formCard: {
     marginHorizontal: 24,
     marginBottom: 24,
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
     zIndex: 1000,
     elevation: 1000,
   },
@@ -221,7 +231,7 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     backgroundColor: '#3b82f6',
-    borderRadius: 16,
+    borderRadius: 10,
     paddingVertical: 16,
     paddingHorizontal: 32,
     flexDirection: 'row',
@@ -233,7 +243,7 @@ const styles = StyleSheet.create({
       height: 4,
     },
     shadowOpacity: 0.3,
-    shadowRadius: 12,
+    shadowRadius: 10,
     minWidth: 200,
     minHeight: 60,
     marginBottom: 16,

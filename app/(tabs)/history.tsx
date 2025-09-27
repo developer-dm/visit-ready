@@ -2,28 +2,14 @@ import AppointmentCard from "@/components/AppointmentCard";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useDataStore } from "@/utils/dataStore";
+import { useDataStore } from "@/stores/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
-import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function HistoryScreen() {
     const router = useRouter();
-    const { appointments, resetAppointments } = useDataStore();
-
-    const clearVisits = () => {
-        Alert.alert('Clear Visits', 'Are you sure you want to clear all visits? This action CANNOT be reversed.', [
-            {
-                text: 'Confirm',
-                onPress: () => resetAppointments(),
-                style: "destructive",
-            },
-            {
-                text: 'Cancel',
-                style: 'cancel',
-            },
-        ]);
-    }
+    const { appointments } = useDataStore();
 
     const handleAppointmentView = (appointment: object) => {
         if (!appointment) return;
@@ -123,16 +109,6 @@ export default function HistoryScreen() {
                     </ThemedView>
                 </View>
 
-                {/* Actions Section */}
-                {appointments && Object.keys(appointments).length > 0 && (
-                    <View style={styles.actionsSection}>
-                        <TouchableOpacity style={styles.deleteButton} onPress={clearVisits}>
-                            <MaterialIcons size={20} name="delete-outline" color="#ef4444" />
-                            <ThemedText style={styles.deleteButtonText}>Delete all visits</ThemedText>
-                        </TouchableOpacity>
-                    </View>
-                )}
-
                 {/* Disclaimer */}
                 <View style={styles.disclaimerSection}>
                     <ThemedText style={styles.disclaimer} type="greyed">
@@ -171,14 +147,14 @@ const styles = StyleSheet.create({
     statsCard: {
         marginHorizontal: 24,
         marginBottom: 24,
-        borderRadius: 20,
+        borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 4,
         },
         shadowOpacity: 0.1,
-        shadowRadius: 20,
+        shadowRadius: 10,
     },
     cardContent: {
         padding: 24,
@@ -236,14 +212,14 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     appointmentsContainer: {
-        borderRadius: 16,
+        borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 2,
         },
         shadowOpacity: 0.08,
-        shadowRadius: 12,
+        shadowRadius: 10,
     },
     appointmentsList: {
         minHeight: 100,
@@ -275,27 +251,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textAlign: 'center',
         lineHeight: 20,
-    },
-    actionsSection: {
-        paddingHorizontal: 24,
-        marginBottom: 24,
-    },
-    deleteButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#ffdbdbff',
-        borderRadius: 12,
-        paddingVertical: 12,
-        paddingHorizontal: 20,
-        borderWidth: 1,
-        borderColor: '#ef4444',
-    },
-    deleteButtonText: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#ef4444',
-        marginLeft: 8,
     },
     disclaimerSection: {
         paddingHorizontal: 24,

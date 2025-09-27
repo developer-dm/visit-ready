@@ -2,7 +2,7 @@ import { Button } from '@/components/Button';
 import { Footer } from '@/components/Footer';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useDataStore } from '@/utils/dataStore';
+import { useDataStore } from '@/stores/dataStore';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from 'expo-router';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -141,14 +141,14 @@ const styles = StyleSheet.create({
   mainCard: {
     marginHorizontal: 24,
     marginTop: -20,
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
   },
   cardContent: {
     padding: 24,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     backgroundColor: '#3b82f6',
-    borderRadius: 16,
+    borderRadius: 10,
     paddingVertical: 16,
     paddingHorizontal: 24,
     flexDirection: 'row',
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
       height: 4,
     },
     shadowOpacity: 0.3,
-    shadowRadius: 12,
+    shadowRadius: 10,
   },
   primaryButtonText: {
     fontSize: 18,
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   },
   actionCard: {
     flex: 1,
-    borderRadius: 16,
+    borderRadius: 10,
     padding: 20,
     alignItems: 'center',
     shadowColor: '#000',
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowRadius: 10,
   },
   actionIconContainer: {
     width: 48,
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   },
   statCard: {
     flex: 1,
-    borderRadius: 16,
+    borderRadius: 10,
     padding: 20,
     alignItems: 'center',
     shadowColor: '#000',
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowRadius: 10,
   },
   statNumber: {
     fontSize: 28,

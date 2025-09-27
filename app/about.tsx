@@ -1,14 +1,12 @@
 import { expo } from "@/app.json";
-import { Button } from "@/components/Button";
+import { CloseButton } from "@/components/Close";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Stack, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 
 export default function AboutScreen() {
-  const router = useRouter();
-
   const features = [
     {
       icon: "quiz",
@@ -29,7 +27,11 @@ export default function AboutScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ headerRight: () => (<Button type="close" onPress={() => router.dismiss()} />), }} />
+      <Stack.Screen options={{
+        headerRight: () => (
+          <CloseButton type="default" clearContext={false} />
+        ),
+      }} />
 
       <ScrollView
         style={styles.container}
@@ -182,38 +184,38 @@ const styles = StyleSheet.create({
   aboutCard: {
     marginHorizontal: 24,
     marginBottom: 20,
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
   },
   featuresCard: {
     marginHorizontal: 24,
     marginBottom: 20,
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
   },
   creditsCard: {
     marginHorizontal: 24,
     marginBottom: 24,
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
   },
   cardContent: {
     padding: 24,

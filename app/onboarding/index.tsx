@@ -1,6 +1,7 @@
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { AppInfo } from "@/types/app";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Link } from "expo-router";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -15,10 +16,10 @@ export default function PrepInitialScreen() {
                         <Image source={require("@/assets/images/favicon.png")} style={styles.icon} />
                     </ThemedView>
                     <ThemedText style={styles.appTitle} type="whitened">
-                        Visit Ready
+                        {AppInfo.name}
                     </ThemedText>
                     <ThemedText style={styles.tagline} type="greyed">
-                        Your health, your questions
+                        {AppInfo.slogan}
                     </ThemedText>
                 </View>
 
@@ -33,21 +34,7 @@ export default function PrepInitialScreen() {
                                 Personalized Questions
                             </ThemedText>
                             <ThemedText style={styles.featureDescription} type="greyed">
-                                Get tailored questions for your doctor based on your concerns
-                            </ThemedText>
-                        </View>
-                    </View>
-
-                    <View style={styles.featureItem}>
-                        <ThemedView style={styles.featureIconContainer} type="dusked">
-                            <MaterialIcons name="history" size={24} color="#3b82f6" />
-                        </ThemedView>
-                        <View style={styles.featureContent}>
-                            <ThemedText style={styles.featureTitle} type="whitened">
-                                Track Your Visits
-                            </ThemedText>
-                            <ThemedText style={styles.featureDescription} type="greyed">
-                                Keep a record of all your appointments and progress
+                                Keep a record of all your appointments and get custom preparation information
                             </ThemedText>
                         </View>
                     </View>
@@ -92,9 +79,9 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         paddingHorizontal: 24,
-        paddingTop: 60,
+        paddingTop: 100,
         paddingBottom: 40,
-        justifyContent: 'space-between',
+        justifyContent: 'center',
     },
     infoSection: {
         alignItems: 'center',
@@ -134,7 +121,7 @@ const styles = StyleSheet.create({
         maxWidth: 400,
     },
     featuresSection: {
-        paddingVertical: 20,
+        paddingVertical: 40,
         gap: 24,
     },
     featureItem: {
@@ -176,7 +163,7 @@ const styles = StyleSheet.create({
     },
     primaryButton: {
         backgroundColor: '#3b82f6',
-        borderRadius: 20,
+        borderRadius: 10,
         paddingVertical: 18,
         paddingHorizontal: 32,
         flexDirection: 'row',
@@ -188,7 +175,7 @@ const styles = StyleSheet.create({
             height: 8,
         },
         shadowOpacity: 0.3,
-        shadowRadius: 16,
+        shadowRadius: 10,
         minWidth: 200,
         minHeight: 60,
         marginBottom: 16,

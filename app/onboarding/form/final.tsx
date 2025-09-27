@@ -2,8 +2,9 @@ import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import DataFormatterService from "@/utils/dataFormatterService";
-import { useUser } from "@/utils/userContext";
+import DataFormatterService from "@/services/dataFormatter";
+import { useDataStore } from "@/stores/dataStore";
+import { useTempStore } from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Checkbox from "expo-checkbox";
 import { useRouter } from "expo-router";
@@ -11,18 +12,15 @@ import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "rea
 
 export default function OnboardingFinalScreen() {
   const router = useRouter();
-  const { signup, clearUserContext } = useUser();
+  const { signup, setAcceptedTerms, clearUserContext } = useTempStore();
+  const { addSignupData } = useDataStore();
 
   const handleNext = () => {
     if (signup.acceptedTerms) {
-      router.dismissTo("/onboarding")
-      router.replace({
-        pathname: "/onboarding/sign-in",
-        params: {
-          data: JSON.stringify(signup)
-        },
-      });
+      addSignupData(signup);
       clearUserContext();
+      router.dismissTo("/onboarding")
+      router.replace("/onboarding/sign-in")
     } else {
       Alert.alert("Error", "Please accept the agreement.");
     }
@@ -49,9 +47,8 @@ export default function OnboardingFinalScreen() {
             <View style={styles.progressBar}>
               <View style={styles.progressFill} />
               <View style={styles.progressFill} />
-              <View style={styles.progressFill} />
             </View>
-            <ThemedText style={styles.progressText} type="greyed">Step 3 of 3</ThemedText>
+            <ThemedText style={styles.progressText} type="greyed">Step 2 of 2</ThemedText>
           </View>
         </View>
 
@@ -99,12 +96,12 @@ export default function OnboardingFinalScreen() {
                 lightColor="#f8fafc"
                 darkColor="#1a1a1aff"
                 style={styles.termsContainer}
-                onPress={() => signup.setAcceptedTerms(!signup.acceptedTerms)}
+                onPress={() => setAcceptedTerms(!signup.acceptedTerms)}
                 activeOpacity={0.7}
               >
                 <Checkbox
                   value={signup.acceptedTerms}
-                  onValueChange={signup.setAcceptedTerms}
+                  onValueChange={setAcceptedTerms}
                   color={signup.acceptedTerms ? "#3b82f6" : undefined}
                 />
                 <View style={styles.termsTextContainer}>
@@ -191,14 +188,14 @@ const styles = StyleSheet.create({
   reviewCard: {
     marginHorizontal: 24,
     marginBottom: 24,
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
   },
   cardContent: {
     padding: 24,
@@ -257,7 +254,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   termsContainer: {
-    borderRadius: 16,
+    borderRadius: 10,
     borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -294,7 +291,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 16,
-    borderRadius: 16,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#d1d1d1ff',
     backgroundColor: '#f8fafc',
@@ -309,7 +306,7 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     backgroundColor: '#3b82f6',
-    borderRadius: 16,
+    borderRadius: 10,
     paddingVertical: 16,
     paddingHorizontal: 32,
     flexDirection: 'row',
@@ -321,7 +318,7 @@ const styles = StyleSheet.create({
       height: 4,
     },
     shadowOpacity: 0.3,
-    shadowRadius: 12,
+    shadowRadius: 10,
     minWidth: 160,
     minHeight: 60,
   },

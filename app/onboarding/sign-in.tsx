@@ -2,31 +2,20 @@ import { Footer } from "@/components/Footer";
 import LoadingScreen from "@/components/Loading";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { authenticateWithBiometrics, checkAuthenticationCapabilities } from "@/utils/auth";
-import { useAuthStore } from "@/utils/authStore";
-import { useDataStore } from "@/utils/dataStore";
+import { authenticateWithBiometrics, checkAuthenticationCapabilities } from "@/services/auth";
+import { useAuthStore } from "@/stores/authStore";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { RouteProp, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function SignInScreen() {
-  type RouteParams = {
-    data: string;
-  };
-
   const { logInAsVip, completeOnboarding } = useAuthStore();
-  const { addSignupData } = useDataStore();
   const [authType, setAuthType] = useState<'biometric' | 'passcode' | 'none'>('none');
   const [isLoading, setIsLoading] = useState(true);
-
-  const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
-  const signup = route.params?.data ? JSON.parse(route.params.data) : null;
 
   const handleLogin = async () => {
     const result = await authenticateWithBiometrics();
     if (result) {
-      addSignupData(signup);
       completeOnboarding();
     };
   };
@@ -156,7 +145,7 @@ const styles = StyleSheet.create({
   },
   primaryLoginButton: {
     backgroundColor: '#3b82f6',
-    borderRadius: 16,
+    borderRadius: 10,
     padding: 20,
     shadowColor: '#3b82f6',
     shadowOffset: {
@@ -164,7 +153,7 @@ const styles = StyleSheet.create({
       height: 4,
     },
     shadowOpacity: 0.3,
-    shadowRadius: 12,
+    shadowRadius: 10,
   },
   disabledButton: {
     backgroundColor: '#94a3b8',
@@ -201,7 +190,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     padding: 16,
     backgroundColor: '#f8fafc',
-    borderRadius: 12,
+    borderRadius: 10,
     gap: 8,
   },
   infoText: {

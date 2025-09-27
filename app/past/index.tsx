@@ -2,15 +2,13 @@ import { getAppointmentIcon } from "@/components/AppointmentCard";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import DataFormatterService from "@/utils/dataFormatterService";
+import DataFormatterService from "@/services/dataFormatter";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function PrepFinalScreen() {
-    type RouteParams = { data: string };
-
-    const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
+    const route = useRoute<RouteProp<{ params: { data: string } }, 'params'>>();
     const appointment = route.params?.data ? JSON.parse(route.params.data) : null;
     const appointmentType = appointment.appointmentType // For modal icon
 
@@ -87,14 +85,14 @@ const styles = StyleSheet.create({
     reviewCard: {
         marginHorizontal: 24,
         marginBottom: 24,
-        borderRadius: 20,
+        borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 4,
         },
         shadowOpacity: 0.1,
-        shadowRadius: 20,
+        shadowRadius: 10,
     },
     cardContent: {
         padding: 24,

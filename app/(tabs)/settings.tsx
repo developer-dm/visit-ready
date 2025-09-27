@@ -2,10 +2,10 @@ import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { logOut } from "@/utils/auth";
-import { useAuthStore } from "@/utils/authStore";
-import DataFormatterService from "@/utils/dataFormatterService";
-import { useDataStore } from "@/utils/dataStore";
+import { logOut } from "@/services/auth";
+import DataFormatterService from "@/services/dataFormatter";
+import { useAuthStore } from "@/stores/authStore";
+import { useDataStore } from "@/stores/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Link } from "expo-router";
 import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
@@ -20,6 +20,20 @@ export default function SettingsScreen() {
     resetOnboarding();
     logOut();
   };
+
+  const clearVisits = () => {
+    Alert.alert('Clear Visits', 'Are you sure you want to clear all visits? This action CANNOT be reversed.', [
+      {
+        text: 'Confirm',
+        onPress: () => resetAppointments(),
+        style: "destructive",
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
+  }
 
   const handleDeletion = () => {
     Alert.alert('Delete account', 'Are you sure you want to delete your account? This action CANNOT be reversed once initiated.', [
@@ -115,6 +129,28 @@ export default function SettingsScreen() {
           <ThemedText style={styles.sectionTitle} type="whitened">Account Actions</ThemedText>
 
           <View style={styles.actionGrid}>
+            {/* Delete all visits */}
+            <Button style={styles.actionCard} type="bordered" onPress={handleLogout}>
+              <ThemedView style={styles.actionIconContainer} type="dusked">
+                <MaterialIcons
+                  size={24}
+                  name="delete-outline"
+                  color="#64748b"
+                />
+              </ThemedView>
+              <View style={styles.actionContent}>
+                <ThemedText style={styles.actionTitle} type="whitened">Delete Visits</ThemedText>
+                <ThemedText style={styles.actionSubtitle} type="greyed">
+                  Permanently remove every visit
+                </ThemedText>
+              </View>
+              <MaterialIcons
+                size={20}
+                name="chevron-right"
+                color="#94a3b8"
+              />
+            </Button>
+
             {/* Logout */}
             <Button style={styles.actionCard} type="bordered" onPress={handleLogout}>
               <ThemedView style={styles.actionIconContainer} type="dusked">
@@ -203,14 +239,14 @@ const styles = StyleSheet.create({
   profileCard: {
     marginHorizontal: 24,
     marginBottom: 24,
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
   },
   cardContent: {
     padding: 24,
@@ -281,7 +317,7 @@ const styles = StyleSheet.create({
   actionCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 16,
+    borderRadius: 10,
     padding: 16,
     shadowColor: '#000',
     shadowOffset: {
@@ -289,7 +325,7 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowRadius: 10,
   },
   dangerCard: {
     backgroundColor: '#ffdbdbff',

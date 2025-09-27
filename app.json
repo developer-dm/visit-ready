@@ -22,7 +22,6 @@
       "bundleIdentifier": "com.developerdm.visitready"
     },
     "android": {
-      "label": "Visit Ready",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "monochromeImage": "./assets/images/adaptive-icon.png",

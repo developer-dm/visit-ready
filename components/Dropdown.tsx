@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     dropdown: {
-        borderRadius: 12,
+        borderRadius: 10,
         borderWidth: 1,
         paddingHorizontal: 16,
         paddingVertical: 12,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
         maxWidth: 300,
     },
     dropdownList: {
-        borderRadius: 12,
+        borderRadius: 10,
         borderWidth: 1,
         maxHeight: 300,
     },

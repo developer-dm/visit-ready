@@ -3,8 +3,8 @@ import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { DataTypes } from "@/utils/dataFormatterService";
-import { useUser } from "@/utils/userContext";
+import { useTempStore } from "@/stores/tempStore";
+import { DropdownValues } from "@/types/dropdown";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -13,9 +13,9 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 export default function PrepThirdScreen() {
     const router = useRouter();
-    const { prep } = useUser();
-    const [visitGoalItems] = useState(DataTypes.visitGoalItems)
-    const [specificWorryItems] = useState(DataTypes.specificWorryItems)
+    const { appointment, setVisitGoal, setSpecificWorries, setMiscDiscussion } = useTempStore();
+    const [visitGoalItems] = useState(DropdownValues.visitGoal)
+    const [specificWorryItems] = useState(DropdownValues.specificWorries)
 
     const handleNext = () => {
         router.push("/prep/final")
@@ -74,8 +74,8 @@ export default function PrepThirdScreen() {
                                 </ThemedText>
                                 <Dropdown
                                     items={visitGoalItems}
-                                    value={prep.visitGoal}
-                                    setValue={prep.setVisitGoal}
+                                    value={appointment.visitGoal}
+                                    setValue={setVisitGoal}
                                 />
                             </View>
 
@@ -85,8 +85,8 @@ export default function PrepThirdScreen() {
                                 </ThemedText>
                                 <Dropdown
                                     items={specificWorryItems}
-                                    value={prep.specificWorries}
-                                    setValue={prep.setSpecificWorries}
+                                    value={appointment.specificWorries}
+                                    setValue={setSpecificWorries}
                                 />
                             </View>
 
@@ -95,8 +95,8 @@ export default function PrepThirdScreen() {
                                     Any other issues you would like to discuss?
                                 </ThemedText>
                                 <Textbox
-                                    onChangeText={prep.setMiscDiscussion}
-                                    value={prep.miscDiscussion}
+                                    onChangeText={setMiscDiscussion}
+                                    value={appointment.miscDiscussion}
                                 />
                             </View>
                         </View>
@@ -173,14 +173,14 @@ const styles = StyleSheet.create({
     formCard: {
         marginHorizontal: 24,
         marginBottom: 24,
-        borderRadius: 20,
+        borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 4,
         },
         shadowOpacity: 0.1,
-        shadowRadius: 20,
+        shadowRadius: 10,
     },
     cardContent: {
         padding: 24,
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 12,
         paddingHorizontal: 16,
-        borderRadius: 16,
+        borderRadius: 10,
         borderWidth: 1,
         borderColor: '#d1d1d1ff',
         backgroundColor: '#f8fafc',
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     },
     primaryButton: {
         backgroundColor: '#3b82f6',
-        borderRadius: 16,
+        borderRadius: 10,
         paddingVertical: 16,
         paddingHorizontal: 32,
         flexDirection: 'row',
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
             height: 4,
         },
         shadowOpacity: 0.3,
-        shadowRadius: 12,
+        shadowRadius: 10,
         minWidth: 160,
         minHeight: 60,
     },

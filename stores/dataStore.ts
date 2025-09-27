@@ -1,13 +1,17 @@
-
+import { AppointmentData, SignupData, UserDataStore } from "@/types/models";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Buffer } from 'buffer';
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
-import crypto from "react-native-quick-crypto";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 const isWeb = Platform.OS === "web";
+
+/*
+// For Development Builds
+
+import { Buffer } from 'buffer';
+import crypto from "react-native-quick-crypto";
 
 class EncryptionService {
     private static ENCRYPTION_KEY = "app_encryption_key";
@@ -112,61 +116,27 @@ const createEncryptedAsyncStorage = () => ({
     },
 });
 
-type SignupData = {
-    firstName: string;
-    lastName: string;
-    DOB: Date | null;
-    sex: string;
-    language: string;
-    notifications: boolean;
-    acceptedTerms: boolean;
-};
-
-type Appointment = {
-    id: string;
-    appointmentType: string;
-    appointmentDate: Date | null;
-    provider: string;
-    mainConcern: string;
-    concernStart: string;
-    concernSeverity: string;
-    remedies: string;
-    visitGoal: string;
-    specificWorries: string;
-    miscDiscussion: string;
-    question: string;
-};
-
-type UserState = {
-    signup: SignupData | null;
-    appointments: Appointment[];
-
-    _hasHydrated: boolean;
-    _dataHasHydrated: boolean;
-
-    addSignupData: (data: SignupData) => void;
-    resetSignup: () => void;
-    addAppointment: (appointment: Appointment) => void;
-    resetAppointments: () => void;
-    setDataHasHydrated: (value: boolean) => void;
-};
-
 export const useDataStore = create(
-    persist<Pick<UserState, 'signup' | 'appointments' | '_dataHasHydrated' | 'addSignupData' | 'resetSignup' | 'addAppointment' | 'resetAppointments' | 'setDataHasHydrated'>>(
+    persist<Pick<UserDataStore, 'signup' | 'appointments' | '_dataHasHydrated' | 'addSignupData' | 'resetSignup' | 'addAppointment' | 'resetAppointments' | 'setDataHasHydrated'>>(
         (set, get) => ({
             signup: null,
             appointments: [],
             _dataHasHydrated: false,
 
-            addSignupData: (data: SignupData) => set({ signup: data }),
-            resetSignup: () => set({ signup: null }),
+            addSignupData: (data: SignupData) =>
+                set({ signup: data }),
+            
+            resetSignup: () =>
+                set({ signup: null }),
 
-            addAppointment: (appointment: Appointment) =>
+            addAppointment: (appointment: AppointmentData) =>
                 set({ appointments: [...get().appointments, appointment] }),
 
-            resetAppointments: () => set({ appointments: [] }),
+            resetAppointments: () =>
+                set({ appointments: [] }),
 
-            setDataHasHydrated: (value: boolean) => set({ _dataHasHydrated: value }),
+            setDataHasHydrated: (value: boolean) =>
+                set({ _dataHasHydrated: value }),
         }),
         {
             name: "data-store",
@@ -181,33 +151,11 @@ export const useDataStore = create(
         },
     ),
 );
+*/
 
-export const useUserStore = () => {
-    const data = useDataStore();
+// For Expo Go
 
-    return {
-        signup: data.signup,
-        appointments: data.appointments,
-        _dataHasHydrated: data._dataHasHydrated,
-
-        addSignupData: data.addSignupData,
-        resetSignup: data.resetSignup,
-        addAppointment: data.addAppointment,
-        resetAppointments: data.resetAppointments,
-        setDataHasHydrated: data.setDataHasHydrated,
-    };
-};
-
-
-/*
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Crypto from "expo-crypto";
-import * as SecureStore from "expo-secure-store";
-import { Platform } from "react-native";
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-
-const isWeb = Platform.OS === "web";
 
 class EncryptionService {
     private static ENCRYPTION_KEY = "app_encryption_key";
@@ -304,67 +252,28 @@ const createEncryptedAsyncStorage = () => ({
     },
 });
 
-// Types
-type SignupData = {
-    firstName: string;
-    lastName: string;
-    DOB: Date | null;
-    sex: string;
-    language: string;
-    notifications: boolean;
-    acceptedTerms: boolean;
-};
-
-type Appointment = {
-    id: string;
-    appointmentType: string;
-    appointmentDate: Date | null;
-    provider: string;
-    mainConcern: string;
-    concernStart: string;
-    concernSeverity: string;
-    remedies: string;
-    visitGoal: string;
-    specificWorries: string;
-    miscDiscussion: string;
-    question: string;
-};
-
-// Combined User State
-type UserState = {
-    // App data
-    signup: SignupData | null;
-    appointments: Appointment[];
-
-    // Hydration
-    _hasHydrated: boolean;
-    _dataHasHydrated: boolean;
-
-    // App data actions
-    addSignupData: (data: SignupData) => void;
-    resetSignup: () => void;
-    addAppointment: (appointment: Appointment) => void;
-    resetAppointments: () => void;
-    setDataHasHydrated: (value: boolean) => void;
-};
-
 // App data store
 export const useDataStore = create(
-    persist<Pick<UserState, 'signup' | 'appointments' | '_dataHasHydrated' | 'addSignupData' | 'resetSignup' | 'addAppointment' | 'resetAppointments' | 'setDataHasHydrated'>>(
+    persist<Pick<UserDataStore, 'signup' | 'appointments' | '_dataHasHydrated' | 'addSignupData' | 'resetSignup' | 'addAppointment' | 'resetAppointments' | 'setDataHasHydrated'>>(
         (set, get) => ({
             signup: null,
             appointments: [],
             _dataHasHydrated: false,
 
-            addSignupData: (data: SignupData) => set({ signup: data }),
-            resetSignup: () => set({ signup: null }),
+            addSignupData: (data: SignupData) =>
+                set({ signup: data }),
 
-            addAppointment: (appointment: Appointment) =>
+            resetSignup: () =>
+                set({ signup: null }),
+
+            addAppointment: (appointment: AppointmentData) =>
                 set({ appointments: [...get().appointments, appointment] }),
 
-            resetAppointments: () => set({ appointments: [] }),
+            resetAppointments: () =>
+                set({ appointments: [] }),
 
-            setDataHasHydrated: (value: boolean) => set({ _dataHasHydrated: value }),
+            setDataHasHydrated: (value: boolean) =>
+                set({ _dataHasHydrated: value }),
         }),
         {
             name: "data-store",
@@ -379,23 +288,3 @@ export const useDataStore = create(
         },
     ),
 );
-
-// Combined hook
-export const useUserStore = () => {
-    const data = useDataStore();
-
-    return {
-        // App data
-        signup: data.signup,
-        appointments: data.appointments,
-        _dataHasHydrated: data._dataHasHydrated,
-
-        // Data actions
-        addSignupData: data.addSignupData,
-        resetSignup: data.resetSignup,
-        addAppointment: data.addAppointment,
-        resetAppointments: data.resetAppointments,
-        setDataHasHydrated: data.setDataHasHydrated,
-    };
-};
-*/

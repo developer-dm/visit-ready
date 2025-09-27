@@ -1,5 +1,5 @@
 import * as LocalAuthentication from "expo-local-authentication";
-import { useAuthStore } from "./authStore";
+import { useAuthStore } from "../stores/authStore";
 
 export const authenticateWithBiometrics = async (): Promise<boolean> => {
     try {

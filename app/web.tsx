@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 18,
-        color: '#cbd5e1',
+        color: '#94a3b8',
         textAlign: 'center',
         lineHeight: 26,
         marginBottom: 48,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     },
     footerText: {
         fontSize: 16,
-        color: '#64748b',
+        color: '#94a3b8',
         textAlign: 'center',
         fontStyle: 'italic',
     },

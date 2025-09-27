@@ -1,21 +1,8 @@
-import DataFormatterService from "./dataFormatterService";
-import { useDataStore } from "./dataStore";
+import { AppointmentData } from "@/types/models";
+import { useDataStore } from "../stores/dataStore";
+import DataFormatterService from "./dataFormatter";
 
-export type Appointment = {
-    id: string;
-    appointmentType: string;
-    appointmentDate: Date | null;
-    provider: string;
-    mainConcern: string;
-    concernStart: string;
-    concernSeverity: string;
-    remedies: string;
-    visitGoal: string;
-    specificWorries: string;
-    miscDiscussion: string;
-};
-
-export const generateMedicalQuestionsPrompt = (appointment: Appointment): string => {
+export const generateMedicalQuestionsPrompt = (appointment: AppointmentData): string => {
     const { signup } = useDataStore.getState();
 
     const basePrompt = `

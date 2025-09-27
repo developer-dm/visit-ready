@@ -2,8 +2,8 @@ import { Footer } from "@/components/Footer";
 import LoadingScreen from "@/components/Loading";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { authenticateWithBiometrics, checkAuthenticationCapabilities } from "@/utils/auth";
-import { useAuthStore } from "@/utils/authStore";
+import { authenticateWithBiometrics, checkAuthenticationCapabilities } from "@/services/auth";
+import { useAuthStore } from "@/stores/authStore";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Link } from "expo-router";
 import { useEffect, useState } from 'react';
@@ -203,14 +203,14 @@ const styles = StyleSheet.create({
   welcomeCard: {
     marginHorizontal: 24,
     marginBottom: 24,
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
   },
   cardContent: {
     padding: 24,
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   },
   primaryLoginButton: {
     backgroundColor: '#3b82f6',
-    borderRadius: 16,
+    borderRadius: 10,
     padding: 20,
     shadowColor: '#3b82f6',
     shadowOffset: {
@@ -253,14 +253,14 @@ const styles = StyleSheet.create({
       height: 4,
     },
     shadowOpacity: 0.3,
-    shadowRadius: 12,
+    shadowRadius: 10,
   },
   disabledButton: {
     backgroundColor: '#94a3b8',
     shadowOpacity: 0.1,
   },
   secondaryLoginButton: {
-    borderRadius: 16,
+    borderRadius: 10,
     padding: 20,
     borderWidth: 1,
     borderColor: '#e2e8f0',
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowRadius: 10,
   },
   vipButton: {
     backgroundColor: '#fef3c7',

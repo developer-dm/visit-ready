@@ -4,8 +4,8 @@ import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { DataTypes } from "@/utils/dataFormatterService";
-import { useUser } from "@/utils/userContext";
+import { useTempStore } from "@/stores/tempStore";
+import { DropdownValues } from "@/types/dropdown";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -14,11 +14,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 export default function ModalScreen() {
   const router = useRouter();
-  const { prep } = useUser();
-  const [appointmentTypeItems] = useState(DataTypes.appointmentTypeItems);
+  const { appointment, setAppointmentType, setAppointmentDate, setProvider } = useTempStore();
+  const [appointmentTypeItems] = useState(DropdownValues.appointmentType);
 
   const handleNext = () => {
-    if (prep.appointmentType) {
+    if (appointment.appointmentType) {
       router.push("/prep/second")
     } else {
       Alert.alert("Error", "Please enter an appointment type.");
@@ -73,8 +73,8 @@ export default function ModalScreen() {
                 <Dropdown
                   placeholder="Required"
                   items={appointmentTypeItems}
-                  value={prep.appointmentType}
-                  setValue={prep.setAppointmentType}
+                  value={appointment.appointmentType}
+                  setValue={setAppointmentType}
                 />
               </View>
 
@@ -83,8 +83,8 @@ export default function ModalScreen() {
                   When is your appointment?
                 </ThemedText>
                 <DatePicker
-                  value={prep.appointmentDate}
-                  setValue={prep.setAppointmentDate}
+                  value={appointment.appointmentDate}
+                  setValue={setAppointmentDate}
                   mode="date"
                   display={Platform.OS === "ios" ? "inline" : "default"}
                 />
@@ -95,8 +95,8 @@ export default function ModalScreen() {
                   Who is the provider in your appointment?
                 </ThemedText>
                 <Textbox
-                  onChangeText={prep.setProvider}
-                  value={prep.provider}
+                  onChangeText={setProvider}
+                  value={appointment.provider}
                 />
               </View>
             </View>
@@ -166,14 +166,14 @@ const styles = StyleSheet.create({
   formCard: {
     marginHorizontal: 24,
     marginBottom: 24,
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
   },
   cardContent: {
     padding: 24,
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     backgroundColor: '#3b82f6',
-    borderRadius: 16,
+    borderRadius: 10,
     paddingVertical: 16,
     paddingHorizontal: 32,
     flexDirection: 'row',
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
       height: 4,
     },
     shadowOpacity: 0.3,
-    shadowRadius: 12,
+    shadowRadius: 10,
     minWidth: 200,
     minHeight: 60,
     marginBottom: 16,

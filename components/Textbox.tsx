@@ -38,7 +38,7 @@ export function Textbox({
 
 const styles = StyleSheet.create({
     default: {
-        borderRadius: 12,
+        borderRadius: 10,
         borderWidth: 1,
         paddingHorizontal: 16,
         paddingVertical: 14,

@@ -1,3 +1,4 @@
+import { AuthStore } from "@/types/models";
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 import { create } from "zustand";
@@ -5,77 +6,63 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 const isWeb = Platform.OS === "web";
 
-type UserState = {
-  isLoggedIn: boolean;
-  hasCompletedOnboarding: boolean;
-  isVip: boolean;
-  _hasHydrated: boolean;
-
-  logIn: () => void;
-  logOut: () => void;
-  completeOnboarding: () => void;
-  resetOnboarding: () => void;
-  logInAsVip: () => void;
-  setHasHydrated: (value: boolean) => void;
-};
-
 export const useAuthStore = create(
-  persist<UserState>(
+  persist<AuthStore>(
     (set) => ({
       isLoggedIn: false,
       hasCompletedOnboarding: false,
       isVip: false,
       _hasHydrated: false,
-      logIn: () => {
+
+      logIn: () =>
         set((state) => {
           return {
             ...state,
             isLoggedIn: true,
           };
-        });
-      },
-      logInAsVip: () => {
+        }),
+
+      logInAsVip: () =>
         set((state) => {
           return {
             ...state,
             isVip: true,
             isLoggedIn: true,
           };
-        });
-      },
-      logOut: () => {
+        }),
+
+      logOut: () =>
         set((state) => {
           return {
             ...state,
             isVip: false,
             isLoggedIn: false,
           };
-        });
-      },
-      completeOnboarding: () => {
+        }),
+
+      completeOnboarding: () =>
         set((state) => {
           return {
             ...state,
             hasCompletedOnboarding: true,
           };
-        });
-      },
-      resetOnboarding: () => {
+        }),
+
+      resetOnboarding: () =>
         set((state) => {
           return {
             ...state,
             hasCompletedOnboarding: false,
           };
-        });
-      },
-      setHasHydrated: (value: boolean) => {
+        }),
+
+      setHasHydrated: (value: boolean) =>
         set((state) => {
           return {
             ...state,
             _hasHydrated: value,
           };
-        });
-      },
+        }),
     }),
     {
       name: "auth-store",

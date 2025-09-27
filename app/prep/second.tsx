@@ -3,8 +3,8 @@ import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { DataTypes } from "@/utils/dataFormatterService";
-import { useUser } from "@/utils/userContext";
+import { useTempStore } from "@/stores/tempStore";
+import { DropdownValues } from "@/types/dropdown";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -13,12 +13,12 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 export default function PrepSecondScreen() {
     const router = useRouter();
-    const { prep } = useUser();
-    const [concernStartItems] = useState(DataTypes.concernStartItems);
-    const [concernSeverityItems] = useState(DataTypes.concernSeverityItems);
+    const { appointment, setMainConcern, setConcernStart, setConcernSeverity, setRemedies } = useTempStore();
+    const [concernStartItems] = useState(DropdownValues.concernStart);
+    const [concernSeverityItems] = useState(DropdownValues.concernSeverity);
 
     const handleNext = () => {
-        if (prep.mainConcern) {
+        if (appointment.mainConcern) {
             router.push("/prep/third")
         } else {
             Alert.alert("Error", "Please add a main health concern.");
@@ -70,8 +70,8 @@ export default function PrepSecondScreen() {
                                 <ThemedText type="overheader">What are the main health concerns of your appointment?</ThemedText>
                                 <Textbox
                                     placeholder="Required"
-                                    onChangeText={prep.setMainConcern}
-                                    value={prep.mainConcern}
+                                    onChangeText={setMainConcern}
+                                    value={appointment.mainConcern}
                                 />
                             </View>
 
@@ -81,8 +81,8 @@ export default function PrepSecondScreen() {
                                 </ThemedText>
                                 <Dropdown
                                     items={concernStartItems}
-                                    value={prep.concernStart}
-                                    setValue={prep.setConcernStart}
+                                    value={appointment.concernStart}
+                                    setValue={setConcernStart}
                                 />
                             </View>
 
@@ -92,16 +92,16 @@ export default function PrepSecondScreen() {
                                 </ThemedText>
                                 <Dropdown
                                     items={concernSeverityItems}
-                                    value={prep.concernSeverity}
-                                    setValue={prep.setConcernSeverity}
+                                    value={appointment.concernSeverity}
+                                    setValue={setConcernSeverity}
                                 />
                             </View>
 
                             <View style={styles.fieldGroup}>
                                 <ThemedText type="overheader">Have you tried any treatments or remedies?</ThemedText>
                                 <Textbox
-                                    onChangeText={prep.setRemedies}
-                                    value={prep.remedies}
+                                    onChangeText={setRemedies}
+                                    value={appointment.remedies}
                                 />
                             </View>
                         </View>
@@ -178,16 +178,14 @@ const styles = StyleSheet.create({
     formCard: {
         marginHorizontal: 24,
         marginBottom: 24,
-        borderRadius: 20,
+        borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 4,
         },
         shadowOpacity: 0.1,
-        shadowRadius: 20,
-        zIndex: 2000,
-        elevation: 2000,
+        shadowRadius: 10,
     },
     cardContent: {
         padding: 24,
@@ -241,7 +239,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 12,
         paddingHorizontal: 16,
-        borderRadius: 16,
+        borderRadius: 10,
         borderWidth: 1,
         borderColor: '#d1d1d1ff',
         backgroundColor: '#f8fafc',
@@ -256,7 +254,7 @@ const styles = StyleSheet.create({
     },
     primaryButton: {
         backgroundColor: '#3b82f6',
-        borderRadius: 16,
+        borderRadius: 10,
         paddingVertical: 16,
         paddingHorizontal: 32,
         flexDirection: 'row',
@@ -268,7 +266,7 @@ const styles = StyleSheet.create({
             height: 4,
         },
         shadowOpacity: 0.3,
-        shadowRadius: 12,
+        shadowRadius: 10,
         minWidth: 160,
         minHeight: 60,
     },

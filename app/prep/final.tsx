@@ -1,33 +1,27 @@
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import DataFormatterService from "@/utils/dataFormatterService";
-import { useUser } from "@/utils/userContext";
+import DataFormatterService from "@/services/dataFormatter";
+import { useTempStore } from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function PrepFinalScreen() {
     const router = useRouter();
-    const { prep } = useUser();
+    const { appointment } = useTempStore();
 
     const handleNext = () => {
-        if (!prep) return;
+        if (!appointment) return;
         router.dismissTo("/(tabs)")
-        router.replace({
-            pathname: "/questions",
-            params: {
-                data: JSON.stringify(prep)
-            },
-        });
     };
 
     const handleBack = () => {
         router.back();
     };
 
-    const userDataEntries = Object.entries(prep).filter(([key, value]) => {
-        return typeof value !== "function" && key !== "id" && key!== "questions";
+    const userDataEntries = Object.entries(appointment).filter(([key, value]) => {
+        return typeof value !== "function" && key !== "id" && key !== "questions";
     });
 
     return (
@@ -169,14 +163,14 @@ const styles = StyleSheet.create({
     reviewCard: {
         marginHorizontal: 24,
         marginBottom: 24,
-        borderRadius: 20,
+        borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 4,
         },
         shadowOpacity: 0.1,
-        shadowRadius: 20,
+        shadowRadius: 10,
     },
     cardContent: {
         padding: 24,
@@ -235,7 +229,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     termsContainer: {
-        borderRadius: 16,
+        borderRadius: 10,
         borderWidth: 1,
     },
     checkboxRow: {
@@ -274,7 +268,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 12,
         paddingHorizontal: 16,
-        borderRadius: 16,
+        borderRadius: 10,
         borderWidth: 1,
         borderColor: '#d1d1d1ff',
         backgroundColor: '#f8fafc',
@@ -289,7 +283,7 @@ const styles = StyleSheet.create({
     },
     primaryButton: {
         backgroundColor: '#3b82f6',
-        borderRadius: 16,
+        borderRadius: 10,
         paddingVertical: 16,
         paddingHorizontal: 32,
         flexDirection: 'row',
@@ -301,7 +295,7 @@ const styles = StyleSheet.create({
             height: 4,
         },
         shadowOpacity: 0.3,
-        shadowRadius: 12,
+        shadowRadius: 10,
         minWidth: 160,
         minHeight: 60,
     },
