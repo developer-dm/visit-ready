@@ -1,4 +1,4 @@
-import { Footer } from "@/components/Footer";
+import { Button } from "@/components/Button";
 import LoadingScreen from "@/components/Loading";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -8,7 +8,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function SignInScreen() {
+export default function OnboardingAuthScreen() {
   const { logInAsVip, completeOnboarding } = useAuthStore();
   const [authType, setAuthType] = useState<'biometric' | 'passcode' | 'none'>('none');
   const [isLoading, setIsLoading] = useState(true);
@@ -60,7 +60,7 @@ export default function SignInScreen() {
       <LoadingScreen
         visible={true}
         message={'Loading...'}
-        subMessage={'Getting authentication method'}
+        subMessage={'Authentication'}
       />
     );
   }
@@ -73,7 +73,7 @@ export default function SignInScreen() {
             Authentication
           </ThemedText>
           <ThemedText style={styles.welcomeSubtitle} type="greyed">
-            Choose how you'd like to access your account
+            Set up your account access method
           </ThemedText>
         </View>
 
@@ -100,17 +100,25 @@ export default function SignInScreen() {
           </TouchableOpacity>
 
           {authType === 'none' && (
-            <View style={styles.infoContainer}>
-              <MaterialIcons name="info-outline" size={16} color="#64748b" />
-              <ThemedText style={styles.infoText} type="greyed">
-                This device doesn't support secure authentication. Please enable device lock screen security in your device settings.
-              </ThemedText>
+            <View style={styles.noLoginSection}>
+              <View style={styles.infoContainer}>
+                <MaterialIcons name="info-outline" size={22} color="#64748b" />
+                <ThemedText style={styles.infoText} type="greyed">
+                  This device doesn't support secure authentication. Please enable device lock screen security in your device settings.
+                </ThemedText>
+              </View>
+
+              <Button type="bordered" style={styles.infoIconContainer} onPress={preliminaryCheck}>
+                <MaterialIcons
+                  name="refresh"
+                  size={25}
+                  color="#64748b"
+                />
+              </Button>
             </View>
           )}
         </View>
       </View>
-
-      <Footer type="absolute" hasSpacer={true} />
     </View>
   );
 }
@@ -185,6 +193,11 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#ffffff99',
   },
+  noLoginSection: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   infoContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -192,11 +205,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8fafc',
     borderRadius: 10,
     gap: 8,
+    marginBottom: 16,
   },
   infoText: {
     fontSize: 13,
     lineHeight: 18,
     flex: 1,
+  },
+  infoIconContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

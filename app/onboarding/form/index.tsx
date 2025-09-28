@@ -1,3 +1,4 @@
+import { Button } from "@/components/Button";
 import { DatePicker } from "@/components/DatePicker";
 import { Dropdown } from "@/components/Dropdown";
 import { Footer } from "@/components/Footer";
@@ -8,51 +9,53 @@ import { useTempStore } from "@/stores/tempStore";
 import { DropdownValues } from "@/types/dropdown";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function OnboardingFirstScreen() {
   const router = useRouter()
-  const { signup, setFirstName, setLastName, setDOB, setSex, setLanguage } = useTempStore();
+  const { signup, setFirstName, setLastName, setDOB, setSex, setLanguage, clearUserContext } = useTempStore();
+
+  const handleClose = () => {
+    Alert.alert('Close Form', 'Are you sure you want to discard this form?', [
+      {
+        text: 'Discard',
+        onPress: () => {
+          router.dismissAll();
+          clearUserContext();
+        },
+        style: "destructive",
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
+  };
 
   const handleNext = () => {
-    if (signup.language) {
-      router.push("/onboarding/form/final");
-    } else {
-      Alert.alert("Error", "Please enter a preferred language.");
-    }
+    router.push("/onboarding/form/second");
   };
 
   return (
-    <KeyboardAwareScrollView
-      style={styles.container}
-      contentContainerStyle={styles.scrollContainer}
-      keyboardShouldPersistTaps="never"
-      showsVerticalScrollIndicator={false}
-      enableResetScrollToCoords={false}
-      extraScrollHeight={5}
-    >
-      <View style={styles.content}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.progressContainer}>
-            <View style={styles.progressBar}>
-              <View style={styles.progressFill} />
-              <View style={styles.progressEmpty} />
-            </View>
-            <ThemedText style={styles.progressText} type="greyed">Step 1 of 2</ThemedText>
-          </View>
-        </View>
-
-        {/* Form */}
-        <ThemedView style={styles.formCard}>
+    <ThemedView type="container">
+      <KeyboardAwareScrollView
+        style={styles.container}
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="never"
+        showsVerticalScrollIndicator={false}
+        enableResetScrollToCoords={false}
+        extraScrollHeight={10}
+      >
+        <View style={styles.content}>
+          {/* Form */}
           <View style={styles.cardContent}>
             <View style={styles.welcomeSection}>
               <ThemedView style={styles.welcomeIconContainer} type="dusked">
                 <MaterialIcons name="person-add" size={32} color="#3b82f6" />
               </ThemedView>
               <ThemedText style={styles.welcomeTitle} type="whitened">Create Your Profile</ThemedText>
-              <ThemedText style={styles.welcomeSubtitle} type="greyed">All information is encrypted on your device</ThemedText>
+              <ThemedText style={styles.welcomeSubtitle} type="greyed">Tell us a little bit about yourself so we can personalize your experience</ThemedText>
             </View>
 
             <View style={styles.formFields}>
@@ -102,21 +105,38 @@ export default function OnboardingFirstScreen() {
               </View>
             </View>
           </View>
-        </ThemedView>
 
-        {/* Navigation */}
-        <View style={styles.navigationSection}>
-          <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
-            <Text style={styles.primaryButtonText}>Continue</Text>
-            <View style={styles.buttonIcon}>
-              <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
+          {/* Navigation */}
+          <View style={styles.navigationSection}>
+            <View style={styles.buttonRow}>
+              <Button type="bordered" style={styles.backButton} onPress={handleClose}>
+                <MaterialIcons name="close" size={20} color="#64748b" />
+                <Text style={styles.backButtonText}>Exit</Text>
+              </Button>
+
+              <Button
+                style={[styles.primaryButton, !signup.language && styles.primaryButtonDisabled]}
+                onPress={handleNext}
+                disabled={!signup.language}
+              >
+                <Text style={[styles.primaryButtonText, !signup.language && styles.primaryButtonTextDisabled]}>
+                  Continue
+                </Text>
+                <View style={styles.buttonIcon}>
+                  <MaterialIcons
+                    name="arrow-forward"
+                    size={20}
+                    color={signup.language ? "#ffffff" : "#94a3b8"}
+                  />
+                </View>
+              </Button>
             </View>
-          </TouchableOpacity>
+          </View>
 
-          <Footer hasSpacer={true} />
+          <Footer hasSpacer={true} text="Your information is encrypted and stored on your device" />
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </ThemedView>
   );
 }
 
@@ -129,70 +149,11 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 30,
-  },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 40,
-    paddingBottom: 20,
-    alignItems: 'center',
-  },
-  progressContainer: {
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  progressBar: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 8,
-  },
-  progressFill: {
-    width: 24,
-    height: 4,
-    backgroundColor: '#3b82f6',
-    borderRadius: 2,
-  },
-  progressEmpty: {
-    width: 24,
-    height: 4,
-    backgroundColor: '#e2e8f0',
-    borderRadius: 2,
-  },
-  progressText: {
-    fontSize: 12,
-    fontWeight: '500',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  pageTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  pageSubtitle: {
-    fontSize: 16,
-    fontWeight: '400',
-    textAlign: 'center',
-    lineHeight: 22,
-    maxWidth: 300,
-  },
-  formCard: {
-    marginHorizontal: 24,
-    marginBottom: 24,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    zIndex: 1000,
-    elevation: 1000,
+    paddingVertical: 30,
   },
   cardContent: {
     padding: 24,
+    marginBottom: 24,
   },
   welcomeSection: {
     alignItems: 'center',
@@ -204,6 +165,13 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
     marginBottom: 16,
   },
   welcomeTitle: {
@@ -229,6 +197,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     alignItems: 'center',
   },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 16,
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    minWidth: 100,
+    minHeight: 60,
+  },
+  backButtonText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#64748b',
+    marginLeft: 8,
+  },
   primaryButton: {
     backgroundColor: '#3b82f6',
     borderRadius: 10,
@@ -244,15 +235,21 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 10,
-    minWidth: 200,
+    minWidth: 160,
     minHeight: 60,
-    marginBottom: 16,
+  },
+  primaryButtonDisabled: {
+    backgroundColor: '#e2e8f0',
+    shadowOpacity: 0,
   },
   primaryButtonText: {
     fontSize: 18,
     fontWeight: '600',
     color: '#ffffff',
     marginRight: 12,
+  },
+  primaryButtonTextDisabled: {
+    color: '#94a3b8',
   },
   buttonIcon: {
     width: 28,

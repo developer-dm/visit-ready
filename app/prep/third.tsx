@@ -1,99 +1,59 @@
 import { Dropdown } from "@/components/Dropdown";
-import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTempStore } from "@/stores/tempStore";
 import { DropdownValues } from "@/types/dropdown";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useRouter } from "expo-router";
-import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function PrepThirdScreen() {
-    const router = useRouter();
     const { appointment, setVisitGoal, setSpecificWorries, setMiscDiscussion } = useTempStore();
-    const [visitGoalItems] = useState(DropdownValues.visitGoal)
-    const [specificWorryItems] = useState(DropdownValues.specificWorries)
-
-    const handleNext = () => {
-        router.push("/prep/final")
-    };
-
-    const handleBack = () => {
-        router.back();
-    };
 
     return (
-        <KeyboardAwareScrollView
-            style={styles.container}
-            contentContainerStyle={styles.scrollContainer}
-            keyboardShouldPersistTaps="never"
-            showsVerticalScrollIndicator={false}
-            enableResetScrollToCoords={false}
-            extraScrollHeight={5}
-        >
-            <View style={styles.content}>
-                {/* Header Section */}
-                <View style={styles.header}>
-                    <View style={styles.progressContainer}>
-                        <View style={styles.progressBar}>
-                            <View style={styles.progressFill} />
-                            <View style={styles.progressFill} />
-                            <View style={styles.progressFill} />
-                            <View style={styles.progressEmpty} />
-                        </View>
-                        <ThemedText style={styles.progressText} type="greyed">
-                            Step 3 of 4
-                        </ThemedText>
-                    </View>
-                </View>
-
-                {/* Form Card */}
-                <ThemedView style={styles.formCard}>
+        <ThemedView type="container">
+            <KeyboardAwareScrollView
+                style={styles.container}
+                contentContainerStyle={styles.scrollContainer}
+                keyboardShouldPersistTaps="never"
+                showsVerticalScrollIndicator={false}
+                enableResetScrollToCoords={false}
+                extraScrollHeight={10}
+            >
+                <View style={styles.content}>
+                    {/* Form */}
                     <View style={styles.cardContent}>
-                        {/* Welcome Message */}
                         <View style={styles.welcomeSection}>
                             <ThemedView style={styles.welcomeIconContainer} type="dusked">
                                 <MaterialIcons name="track-changes" size={32} color="#3b82f6" />
                             </ThemedView>
-                            <ThemedText style={styles.welcomeTitle} type="whitened">
-                                Your Expectations
-                            </ThemedText>
-                            <ThemedText style={styles.welcomeSubtitle} type="greyed">
-                                All information is encrypted on your device
-                            </ThemedText>
+                            <ThemedText style={styles.welcomeTitle} type="whitened">Your Expectations</ThemedText>
+                            <ThemedText style={styles.welcomeSubtitle} type="greyed">What do you hope to achieve from this visit?</ThemedText>
                         </View>
 
-                        {/* Form Fields */}
                         <View style={styles.formFields}>
                             <View style={styles.fieldGroup}>
-                                <ThemedText type="overheader">
-                                    What do you hope to get out of this visit?
-                                </ThemedText>
+                                <ThemedText type="overheader">What do you hope to get out of this visit?</ThemedText>
                                 <Dropdown
-                                    items={visitGoalItems}
+                                    placeholder="Required"
+                                    items={DropdownValues.visitGoal}
                                     value={appointment.visitGoal}
                                     setValue={setVisitGoal}
                                 />
                             </View>
 
                             <View style={styles.fieldGroup}>
-                                <ThemedText type="overheader">
-                                    Do you have any specific worries?
-                                </ThemedText>
+                                <ThemedText type="overheader">Do you have any specific worries?</ThemedText>
                                 <Dropdown
-                                    items={specificWorryItems}
+                                    items={DropdownValues.specificWorries}
                                     value={appointment.specificWorries}
                                     setValue={setSpecificWorries}
                                 />
                             </View>
 
                             <View style={styles.fieldGroup}>
-                                <ThemedText type="overheader">
-                                    Any other issues you would like to discuss?
-                                </ThemedText>
+                                <ThemedText type="overheader">Any other issues you would like to discuss?</ThemedText>
                                 <Textbox
                                     onChangeText={setMiscDiscussion}
                                     value={appointment.miscDiscussion}
@@ -101,28 +61,9 @@ export default function PrepThirdScreen() {
                             </View>
                         </View>
                     </View>
-                </ThemedView>
-
-                {/* Navigation Section */}
-                <View style={styles.navigationSection}>
-                    <View style={styles.buttonRow}>
-                        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-                            <MaterialIcons name="arrow-back" size={20} color="#64748b" />
-                            <Text style={styles.backButtonText}>Back</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
-                            <Text style={styles.primaryButtonText}>Continue</Text>
-                            <View style={styles.buttonIcon}>
-                                <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
                 </View>
-
-                <Footer hasSpacer={true} />
-            </View>
-        </KeyboardAwareScrollView>
+            </KeyboardAwareScrollView>
+        </ThemedView>
     );
 }
 
@@ -135,55 +76,11 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         flexGrow: 1,
-        paddingBottom: 30,
-    },
-    header: {
-        paddingHorizontal: 24,
-        paddingTop: 40,
-        paddingBottom: 20,
-        alignItems: 'center',
-    },
-    progressContainer: {
-        alignItems: 'center',
-        marginBottom: 24,
-    },
-    progressBar: {
-        flexDirection: 'row',
-        gap: 8,
-        marginBottom: 8,
-    },
-    progressFill: {
-        width: 24,
-        height: 4,
-        backgroundColor: '#3b82f6',
-        borderRadius: 2,
-    },
-    progressEmpty: {
-        width: 24,
-        height: 4,
-        backgroundColor: '#e2e8f0',
-        borderRadius: 2,
-    },
-    progressText: {
-        fontSize: 12,
-        fontWeight: '500',
-        textTransform: 'uppercase',
-        letterSpacing: 0.5,
-    },
-    formCard: {
-        marginHorizontal: 24,
-        marginBottom: 24,
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
+        paddingBottom: 150,
     },
     cardContent: {
         padding: 24,
+        marginVertical: 24,
     },
     welcomeSection: {
         alignItems: 'center',
@@ -195,6 +92,13 @@ const styles = StyleSheet.create({
         borderRadius: 32,
         alignItems: 'center',
         justifyContent: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 8,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 20,
         marginBottom: 16,
     },
     welcomeTitle: {
@@ -215,66 +119,5 @@ const styles = StyleSheet.create({
     },
     fieldGroup: {
         width: '100%',
-    },
-    navigationSection: {
-        paddingHorizontal: 24,
-        alignItems: 'center',
-    },
-    buttonRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-        marginBottom: 16,
-    },
-    backButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#d1d1d1ff',
-        backgroundColor: '#f8fafc',
-        minWidth: 100,
-        minHeight: 60,
-    },
-    backButtonText: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#64748b',
-        marginLeft: 8,
-    },
-    primaryButton: {
-        backgroundColor: '#3b82f6',
-        borderRadius: 10,
-        paddingVertical: 16,
-        paddingHorizontal: 32,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        shadowColor: '#3b82f6',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
-        minWidth: 160,
-        minHeight: 60,
-    },
-    primaryButtonText: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#ffffff',
-        marginRight: 12,
-    },
-    buttonIcon: {
-        width: 28,
-        height: 28,
-        borderRadius: 14,
-        backgroundColor: '#ffffff33',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
 });

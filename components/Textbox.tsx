@@ -20,12 +20,13 @@ export function Textbox({
 }: TextboxProps) {
     const placeholderColor = useThemeColor({}, "placeholderText");
     const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
+    const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, "card");
     const borderColor = useThemeColor({ light: lightBorder, dark: darkBorder }, "border");
 
     return (
         <TextInput
             style={[
-                { color, borderColor },
+                { color, borderColor, backgroundColor },
                 type === "default" ? styles.default : undefined,
                 style,
             ]}

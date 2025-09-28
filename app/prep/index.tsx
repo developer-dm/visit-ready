@@ -1,87 +1,58 @@
 import { DatePicker } from "@/components/DatePicker";
 import { Dropdown } from "@/components/Dropdown";
-import { Footer } from "@/components/Footer";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTempStore } from "@/stores/tempStore";
 import { DropdownValues } from "@/types/dropdown";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useRouter } from "expo-router";
-import { useState } from "react";
-import { Alert, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect } from "react";
+import { Platform, StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-export default function ModalScreen() {
-  const router = useRouter();
-  const { appointment, setAppointmentType, setAppointmentDate, setProvider } = useTempStore();
-  const [appointmentTypeItems] = useState(DropdownValues.appointmentType);
+export default function PrepFirstScreen() {
+  const { appointment, setAppointmentType, setAppointmentDate, setProvider, generateNewId } = useTempStore();
 
-  const handleNext = () => {
-    if (appointment.appointmentType) {
-      router.push("/prep/second")
-    } else {
-      Alert.alert("Error", "Please enter an appointment type.");
-    }
-  };
+  useEffect(() => {
+    if (!appointment.id) {
+      generateNewId();
+    };
+  }, [])
 
   return (
-    <KeyboardAwareScrollView
-      style={styles.container}
-      contentContainerStyle={styles.scrollContainer}
-      keyboardShouldPersistTaps="never"
-      showsVerticalScrollIndicator={false}
-      enableResetScrollToCoords={false}
-      extraScrollHeight={5}
-    >
-      <View style={styles.content}>
-        {/* Header Section */}
-        <View style={styles.header}>
-          <View style={styles.progressContainer}>
-            <View style={styles.progressBar}>
-              <View style={styles.progressFill} />
-              <View style={styles.progressEmpty} />
-              <View style={styles.progressEmpty} />
-              <View style={styles.progressEmpty} />
-            </View>
-            <ThemedText style={styles.progressText} type="greyed">Step 1 of 4</ThemedText>
-          </View>
-        </View>
-
-        {/* Form Card */}
-        <ThemedView style={styles.formCard}>
+    <ThemedView type="container" style={styles.container}>
+      <KeyboardAwareScrollView
+        style={styles.container}
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="never"
+        showsVerticalScrollIndicator={false}
+        enableResetScrollToCoords={false}
+        extraScrollHeight={10}
+      >
+        <View style={styles.content}>
+          {/* Form */}
           <View style={styles.cardContent}>
-            {/* Welcome Message */}
             <View style={styles.welcomeSection}>
               <ThemedView style={styles.welcomeIconContainer} type="dusked">
                 <MaterialIcons name="calendar-month" size={32} color="#3b82f6" />
               </ThemedView>
-              <ThemedText style={styles.welcomeTitle} type="whitened">
-                Appointment Details
-              </ThemedText>
-              <ThemedText style={styles.welcomeSubtitle} type="greyed">
-                All information is encrypted on your device
-              </ThemedText>
+              <ThemedText style={styles.welcomeTitle} type="whitened">Appointment Details</ThemedText>
+              <ThemedText style={styles.welcomeSubtitle} type="greyed">Tell us about your upcoming appointment</ThemedText>
             </View>
 
-            {/* Form Fields */}
             <View style={styles.formFields}>
               <View style={styles.fieldGroup}>
-                <ThemedText type="overheader">
-                  What type of appointment is this?
-                </ThemedText>
+                <ThemedText type="overheader">What type of appointment is this?</ThemedText>
                 <Dropdown
                   placeholder="Required"
-                  items={appointmentTypeItems}
+                  items={DropdownValues.appointmentType}
                   value={appointment.appointmentType}
                   setValue={setAppointmentType}
                 />
               </View>
 
               <View style={styles.fieldGroup}>
-                <ThemedText type="overheader">
-                  When is your appointment?
-                </ThemedText>
+                <ThemedText type="overheader">When is your appointment?</ThemedText>
                 <DatePicker
                   value={appointment.appointmentDate}
                   setValue={setAppointmentDate}
@@ -91,9 +62,7 @@ export default function ModalScreen() {
               </View>
 
               <View style={styles.fieldGroup}>
-                <ThemedText type="overheader">
-                  Who is the provider in your appointment?
-                </ThemedText>
+                <ThemedText type="overheader">Who is the provider in your appointment?</ThemedText>
                 <Textbox
                   onChangeText={setProvider}
                   value={appointment.provider}
@@ -101,21 +70,9 @@ export default function ModalScreen() {
               </View>
             </View>
           </View>
-        </ThemedView>
-
-        {/* Action Section */}
-        <View style={styles.actionSection}>
-          <TouchableOpacity style={styles.primaryButton} onPress={handleNext}>
-            <Text style={styles.primaryButtonText}>Continue</Text>
-            <View style={styles.buttonIcon}>
-              <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
-            </View>
-          </TouchableOpacity>
         </View>
-
-        <Footer hasSpacer={true} />
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </ThemedView>
   );
 }
 
@@ -128,55 +85,11 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 30,
-  },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 40,
-    paddingBottom: 20,
-    alignItems: 'center',
-  },
-  progressContainer: {
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  progressBar: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 8,
-  },
-  progressFill: {
-    width: 24,
-    height: 4,
-    backgroundColor: '#3b82f6',
-    borderRadius: 2,
-  },
-  progressEmpty: {
-    width: 24,
-    height: 4,
-    backgroundColor: '#e2e8f0',
-    borderRadius: 2,
-  },
-  progressText: {
-    fontSize: 12,
-    fontWeight: '500',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  formCard: {
-    marginHorizontal: 24,
-    marginBottom: 24,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
+    paddingBottom: 150,
   },
   cardContent: {
     padding: 24,
+    marginVertical: 24,
   },
   welcomeSection: {
     alignItems: 'center',
@@ -188,6 +101,13 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
     marginBottom: 16,
   },
   welcomeTitle: {
@@ -208,42 +128,5 @@ const styles = StyleSheet.create({
   },
   fieldGroup: {
     width: '100%',
-  },
-  actionSection: {
-    paddingHorizontal: 24,
-    alignItems: 'center',
-  },
-  primaryButton: {
-    backgroundColor: '#3b82f6',
-    borderRadius: 10,
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#3b82f6',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    minWidth: 200,
-    minHeight: 60,
-    marginBottom: 16,
-  },
-  primaryButtonText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#ffffff',
-    marginRight: 12,
-  },
-  buttonIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#ffffff33',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

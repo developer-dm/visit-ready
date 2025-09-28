@@ -11,8 +11,8 @@ const initialSignupState: SignupData = {
     acceptedTerms: false,
 };
 
-const initialPrepState: AppointmentData = {
-    id: Crypto.randomUUID(),
+const initialAppointmentState: AppointmentData = {
+    id: "",
     appointmentType: "",
     appointmentDate: null,
     provider: "",
@@ -29,7 +29,7 @@ const initialPrepState: AppointmentData = {
 export const useTempStore = create<TempStore>((set) => ({
     // Initial state
     signup: initialSignupState,
-    appointment: initialPrepState,
+    appointment: initialAppointmentState,
 
     // Signup actions
     setFirstName: (value: string) =>
@@ -127,7 +127,7 @@ export const useTempStore = create<TempStore>((set) => ({
     clearUserContext: () =>
         set(() => ({
             signup: initialSignupState,
-            appointment: { ...initialPrepState, id: Crypto.randomUUID() },
+            appointment: { ...initialAppointmentState },
         })),
 
     generateNewId: () =>

@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
             width: 0,
             height: 8,
         },
-        shadowOpacity: 0.15,
+        shadowOpacity: 0.1,
         shadowRadius: 20,
     },
     icon: {
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
             width: 0,
             height: 8,
         },
-        shadowOpacity: 0.15,
+        shadowOpacity: 0.1,
         shadowRadius: 20,
     },
     featureContent: {

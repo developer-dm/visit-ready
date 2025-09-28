@@ -11,7 +11,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
 import { fetch as expoFetch } from 'expo/fetch';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Flow } from 'react-native-animated-spinkit';
 
@@ -19,7 +19,7 @@ export default function QuestionsScreen() {
 	const router = useRouter();
 	const [copied, setCopied] = useState(false);
 	const [hasSubmitted, setHasSubmitted] = useState(false);
-	const { appointment, clearUserContext } = useTempStore();
+	const { appointment, clearUserContext, setQuestions } = useTempStore();
 	const { addAppointment } = useDataStore();
 
 	const { complete, completion } = useCompletion({
@@ -48,7 +48,6 @@ export default function QuestionsScreen() {
 			{
 				text: 'Exit',
 				onPress: () => {
-					appointment.questions = completion;
 					addAppointment(appointment);
 					clearUserContext();
 					router.replace("/(tabs)");
@@ -62,29 +61,26 @@ export default function QuestionsScreen() {
 		]);
 	}
 
+	useEffect(() => {
+		if (completion) {
+			setQuestions(completion);
+		};
+	}, [completion])
+
 	return (
 		<ScrollView
 			style={styles.container}
 			contentContainerStyle={styles.scrollContainer}
 			showsVerticalScrollIndicator={false}
 		>
-			<View style={styles.header}>
-				<ThemedView style={styles.headerIconContainer} type="dusked">
-					<MaterialIcons name="psychology" size={32} color="#3b82f6" />
-				</ThemedView>
-				<ThemedText style={styles.headerTitle} type="whitened">
-					Your Questions
-				</ThemedText>
-				<ThemedText style={styles.headerSubtitle} type="greyed">
-					AI-generated questions tailored to your appointment
-				</ThemedText>
-			</View>
-
 			{/* Generate Request */}
 			{(!completion && !hasSubmitted) && (
 				<>
 					<ThemedView style={styles.loadingCard}>
 						<View style={styles.loadingContent}>
+							<ThemedView style={styles.headerIconContainer} type="dusked">
+								<MaterialIcons name="check-circle" size={24} color="#10b981" />
+							</ThemedView>
 							<ThemedText style={styles.loadingText} type="whitened">
 								Confirm
 							</ThemedText>
@@ -126,7 +122,7 @@ export default function QuestionsScreen() {
 							Generating Questions...
 						</ThemedText>
 						<ThemedText style={styles.loadingSubtext} type="greyed">
-							AI can make mistakes. Check important info.
+							AI can make mistakes. Check important info. This is not medical advice.
 						</ThemedText>
 						<Flow size={70} color="#3b82f6" />
 					</View>
@@ -169,7 +165,7 @@ export default function QuestionsScreen() {
 				</>
 			)}
 			<View style={styles.midSpacer} />
-			<Footer type="relative" text="AI can make mistakes. Check important info." hasSpacer={true} />
+			<Footer type="relative" text="AI can make mistakes. Check important info. This is not medical advice." hasSpacer={true} />
 		</ScrollView>
 	);
 };
@@ -180,13 +176,7 @@ const styles = StyleSheet.create({
 	},
 	scrollContainer: {
 		flexGrow: 1,
-		paddingBottom: 30,
-	},
-	header: {
-		alignItems: 'center',
-		paddingHorizontal: 24,
-		paddingTop: 160,
-		paddingBottom: 30,
+		paddingVertical: 100,
 	},
 	headerIconContainer: {
 		width: 64,
@@ -202,19 +192,6 @@ const styles = StyleSheet.create({
 		},
 		shadowOpacity: 0.1,
 		shadowRadius: 8,
-	},
-	headerTitle: {
-		fontSize: 24,
-		fontWeight: '700',
-		textAlign: 'center',
-		marginBottom: 8,
-	},
-	headerSubtitle: {
-		fontSize: 16,
-		fontWeight: '400',
-		textAlign: 'center',
-		lineHeight: 22,
-		maxWidth: 300,
 	},
 	loadingCard: {
 		marginHorizontal: 24,

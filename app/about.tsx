@@ -1,9 +1,7 @@
 import { expo } from "@/app.json";
-import { CloseButton } from "@/components/Close";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Stack } from "expo-router";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 
 export default function AboutScreen() {
@@ -26,13 +24,7 @@ export default function AboutScreen() {
   ];
 
   return (
-    <>
-      <Stack.Screen options={{
-        headerRight: () => (
-          <CloseButton type="default" clearContext={false} />
-        ),
-      }} />
-
+    <ThemedView type="container">
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.scrollContainer}
@@ -134,7 +126,7 @@ export default function AboutScreen() {
           </ThemedText>
         </View>
       </ScrollView>
-    </>
+    </ThemedView>
   );
 }
 
@@ -143,7 +135,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContainer: {
-    paddingBottom: 30,
+    paddingVertical: 30,
   },
   header: {
     paddingHorizontal: 24,

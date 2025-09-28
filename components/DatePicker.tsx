@@ -21,7 +21,7 @@ export function FormatDateString(rawDate: Date) {
     let month = date.getMonth() + 1;
     let day = date.getDate();
 
-    return `${month} / ${day} / ${year}`
+    return `${month}/${day}/${year}`
 };
 
 export function DatePicker({
@@ -82,7 +82,7 @@ export function DatePicker({
             {(!isOpen || Platform.OS === "android") && (
                 <Button
                     type="bordered"
-                    style={styles.buttonContainer}
+                    style={styles.button}
                     onPress={toggleDatePicker}
                 >
                     <Text style={[styles.text, { color: textColor }]}>
@@ -131,6 +131,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
         flex: 1,
     },
+    button: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+        minHeight: 48,
+    },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -138,6 +146,13 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         paddingHorizontal: 20,
         borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 8,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 20,
         minHeight: 48,
     },
     cancelButton: {

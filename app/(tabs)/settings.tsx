@@ -130,7 +130,7 @@ export default function SettingsScreen() {
 
           <View style={styles.actionGrid}>
             {/* Delete all visits */}
-            <Button style={styles.actionCard} type="bordered" onPress={handleLogout}>
+            <Button style={styles.actionCard} type="bordered" onPress={clearVisits}>
               <ThemedView style={styles.actionIconContainer} type="dusked">
                 <MaterialIcons
                   size={24}

@@ -43,8 +43,8 @@ export default function RootLayout() {
         <Stack.Protected guard={!hasCompletedOnboarding}>
           <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         </Stack.Protected>
-        <Stack.Screen name="about" options={{ presentation: "modal", headerShown: true, title: "About", gestureEnabled: true }} />
-        <Stack.Screen name="+not-found" options={{ headerShown: true, title: 'Oops!' }} />
+        <Stack.Screen name="about" options={{ presentation: "modal", headerShown: false, gestureEnabled: true }} />
+        <Stack.Screen name="+not-found" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );

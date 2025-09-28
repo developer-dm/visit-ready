@@ -8,7 +8,6 @@ type LoadingScreenProps = {
     subMessage?: string;
     spinnerSize?: number;
     spinnerColor?: string;
-    animationType?: 'none' | 'slide' | 'fade';
 };
 
 export default function LoadingScreen({
@@ -17,12 +16,11 @@ export default function LoadingScreen({
     subMessage,
     spinnerSize = 70,
     spinnerColor = '#3b82f6',
-    animationType = 'fade',
 }: LoadingScreenProps) {
     return (
         <Modal
             visible={visible}
-            animationType={animationType}
+            animationType={"fade"}
             statusBarTranslucent={true}
         >
             <View style={styles.overlay}>

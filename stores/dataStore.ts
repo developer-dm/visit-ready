@@ -253,38 +253,37 @@ const createEncryptedAsyncStorage = () => ({
 });
 
 // App data store
-export const useDataStore = create(
-    persist<Pick<UserDataStore, 'signup' | 'appointments' | '_dataHasHydrated' | 'addSignupData' | 'resetSignup' | 'addAppointment' | 'resetAppointments' | 'setDataHasHydrated'>>(
-        (set, get) => ({
-            signup: null,
-            appointments: [],
-            _dataHasHydrated: false,
+export const useDataStore = create(persist<Pick<UserDataStore, 'signup' | 'appointments' | '_dataHasHydrated' | 'addSignupData' | 'resetSignup' | 'addAppointment' | 'resetAppointments' | 'setDataHasHydrated'>>(
+    (set, get) => ({
+        signup: null,
+        appointments: [],
+        _dataHasHydrated: false,
 
-            addSignupData: (data: SignupData) =>
-                set({ signup: data }),
+        addSignupData: (data: SignupData) =>
+            set({ signup: data }),
 
-            resetSignup: () =>
-                set({ signup: null }),
+        resetSignup: () =>
+            set({ signup: null }),
 
-            addAppointment: (appointment: AppointmentData) =>
-                set({ appointments: [...get().appointments, appointment] }),
+        addAppointment: (appointment: AppointmentData) =>
+            set({ appointments: [...get().appointments, appointment] }),
 
-            resetAppointments: () =>
-                set({ appointments: [] }),
+        resetAppointments: () =>
+            set({ appointments: [] }),
 
-            setDataHasHydrated: (value: boolean) =>
-                set({ _dataHasHydrated: value }),
-        }),
-        {
-            name: "data-store",
-            storage: isWeb
-                ? createJSONStorage(() => localStorage)
-                : createJSONStorage(() => createEncryptedAsyncStorage()),
-            onRehydrateStorage: () => {
-                return (state) => {
-                    state?.setDataHasHydrated(true);
-                };
-            },
+        setDataHasHydrated: (value: boolean) =>
+            set({ _dataHasHydrated: value }),
+    }),
+    {
+        name: "data-store",
+        storage: isWeb
+            ? createJSONStorage(() => localStorage)
+            : createJSONStorage(() => createEncryptedAsyncStorage()),
+        onRehydrateStorage: () => {
+            return (state) => {
+                state?.setDataHasHydrated(true);
+            };
         },
-    ),
+    },
+),
 );

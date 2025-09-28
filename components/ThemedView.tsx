@@ -6,7 +6,7 @@ export type ThemedViewProps = ViewProps & {
   darkColor?: string;
   lightBorder?: string;
   darkBorder?: string;
-  type?: "custom" | "bordered" | "dusked";
+  type?: "custom" | "bordered" | "dusked" | "container";
 };
 
 const typeColors: Record<
@@ -16,6 +16,7 @@ const typeColors: Record<
   custom: undefined,
   bordered: { light: "", dark: "", lightBorder: "#d1d1d1ff", darkBorder: "#393939ff" },
   dusked: { light: "#f1f5f9", dark: "#242424ff", lightBorder: "", darkBorder: "" },
+  container: { light: "#e6e6e6ff", dark: "#101010ff", lightBorder: "", darkBorder: "" },
 };
 
 export function ThemedView({
@@ -36,6 +37,7 @@ export function ThemedView({
       style={[
         { backgroundColor, borderColor },
         type === "bordered" ? { borderWidth: 1 } : undefined,
+        type === "container" ? styles.container : undefined,
         style,
       ]}
       {...otherProps}
@@ -44,5 +46,7 @@ export function ThemedView({
 }
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+  },
 });
