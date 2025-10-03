@@ -2,25 +2,34 @@ import { Button } from '@/components/Button';
 import { Footer } from '@/components/Footer';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { generateMedicalQuestionsPrompt } from '@/services/prompter';
 import { useDataStore } from '@/stores/dataStore';
 import { useTempStore } from '@/stores/tempStore';
+import { CompletionData } from '@/types/models';
 import { generateAPIUrl } from '@/utils/utils';
 import { useCompletion } from '@ai-sdk/react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
 import { fetch as expoFetch } from 'expo/fetch';
 import { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Flow } from 'react-native-animated-spinkit';
 
-export default function QuestionsScreen() {
+export default function IndexResultsScreen() {
 	const router = useRouter();
-	const [copied, setCopied] = useState(false);
 	const [hasSubmitted, setHasSubmitted] = useState(false);
-	const { appointment, clearUserContext, setQuestions } = useTempStore();
-	const { addAppointment } = useDataStore();
+	const { appointment, tempCompletion, clearUserContext, setCompletion, generateNewId } = useTempStore();
+	const { signup, addAppointment, addCompletion } = useDataStore();
+
+	function trimResponse(text: string): string {
+		const codeBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/;
+		const match = text.match(codeBlockRegex);
+
+		if (match && match[1]) {
+			return match[1].trim();
+		}
+
+		return text.trim();
+	}
 
 	const { complete, completion } = useCompletion({
 		api: generateAPIUrl('/api/completion'),
@@ -31,16 +40,12 @@ export default function QuestionsScreen() {
 
 	const submitPrompt = async () => {
 		if (hasSubmitted) return;
-		setHasSubmitted(true)
+		setHasSubmitted(true);
 
-		const message = generateMedicalQuestionsPrompt(appointment);
-		complete(message);
-	};
-
-	const copyToClipboard = async () => {
-		await Clipboard.setStringAsync(completion);
-		setCopied(true);
-		setTimeout(() => setCopied(false), 1000);
+		if (signup && appointment) {
+			const message = JSON.stringify({ signup, appointment });
+			complete(message);
+		}
 	};
 
 	const handleReturn = () => {
@@ -63,9 +68,32 @@ export default function QuestionsScreen() {
 
 	useEffect(() => {
 		if (completion) {
-			setQuestions(completion);
-		};
-	}, [completion])
+			//console.log("FIRST \n\n", completion)
+			try {
+				const parsedCompletion: CompletionData = JSON.parse(trimResponse(completion));
+				setCompletion(parsedCompletion);
+				//console.log('SECOND \n\n', parsedCompletion);
+			} catch (error) {
+				console.error('Failed to parse completion:', error);
+			}
+		}
+	}, [completion]);
+
+	useEffect(() => {
+		if (!tempCompletion.id && !appointment.id && completion) {
+			//console.log("THIRD \n\n NEW IDS")
+			generateNewId();
+		}
+	}, [tempCompletion]);
+
+	useEffect(() => {
+		if (appointment.id && tempCompletion.id && completion) {
+			//console.log("FOURTH \n\n" + tempCompletion, appointment)
+			addAppointment(appointment);
+			addCompletion(tempCompletion);
+			router.push("/results/second");
+		}
+	}, [tempCompletion.id])
 
 	return (
 		<ScrollView
@@ -73,17 +101,14 @@ export default function QuestionsScreen() {
 			contentContainerStyle={styles.scrollContainer}
 			showsVerticalScrollIndicator={false}
 		>
-			{/* Generate Request */}
-			{(!completion && !hasSubmitted) && (
+			{(!hasSubmitted) && (
 				<>
 					<ThemedView style={styles.loadingCard}>
 						<View style={styles.loadingContent}>
 							<ThemedView style={styles.headerIconContainer} type="dusked">
-								<MaterialIcons name="check-circle" size={24} color="#10b981" />
+								<MaterialIcons name="question-mark" size={32} color="#3b82f6" />
 							</ThemedView>
-							<ThemedText style={styles.loadingText} type="whitened">
-								Confirm
-							</ThemedText>
+							<ThemedText style={styles.loadingText} type="whitened">Confirm</ThemedText>
 							<ThemedText style={styles.loadingSubtext} type="greyed">
 								Would you like to generate personalized questions to ask your provider during your appointment?
 							</ThemedText>
@@ -104,15 +129,14 @@ export default function QuestionsScreen() {
 							type="bordered"
 							onPress={handleReturn}
 						>
-							<MaterialIcons name="exit-to-app" size={20} color="#64748b" style={styles.buttonIcon} />
+							<MaterialIcons name="arrow-forward" size={20} color="#64748b" style={styles.buttonIcon} />
 							<Text style={styles.copyButtonText}>Skip & Return</Text>
 						</Button>
 					</View>
 				</>
 			)}
 
-			{/* Loading */}
-			{(!completion && hasSubmitted) && (
+			{(hasSubmitted) && (
 				<ThemedView style={styles.loadingCard}>
 					<View style={styles.loadingContent}>
 						<ThemedView style={styles.loadingIconContainer} type="dusked">
@@ -129,43 +153,8 @@ export default function QuestionsScreen() {
 				</ThemedView>
 			)}
 
-			{/* Generation */}
-			{completion && (
-				<>
-					<View style={styles.questionsSection}>
-						<ThemedText style={styles.sectionTitle}>Questions to Ask Your Doctor</ThemedText>
-						<ThemedView style={styles.questionCard}>
-							<View style={styles.questionContent}>
-								<ThemedText style={styles.questionText} type="whitened">
-									{completion}
-								</ThemedText>
-							</View>
-						</ThemedView>
-					</View>
-
-					{/* Buttons */}
-					<View style={styles.buttonContainer}>
-						<Button
-							style={styles.actionButton}
-							type="bordered"
-							onPress={copyToClipboard}
-						>
-							<MaterialIcons name="content-copy" size={20} color={copied ? '#3b82f6' : '#64748b'} style={styles.buttonIcon} />
-							<Text style={[styles.copyButtonText, { color: copied ? '#3b82f6' : '#64748b' }]}>{copied ? 'Copied to Clipboard!' : 'Copy Questions'}</Text>
-						</Button>
-
-						<Button
-							style={[styles.actionButton, styles.primaryButton]}
-							onPress={handleReturn}
-						>
-							<MaterialIcons name="save" size={20} color="#ffffffff" style={styles.buttonIcon} />
-							<Text style={styles.backButtonText}>Return</Text>
-						</Button>
-					</View>
-				</>
-			)}
 			<View style={styles.midSpacer} />
-			<Footer type="relative" text="AI can make mistakes. Check important info. This is not medical advice." hasSpacer={true} />
+			<Footer text="AI can make mistakes. Check important info. This is not medical advice." hasSpacer={true} />
 		</ScrollView>
 	);
 };
@@ -181,7 +170,7 @@ const styles = StyleSheet.create({
 	headerIconContainer: {
 		width: 64,
 		height: 64,
-		borderRadius: 32,
+		borderRadius: 10,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginBottom: 16,
@@ -191,7 +180,7 @@ const styles = StyleSheet.create({
 			height: 2,
 		},
 		shadowOpacity: 0.1,
-		shadowRadius: 8,
+		shadowRadius: 10,
 	},
 	loadingCard: {
 		marginHorizontal: 24,
@@ -212,7 +201,7 @@ const styles = StyleSheet.create({
 	loadingIconContainer: {
 		width: 48,
 		height: 48,
-		borderRadius: 24,
+		borderRadius: 10,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginBottom: 16,
@@ -229,39 +218,6 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		lineHeight: 20,
 		marginBottom: 24,
-	},
-	questionsSection: {
-		paddingHorizontal: 24,
-		marginBottom: 24,
-	},
-	sectionTitle: {
-		fontSize: 20,
-		fontWeight: '600',
-		textAlign: "left",
-		marginBottom: 16,
-	},
-	questionCard: {
-		marginBottom: 12,
-		borderRadius: 10,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.08,
-		shadowRadius: 10,
-	},
-	questionContent: {
-		padding: 16,
-		flexDirection: 'row',
-		alignItems: 'flex-start',
-		gap: 12,
-	},
-	questionText: {
-		flex: 1,
-		fontSize: 16,
-		fontWeight: '400',
-		lineHeight: 22,
 	},
 	buttonContainer: {
 		paddingHorizontal: 24,

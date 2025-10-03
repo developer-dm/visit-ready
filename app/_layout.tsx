@@ -35,7 +35,7 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="prep" options={{ presentation: "modal", headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name="past" options={{ presentation: "modal", headerShown: false, gestureEnabled: true }} />
-          <Stack.Screen name="questions" options={{ headerShown: false }} />
+          <Stack.Screen name="results" options={{ headerShown: false }} />
         </Stack.Protected>
         <Stack.Protected guard={!isLoggedIn && hasCompletedOnboarding}>
           <Stack.Screen name="sign-in" options={{ headerShown: false }} />

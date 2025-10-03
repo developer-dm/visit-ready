@@ -3,8 +3,6 @@
 // All conversions are lowercased
 export const ValueToLabel = {
     label: {
-        'firstname': 'First Name',
-        'lastname': 'Last Name',
         'dob': 'Date of Birth',
         'sex': 'Sex',
         'language': 'Language',
@@ -21,7 +19,7 @@ export const ValueToLabel = {
         'visitgoal': 'Appointment Goal',
         'specificworries': 'Specific Worries',
         'miscdiscussion': 'Other Information',
-        'questions': 'Personalized Questions',
+        'completion': 'Completion',
     } as Record<string, string>,
 
     appointmentType: {

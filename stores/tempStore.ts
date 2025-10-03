@@ -1,10 +1,8 @@
-import { AppointmentData, SignupData, TempStore } from "@/types/models";
+import { AppointmentData, CompletionData, SignupData, TempStore } from "@/types/models";
 import * as Crypto from "expo-crypto";
 import { create } from "zustand";
 
 const initialSignupState: SignupData = {
-    firstName: "",
-    lastName: "",
     DOB: null,
     sex: "",
     language: "",
@@ -23,25 +21,26 @@ const initialAppointmentState: AppointmentData = {
     visitGoal: "",
     specificWorries: "",
     miscDiscussion: "",
-    questions: "",
+};
+
+const initialCompletionState: CompletionData = {
+    id: "",
+    personalized_questions: [],
+    what_to_expect: {
+        brief: "",
+        steps: [],
+    },
+    what_to_bring: [],
+    summary_for_provider: "",
 };
 
 export const useTempStore = create<TempStore>((set) => ({
     // Initial state
     signup: initialSignupState,
     appointment: initialAppointmentState,
+    tempCompletion: initialCompletionState,
 
     // Signup actions
-    setFirstName: (value: string) =>
-        set((state) => ({
-            signup: { ...state.signup, firstName: value },
-        })),
-
-    setLastName: (value: string) =>
-        set((state) => ({
-            signup: { ...state.signup, lastName: value },
-        })),
-
     setDOB: (value: Date) =>
         set((state) => ({
             signup: { ...state.signup, DOB: value },
@@ -118,20 +117,26 @@ export const useTempStore = create<TempStore>((set) => ({
             appointment: { ...state.appointment, miscDiscussion: value },
         })),
 
-    setQuestions: (value: string) =>
+    // Completion Actions
+    setCompletion: (value: CompletionData) =>
         set((state) => ({
-            appointment: { ...state.appointment, questions: value },
+            tempCompletion: { ...state.tempCompletion, ...value },
         })),
 
     // Utility actions
     clearUserContext: () =>
         set(() => ({
             signup: initialSignupState,
-            appointment: { ...initialAppointmentState },
+            appointment: initialAppointmentState,
+            tempCompletion: initialCompletionState,
         })),
 
-    generateNewId: () =>
+    generateNewId: () => {
+        const newID = Crypto.randomUUID()
+
         set((state) => ({
-            appointment: { ...state.appointment, id: Crypto.randomUUID() },
-        })),
+            appointment: { ...state.appointment, id: newID },
+            tempCompletion: { ...state.tempCompletion, id: newID },
+        }))
+    },
 }));

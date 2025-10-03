@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 8,
+    shadowRadius: 10,
   },
   logo: {
     width: 50,
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   aboutIconContainer: {
     width: 56,
     height: 56,
-    borderRadius: 28,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   featuresIconContainer: {
     width: 56,
     height: 56,
-    borderRadius: 28,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
   featureIconContainer: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 16,
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
   missionIconContainer: {
     width: 56,
     height: 56,
-    borderRadius: 28,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
   creditsIconContainer: {
     width: 56,
     height: 56,
-    borderRadius: 28,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,

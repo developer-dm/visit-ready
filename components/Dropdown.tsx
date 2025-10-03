@@ -1,15 +1,7 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React, { useState } from "react";
-import {
-    Modal,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
-} from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Button } from "./Button";
 
 export type DropdownItem = {
@@ -60,15 +52,13 @@ export function Dropdown({
     };
 
     return (
-        <View style={styles.container}>
+        <View>
             <Button
                 type="bordered"
-                style={styles.dropdown}
+                style={isOpen ? [styles.button, styles.buttonOpen] : styles.button}
                 onPress={toggleDropdown}
             >
-                <Text style={[styles.text, { color: textColor }]}>
-                    {displayText}
-                </Text>
+                <Text style={[styles.placeholderText, { color: textColor }]}>{displayText}</Text>
                 <MaterialIcons
                     name={isOpen ? "keyboard-arrow-up" : "keyboard-arrow-down"}
                     size={25}
@@ -76,52 +66,38 @@ export function Dropdown({
                 />
             </Button>
 
-            <Modal
-                visible={isOpen}
-                transparent
-                animationType="fade"
-                onRequestClose={toggleDropdown}
-            >
-                <Pressable
-                    style={styles.overlay}
-                    onPress={toggleDropdown}
+            {isOpen && (
+                <ScrollView
+                    style={[styles.dropdownList, { backgroundColor, borderColor }]}
+                    showsVerticalScrollIndicator={false}
+                    nestedScrollEnabled={true}
                 >
-                    <View style={styles.modalContainer}>
-                        <View style={[styles.dropdownList, { backgroundColor, borderColor }]}>
-                            <ScrollView showsVerticalScrollIndicator={true}>
-                                {items.map((item, index) => (
-                                    <TouchableOpacity
-                                        key={item.value}
-                                        style={[
-                                            styles.listItem,
-                                            index !== items.length - 1 && styles.listItemBorder,
-                                            { borderColor: borderColor }
-                                        ]}
-                                        onPress={() => handleSelect(item.value)}
-                                        activeOpacity={0.7}
-                                    >
-                                        <Text style={[styles.listItemText, { color: selectionColor }]}>
-                                            {item.label}
-                                        </Text>
-                                        {value === item.value && (
-                                            <MaterialIcons name="check" size={20} color={iconColor} />
-                                        )}
-                                    </TouchableOpacity>
-                                ))}
-                            </ScrollView>
-                        </View>
-                    </View>
-                </Pressable>
-            </Modal>
+                    {items.map((item, index) => (
+                        <TouchableOpacity
+                            key={item.value}
+                            style={[
+                                styles.listItem,
+                                index !== items.length - 1 && styles.listItemBorder,
+                                { borderColor: borderColor }
+                            ]}
+                            onPress={() => handleSelect(item.value)}
+                        >
+                            <Text style={[styles.listItemText, { color: selectionColor }]}>
+                                {item.label}
+                            </Text>
+                            {value === item.value && (
+                                <MaterialIcons name="check" size={20} color={iconColor} />
+                            )}
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
+            )}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        position: 'relative',
-    },
-    dropdown: {
+    button: {
         borderRadius: 10,
         borderWidth: 1,
         paddingHorizontal: 16,
@@ -131,38 +107,34 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         minHeight: 48,
     },
-    text: {
-        fontSize: 16,
-        flex: 1,
-    },
-    overlay: {
-        flex: 1,
-        backgroundColor: '#0000008c',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    modalContainer: {
-        width: '80%',
-        maxWidth: 300,
+    buttonOpen: {
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        borderBottomWidth: 5,
     },
     dropdownList: {
-        borderRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
         borderWidth: 1,
-        maxHeight: 300,
+        borderTopWidth: 0,
+        maxHeight: 250,
+    },
+    placeholderText: {
+        fontSize: 16,
     },
     listItem: {
         paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingVertical: 14,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        minHeight: 48,
     },
     listItemBorder: {
         borderBottomWidth: 1,
     },
     listItemText: {
         fontSize: 16,
-        flex: 1,
     },
 });

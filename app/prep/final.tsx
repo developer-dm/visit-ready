@@ -20,45 +20,41 @@ export default function PrepFinalScreen() {
                 contentContainerStyle={styles.scrollContainer}
                 showsVerticalScrollIndicator={false}
             >
-                <View style={styles.content}>
-                    <View style={styles.cardContent}>
-                        {/* Header */}
-                        <View style={styles.headerSection}>
-                            <ThemedView style={styles.headerIconContainer} type="dusked">
-                                <MaterialIcons name="check-circle" size={32} color="#10b981" />
-                            </ThemedView>
-                            <ThemedText style={styles.headerTitle} type="whitened">Review Your Information</ThemedText>
-                            <ThemedText style={styles.headerSubtitle} type="greyed">Confirm your appointment details are correct</ThemedText>
-                        </View>
-
-                        {/* Review Section */}
-                        <ThemedView type="bordered" style={styles.detailsSection}>
-                            {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
-                                if (key === "appointmentDate" && typeof value === 'string') {
-                                    value = new Date(value);
-                                }
-                                return (
-                                    <ThemedView key={key} style={styles.detailItem}>
-                                        <ThemedText style={styles.detailLabel} type="greyed">
-                                            {DataFormatterService.toReadableString(key, 'label')}
-                                        </ThemedText>
-                                        <ThemedText style={styles.detailValue} type="whitened">
-                                            {DataFormatterService.toReadableString(value)}
-                                        </ThemedText>
-                                    </ThemedView>
-                                );
-                            })
-                            ) : (
-                                <View style={styles.noDataContainer}>
-                                    <ThemedText style={styles.noDataText} type="greyed">
-                                        No information available
-                                    </ThemedText>
-                                </View>
-                            )}
-
-                            <Footer text={"ID: " + DataFormatterService.toReadableString(appointment.id)} hasSpacer={true} />
+                <View style={styles.cardContent}>
+                    <View style={styles.headerSection}>
+                        <ThemedView style={styles.headerIconContainer} type="dusked">
+                            <MaterialIcons name="check-circle" size={32} color="#10b981" />
                         </ThemedView>
+                        <ThemedText style={styles.headerTitle} type="whitened">Review Your Information</ThemedText>
+                        <ThemedText style={styles.headerSubtitle} type="greyed">Confirm your appointment details are correct</ThemedText>
                     </View>
+
+                    <ThemedView type="bordered" style={styles.detailsSection}>
+                        {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
+                            if (key === "appointmentDate" && typeof value === 'string') {
+                                value = new Date(value);
+                            }
+                            return (
+                                <ThemedView key={key} style={styles.detailItem}>
+                                    <ThemedText style={styles.detailLabel} type="greyed">
+                                        {DataFormatterService.toReadableString(key, 'label')}
+                                    </ThemedText>
+                                    <ThemedText style={styles.detailValue} type="whitened">
+                                        {DataFormatterService.toReadableString(value)}
+                                    </ThemedText>
+                                </ThemedView>
+                            );
+                        })
+                        ) : (
+                            <View style={styles.noDataContainer}>
+                                <ThemedText style={styles.noDataText} type="greyed">
+                                    No information available
+                                </ThemedText>
+                            </View>
+                        )}
+
+                        <Footer hasSpacer={true} />
+                    </ThemedView>
                 </View>
             </ScrollView>
         </ThemedView>
@@ -87,7 +83,7 @@ const styles = StyleSheet.create({
     headerIconContainer: {
         width: 64,
         height: 64,
-        borderRadius: 32,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         shadowColor: '#000',
@@ -96,7 +92,7 @@ const styles = StyleSheet.create({
             height: 8,
         },
         shadowOpacity: 0.1,
-        shadowRadius: 20,
+        shadowRadius: 10,
         marginBottom: 16,
     },
     headerTitle: {

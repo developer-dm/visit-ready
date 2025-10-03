@@ -11,12 +11,11 @@ export default function HistoryScreen() {
     const router = useRouter();
     const { appointments } = useDataStore();
 
-    const handleAppointmentView = (appointment: object) => {
-        if (!appointment) return;
+    const handleAppointmentView = (id: string) => {
         router.push({
             pathname: "/past",
             params: {
-                data: JSON.stringify(appointment)
+                id: JSON.stringify(id)
             },
         });
     };
@@ -25,99 +24,86 @@ export default function HistoryScreen() {
         router.push("/prep")
     };
 
+    const filteredData = Object.values(appointments)
+
     return (
-        <>
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
-                {/* Header Section */}
-                <View style={styles.header}>
-                    <ThemedText style={styles.pageTitle} type="whitened">My Visits</ThemedText>
-                    <ThemedText style={styles.subtitle} type="greyed">
-                        Track and review your appointment history
-                    </ThemedText>
-                </View>
+        <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.contentContainer}
+            showsVerticalScrollIndicator={false}
+        >
+            <View style={styles.header}>
+                <ThemedText style={styles.title} type="whitened">My Visits</ThemedText>
+                <ThemedText style={styles.subtitle} type="greyed">
+                    Track and review your appointment history
+                </ThemedText>
+            </View>
 
-                {/* Stats Card */}
-                <ThemedView style={styles.statsCard}>
-                    <View style={styles.cardContent}>
-                        <View style={styles.statsRow}>
-                            <View style={styles.statItem}>
-                                <ThemedText style={styles.statNumber}>{Object.keys(appointments).length}</ThemedText>
-                                <ThemedText style={styles.statLabel} type="greyed">
-                                    Total Visits
-                                </ThemedText>
-                            </View>
-                            <View style={styles.statDivider} />
-                            <TouchableOpacity style={styles.addContainer} onPress={handleVisitPrep}>
-                                <ThemedView style={styles.addIconContainer} type="dusked">
-                                    <MaterialIcons
-                                        size={24}
-                                        name="add"
-                                        color="#3b82f6"
-                                    />
-                                </ThemedView>
-                                <ThemedText style={styles.addText} type="greyed">
-                                    Add Visit
-                                </ThemedText>
-                            </TouchableOpacity>
+            <ThemedView style={styles.statsCard}>
+                <View style={styles.cardContent}>
+                    <View style={styles.statsRow}>
+                        <View style={styles.statItem}>
+                            <ThemedText style={styles.statNumber}>{Object.keys(appointments).length}</ThemedText>
+                            <ThemedText style={styles.statLabel} type="greyed">Total Visits</ThemedText>
                         </View>
+                        <View style={styles.statDivider} />
+                        <TouchableOpacity style={styles.addContainer} onPress={handleVisitPrep}>
+                            <ThemedView style={styles.addIconContainer} type="bordered">
+                                <MaterialIcons
+                                    size={24}
+                                    name="add"
+                                    color="#3b82f6"
+                                />
+                            </ThemedView>
+                            <ThemedText style={styles.addText} type="greyed">Add Visit</ThemedText>
+                        </TouchableOpacity>
                     </View>
+                </View>
+            </ThemedView>
+
+            <View style={styles.appointmentsSection}>
+                <ThemedText style={styles.sectionTitle} type="whitened">Recent Appointments</ThemedText>
+
+                <ThemedView style={styles.appointmentsContainer}>
+                    {filteredData && Object.keys(filteredData).length > 0 ? (
+                        <ScrollView style={styles.appointmentsList} contentContainerStyle={styles.appointmentsContentList}>
+                            {Object.entries(filteredData).map(([key, value]) => {
+                                return (
+                                    <TouchableOpacity
+                                        key={value.id}
+                                        onPress={() => handleAppointmentView(value.id)}
+                                    >
+                                        <AppointmentCard
+                                            appointmentType={value.appointmentType ? value.appointmentType : "other"}
+                                            appointmentDate={value.appointmentDate ? new Date(value.appointmentDate) : ""}
+                                            provider={value.provider}
+                                            mainConcern={value.mainConcern}
+                                            id={value.id}
+                                        />
+                                    </TouchableOpacity>
+                                );
+                            })}
+                        </ScrollView>
+                    ) : (
+                        <View style={styles.emptyState}>
+                            <ThemedView style={styles.emptyIconContainer} type="dusked">
+                                <MaterialIcons
+                                    size={48}
+                                    name="event-note"
+                                    color="#94a3b8"
+                                />
+                            </ThemedView>
+                            <ThemedText style={styles.emptyTitle} type="whitened">No appointments yet</ThemedText>
+                            <ThemedText style={styles.emptySubtitle} type="greyed">
+                                Go to the dashboard to create your first appointment
+                            </ThemedText>
+                        </View>
+                    )}
                 </ThemedView>
+            </View>
 
-                {/* Appointments Section */}
-                <View style={styles.appointmentsSection}>
-                    <ThemedText style={styles.sectionTitle} type="whitened">
-                        Recent Appointments
-                    </ThemedText>
-
-                    <ThemedView style={styles.appointmentsContainer}>
-                        {appointments && Object.keys(appointments).length > 0 ? (
-                            <ScrollView style={styles.appointmentsList} contentContainerStyle={styles.appointmentsContentList}>
-                                {Object.entries(appointments).map(([key, value]) => {
-                                    return (
-                                        <TouchableOpacity
-                                            key={value.id}
-                                            onPress={() => handleAppointmentView(value)}
-                                        >
-                                            <AppointmentCard
-                                                appointmentType={value.appointmentType ? value.appointmentType : "other"}
-                                                appointmentDate={value.appointmentDate ? new Date(value.appointmentDate) : ""}
-                                                provider={value.provider}
-                                                mainConcern={value.mainConcern}
-                                                id={value.id}
-                                            />
-                                        </TouchableOpacity>
-                                    );
-                                })}
-                            </ScrollView>
-                        ) : (
-                            <View style={styles.emptyState}>
-                                <ThemedView style={styles.emptyIconContainer} type="dusked">
-                                    <MaterialIcons
-                                        size={48}
-                                        name="event-note"
-                                        color="#94a3b8"
-                                    />
-                                </ThemedView>
-                                <ThemedText style={styles.emptyTitle} type="whitened">
-                                    No appointments yet
-                                </ThemedText>
-                                <ThemedText style={styles.emptySubtitle} type="greyed">
-                                    Go to the dashboard to create your first appointment
-                                </ThemedText>
-                            </View>
-                        )}
-                    </ThemedView>
-                </View>
-
-                {/* Disclaimer */}
-                <View style={styles.disclaimerSection}>
-                    <ThemedText style={styles.disclaimer} type="greyed">
-                        Disclaimer: This service does not schedule appointments for you; it is intended only for tracking purposes.
-                    </ThemedText>
-                </View>
-            </ScrollView>
-            <Footer type="absolute" />
-        </>
+            <Footer text={`This service does not book appointments for you.\nIt is intended only for tracking purposes.`} />
+        </ScrollView>
     );
 }
 
@@ -133,7 +119,7 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         paddingBottom: 30,
     },
-    pageTitle: {
+    title: {
         fontSize: 32,
         fontWeight: 'bold',
         textAlign: "left",
@@ -192,7 +178,7 @@ const styles = StyleSheet.create({
     addIconContainer: {
         width: 48,
         height: 48,
-        borderRadius: 24,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 8,
@@ -236,7 +222,7 @@ const styles = StyleSheet.create({
     emptyIconContainer: {
         width: 80,
         height: 80,
-        borderRadius: 40,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 16,

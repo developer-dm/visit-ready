@@ -5,7 +5,7 @@ export default function VipScreen() {
   return (
     <View style={styles.container}>
       <ThemedText type="whitened">
-        VIP Screen
+        Provider Screen
       </ThemedText>
     </View>
   );

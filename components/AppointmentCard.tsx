@@ -41,7 +41,6 @@ export default function AppointmentCard({
 }: AppointmentCardProps) {
     return (
         <ThemedView style={styles.card} type="bordered">
-            {/* Header Section */}
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
                     <ThemedView style={styles.iconContainer} type="dusked">
@@ -67,7 +66,6 @@ export default function AppointmentCard({
                 />
             </View>
 
-            {/* Details Section */}
             <View style={styles.details}>
                 <View style={styles.detailRow}>
                     <View style={styles.detailItem}>
@@ -134,7 +132,7 @@ const styles = StyleSheet.create({
     iconContainer: {
         width: 40,
         height: 40,
-        borderRadius: 20,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 12,

@@ -6,59 +6,48 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Link } from "expo-router";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function PrepInitialScreen() {
+export default function LandingScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.content}>
-                {/* Info */}
-                <View style={styles.infoSection}>
-                    <ThemedView style={styles.logoContainer}>
+                <View style={styles.logoSection}>
+                    <ThemedView style={styles.logoContainer} type="dusked">
                         <Image source={require("@/assets/images/favicon.png")} style={styles.icon} />
                     </ThemedView>
-                    <ThemedText style={styles.appTitle} type="whitened">
-                        {AppInfo.name}
-                    </ThemedText>
-                    <ThemedText style={styles.tagline} type="greyed">
-                        {AppInfo.slogan}
-                    </ThemedText>
+                    <ThemedText style={styles.title} type="whitened">{AppInfo.name}</ThemedText>
+                    <ThemedText style={styles.slogan} type="greyed">{AppInfo.slogan}</ThemedText>
                 </View>
 
-                {/* Features */}
                 <View style={styles.featuresSection}>
                     <View style={styles.featureItem}>
                         <ThemedView style={styles.featureIconContainer} type="dusked">
-                            <MaterialIcons name="assignment" size={24} color="#3b82f6" />
+                            <MaterialIcons name="calendar-today" size={24} color="#3b82f6" />
                         </ThemedView>
                         <View style={styles.featureContent}>
-                            <ThemedText style={styles.featureTitle} type="whitened">
-                                Personalized Questions
-                            </ThemedText>
+                            <ThemedText style={styles.featureTitle} type="whitened">Track your Appointments</ThemedText>
                             <ThemedText style={styles.featureDescription} type="greyed">
-                                Keep a record of all your appointments and get custom preparation information
+                                Keep a record of all your medical appointment dates and providers
                             </ThemedText>
                         </View>
                     </View>
 
                     <View style={styles.featureItem}>
                         <ThemedView style={styles.featureIconContainer} type="dusked">
-                            <MaterialIcons name="lock" size={24} color="#3b82f6" />
+                            <MaterialIcons name="check" size={24} color="#3b82f6" />
                         </ThemedView>
                         <View style={styles.featureContent}>
-                            <ThemedText style={styles.featureTitle} type="whitened">
-                                Your Health Data is Secure
-                            </ThemedText>
+                            <ThemedText style={styles.featureTitle} type="whitened">Be prepared</ThemedText>
                             <ThemedText style={styles.featureDescription} type="greyed">
-                                All your health data is encrypted and stored on your device
+                                Get reminders on items to bring and questions to ask the provider
                             </ThemedText>
                         </View>
                     </View>
                 </View>
 
-                {/* Start */}
                 <View style={styles.startSection}>
                     <Link asChild push href="/onboarding/form">
-                        <TouchableOpacity style={styles.primaryButton}>
-                            <Text style={styles.primaryButtonText}>Get Started</Text>
+                        <TouchableOpacity style={styles.startButton}>
+                            <Text style={styles.startButtonText}>Start Setup</Text>
                             <View style={styles.buttonIcon}>
                                 <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
                             </View>
@@ -83,7 +72,7 @@ const styles = StyleSheet.create({
         paddingBottom: 40,
         justifyContent: 'center',
     },
-    infoSection: {
+    logoSection: {
         alignItems: 'center',
         paddingTop: 40,
     },
@@ -100,20 +89,19 @@ const styles = StyleSheet.create({
             height: 8,
         },
         shadowOpacity: 0.1,
-        shadowRadius: 20,
+        shadowRadius: 10,
     },
     icon: {
         width: 80,
         height: 80,
     },
-    appTitle: {
+    title: {
         fontSize: 36,
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 12,
-        letterSpacing: -0.5,
     },
-    tagline: {
+    slogan: {
         fontSize: 18,
         fontWeight: '400',
         textAlign: 'center',
@@ -132,7 +120,7 @@ const styles = StyleSheet.create({
     featureIconContainer: {
         width: 48,
         height: 48,
-        borderRadius: 24,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 16,
@@ -142,7 +130,7 @@ const styles = StyleSheet.create({
             height: 8,
         },
         shadowOpacity: 0.1,
-        shadowRadius: 20,
+        shadowRadius: 10,
     },
     featureContent: {
         flex: 1,
@@ -159,9 +147,9 @@ const styles = StyleSheet.create({
     },
     startSection: {
         alignItems: 'center',
-        paddingBottom: 20,
+        marginBottom: 20,
     },
-    primaryButton: {
+    startButton: {
         backgroundColor: '#3b82f6',
         borderRadius: 10,
         paddingVertical: 18,
@@ -180,7 +168,7 @@ const styles = StyleSheet.create({
         minHeight: 60,
         marginBottom: 16,
     },
-    primaryButtonText: {
+    startButtonText: {
         fontSize: 18,
         fontWeight: '600',
         color: '#ffffff',

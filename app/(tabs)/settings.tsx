@@ -12,11 +12,10 @@ import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-nat
 
 export default function SettingsScreen() {
   const { resetOnboarding } = useAuthStore();
-  const { signup, resetAppointments, resetSignup } = useDataStore();
+  const { signup, resetAppointments, resetAll, resetCompletions } = useDataStore();
 
   const clearData = () => {
-    resetAppointments();
-    resetSignup();
+    resetAll();
     resetOnboarding();
     logOut();
   };
@@ -25,7 +24,10 @@ export default function SettingsScreen() {
     Alert.alert('Clear Visits', 'Are you sure you want to clear all visits? This action CANNOT be reversed.', [
       {
         text: 'Confirm',
-        onPress: () => resetAppointments(),
+        onPress: () => {
+          resetAppointments();
+          resetCompletions();
+        },
         style: "destructive",
       },
       {
@@ -70,7 +72,6 @@ export default function SettingsScreen() {
   return (
     <>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
-        {/* Header Section */}
         <View style={styles.header}>
           <ThemedText style={styles.pageTitle} type="whitened">Settings</ThemedText>
           <ThemedText style={styles.subtitle} type="greyed">
@@ -78,7 +79,6 @@ export default function SettingsScreen() {
           </ThemedText>
         </View>
 
-        {/* Profile Information */}
         <ThemedView style={styles.profileCard}>
           <View style={styles.cardContent}>
             <View style={styles.cardHeader}>
@@ -124,7 +124,6 @@ export default function SettingsScreen() {
           </View>
         </ThemedView>
 
-        {/* Action Section */}
         <View style={styles.actionsSection}>
           <ThemedText style={styles.sectionTitle} type="whitened">Account Actions</ThemedText>
 
@@ -201,9 +200,7 @@ export default function SettingsScreen() {
           <Link asChild push href="/about">
             <TouchableOpacity style={styles.linkButton}>
               <MaterialIcons name="info-outline" size={20} color="#64748b" />
-              <ThemedText style={styles.linkText} type="greyed">
-                About Visit Ready
-              </ThemedText>
+              <ThemedText style={styles.linkText} type="greyed">About Visit Ready</ThemedText>
             </TouchableOpacity>
           </Link>
         </View>
@@ -259,7 +256,7 @@ const styles = StyleSheet.create({
   profileIconContainer: {
     width: 56,
     height: 56,
-    borderRadius: 28,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 16,
@@ -335,7 +332,7 @@ const styles = StyleSheet.create({
   actionIconContainer: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 16,
@@ -343,7 +340,7 @@ const styles = StyleSheet.create({
   dangerIconContainer: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 16,

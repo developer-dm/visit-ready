@@ -52,7 +52,7 @@ export default function AppointmentPrepLayout() {
                 break;
             case 'final':
                 router.dismissTo("/(tabs)")
-                router.replace("/questions")
+                router.replace("/results")
                 break;
         }
     };
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
         minHeight: 60,
     },
     primaryButtonDisabled: {
-        backgroundColor: '#e2e8f0',
+        backgroundColor: '#b4b6bcff',
         shadowOpacity: 0,
     },
     primaryButtonText: {

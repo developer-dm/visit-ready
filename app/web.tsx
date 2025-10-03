@@ -10,12 +10,13 @@ export default function WebScreen() {
                 </Text>
 
                 <Text style={styles.tagline}>
-                    Your health, your questions
+                    Make the most of every visit
                 </Text>
 
                 <Text style={styles.description}>
-                    Get personalized questions to ask your doctor, track your medical visits,
-                    and make every healthcare interaction more productive.
+                    Keep a record of all your medical appointment dates and providers
+                    {'\n'}
+                    Get reminders on items to bring and questions to ask the provider
                 </Text>
 
                 <Text style={styles.downloadTitle}>

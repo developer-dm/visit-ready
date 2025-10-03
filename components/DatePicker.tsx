@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#d1d1d1ff',
         backgroundColor: '#f8fafc',
-        minWidth: 100,
+        minWidth: 120,
     },
     cancelButtonText: {
         fontSize: 16,

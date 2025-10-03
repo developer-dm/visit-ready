@@ -6,18 +6,11 @@ import { ThemedView } from "@/components/ThemedView";
 import { useTempStore } from "@/stores/tempStore";
 import { DropdownValues } from "@/types/dropdown";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useEffect } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function PrepFirstScreen() {
-  const { appointment, setAppointmentType, setAppointmentDate, setProvider, generateNewId } = useTempStore();
-
-  useEffect(() => {
-    if (!appointment.id) {
-      generateNewId();
-    };
-  }, [])
+  const { appointment, setAppointmentType, setAppointmentDate, setProvider } = useTempStore();
 
   return (
     <ThemedView type="container" style={styles.container}>
@@ -29,45 +22,42 @@ export default function PrepFirstScreen() {
         enableResetScrollToCoords={false}
         extraScrollHeight={10}
       >
-        <View style={styles.content}>
-          {/* Form */}
-          <View style={styles.cardContent}>
-            <View style={styles.welcomeSection}>
-              <ThemedView style={styles.welcomeIconContainer} type="dusked">
-                <MaterialIcons name="calendar-month" size={32} color="#3b82f6" />
-              </ThemedView>
-              <ThemedText style={styles.welcomeTitle} type="whitened">Appointment Details</ThemedText>
-              <ThemedText style={styles.welcomeSubtitle} type="greyed">Tell us about your upcoming appointment</ThemedText>
+        <View style={styles.cardContent}>
+          <View style={styles.welcomeSection}>
+            <ThemedView style={styles.welcomeIconContainer} type="dusked">
+              <MaterialIcons name="calendar-month" size={32} color="#3b82f6" />
+            </ThemedView>
+            <ThemedText style={styles.welcomeTitle} type="whitened">Appointment Details</ThemedText>
+            <ThemedText style={styles.welcomeSubtitle} type="greyed">Tell us about your upcoming appointment</ThemedText>
+          </View>
+
+          <View style={styles.formFields}>
+            <View style={styles.fieldGroup}>
+              <ThemedText type="overheader">What type of appointment is this?</ThemedText>
+              <Dropdown
+                placeholder="Required"
+                items={DropdownValues.appointmentType}
+                value={appointment.appointmentType}
+                setValue={setAppointmentType}
+              />
             </View>
 
-            <View style={styles.formFields}>
-              <View style={styles.fieldGroup}>
-                <ThemedText type="overheader">What type of appointment is this?</ThemedText>
-                <Dropdown
-                  placeholder="Required"
-                  items={DropdownValues.appointmentType}
-                  value={appointment.appointmentType}
-                  setValue={setAppointmentType}
-                />
-              </View>
+            <View style={styles.fieldGroup}>
+              <ThemedText type="overheader">When is your appointment?</ThemedText>
+              <DatePicker
+                value={appointment.appointmentDate}
+                setValue={setAppointmentDate}
+                mode="date"
+                display={Platform.OS === "ios" ? "inline" : "default"}
+              />
+            </View>
 
-              <View style={styles.fieldGroup}>
-                <ThemedText type="overheader">When is your appointment?</ThemedText>
-                <DatePicker
-                  value={appointment.appointmentDate}
-                  setValue={setAppointmentDate}
-                  mode="date"
-                  display={Platform.OS === "ios" ? "inline" : "default"}
-                />
-              </View>
-
-              <View style={styles.fieldGroup}>
-                <ThemedText type="overheader">Who is the provider in your appointment?</ThemedText>
-                <Textbox
-                  onChangeText={setProvider}
-                  value={appointment.provider}
-                />
-              </View>
+            <View style={styles.fieldGroup}>
+              <ThemedText type="overheader">Who is the provider in your appointment?</ThemedText>
+              <Textbox
+                onChangeText={setProvider}
+                value={appointment.provider}
+              />
             </View>
           </View>
         </View>
@@ -98,7 +88,7 @@ const styles = StyleSheet.create({
   welcomeIconContainer: {
     width: 64,
     height: 64,
-    borderRadius: 32,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -107,7 +97,7 @@ const styles = StyleSheet.create({
       height: 8,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
     marginBottom: 16,
   },
   welcomeTitle: {

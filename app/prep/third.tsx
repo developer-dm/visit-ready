@@ -21,44 +21,41 @@ export default function PrepThirdScreen() {
                 enableResetScrollToCoords={false}
                 extraScrollHeight={10}
             >
-                <View style={styles.content}>
-                    {/* Form */}
-                    <View style={styles.cardContent}>
-                        <View style={styles.welcomeSection}>
-                            <ThemedView style={styles.welcomeIconContainer} type="dusked">
-                                <MaterialIcons name="track-changes" size={32} color="#3b82f6" />
-                            </ThemedView>
-                            <ThemedText style={styles.welcomeTitle} type="whitened">Your Expectations</ThemedText>
-                            <ThemedText style={styles.welcomeSubtitle} type="greyed">What do you hope to achieve from this visit?</ThemedText>
+                <View style={styles.cardContent}>
+                    <View style={styles.welcomeSection}>
+                        <ThemedView style={styles.welcomeIconContainer} type="dusked">
+                            <MaterialIcons name="timeline" size={32} color="#3b82f6" />
+                        </ThemedView>
+                        <ThemedText style={styles.welcomeTitle} type="whitened">Your Expectations</ThemedText>
+                        <ThemedText style={styles.welcomeSubtitle} type="greyed">What do you hope to achieve from this visit?</ThemedText>
+                    </View>
+
+                    <View style={styles.formFields}>
+                        <View style={styles.fieldGroup}>
+                            <ThemedText type="overheader">What do you hope to get out of this visit?</ThemedText>
+                            <Dropdown
+                                placeholder="Required"
+                                items={DropdownValues.visitGoal}
+                                value={appointment.visitGoal}
+                                setValue={setVisitGoal}
+                            />
                         </View>
 
-                        <View style={styles.formFields}>
-                            <View style={styles.fieldGroup}>
-                                <ThemedText type="overheader">What do you hope to get out of this visit?</ThemedText>
-                                <Dropdown
-                                    placeholder="Required"
-                                    items={DropdownValues.visitGoal}
-                                    value={appointment.visitGoal}
-                                    setValue={setVisitGoal}
-                                />
-                            </View>
+                        <View style={styles.fieldGroup}>
+                            <ThemedText type="overheader">Do you have any specific worries?</ThemedText>
+                            <Dropdown
+                                items={DropdownValues.specificWorries}
+                                value={appointment.specificWorries}
+                                setValue={setSpecificWorries}
+                            />
+                        </View>
 
-                            <View style={styles.fieldGroup}>
-                                <ThemedText type="overheader">Do you have any specific worries?</ThemedText>
-                                <Dropdown
-                                    items={DropdownValues.specificWorries}
-                                    value={appointment.specificWorries}
-                                    setValue={setSpecificWorries}
-                                />
-                            </View>
-
-                            <View style={styles.fieldGroup}>
-                                <ThemedText type="overheader">Any other issues you would like to discuss?</ThemedText>
-                                <Textbox
-                                    onChangeText={setMiscDiscussion}
-                                    value={appointment.miscDiscussion}
-                                />
-                            </View>
+                        <View style={styles.fieldGroup}>
+                            <ThemedText type="overheader">Any other issues you would like to discuss?</ThemedText>
+                            <Textbox
+                                onChangeText={setMiscDiscussion}
+                                value={appointment.miscDiscussion}
+                            />
                         </View>
                     </View>
                 </View>
@@ -69,9 +66,6 @@ export default function PrepThirdScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-    },
-    content: {
         flex: 1,
     },
     scrollContainer: {
@@ -89,7 +83,7 @@ const styles = StyleSheet.create({
     welcomeIconContainer: {
         width: 64,
         height: 64,
-        borderRadius: 32,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         shadowColor: '#000',
@@ -98,7 +92,7 @@ const styles = StyleSheet.create({
             height: 8,
         },
         shadowOpacity: 0.1,
-        shadowRadius: 20,
+        shadowRadius: 10,
         marginBottom: 16,
     },
     welcomeTitle: {

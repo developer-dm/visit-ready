@@ -1,13 +1,27 @@
 
 // Onboarding Data
 export type SignupData = {
-    firstName: string;
-    lastName: string;
     DOB: Date | null;
     sex: string;
     language: string;
     acceptedTerms: boolean;
 };
+
+// Completion Data
+export type CompletionData = {
+    id: string;
+    personalized_questions: {
+        question: string;
+        why: string;
+        priority: "high" | "medium" | "low";
+    }[];
+    what_to_expect: {
+        brief: string;
+        steps: string[];
+    };
+    what_to_bring: string[];
+    summary_for_provider: string;
+}
 
 // Appointment Preparation Data
 export type AppointmentData = {
@@ -22,16 +36,14 @@ export type AppointmentData = {
     visitGoal: string;
     specificWorries: string;
     miscDiscussion: string;
-    questions: string;
 };
 
 // Temporary Form Data
 export type TempStore = {
     signup: SignupData;
     appointment: AppointmentData;
+    tempCompletion: CompletionData;
 
-    setFirstName: (value: string) => void;
-    setLastName: (value: string) => void;
     setDOB: (value: Date) => void;
     setSex: (value: string) => void;
     setLanguage: (value: string) => void;
@@ -48,7 +60,8 @@ export type TempStore = {
     setVisitGoal: (value: string) => void;
     setSpecificWorries: (value: string) => void;
     setMiscDiscussion: (value: string) => void;
-    setQuestions: (value: string) => void;
+
+    setCompletion: (value: CompletionData) => void;
 
     clearUserContext: () => void;
     generateNewId: () => void;
@@ -72,7 +85,8 @@ export type AuthStore = {
 // User Data State
 export type UserDataStore = {
     signup: SignupData | null;
-    appointments: AppointmentData[];
+    appointments: { [id: string]: AppointmentData };
+    completions: { [id: string]: CompletionData }
 
     _hasHydrated: boolean;
     _dataHasHydrated: boolean;
@@ -81,5 +95,8 @@ export type UserDataStore = {
     resetSignup: () => void;
     addAppointment: (appointment: AppointmentData) => void;
     resetAppointments: () => void;
+    addCompletion: (completion: CompletionData) => void;
+    resetCompletions: () => void;
+    resetAll: () => void;
     setDataHasHydrated: (value: boolean) => void;
 };

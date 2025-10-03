@@ -2,7 +2,6 @@ import { Button } from "@/components/Button";
 import { DatePicker } from "@/components/DatePicker";
 import { Dropdown } from "@/components/Dropdown";
 import { Footer } from "@/components/Footer";
-import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTempStore } from "@/stores/tempStore";
@@ -14,7 +13,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 export default function OnboardingFirstScreen() {
   const router = useRouter()
-  const { signup, setFirstName, setLastName, setDOB, setSex, setLanguage, clearUserContext } = useTempStore();
+  const { signup, setDOB, setSex, setLanguage, clearUserContext } = useTempStore();
 
   const handleClose = () => {
     Alert.alert('Close Form', 'Are you sure you want to discard this form?', [
@@ -47,35 +46,20 @@ export default function OnboardingFirstScreen() {
         enableResetScrollToCoords={false}
         extraScrollHeight={10}
       >
-        <View style={styles.content}>
-          {/* Form */}
-          <View style={styles.cardContent}>
-            <View style={styles.welcomeSection}>
-              <ThemedView style={styles.welcomeIconContainer} type="dusked">
-                <MaterialIcons name="person-add" size={32} color="#3b82f6" />
+        <>
+          <View style={styles.formSection}>
+            <View style={styles.headerSection}>
+              <ThemedView style={styles.headerIconContainer} type="dusked">
+                <MaterialIcons name="person-outline" size={32} color="#3b82f6" />
               </ThemedView>
-              <ThemedText style={styles.welcomeTitle} type="whitened">Create Your Profile</ThemedText>
-              <ThemedText style={styles.welcomeSubtitle} type="greyed">Tell us a little bit about yourself so we can personalize your experience</ThemedText>
+              <ThemedText style={styles.title} type="whitened">Demographics</ThemedText>
+              <ThemedText style={styles.subtitle} type="greyed">
+                We do not collect your private health data.{"\n"}All information is stored on your device.
+              </ThemedText>
             </View>
 
-            <View style={styles.formFields}>
-              <View style={styles.fieldGroup}>
-                <ThemedText type="overheader">First Name</ThemedText>
-                <Textbox
-                  onChangeText={setFirstName}
-                  value={signup.firstName}
-                />
-              </View>
-
-              <View style={styles.fieldGroup}>
-                <ThemedText type="overheader">Last Name</ThemedText>
-                <Textbox
-                  onChangeText={setLastName}
-                  value={signup.lastName}
-                />
-              </View>
-
-              <View style={styles.fieldGroup}>
+            <View style={styles.formGap}>
+              <View style={styles.formField}>
                 <ThemedText type="overheader">Date of Birth</ThemedText>
                 <DatePicker
                   mode="date"
@@ -85,8 +69,8 @@ export default function OnboardingFirstScreen() {
                 />
               </View>
 
-              <View style={styles.fieldGroup}>
-                <ThemedText type="overheader">Sex at Birth</ThemedText>
+              <View style={styles.formField}>
+                <ThemedText type="overheader">Gender</ThemedText>
                 <Dropdown
                   items={DropdownValues.sex}
                   value={signup.sex}
@@ -94,8 +78,8 @@ export default function OnboardingFirstScreen() {
                 />
               </View>
 
-              <View style={styles.fieldGroup}>
-                <ThemedText type="overheader">Primary language spoken</ThemedText>
+              <View style={styles.formField}>
+                <ThemedText type="overheader">Primary language</ThemedText>
                 <Dropdown
                   placeholder="Required"
                   items={DropdownValues.language}
@@ -106,7 +90,6 @@ export default function OnboardingFirstScreen() {
             </View>
           </View>
 
-          {/* Navigation */}
           <View style={styles.navigationSection}>
             <View style={styles.buttonRow}>
               <Button type="bordered" style={styles.backButton} onPress={handleClose}>
@@ -133,8 +116,8 @@ export default function OnboardingFirstScreen() {
             </View>
           </View>
 
-          <Footer hasSpacer={true} text="Your information is encrypted and stored on your device" />
-        </View>
+          <Footer hasSpacer={true} />
+        </>
       </KeyboardAwareScrollView>
     </ThemedView>
   );
@@ -144,25 +127,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  content: {
-    flex: 1,
-  },
   scrollContainer: {
     flexGrow: 1,
     paddingVertical: 30,
   },
-  cardContent: {
+  formSection: {
     padding: 24,
     marginBottom: 24,
   },
-  welcomeSection: {
+  headerSection: {
     alignItems: 'center',
     marginBottom: 32,
   },
-  welcomeIconContainer: {
+  headerIconContainer: {
     width: 64,
     height: 64,
-    borderRadius: 32,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -171,26 +151,26 @@ const styles = StyleSheet.create({
       height: 8,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
     marginBottom: 16,
   },
-  welcomeTitle: {
+  title: {
     fontSize: 20,
     fontWeight: '600',
     textAlign: 'center',
     marginBottom: 8,
   },
-  welcomeSubtitle: {
+  subtitle: {
     fontSize: 14,
     fontWeight: '400',
     textAlign: 'center',
     lineHeight: 20,
     maxWidth: 280,
   },
-  formFields: {
+  formGap: {
     gap: 24,
   },
-  fieldGroup: {
+  formField: {
     width: '100%',
   },
   navigationSection: {
@@ -239,7 +219,7 @@ const styles = StyleSheet.create({
     minHeight: 60,
   },
   primaryButtonDisabled: {
-    backgroundColor: '#e2e8f0',
+    backgroundColor: '#b4b6bcff',
     shadowOpacity: 0,
   },
   primaryButtonText: {

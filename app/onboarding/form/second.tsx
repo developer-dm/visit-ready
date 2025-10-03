@@ -22,6 +22,10 @@ export default function OnboardingFinalScreen() {
     clearUserContext();
   };
 
+  const toggleAcceptedTerms = () => {
+    setAcceptedTerms(!signup.acceptedTerms)
+  };
+
   const handleBack = () => {
     router.back();
   };
@@ -33,23 +37,21 @@ export default function OnboardingFinalScreen() {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.content}>
+        <>
           <View style={styles.cardContent}>
-            {/* Info Section */}
-            <View style={styles.infoSection}>
-              <ThemedView style={styles.infoIconContainer} type="dusked">
+            <View style={styles.headerSection}>
+              <ThemedView style={styles.headerIconContainer} type="dusked">
                 <MaterialIcons name="check-circle" size={24} color="#10b981" />
               </ThemedView>
-              <ThemedText style={styles.infoTitle} type="whitened">User Agreement</ThemedText>
-              <ThemedText style={styles.infoSubtitle} type="greyed">Accept the Terms of Service and Privacy Policy to continue</ThemedText>
+              <ThemedText style={styles.title} type="whitened">User Agreement</ThemedText>
+              <ThemedText style={styles.subtitle} type="greyed">Accept the user agreement to continue</ThemedText>
             </View>
 
-            {/* Terms Section */}
             <View style={styles.termsSection}>
               <ThemedView type="bordered" style={styles.termsCard}>
                 <ScrollView
                   nestedScrollEnabled={true}
-                  showsVerticalScrollIndicator={true}
+                  showsVerticalScrollIndicator={false}
                 >
                   <ThemedText>
                     {AppInfo.terms_privacy}
@@ -62,24 +64,23 @@ export default function OnboardingFinalScreen() {
                 lightColor="#f8fafc"
                 darkColor="#1a1a1aff"
                 style={styles.termsContainer}
-                onPress={() => setAcceptedTerms(!signup.acceptedTerms)}
+                onPress={toggleAcceptedTerms}
                 activeOpacity={0.7}
               >
                 <Checkbox
                   value={signup.acceptedTerms}
-                  onValueChange={setAcceptedTerms}
+                  onValueChange={toggleAcceptedTerms}
                   color={signup.acceptedTerms ? "#3b82f6" : undefined}
                 />
                 <View style={styles.termsTextContainer}>
                   <ThemedText style={styles.termsText} type="whitened">
-                    I have read and agree to the Terms of Service and Privacy Policy.
+                    I have read and agree to the user agreement.
                   </ThemedText>
                 </View>
               </Button>
             </View>
           </View>
 
-          {/* Navigation */}
           <View style={styles.navigationSection}>
             <View style={styles.buttonRow}>
               <Button type="bordered" style={styles.backButton} onPress={handleBack}>
@@ -88,13 +89,11 @@ export default function OnboardingFinalScreen() {
               </Button>
 
               <Button
-                style={[styles.primaryButton, !signup.acceptedTerms && styles.primaryButtonDisabled]}
+                style={signup.acceptedTerms ? styles.primaryButton : [styles.primaryButton, styles.primaryButtonDisabled]}
                 onPress={handleNext}
                 disabled={!signup.acceptedTerms}
               >
-                <Text style={[styles.primaryButtonText, !signup.acceptedTerms && styles.primaryButtonTextDisabled]}>
-                  Get Started
-                </Text>
+                <Text style={signup.acceptedTerms ? styles.primaryButtonText : [styles.primaryButtonText, styles.primaryButtonTextDisabled]}>Get Started</Text>
                 <View style={styles.buttonIcon}>
                   <MaterialIcons
                     name="check"
@@ -105,9 +104,9 @@ export default function OnboardingFinalScreen() {
               </Button>
             </View>
 
-            <Footer hasSpacer={true} text="Your information is encrypted and stored on your device" />
+            <Footer hasSpacer={true} />
           </View>
-        </View>
+        </>
       </ScrollView>
     </ThemedView>
   );
@@ -121,21 +120,18 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingVertical: 30,
   },
-  content: {
-    flex: 1,
-  },
   cardContent: {
     padding: 24,
     marginBottom: 24,
   },
-  infoSection: {
+  headerSection: {
     alignItems: 'center',
     marginBottom: 32,
   },
-  infoIconContainer: {
+  headerIconContainer: {
     width: 56,
     height: 56,
-    borderRadius: 28,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -144,16 +140,16 @@ const styles = StyleSheet.create({
       height: 8,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
     marginBottom: 16,
   },
-  infoTitle: {
+  title: {
     fontSize: 18,
     fontWeight: '600',
     textAlign: 'center',
     marginBottom: 8,
   },
-  infoSubtitle: {
+  subtitle: {
     fontSize: 14,
     fontWeight: '400',
     textAlign: 'center',

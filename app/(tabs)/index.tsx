@@ -30,21 +30,16 @@ export default function DashboardScreen() {
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header Section */}
         <View style={styles.header}>
-          <ThemedText style={styles.welcomeText} type="greyed">Welcome back,</ThemedText>
-          <ThemedText style={styles.appTitle} type="whitened">
-            {signup?.firstName?.trim() || "Visit Ready"}
-          </ThemedText>
+          <ThemedText style={styles.appTitle} type="whitened">Visit Ready</ThemedText>
           <ThemedText style={styles.subtitle} type="greyed">Get ready for your next appointment</ThemedText>
         </View>
 
-        {/* Main Action Card */}
         <ThemedView style={styles.mainCard}>
           <View style={styles.cardContent}>
             <ThemedText style={styles.cardTitle} type="whitened">Ready for Your Visit?</ThemedText>
             <ThemedText style={styles.cardSubtitle} type="greyed">
-              Fill out a 5-minute form to get personalized questions for your doctor
+              Fill out a 5-minute form to start your preparation
             </ThemedText>
             <TouchableOpacity style={styles.primaryButton} onPress={handleVisitPrep}>
               <Text style={styles.primaryButtonText}>Prep for Visit</Text>
@@ -59,12 +54,10 @@ export default function DashboardScreen() {
           </View>
         </ThemedView>
 
-        {/* Quick Actions Grid */}
         <View style={styles.quickActions}>
-          <ThemedText style={styles.sectionTitle}>Quick Actions</ThemedText>
+          <ThemedText style={styles.sectionTitle}>Navigation</ThemedText>
 
           <View style={styles.actionGrid}>
-            {/* History Card */}
             <Button style={styles.actionCard} onPress={handleHistory} type="bordered">
               <ThemedView style={styles.actionIconContainer} type="dusked">
                 <MaterialIcons
@@ -77,7 +70,6 @@ export default function DashboardScreen() {
               <ThemedText style={styles.actionSubtitle} type="greyed">View past visits</ThemedText>
             </Button>
 
-            {/* Settings Card */}
             <Button style={styles.actionCard} onPress={handleSettings} type="bordered">
               <ThemedView style={styles.actionIconContainer} type="dusked">
                 <MaterialIcons
@@ -92,7 +84,6 @@ export default function DashboardScreen() {
           </View>
         </View>
 
-        {/* Stats Section */}
         <View style={styles.statsSection}>
           <ThemedText style={styles.sectionTitle}>Your Progress</ThemedText>
           <View style={styles.statsGrid}>
@@ -224,7 +215,7 @@ const styles = StyleSheet.create({
   actionIconContainer: {
     width: 48,
     height: 48,
-    borderRadius: 24,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 12,

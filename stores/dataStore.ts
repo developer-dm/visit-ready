@@ -1,4 +1,4 @@
-import { AppointmentData, SignupData, UserDataStore } from "@/types/models";
+import { AppointmentData, CompletionData, SignupData, UserDataStore } from "@/types/models";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
@@ -116,40 +116,39 @@ const createEncryptedAsyncStorage = () => ({
     },
 });
 
-export const useDataStore = create(
-    persist<Pick<UserDataStore, 'signup' | 'appointments' | '_dataHasHydrated' | 'addSignupData' | 'resetSignup' | 'addAppointment' | 'resetAppointments' | 'setDataHasHydrated'>>(
-        (set, get) => ({
-            signup: null,
-            appointments: [],
-            _dataHasHydrated: false,
+export const useDataStore = create(persist<Pick<UserDataStore, 'signup' | 'appointments' | '_dataHasHydrated' | 'addSignupData' | 'resetSignup' | 'addAppointment' | 'resetAppointments' | 'setDataHasHydrated'>>(
+    (set, get) => ({
+        signup: null,
+        appointments: {},
+        _dataHasHydrated: false,
 
-            addSignupData: (data: SignupData) =>
-                set({ signup: data }),
-            
-            resetSignup: () =>
-                set({ signup: null }),
+        addSignupData: (data: SignupData) =>
+            set({ signup: data }),
 
-            addAppointment: (appointment: AppointmentData) =>
-                set({ appointments: [...get().appointments, appointment] }),
+        resetSignup: () =>
+            set({ signup: null }),
 
-            resetAppointments: () =>
-                set({ appointments: [] }),
+        addAppointment: (appointment: AppointmentData) =>
+            set({ appointments: { ...get().appointments, [appointment.id]: appointment } }),
 
-            setDataHasHydrated: (value: boolean) =>
-                set({ _dataHasHydrated: value }),
-        }),
-        {
-            name: "data-store",
-            storage: isWeb
-                ? createJSONStorage(() => localStorage)
-                : createJSONStorage(() => createEncryptedAsyncStorage()),
-            onRehydrateStorage: () => {
-                return (state) => {
-                    state?.setDataHasHydrated(true);
-                };
-            },
+        resetAppointments: () =>
+            set({ appointments: {} }),
+
+        setDataHasHydrated: (value: boolean) =>
+            set({ _dataHasHydrated: value }),
+    }),
+    {
+        name: "data-store",
+        storage: isWeb
+            ? createJSONStorage(() => localStorage)
+            : createJSONStorage(() => createEncryptedAsyncStorage()),
+        onRehydrateStorage: () => {
+            return (state) => {
+                state?.setDataHasHydrated(true);
+            };
         },
-    ),
+    },
+),
 );
 */
 
@@ -252,38 +251,49 @@ const createEncryptedAsyncStorage = () => ({
     },
 });
 
-// App data store
-export const useDataStore = create(persist<Pick<UserDataStore, 'signup' | 'appointments' | '_dataHasHydrated' | 'addSignupData' | 'resetSignup' | 'addAppointment' | 'resetAppointments' | 'setDataHasHydrated'>>(
-    (set, get) => ({
-        signup: null,
-        appointments: [],
-        _dataHasHydrated: false,
+export const useDataStore = create(
+    persist<UserDataStore>(
+        (set, get) => ({
+            signup: null,
+            appointments: {},
+            completions: {},
+            _dataHasHydrated: false,
+            _hasHydrated: false,
 
-        addSignupData: (data: SignupData) =>
-            set({ signup: data }),
+            addSignupData: (data: SignupData) =>
+                set({ signup: data }),
 
-        resetSignup: () =>
-            set({ signup: null }),
+            resetSignup: () =>
+                set({ signup: null }),
 
-        addAppointment: (appointment: AppointmentData) =>
-            set({ appointments: [...get().appointments, appointment] }),
+            addAppointment: (appointment: AppointmentData) =>
+                set({ appointments: { ...get().appointments, [appointment.id]: appointment } }),
 
-        resetAppointments: () =>
-            set({ appointments: [] }),
+            resetAppointments: () =>
+                set({ appointments: {} }),
 
-        setDataHasHydrated: (value: boolean) =>
-            set({ _dataHasHydrated: value }),
-    }),
-    {
-        name: "data-store",
-        storage: isWeb
-            ? createJSONStorage(() => localStorage)
-            : createJSONStorage(() => createEncryptedAsyncStorage()),
-        onRehydrateStorage: () => {
-            return (state) => {
-                state?.setDataHasHydrated(true);
-            };
+            addCompletion: (data: CompletionData) =>
+                set({ completions: { ...get().completions, [data.id]: data } }),
+
+            resetCompletions: () =>
+                set({ completions: {} }),
+
+            resetAll: () =>
+                set({ completions: {}, appointments: {}, signup: null }),
+
+            setDataHasHydrated: (value: boolean) =>
+                set({ _dataHasHydrated: value }),
+        }),
+        {
+            name: "data-store",
+            storage: isWeb
+                ? createJSONStorage(() => localStorage)
+                : createJSONStorage(() => createEncryptedAsyncStorage()),
+            onRehydrateStorage: () => {
+                return (state) => {
+                    state?.setDataHasHydrated(true);
+                };
+            },
         },
-    },
-),
+    ),
 );
