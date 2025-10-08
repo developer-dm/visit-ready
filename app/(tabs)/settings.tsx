@@ -103,7 +103,7 @@ export default function SettingsScreen() {
                   value = new Date(value);
                 }
                 return (
-                  <ThemedView key={key} style={styles.profileItem}>
+                  <ThemedView type="list" key={key} style={styles.profileItem}>
                     <ThemedText style={styles.profileLabel} type="greyed">
                       {DataFormatterService.toReadableString(key, 'label')}
                     </ThemedText>
@@ -278,7 +278,8 @@ const styles = StyleSheet.create({
     marginBottom: 28,
   },
   profileItem: {
-    paddingVertical: 12,
+    paddingVertical: 16,
+    paddingBottom: 6,
     borderBottomWidth: 1,
   },
   profileLabel: {
@@ -321,7 +322,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.1,
     shadowRadius: 10,
   },
   dangerCard: {

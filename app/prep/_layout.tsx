@@ -1,26 +1,29 @@
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { ThemedView } from "@/components/ThemedView";
+import { useDataStore } from "@/stores/dataStore";
 import { useTempStore } from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Stack, useRouter, useSegments } from "expo-router";
+import { useEffect } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function AppointmentPrepLayout() {
     const router = useRouter();
     const insets = useSafeAreaInsets();
+    const { addAppointment } = useDataStore();
     const segments = useSegments();
     const currentRoute = segments[segments.length - 1];
-    const { appointment, clearUserContext } = useTempStore();
+    const { id, appointment, resetTempContext, assignNewId } = useTempStore();
 
     const handleClose = () => {
         Alert.alert('Close Form', 'Are you sure you want to discard this form?', [
             {
                 text: 'Discard',
                 onPress: () => {
+                    resetTempContext();
                     router.dismiss();
-                    clearUserContext();
                 },
                 style: "destructive",
             },
@@ -51,6 +54,7 @@ export default function AppointmentPrepLayout() {
                 router.push('/prep/final');
                 break;
             case 'final':
+                addAppointment(appointment, id);
                 router.dismissTo("/(tabs)")
                 router.replace("/results")
                 break;
@@ -74,6 +78,12 @@ export default function AppointmentPrepLayout() {
     };
 
     const meetsRequirements = checkRequirements();
+
+    useEffect(() => {
+        if (id === "") {
+            assignNewId();
+        };
+    }, [])
 
     return (
         <>

@@ -9,7 +9,7 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 
 export default function DashboardScreen() {
   const router = useRouter();
-  const { signup, appointments } = useDataStore();
+  const { appointments } = useDataStore();
 
   const handleVisitPrep = () => {
     router.push("/prep")
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.1,
     shadowRadius: 10,
   },
   actionIconContainer: {
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.1,
     shadowRadius: 10,
   },
   statNumber: {

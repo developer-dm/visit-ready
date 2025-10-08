@@ -10,7 +10,6 @@ const initialSignupState: SignupData = {
 };
 
 const initialAppointmentState: AppointmentData = {
-    id: "",
     appointmentType: "",
     appointmentDate: null,
     provider: "",
@@ -24,7 +23,6 @@ const initialAppointmentState: AppointmentData = {
 };
 
 const initialCompletionState: CompletionData = {
-    id: "",
     personalized_questions: [],
     what_to_expect: {
         brief: "",
@@ -34,109 +32,110 @@ const initialCompletionState: CompletionData = {
     summary_for_provider: "",
 };
 
-export const useTempStore = create<TempStore>((set) => ({
-    // Initial state
-    signup: initialSignupState,
-    appointment: initialAppointmentState,
-    tempCompletion: initialCompletionState,
+const initialIdState: string = ""
 
-    // Signup actions
-    setDOB: (value: Date) =>
-        set((state) => ({
-            signup: { ...state.signup, DOB: value },
-        })),
+export const useTempStore = create<TempStore>(
+    (set) => ({
+        // Initial states
+        id: initialIdState,
+        signup: initialSignupState,
+        appointment: initialAppointmentState,
+        tempCompletion: initialCompletionState,
 
-    setSex: (value: string) =>
-        set((state) => ({
-            signup: { ...state.signup, sex: value },
-        })),
+        // Signup Actions
+        setDOB: (value: Date) =>
+            set((state) => ({
+                signup: { ...state.signup, DOB: value },
+            })),
 
-    setLanguage: (value: string) =>
-        set((state) => ({
-            signup: { ...state.signup, language: value },
-        })),
+        setSex: (value: string) =>
+            set((state) => ({
+                signup: { ...state.signup, sex: value },
+            })),
 
-    setAcceptedTerms: (value: boolean) =>
-        set((state) => ({
-            signup: { ...state.signup, acceptedTerms: value },
-        })),
+        setLanguage: (value: string) =>
+            set((state) => ({
+                signup: { ...state.signup, language: value },
+            })),
 
-    // Appointment actions
-    setId: (id: string) =>
-        set((state) => ({
-            appointment: { ...state.appointment, id },
-        })),
+        setAcceptedTerms: (value: boolean) =>
+            set((state) => ({
+                signup: { ...state.signup, acceptedTerms: value },
+            })),
 
-    setAppointmentType: (value: string) =>
-        set((state) => ({
-            appointment: { ...state.appointment, appointmentType: value },
-        })),
+        // Appointment Actions
+        setId: (id: string) =>
+            set((state) => ({
+                appointment: { ...state.appointment, id },
+            })),
 
-    setAppointmentDate: (value: Date) =>
-        set((state) => ({
-            appointment: { ...state.appointment, appointmentDate: value },
-        })),
+        setAppointmentType: (value: string) =>
+            set((state) => ({
+                appointment: { ...state.appointment, appointmentType: value },
+            })),
 
-    setProvider: (value: string) =>
-        set((state) => ({
-            appointment: { ...state.appointment, provider: value },
-        })),
+        setAppointmentDate: (value: Date) =>
+            set((state) => ({
+                appointment: { ...state.appointment, appointmentDate: value },
+            })),
 
-    setMainConcern: (value: string) =>
-        set((state) => ({
-            appointment: { ...state.appointment, mainConcern: value },
-        })),
+        setProvider: (value: string) =>
+            set((state) => ({
+                appointment: { ...state.appointment, provider: value },
+            })),
 
-    setConcernStart: (value: string) =>
-        set((state) => ({
-            appointment: { ...state.appointment, concernStart: value },
-        })),
+        setMainConcern: (value: string) =>
+            set((state) => ({
+                appointment: { ...state.appointment, mainConcern: value },
+            })),
 
-    setConcernSeverity: (value: string) =>
-        set((state) => ({
-            appointment: { ...state.appointment, concernSeverity: value },
-        })),
+        setConcernStart: (value: string) =>
+            set((state) => ({
+                appointment: { ...state.appointment, concernStart: value },
+            })),
 
-    setRemedies: (value: string) =>
-        set((state) => ({
-            appointment: { ...state.appointment, remedies: value },
-        })),
+        setConcernSeverity: (value: string) =>
+            set((state) => ({
+                appointment: { ...state.appointment, concernSeverity: value },
+            })),
 
-    setVisitGoal: (value: string) =>
-        set((state) => ({
-            appointment: { ...state.appointment, visitGoal: value },
-        })),
+        setRemedies: (value: string) =>
+            set((state) => ({
+                appointment: { ...state.appointment, remedies: value },
+            })),
 
-    setSpecificWorries: (value: string) =>
-        set((state) => ({
-            appointment: { ...state.appointment, specificWorries: value },
-        })),
+        setVisitGoal: (value: string) =>
+            set((state) => ({
+                appointment: { ...state.appointment, visitGoal: value },
+            })),
 
-    setMiscDiscussion: (value: string) =>
-        set((state) => ({
-            appointment: { ...state.appointment, miscDiscussion: value },
-        })),
+        setSpecificWorries: (value: string) =>
+            set((state) => ({
+                appointment: { ...state.appointment, specificWorries: value },
+            })),
 
-    // Completion Actions
-    setCompletion: (value: CompletionData) =>
-        set((state) => ({
-            tempCompletion: { ...state.tempCompletion, ...value },
-        })),
+        setMiscDiscussion: (value: string) =>
+            set((state) => ({
+                appointment: { ...state.appointment, miscDiscussion: value },
+            })),
 
-    // Utility actions
-    clearUserContext: () =>
-        set(() => ({
-            signup: initialSignupState,
-            appointment: initialAppointmentState,
-            tempCompletion: initialCompletionState,
-        })),
+        // Completion Actions
+        setCompletion: (value: CompletionData) =>
+            set((state) => ({
+                tempCompletion: { ...state.tempCompletion, ...value },
+            })),
 
-    generateNewId: () => {
-        const newID = Crypto.randomUUID()
-
-        set((state) => ({
-            appointment: { ...state.appointment, id: newID },
-            tempCompletion: { ...state.tempCompletion, id: newID },
-        }))
-    },
-}));
+        // Utility Actions
+        assignNewId: () => {
+            const newId = Crypto.randomUUID();
+            set({ id: newId });
+        },
+        resetTempContext: () =>
+            set({
+                id: initialIdState,
+                signup: initialSignupState,
+                appointment: initialAppointmentState,
+                tempCompletion: initialCompletionState,
+            }),
+    })
+);

@@ -9,7 +9,6 @@ export type SignupData = {
 
 // Completion Data
 export type CompletionData = {
-    id: string;
     personalized_questions: {
         question: string;
         why: string;
@@ -25,7 +24,6 @@ export type CompletionData = {
 
 // Appointment Preparation Data
 export type AppointmentData = {
-    id: string;
     appointmentType: string;
     appointmentDate: Date | null;
     provider: string;
@@ -40,6 +38,7 @@ export type AppointmentData = {
 
 // Temporary Form Data
 export type TempStore = {
+    id: string;
     signup: SignupData;
     appointment: AppointmentData;
     tempCompletion: CompletionData;
@@ -63,8 +62,8 @@ export type TempStore = {
 
     setCompletion: (value: CompletionData) => void;
 
-    clearUserContext: () => void;
-    generateNewId: () => void;
+    assignNewId: () => void;
+    resetTempContext: () => void;
 };
 
 // Logged in State
@@ -93,9 +92,9 @@ export type UserDataStore = {
 
     addSignupData: (data: SignupData) => void;
     resetSignup: () => void;
-    addAppointment: (appointment: AppointmentData) => void;
+    addAppointment: (appointment: AppointmentData, id: string) => void;
     resetAppointments: () => void;
-    addCompletion: (completion: CompletionData) => void;
+    addCompletion: (completion: CompletionData, id: string) => void; //COULD BE THE TYPE
     resetCompletions: () => void;
     resetAll: () => void;
     setDataHasHydrated: (value: boolean) => void;

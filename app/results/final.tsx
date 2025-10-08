@@ -12,7 +12,7 @@ import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 export default function FinalResultsScreen() {
     const router = useRouter();
     const [copied, setCopied] = useState(false);
-    const { tempCompletion, clearUserContext } = useTempStore();
+    const { tempCompletion, resetTempContext } = useTempStore();
     const summary = tempCompletion.summary_for_provider
 
     //console.log(tempCompletion.summary_for_provider)
@@ -28,8 +28,8 @@ export default function FinalResultsScreen() {
             {
                 text: 'Exit',
                 onPress: () => {
-                    clearUserContext();
                     router.replace("/(tabs)");
+                    resetTempContext();
                 },
                 style: "destructive",
             },
@@ -49,11 +49,9 @@ export default function FinalResultsScreen() {
             <View style={styles.resultsSection}>
                 <ThemedText style={styles.sectionTitle}>Summary for your provider</ThemedText>
                 <ThemedView style={styles.resultsCard}>
-                    <View style={styles.resultsContent}>
-                        <ThemedText style={styles.resultsText} type="whitened">
-                            {summary}
-                        </ThemedText>
-                    </View>
+                    <ThemedText style={styles.resultsText} type="whitened">
+                        {summary}
+                    </ThemedText>
                 </ThemedView>
             </View>
 
@@ -94,26 +92,23 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     sectionTitle: {
-        fontSize: 20,
+        fontSize: 24,
         fontWeight: '600',
-        textAlign: "left",
-        marginBottom: 16,
+        textAlign: "center",
+        paddingTop: 50,
+        paddingBottom: 100,
     },
     resultsCard: {
         marginBottom: 12,
         borderRadius: 10,
+        padding: 16,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 2,
         },
-        shadowOpacity: 0.08,
+        shadowOpacity: 0.1,
         shadowRadius: 10,
-    },
-    resultsContent: {
-        padding: 16,
-        flexDirection: 'column',
-        gap: 12,
     },
     resultsText: {
         flex: 1,
@@ -138,7 +133,7 @@ const styles = StyleSheet.create({
             width: 0,
             height: 2,
         },
-        shadowOpacity: 0.08,
+        shadowOpacity: 0.1,
         shadowRadius: 10,
         minHeight: 60,
     },

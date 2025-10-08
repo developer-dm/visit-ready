@@ -11,14 +11,14 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
 import { fetch as expoFetch } from 'expo/fetch';
 import { useEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Flow } from 'react-native-animated-spinkit';
 
 export default function IndexResultsScreen() {
 	const router = useRouter();
 	const [hasSubmitted, setHasSubmitted] = useState(false);
-	const { appointment, tempCompletion, clearUserContext, setCompletion, generateNewId } = useTempStore();
-	const { signup, addAppointment, addCompletion } = useDataStore();
+	const { id, appointment, tempCompletion, setCompletion, resetTempContext } = useTempStore();
+	const { signup, addCompletion } = useDataStore();
 
 	function trimResponse(text: string): string {
 		const codeBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/;
@@ -53,9 +53,8 @@ export default function IndexResultsScreen() {
 			{
 				text: 'Exit',
 				onPress: () => {
-					addAppointment(appointment);
-					clearUserContext();
 					router.replace("/(tabs)");
+					resetTempContext();
 				},
 				style: "destructive",
 			},
@@ -68,41 +67,23 @@ export default function IndexResultsScreen() {
 
 	useEffect(() => {
 		if (completion) {
-			//console.log("FIRST \n\n", completion)
 			try {
 				const parsedCompletion: CompletionData = JSON.parse(trimResponse(completion));
+				if (!parsedCompletion) return;
+
 				setCompletion(parsedCompletion);
-				//console.log('SECOND \n\n', parsedCompletion);
+				addCompletion(parsedCompletion, id);
+				router.replace("/results/second");
 			} catch (error) {
 				console.error('Failed to parse completion:', error);
 			}
 		}
 	}, [completion]);
 
-	useEffect(() => {
-		if (!tempCompletion.id && !appointment.id && completion) {
-			//console.log("THIRD \n\n NEW IDS")
-			generateNewId();
-		}
-	}, [tempCompletion]);
-
-	useEffect(() => {
-		if (appointment.id && tempCompletion.id && completion) {
-			//console.log("FOURTH \n\n" + tempCompletion, appointment)
-			addAppointment(appointment);
-			addCompletion(tempCompletion);
-			router.push("/results/second");
-		}
-	}, [tempCompletion.id])
-
 	return (
-		<ScrollView
-			style={styles.container}
-			contentContainerStyle={styles.scrollContainer}
-			showsVerticalScrollIndicator={false}
-		>
+		<View style={styles.container}>
 			{(!hasSubmitted) && (
-				<>
+				<View>
 					<ThemedView style={styles.loadingCard}>
 						<View style={styles.loadingContent}>
 							<ThemedView style={styles.headerIconContainer} type="dusked">
@@ -110,7 +91,7 @@ export default function IndexResultsScreen() {
 							</ThemedView>
 							<ThemedText style={styles.loadingText} type="whitened">Confirm</ThemedText>
 							<ThemedText style={styles.loadingSubtext} type="greyed">
-								Would you like to generate personalized questions to ask your provider during your appointment?
+								Would you like to generate personalized recommendations for your appointment?
 							</ThemedText>
 						</View>
 					</ThemedView>
@@ -121,7 +102,7 @@ export default function IndexResultsScreen() {
 							onPress={submitPrompt}
 						>
 							<MaterialIcons name="create" size={20} color="#ffffffff" style={styles.buttonIcon} />
-							<Text style={styles.backButtonText}>Yes, generate questions</Text>
+							<Text style={styles.backButtonText}>Generate insights</Text>
 						</Button>
 
 						<Button
@@ -130,10 +111,10 @@ export default function IndexResultsScreen() {
 							onPress={handleReturn}
 						>
 							<MaterialIcons name="arrow-forward" size={20} color="#64748b" style={styles.buttonIcon} />
-							<Text style={styles.copyButtonText}>Skip & Return</Text>
+							<Text style={styles.copyButtonText}>Return</Text>
 						</Button>
 					</View>
-				</>
+				</View>
 			)}
 
 			{(hasSubmitted) && (
@@ -155,17 +136,15 @@ export default function IndexResultsScreen() {
 
 			<View style={styles.midSpacer} />
 			<Footer text="AI can make mistakes. Check important info. This is not medical advice." hasSpacer={true} />
-		</ScrollView>
+		</View>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-	},
-	scrollContainer: {
-		flexGrow: 1,
-		paddingVertical: 100,
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	headerIconContainer: {
 		width: 64,
@@ -199,12 +178,19 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	loadingIconContainer: {
-		width: 48,
-		height: 48,
+		width: 64,
+		height: 64,
 		borderRadius: 10,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginBottom: 16,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.1,
+		shadowRadius: 10,
 	},
 	loadingText: {
 		fontSize: 20,
@@ -220,8 +206,8 @@ const styles = StyleSheet.create({
 		marginBottom: 24,
 	},
 	buttonContainer: {
-		paddingHorizontal: 24,
 		gap: 12,
+		marginHorizontal: 24,
 		marginTop: 16,
 	},
 	actionButton: {
@@ -229,16 +215,10 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingVertical: 12,
-		paddingHorizontal: 16,
+		paddingHorizontal: 12,
 		borderRadius: 10,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.08,
-		shadowRadius: 10,
 		minHeight: 60,
+		width: '100%',
 	},
 	copyButtonText: {
 		fontSize: 16,
@@ -247,9 +227,14 @@ const styles = StyleSheet.create({
 		color: '#64748b'
 	},
 	primaryButton: {
-		backgroundColor: '#3b82f6',
 		shadowColor: '#3b82f6',
-		shadowOpacity: 0.3,
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.1,
+		shadowRadius: 10,
+		backgroundColor: '#3b82f6',
 	},
 	backButtonText: {
 		fontSize: 16,

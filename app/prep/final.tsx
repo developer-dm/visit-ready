@@ -1,4 +1,3 @@
-import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import DataFormatterService from "@/services/dataFormatter";
@@ -35,7 +34,7 @@ export default function PrepFinalScreen() {
                                 value = new Date(value);
                             }
                             return (
-                                <ThemedView key={key} style={styles.detailItem}>
+                                <ThemedView type="list" key={key} style={styles.detailItem}>
                                     <ThemedText style={styles.detailLabel} type="greyed">
                                         {DataFormatterService.toReadableString(key, 'label')}
                                     </ThemedText>
@@ -52,8 +51,6 @@ export default function PrepFinalScreen() {
                                 </ThemedText>
                             </View>
                         )}
-
-                        <Footer hasSpacer={true} />
                     </ThemedView>
                 </View>
             </ScrollView>
@@ -111,7 +108,7 @@ const styles = StyleSheet.create({
     detailsSection: {
         gap: 16,
         borderRadius: 10,
-        paddingTop: 24,
+        paddingVertical: 30,
         paddingHorizontal: 16,
     },
     detailItem: {

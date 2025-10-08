@@ -8,11 +8,12 @@ import { createJSONStorage, persist } from "zustand/middleware";
 const isWeb = Platform.OS === "web";
 
 /*
-// For Development Builds
+// Production Encryption
 
 import { Buffer } from 'buffer';
 import crypto from "react-native-quick-crypto";
 
+// Production
 class EncryptionService {
     private static ENCRYPTION_KEY = "app_encryption_key";
     private static IV_LENGTH = 16;
@@ -86,6 +87,7 @@ class EncryptionService {
     }
 }
 
+// Production
 const createEncryptedAsyncStorage = () => ({
     setItem: async (key: string, value: string) => {
         try {
@@ -115,47 +117,12 @@ const createEncryptedAsyncStorage = () => ({
         }
     },
 });
-
-export const useDataStore = create(persist<Pick<UserDataStore, 'signup' | 'appointments' | '_dataHasHydrated' | 'addSignupData' | 'resetSignup' | 'addAppointment' | 'resetAppointments' | 'setDataHasHydrated'>>(
-    (set, get) => ({
-        signup: null,
-        appointments: {},
-        _dataHasHydrated: false,
-
-        addSignupData: (data: SignupData) =>
-            set({ signup: data }),
-
-        resetSignup: () =>
-            set({ signup: null }),
-
-        addAppointment: (appointment: AppointmentData) =>
-            set({ appointments: { ...get().appointments, [appointment.id]: appointment } }),
-
-        resetAppointments: () =>
-            set({ appointments: {} }),
-
-        setDataHasHydrated: (value: boolean) =>
-            set({ _dataHasHydrated: value }),
-    }),
-    {
-        name: "data-store",
-        storage: isWeb
-            ? createJSONStorage(() => localStorage)
-            : createJSONStorage(() => createEncryptedAsyncStorage()),
-        onRehydrateStorage: () => {
-            return (state) => {
-                state?.setDataHasHydrated(true);
-            };
-        },
-    },
-),
-);
 */
 
-// For Expo Go
-
+// Development Encryption
 import * as Crypto from "expo-crypto";
 
+// Development
 class EncryptionService {
     private static ENCRYPTION_KEY = "app_encryption_key";
 
@@ -221,6 +188,7 @@ class EncryptionService {
     }
 }
 
+// Development
 const createEncryptedAsyncStorage = () => ({
     setItem: async (key: string, value: string) => {
         try {
@@ -253,36 +221,52 @@ const createEncryptedAsyncStorage = () => ({
 
 export const useDataStore = create(
     persist<UserDataStore>(
-        (set, get) => ({
+        (set) => ({
             signup: null,
             appointments: {},
             completions: {},
             _dataHasHydrated: false,
             _hasHydrated: false,
 
+            // Signup Actions
             addSignupData: (data: SignupData) =>
-                set({ signup: data }),
-
+                set({
+                    signup: data
+                }),
             resetSignup: () =>
-                set({ signup: null }),
+                set({
+                    signup: null
+                }),
 
-            addAppointment: (appointment: AppointmentData) =>
-                set({ appointments: { ...get().appointments, [appointment.id]: appointment } }),
-
+            // Appointment Actions
+            addAppointment: (appointment: AppointmentData, id: string) =>
+                set((state) => ({
+                    appointments: { ...state.appointments, [id]: appointment },
+                })),
             resetAppointments: () =>
-                set({ appointments: {} }),
+                set({
+                    appointments: {}
+                }),
 
-            addCompletion: (data: CompletionData) =>
-                set({ completions: { ...get().completions, [data.id]: data } }),
-
+            // Completion Actions
+            addCompletion: (data: CompletionData, id: string) =>
+                set((state) => ({
+                    completions: { ...state.completions, [id]: data }
+                })),
             resetCompletions: () =>
-                set({ completions: {} }),
+                set({
+                    completions: {}
+                }),
 
+            // Utility Actions
             resetAll: () =>
-                set({ completions: {}, appointments: {}, signup: null }),
-
+                set(
+                    { completions: {}, appointments: {}, signup: null }
+                ),
             setDataHasHydrated: (value: boolean) =>
-                set({ _dataHasHydrated: value }),
+                set(
+                    { _dataHasHydrated: value }
+                ),
         }),
         {
             name: "data-store",

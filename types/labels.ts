@@ -22,6 +22,12 @@ export const ValueToLabel = {
         'completion': 'Completion',
     } as Record<string, string>,
 
+    priority: {
+        'low': 'Low',
+        'medium': 'Medium',
+        'high': "High",
+    } as Record<string, string>,
+
     appointmentType: {
         'new-patient': 'New Patient',
         'specialist': 'Specialist',

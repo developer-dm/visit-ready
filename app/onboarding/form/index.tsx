@@ -13,7 +13,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 export default function OnboardingFirstScreen() {
   const router = useRouter()
-  const { signup, setDOB, setSex, setLanguage, clearUserContext } = useTempStore();
+  const { signup, setDOB, setSex, setLanguage, resetTempContext } = useTempStore();
 
   const handleClose = () => {
     Alert.alert('Close Form', 'Are you sure you want to discard this form?', [
@@ -21,7 +21,7 @@ export default function OnboardingFirstScreen() {
         text: 'Discard',
         onPress: () => {
           router.dismissAll();
-          clearUserContext();
+          resetTempContext();
         },
         style: "destructive",
       },

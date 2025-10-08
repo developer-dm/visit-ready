@@ -13,25 +13,20 @@ export default function ThirdResultsScreen() {
     const router = useRouter();
     const [copied, setCopied] = useState(false);
     const { tempCompletion } = useTempStore();
+    const items = tempCompletion.what_to_bring
 
-    const expectations = tempCompletion.what_to_expect
-    const brief = expectations.brief
-    const steps = expectations.steps
-
-    //console.log(tempCompletion.what_to_expect)
+    //console.log(tempCompletion.what_to_bring)
 
     const copyToClipboard = async () => {
         await Clipboard.setStringAsync(
-            expectations.brief
-            + '\n'
-            + steps.map(q => `- ${q}`).join('\n')
+            items.map(q => `- ${q}`).join('\n')
         );
         setCopied(true);
         setTimeout(() => setCopied(false), 1000);
     };
 
-    const renderSteps = () => {
-        if (steps.length === 0) {
+    const renderItems = () => {
+        if (items.length === 0) {
             return (
                 <ThemedText style={styles.resultsText} type="whitened">
                     No information available
@@ -39,10 +34,15 @@ export default function ThirdResultsScreen() {
             );
         }
 
-        return steps.map((item, key) => (
-            <ThemedText key={key} style={styles.resultsText} type="whitened">
-                {item}
-            </ThemedText>
+        return items.map((item, key) => (
+            <ThemedView style={styles.resultsCard} key={key}>
+                <View style={styles.numberBadge}>
+                    <ThemedText style={styles.numberText}>{key + 1}</ThemedText>
+                </View>
+                <ThemedText key={key} style={styles.resultsText} type="whitened">
+                    {item}
+                </ThemedText>
+            </ThemedView>
         ));
     };
 
@@ -57,16 +57,8 @@ export default function ThirdResultsScreen() {
             showsVerticalScrollIndicator={false}
         >
             <View style={styles.resultsSection}>
-                <ThemedText style={styles.sectionTitle}>What to expect at your visit</ThemedText>
-                <ThemedView style={styles.resultsCard}>
-                    <View style={styles.resultsContent}>
-                        <ThemedText style={styles.resultsText} type="whitened">
-                            {brief}
-                        </ThemedText>
-
-                        {renderSteps()}
-                    </View>
-                </ThemedView>
+                <ThemedText style={styles.sectionTitle}>What to Bring to Your Visit</ThemedText>
+                {renderItems()}
             </View>
 
             <View style={styles.buttonContainer}>
@@ -106,14 +98,52 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     sectionTitle: {
-        fontSize: 20,
+        fontSize: 24,
         fontWeight: '600',
-        textAlign: "left",
-        marginBottom: 16,
+        textAlign: "center",
+        paddingTop: 50,
+        paddingBottom: 100,
+    },
+    detailContainer: {
+        flexDirection: 'column',
+    },
+    questionHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 12,
+        gap: 12,
+    },
+    numberBadge: {
+        width: 32,
+        height: 32,
+        borderRadius: 8,
+        backgroundColor: '#3b82f6',
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: '#3b82f6',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+    },
+    numberText: {
+        fontSize: 16,
+        fontWeight: '700',
+        color: '#ffffff',
+    },
+    detailsSection: {
+        gap: 12,
+        paddingLeft: 20,
     },
     resultsCard: {
         marginBottom: 12,
+        padding: 16,
         borderRadius: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -131,8 +161,7 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 16,
         fontWeight: '400',
-        textAlign: 'left',
-        width: '100%',
+        lineHeight: 22,
     },
     buttonContainer: {
         paddingHorizontal: 24,
@@ -151,7 +180,7 @@ const styles = StyleSheet.create({
             width: 0,
             height: 2,
         },
-        shadowOpacity: 0.08,
+        shadowOpacity: 0.1,
         shadowRadius: 10,
         minHeight: 60,
     },

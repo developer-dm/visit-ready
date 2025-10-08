@@ -73,7 +73,7 @@ export default function SignInScreen() {
               Visit Ready
             </ThemedText>
             <ThemedText style={styles.appSubtitle} type="greyed">
-              Sign in to access your account
+              Make the most of every visit
             </ThemedText>
           </View>
         </View>

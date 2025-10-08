@@ -24,8 +24,6 @@ export default function HistoryScreen() {
         router.push("/prep")
     };
 
-    const filteredData = Object.values(appointments)
-
     return (
         <ScrollView
             style={styles.container}
@@ -65,20 +63,20 @@ export default function HistoryScreen() {
                 <ThemedText style={styles.sectionTitle} type="whitened">Recent Appointments</ThemedText>
 
                 <ThemedView style={styles.appointmentsContainer}>
-                    {filteredData && Object.keys(filteredData).length > 0 ? (
+                    {appointments && Object.keys(appointments).length > 0 ? (
                         <ScrollView style={styles.appointmentsList} contentContainerStyle={styles.appointmentsContentList}>
-                            {Object.entries(filteredData).map(([key, value]) => {
+                            {Object.entries(appointments).map(([key, value]) => {
                                 return (
                                     <TouchableOpacity
-                                        key={value.id}
-                                        onPress={() => handleAppointmentView(value.id)}
+                                        key={key}
+                                        onPress={() => handleAppointmentView(key)}
                                     >
                                         <AppointmentCard
                                             appointmentType={value.appointmentType ? value.appointmentType : "other"}
                                             appointmentDate={value.appointmentDate ? new Date(value.appointmentDate) : ""}
                                             provider={value.provider}
                                             mainConcern={value.mainConcern}
-                                            id={value.id}
+                                            id={key}
                                         />
                                     </TouchableOpacity>
                                 );
@@ -204,7 +202,7 @@ const styles = StyleSheet.create({
             width: 0,
             height: 2,
         },
-        shadowOpacity: 0.08,
+        shadowOpacity: 0.1,
         shadowRadius: 10,
     },
     appointmentsList: {

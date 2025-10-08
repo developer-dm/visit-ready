@@ -5,39 +5,30 @@ import { generateText } from 'ai';
 
 export async function POST(req: Request) {
     const body = await req.json();
+    const message = body.prompt || "";
 
-    const messageStr = body.prompt || body;
-    let parsedMessage;
+    if (message.length > 700) return new Response('Exceeds maximum message length', { status: 413 });
 
-    if (typeof messageStr === 'string') {
-        parsedMessage = JSON.parse(messageStr);
-    } else {
-        parsedMessage = messageStr;
-    }
+    const parsedMessage = JSON.parse(message) || "";
 
     const appointment: AppointmentData = parsedMessage.appointment;
     const signup: SignupData = parsedMessage.signup;
 
     //console.log('Parsed data:', { signup, appointment });
 
-    if (!signup || !appointment) return new Response("", {
-        headers: {
-            'Content-Type': 'text/plain'
-        }
-    });
+    if (!signup || !appointment) return new Response('Data not found', { status: 404 });
 
-    const result = await generateText({
-        model: google('gemini-2.5-flash-lite'),
-        prompt: `
-Language: ${DataFormatterService.toReadableString(signup?.language)}
-Main health concern: ${DataFormatterService.toReadableString(appointment.mainConcern)}
-Specific worries: ${DataFormatterService.toReadableString(appointment.specificWorries)}
-Goal for this visit: ${DataFormatterService.toReadableString(appointment.visitGoal)}
-Appointment type: ${DataFormatterService.toReadableString(appointment.appointmentType)}
-When the concern started: ${DataFormatterService.toReadableString(appointment.concernStart)}
-Severity level: ${DataFormatterService.toReadableString(appointment.concernSeverity)}
-Treatments/remedies already tried: ${DataFormatterService.toReadableString(appointment.remedies)}
-Additional information: ${DataFormatterService.toReadableString(appointment.miscDiscussion)}
+    const completion_prompt = `
+Language: ${DataFormatterService.toReadableString(signup.language, 'language')}
+Gender: ${DataFormatterService.toReadableString(signup.sex, 'sex')}
+Main health concern: ${appointment.mainConcern}
+Specific worries: ${DataFormatterService.toReadableString(appointment.specificWorries, 'specificWorries')}
+Goal for this visit: ${DataFormatterService.toReadableString(appointment.visitGoal, 'visitGoal')}
+Appointment type: ${DataFormatterService.toReadableString(appointment.appointmentType, 'appointmentType')}
+When the concern started: ${DataFormatterService.toReadableString(appointment.concernStart, 'concernStart')}
+Severity level: ${DataFormatterService.toReadableString(appointment.concernSeverity, 'concernSeverity')}
+Treatments/remedies already tried: ${appointment.remedies}
+Additional information: ${appointment.miscDiscussion}
 
 Using the data above, produce a JSON object that follows exactly the schema and keys specified in the system message. Fill each field concisely and professionally, in the language specified by "Language". Do NOT provide any medical advice, treatment recommendations, or diagnosis. Instead produce:
 
@@ -57,8 +48,8 @@ Rules:
 - Return only JSON and nothing else.
 
 Now create the JSON output using the data provided above.
-`,
-        system: `
+`
+    const system_instructions = `
 You are an assistant that must ALWAYS respond in a strict JSON-only format (no commentary, no extra text, no code fences). The JSON must be valid UTF-8 parseable JSON and MUST contain exactly the top-level keys described in the user prompt. Do not add extra top-level keys.
 
 General rules:
@@ -97,7 +88,12 @@ Formatting rules:
 - If something is unknown or not provided, use "" or [] as appropriate.
 
 If asked to produce anything outside this schema, refuse by returning valid JSON where only the fields above are present and filling fields with "" or [] as needed.
-        `
+`
+
+    const result = await generateText({
+        model: google('gemini-2.5-flash-lite'),
+        prompt: completion_prompt,
+        system: system_instructions,
     });
 
     return new Response(result.text, {

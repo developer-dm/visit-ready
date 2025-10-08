@@ -4,7 +4,7 @@ import { ValueToLabel } from '@/types/labels';
 export const DataFormatterService = {
   toReadableString(
     input: any,
-    type?: 'DOB' | 'appointmentDate' | 'appointmentType' | 'concernStart' | 'concernSeverity' | 'sex' | 'label' | 'language' | 'notifications' | 'visitGoal' | 'specificWorries',
+    type?: 'DOB' | 'priority' | 'appointmentDate' | 'appointmentType' | 'concernStart' | 'concernSeverity' | 'sex' | 'label' | 'language' | 'notifications' | 'visitGoal' | 'specificWorries',
   ): string {
     if (input === null || input === undefined || input === '') {
       return 'N/A';
@@ -39,6 +39,8 @@ export const DataFormatterService = {
         return ValueToLabel.visitGoal[inputString] || 'N/A';
       case 'specificWorries':
         return ValueToLabel.specificWorries[inputString] || 'N/A';
+      case 'priority':
+        return ValueToLabel.priority[inputString] || 'N/A';
     }
 
     const autoDetected = this.autoDetectAndConvert(inputString);
@@ -58,12 +60,13 @@ export const DataFormatterService = {
     if (ValueToLabel.notifications[input]) return ValueToLabel.notifications[input];
     if (ValueToLabel.visitGoal[input]) return ValueToLabel.visitGoal[input];
     if (ValueToLabel.specificWorries[input]) return ValueToLabel.specificWorries[input];
+    if (ValueToLabel.priority[input]) return ValueToLabel.priority[input];
     return null;
   },
 
   toReadableStrings(
     inputs: any[],
-    type?: 'DOB' | 'appointmentDate' | 'appointmentType' | 'concernStart' | 'concernSeverity' | 'sex' | 'label' | 'language' | 'notifications' | 'visitGoal' | 'specificWorries',
+    type?: 'DOB' | 'priority' | 'appointmentDate' | 'appointmentType' | 'concernStart' | 'concernSeverity' | 'sex' | 'label' | 'language' | 'notifications' | 'visitGoal' | 'specificWorries',
   ): string[] {
     return inputs.map(input => this.toReadableString(input, type));
   },

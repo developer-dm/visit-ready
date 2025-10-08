@@ -14,55 +14,49 @@ export const useAuthStore = create(
       isVip: false,
       _hasHydrated: false,
 
-      logIn: () =>
-        set((state) => {
-          return {
-            ...state,
-            isLoggedIn: true,
-          };
-        }),
+      logIn: () => set((state) => {
+        return {
+          ...state,
+          isLoggedIn: true,
+        };
+      }),
 
-      logInAsVip: () =>
-        set((state) => {
-          return {
-            ...state,
-            isVip: true,
-            isLoggedIn: true,
-          };
-        }),
+      logInAsVip: () => set((state) => {
+        return {
+          ...state,
+          isVip: true,
+          isLoggedIn: true,
+        };
+      }),
 
-      logOut: () =>
-        set((state) => {
-          return {
-            ...state,
-            isVip: false,
-            isLoggedIn: false,
-          };
-        }),
+      logOut: () => set((state) => {
+        return {
+          ...state,
+          isVip: false,
+          isLoggedIn: false,
+        };
+      }),
 
-      completeOnboarding: () =>
-        set((state) => {
-          return {
-            ...state,
-            hasCompletedOnboarding: true,
-          };
-        }),
+      completeOnboarding: () => set((state) => {
+        return {
+          ...state,
+          hasCompletedOnboarding: true,
+        };
+      }),
 
-      resetOnboarding: () =>
-        set((state) => {
-          return {
-            ...state,
-            hasCompletedOnboarding: false,
-          };
-        }),
+      resetOnboarding: () => set((state) => {
+        return {
+          ...state,
+          hasCompletedOnboarding: false,
+        };
+      }),
 
-      setHasHydrated: (value: boolean) =>
-        set((state) => {
-          return {
-            ...state,
-            _hasHydrated: value,
-          };
-        }),
+      setHasHydrated: (value: boolean) => set((state) => {
+        return {
+          ...state,
+          _hasHydrated: value,
+        };
+      }),
     }),
     {
       name: "auth-store",

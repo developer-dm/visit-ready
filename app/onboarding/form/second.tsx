@@ -12,14 +12,14 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function OnboardingFinalScreen() {
   const router = useRouter();
-  const { signup, setAcceptedTerms, clearUserContext } = useTempStore();
+  const { signup, setAcceptedTerms, resetTempContext } = useTempStore();
   const { addSignupData } = useDataStore();
 
   const handleNext = () => {
     addSignupData(signup);
     router.dismissTo("/onboarding")
     router.replace("/onboarding/sign-in")
-    clearUserContext();
+    resetTempContext();
   };
 
   const toggleAcceptedTerms = () => {
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 5,
     marginBottom: 20,
-    height: 500,
+    height: 400,
   },
   termsContainer: {
     borderRadius: 10,

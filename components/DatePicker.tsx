@@ -107,7 +107,7 @@ export function DatePicker({
                 </View>
             )}
             {isOpen && Platform.OS === "ios" && (
-                <ThemedView style={styles.buttonContainer} type="dusked">
+                <ThemedView style={styles.buttonContainer} type="bordered">
                     <TouchableOpacity style={styles.cancelButton} onPress={toggleDatePicker}>
                         <Text style={styles.cancelButtonText}>
                             Cancel
@@ -143,8 +143,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 20,
+        paddingVertical: 16,
+        paddingHorizontal: 16,
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: {
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
             height: 8,
         },
         shadowOpacity: 0.1,
-        shadowRadius: 20,
+        shadowRadius: 10,
         minHeight: 48,
     },
     cancelButton: {
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#d1d1d1ff',
         backgroundColor: '#f8fafc',
-        minWidth: 120,
+        minWidth: 140,
     },
     cancelButtonText: {
         fontSize: 16,
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.3,
         shadowRadius: 8,
-        minWidth: 120,
+        minWidth: 140,
     },
     confirmButtonText: {
         fontSize: 16,
