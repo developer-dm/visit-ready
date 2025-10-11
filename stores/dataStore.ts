@@ -119,7 +119,7 @@ const createEncryptedAsyncStorage = () => ({
 });
 */
 
-// Development Encryption
+// Development Storage
 import * as Crypto from "expo-crypto";
 
 // Development
@@ -260,13 +260,13 @@ export const useDataStore = create(
 
             // Utility Actions
             resetAll: () =>
-                set(
-                    { completions: {}, appointments: {}, signup: null }
-                ),
+                set({
+                    completions: {}, appointments: {}, signup: null
+                }),
             setDataHasHydrated: (value: boolean) =>
-                set(
-                    { _dataHasHydrated: value }
-                ),
+                set({
+                    _dataHasHydrated: value
+                }),
         }),
         {
             name: "data-store",

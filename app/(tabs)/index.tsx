@@ -1,265 +1,286 @@
+import AppointmentCard from '@/components/AppointmentCard';
 import { Button } from '@/components/Button';
-import { Footer } from '@/components/Footer';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useDataStore } from '@/stores/dataStore';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from 'expo-router';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 export default function DashboardScreen() {
   const router = useRouter();
   const { appointments } = useDataStore();
 
+  const totalAppointments = Object.keys(appointments).length;
+
+  const appointmentArray = Object.entries(appointments).map(([id, data]) => ({
+    id,
+    ...data,
+    appointmentDate: new Date(data.appointmentDate)
+  })).sort((a, b) => a.appointmentDate.getTime() - b.appointmentDate.getTime());
+
+  const now = new Date();
+
+  // Get upcoming appointment (next appointment after now)
+  const upcomingAppointment = appointmentArray.find(
+    apt => apt.appointmentDate > now
+  );
+
+  // Get monthly appointments (appointments in the next 30 days)
+  const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+  const monthlyAppointments = appointmentArray.filter(
+    apt => apt.appointmentDate > now && apt.appointmentDate <= thirtyDaysFromNow
+  );
+
+  // Get weekly appointments (appointments in the next 7 days)
+  const sevenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const weeklyAppointments = appointmentArray.filter(
+    apt => apt.appointmentDate > now && apt.appointmentDate <= sevenDaysFromNow
+  );
+
   const handleVisitPrep = () => {
-    router.push("/prep")
+    router.push("/prep");
   };
 
   const handleHistory = () => {
-    router.push("/(tabs)/history")
+    router.push("/(tabs)/history");
   };
 
   const handleSettings = () => {
-    router.push("/(tabs)/settings")
+    router.push("/(tabs)/settings");
+  };
+
+  const handleUpcomingAppointment = (id: string) => {
+    router.push({
+      pathname: "/past",
+      params: {
+        id: id
+      },
+    });
   };
 
   return (
-    <>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.header}>
-          <ThemedText style={styles.appTitle} type="whitened">Visit Ready</ThemedText>
-          <ThemedText style={styles.subtitle} type="greyed">Get ready for your next appointment</ThemedText>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}
+    >
+      <View style={styles.header}>
+        <ThemedText style={styles.appTitle} type="whitened">Visit Ready</ThemedText>
+        <ThemedText style={styles.subtitle} type="greyed">Your appointments at a glance</ThemedText>
+      </View>
+
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <ThemedText style={styles.sectionTitle}>Upcoming Visit</ThemedText>
         </View>
 
-        <ThemedView style={styles.mainCard}>
-          <View style={styles.cardContent}>
-            <ThemedText style={styles.cardTitle} type="whitened">Ready for Your Visit?</ThemedText>
-            <ThemedText style={styles.cardSubtitle} type="greyed">
-              Fill out a 5-minute form to start your preparation
+        {upcomingAppointment ? (
+          <TouchableOpacity onPress={() => { handleUpcomingAppointment(upcomingAppointment.id) }}>
+            <AppointmentCard appointment={upcomingAppointment} />
+          </TouchableOpacity>
+        ) : (
+          <ThemedView style={styles.emptyState}>
+            <MaterialIcons size={48} name="event-available" color="#6b7280" />
+            <ThemedText style={styles.emptyStateTitle} type="whitened">No upcoming visits</ThemedText>
+            <ThemedText style={styles.emptyStateText} type="greyed">
+              Your scheduled appointments will appear here
             </ThemedText>
-            <TouchableOpacity style={styles.primaryButton} onPress={handleVisitPrep}>
-              <Text style={styles.primaryButtonText}>Prep for Visit</Text>
-              <View style={styles.buttonIcon}>
-                <MaterialIcons
-                  size={16}
-                  name="arrow-forward"
-                  color="#ffffffff"
-                />
-              </View>
-            </TouchableOpacity>
+          </ThemedView>
+        )}
+      </View>
+
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <ThemedText style={styles.sectionTitle}>Your Progress</ThemedText>
+        </View>
+        <View style={styles.statsGrid}>
+          <ThemedView style={styles.statCard}>
+            <ThemedText style={styles.statNumber}>{totalAppointments}</ThemedText>
+            <ThemedText style={styles.statLabel} type="greyed">Total Visits</ThemedText>
+          </ThemedView>
+          <ThemedView style={styles.statCard}>
+            <ThemedText style={styles.statNumber}>{monthlyAppointments.length}</ThemedText>
+            <ThemedText style={styles.statLabel} type="greyed">This Month</ThemedText>
+          </ThemedView>
+          <ThemedView style={styles.statCard}>
+            <ThemedText style={styles.statNumber}>{weeklyAppointments.length}</ThemedText>
+            <ThemedText style={styles.statLabel} type="greyed">This Week</ThemedText>
+          </ThemedView>
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <ThemedText style={styles.sectionTitle}>Preparation Tips</ThemedText>
+        </View>
+        <ThemedView style={styles.tipsCard}>
+          <View style={styles.tipItem}>
+            <MaterialIcons size={20} name="lightbulb-outline" color="#f59e0b" />
+            <ThemedText style={styles.tipText} type="greyed">
+              Prepare 24-48 hours before your visit for best results.
+            </ThemedText>
+          </View>
+          <View style={styles.tipDivider} />
+          <View style={styles.tipItem}>
+            <MaterialIcons size={20} name="priority-high" color="#ef4444" />
+            <ThemedText style={styles.tipText} type="greyed">
+              Focus on your top 3 concerns. Quality over quantity!
+            </ThemedText>
           </View>
         </ThemedView>
+      </View>
 
-        <View style={styles.quickActions}>
-          <ThemedText style={styles.sectionTitle}>Navigation</ThemedText>
-
-          <View style={styles.actionGrid}>
-            <Button style={styles.actionCard} onPress={handleHistory} type="bordered">
-              <ThemedView style={styles.actionIconContainer} type="dusked">
-                <MaterialIcons
-                  size={28}
-                  name="history"
-                  color="#3b82f6"
-                />
-              </ThemedView>
-              <ThemedText style={styles.actionTitle} type="whitened">History</ThemedText>
-              <ThemedText style={styles.actionSubtitle} type="greyed">View past visits</ThemedText>
-            </Button>
-
-            <Button style={styles.actionCard} onPress={handleSettings} type="bordered">
-              <ThemedView style={styles.actionIconContainer} type="dusked">
-                <MaterialIcons
-                  size={28}
-                  name="settings"
-                  color="#3b82f6"
-                />
-              </ThemedView>
-              <ThemedText style={styles.actionTitle} type="whitened">Settings</ThemedText>
-              <ThemedText style={styles.actionSubtitle} type="greyed">App preferences</ThemedText>
-            </Button>
-          </View>
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <ThemedText style={styles.sectionTitle}>Quick Actions</ThemedText>
         </View>
-
-        <View style={styles.statsSection}>
-          <ThemedText style={styles.sectionTitle}>Your Progress</ThemedText>
-          <View style={styles.statsGrid}>
-            <ThemedView style={styles.statCard}>
-              <ThemedText style={styles.statNumber}>{Object.keys(appointments).length}</ThemedText>
-              <ThemedText style={styles.statLabel} type="greyed">Total Visits</ThemedText>
+        <View style={styles.actionGrid}>
+          <Button style={styles.actionCard} onPress={handleVisitPrep} type="bordered">
+            <ThemedView style={styles.actionIconContainer} type="dusked">
+              <MaterialIcons size={28} name="edit-note" color="#3b82f6" />
             </ThemedView>
-          </View>
+            <ThemedText style={styles.actionTitle} type="whitened">New Prep</ThemedText>
+          </Button>
+
+          <Button style={styles.actionCard} onPress={handleHistory} type="bordered">
+            <ThemedView style={styles.actionIconContainer} type="dusked">
+              <MaterialIcons size={28} name="history" color="#3b82f6" />
+            </ThemedView>
+            <ThemedText style={styles.actionTitle} type="whitened">History</ThemedText>
+          </Button>
+
+          <Button style={styles.actionCard} onPress={handleSettings} type="bordered">
+            <ThemedView style={styles.actionIconContainer} type="dusked">
+              <MaterialIcons size={28} name="settings" color="#3b82f6" />
+            </ThemedView>
+            <ThemedText style={styles.actionTitle} type="whitened">Settings</ThemedText>
+          </Button>
         </View>
-      </ScrollView >
-      <Footer type="absolute" />
-    </>
+      </View>
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   contentContainer: {
-    paddingBottom: 30,
+    paddingBottom: 100,
   },
   header: {
     paddingHorizontal: 24,
     paddingTop: 40,
-    paddingBottom: 30,
-  },
-  welcomeText: {
-    fontSize: 16,
-    textAlign: "left",
-    marginBottom: 2,
-    fontWeight: '400',
+    paddingBottom: 24,
   },
   appTitle: {
     fontSize: 32,
     fontWeight: 'bold',
-    textAlign: "left",
-    marginBottom: 2,
+    marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
     fontWeight: '400',
-    textAlign: "left",
-    marginBottom: 14,
   },
-  mainCard: {
-    marginHorizontal: 24,
-    marginTop: -20,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-  },
-  cardContent: {
-    padding: 24,
-  },
-  cardTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 8,
-  },
-  cardSubtitle: {
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 24,
-  },
-  primaryButton: {
-    backgroundColor: '#3b82f6',
-    borderRadius: 10,
-    paddingVertical: 16,
+  section: {
+    marginTop: 24,
     paddingHorizontal: 24,
+  },
+  sectionHeader: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#3b82f6',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-  },
-  primaryButtonText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#ffffff',
-    marginRight: 8,
-  },
-  buttonIcon: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#ffffff33',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  quickActions: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+    marginBottom: 16,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: '600',
-    textAlign: "left",
-    marginBottom: 16,
+  },
+  emptyState: {
+    alignItems: 'center',
+    padding: 40,
+    borderRadius: 12,
+  },
+  emptyStateTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  emptyStateText: {
+    fontSize: 14,
+    textAlign: 'center',
   },
   actionGrid: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 16,
+    gap: 12,
   },
   actionCard: {
     flex: 1,
-    borderRadius: 10,
-    padding: 20,
+    borderRadius: 12,
+    padding: 16,
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 10,
+    shadowRadius: 8,
   },
   actionIconContainer: {
     width: 48,
     height: 48,
-    borderRadius: 10,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
+    marginBottom: 8,
   },
   actionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 4,
-    textAlign: 'center',
-  },
-  actionSubtitle: {
     fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 2,
     textAlign: 'center',
   },
-  statsSection: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  tipsCard: {
+    borderRadius: 12,
+    padding: 16,
+  },
+  tipItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+  },
+  tipDivider: {
+    height: 1,
+    backgroundColor: '#e5e7eb33',
+    marginVertical: 12,
+  },
+  tipText: {
+    flex: 1,
+    fontSize: 14,
+    lineHeight: 20,
   },
   statsGrid: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 16,
+    gap: 12,
   },
   statCard: {
     flex: 1,
-    borderRadius: 10,
-    padding: 20,
+    borderRadius: 12,
+    padding: 16,
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 10,
+    shadowRadius: 8,
   },
   statNumber: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '700',
     color: '#3b82f6',
     marginBottom: 4,
   },
   statLabel: {
-    fontSize: 14,
+    fontSize: 12,
     textAlign: 'center',
     fontWeight: '500',
   },

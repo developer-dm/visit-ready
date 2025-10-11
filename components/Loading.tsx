@@ -43,16 +43,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 24,
-        backgroundColor: '#000000e6',
+        backgroundColor: '#000000',
         zIndex: 10000,
         elevation: 10000,
     },
     content: {
         alignItems: 'center',
-        paddingVertical: 40,
-        paddingHorizontal: 100,
-        borderRadius: 20,
-        backgroundColor: '#000000cc',
     },
     message: {
         color: '#ffffffff',

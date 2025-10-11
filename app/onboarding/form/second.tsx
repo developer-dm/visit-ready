@@ -1,5 +1,4 @@
 import { Button } from "@/components/Button";
-import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useDataStore } from "@/stores/dataStore";
@@ -8,7 +7,7 @@ import { AppInfo } from "@/types/app";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Checkbox from "expo-checkbox";
 import { useRouter } from "expo-router";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function OnboardingFinalScreen() {
   const router = useRouter();
@@ -37,7 +36,7 @@ export default function OnboardingFinalScreen() {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
       >
-        <>
+        <View>
           <View style={styles.cardContent}>
             <View style={styles.headerSection}>
               <ThemedView style={styles.headerIconContainer} type="dusked">
@@ -80,33 +79,7 @@ export default function OnboardingFinalScreen() {
               </Button>
             </View>
           </View>
-
-          <View style={styles.navigationSection}>
-            <View style={styles.buttonRow}>
-              <Button type="bordered" style={styles.backButton} onPress={handleBack}>
-                <MaterialIcons name="arrow-back" size={20} color="#64748b" />
-                <Text style={styles.backButtonText}>Back</Text>
-              </Button>
-
-              <Button
-                style={signup.acceptedTerms ? styles.primaryButton : [styles.primaryButton, styles.primaryButtonDisabled]}
-                onPress={handleNext}
-                disabled={!signup.acceptedTerms}
-              >
-                <Text style={signup.acceptedTerms ? styles.primaryButtonText : [styles.primaryButtonText, styles.primaryButtonTextDisabled]}>Get Started</Text>
-                <View style={styles.buttonIcon}>
-                  <MaterialIcons
-                    name="check"
-                    size={20}
-                    color={signup.acceptedTerms ? "#ffffff" : "#94a3b8"}
-                  />
-                </View>
-              </Button>
-            </View>
-
-            <Footer hasSpacer={true} />
-          </View>
-        </>
+        </View>
       </ScrollView>
     </ThemedView>
   );
@@ -118,19 +91,19 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingVertical: 30,
+    paddingBottom: 150,
   },
   cardContent: {
     padding: 24,
-    marginBottom: 24,
+    marginTop: 24,
   },
   headerSection: {
     alignItems: 'center',
     marginBottom: 32,
   },
   headerIconContainer: {
-    width: 56,
-    height: 56,
+    width: 64,
+    height: 64,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -183,75 +156,5 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 20,
     flexWrap: "wrap",
-  },
-  termsLink: {
-    fontWeight: '500',
-    textDecorationLine: 'underline',
-    flexWrap: "wrap"
-  },
-  navigationSection: {
-    paddingHorizontal: 24,
-    alignItems: 'center',
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    marginBottom: 16,
-  },
-  backButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 10,
-    minWidth: 100,
-    minHeight: 60,
-  },
-  backButtonText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#64748b',
-    marginLeft: 8,
-  },
-  primaryButton: {
-    backgroundColor: '#3b82f6',
-    borderRadius: 10,
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#3b82f6',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    minWidth: 160,
-    minHeight: 60,
-  },
-  primaryButtonDisabled: {
-    backgroundColor: '#e2e8f0',
-    shadowOpacity: 0,
-  },
-  primaryButtonText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#ffffff',
-    marginRight: 12,
-  },
-  primaryButtonTextDisabled: {
-    color: '#94a3b8',
-  },
-  buttonIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#ffffff33',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

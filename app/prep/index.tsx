@@ -45,9 +45,10 @@ export default function PrepFirstScreen() {
             <View style={styles.fieldGroup}>
               <ThemedText type="overheader">When is your appointment?</ThemedText>
               <DatePicker
+                placeholderText="Required"
                 value={appointment.appointmentDate}
                 setValue={setAppointmentDate}
-                mode="date"
+                mode="datetime"
                 display={Platform.OS === "ios" ? "inline" : "default"}
               />
             </View>
@@ -55,6 +56,7 @@ export default function PrepFirstScreen() {
             <View style={styles.fieldGroup}>
               <ThemedText type="overheader">Who is the provider in your appointment?</ThemedText>
               <Textbox
+                placeholder="Required"
                 onChangeText={setProvider}
                 value={appointment.provider}
               />

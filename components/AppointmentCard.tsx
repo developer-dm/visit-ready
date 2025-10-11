@@ -1,15 +1,12 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import DataFormatterService from "@/services/dataFormatter";
+import { AppointmentData } from "@/types/models";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { StyleSheet, View } from "react-native";
 
 type AppointmentCardProps = {
-    appointmentType: string;
-    appointmentDate: Date | string;
-    provider: string;
-    mainConcern: string;
-    id: string;
+    appointment: AppointmentData;
 };
 
 // Helper function to get appointment type icon
@@ -33,73 +30,65 @@ export const getAppointmentIcon = (type: string) => {
 };
 
 export default function AppointmentCard({
-    appointmentType,
-    appointmentDate,
-    provider,
-    mainConcern,
-    id,
+    appointment,
 }: AppointmentCardProps) {
     return (
-        <ThemedView style={styles.card} type="bordered">
-            <View style={styles.header}>
-                <View style={styles.headerLeft}>
-                    <ThemedView style={styles.iconContainer} type="dusked">
-                        <MaterialIcons
-                            name={getAppointmentIcon(appointmentType)}
-                            size={20}
-                            color="#3b82f6"
-                        />
-                    </ThemedView>
-                    <View style={styles.headerInfo}>
-                        <ThemedText style={styles.appointmentType} type="whitened">
-                            {DataFormatterService.toReadableString(appointmentType)}
-                        </ThemedText>
-                        <ThemedText style={styles.dateText} type="greyed">
-                            {DataFormatterService.toReadableString(appointmentDate)}
-                        </ThemedText>
-                    </View>
+        <ThemedView type="bordered" style={styles.appointmentCard}>
+            <View style={styles.appointmentHeader}>
+                <View style={styles.appointmentInfo}>
+                    <ThemedText style={styles.doctorName} type="whitened">
+                        {appointment.provider}
+                    </ThemedText>
+                    <ThemedText style={styles.specialty} type="greyed">
+                        {DataFormatterService.toReadableString(appointment.appointmentType)}
+                    </ThemedText>
                 </View>
-                <MaterialIcons
-                    name="chevron-right"
-                    size={20}
-                    color="#94a3b8"
-                />
+                {/* 
+                <View style={styles.statusBadge}>
+                    <MaterialIcons
+                        size={14}
+                        name="schedule"
+                        color="#3b82f6"
+                    />
+                    <Text style={styles.statusText}>
+                        Scheduled
+                    </Text>
+                </View>
+                 */}
             </View>
 
-            <View style={styles.details}>
+            <View style={styles.appointmentDetails}>
                 <View style={styles.detailRow}>
-                    <View style={styles.detailItem}>
-                        <MaterialIcons name="local-hospital" size={16} color="#64748b" style={styles.detailIcon} />
-                        <View>
-                            <ThemedText style={styles.detailLabel} type="greyed">
-                                Provider
-                            </ThemedText>
-                            <ThemedText style={styles.detailValue} type="whitened">
-                                {DataFormatterService.toReadableString(provider)}
-                            </ThemedText>
-                        </View>
-                    </View>
+                    <MaterialIcons size={16} name="calendar-today" color="#6b7280" />
+                    <ThemedText style={styles.detailText} type="greyed">
+                        {DataFormatterService.FormatDateString(new Date(appointment.appointmentDate))}
+                    </ThemedText>
                 </View>
-
                 <View style={styles.detailRow}>
-                    <View style={styles.detailItem}>
-                        <MaterialIcons name="description" size={16} color="#64748b" style={styles.detailIcon} />
-                        <View style={styles.concernContainer}>
-                            <ThemedText style={styles.detailLabel} type="greyed">
-                                Main Concern
-                            </ThemedText>
-                            <ThemedText style={styles.detailValue} type="whitened" numberOfLines={2}>
-                                {DataFormatterService.toReadableString(mainConcern)}
-                            </ThemedText>
-                        </View>
-                    </View>
+                    <MaterialIcons size={16} name="schedule" color="#6b7280" />
+                    <ThemedText style={styles.detailText} type="greyed">
+                        {DataFormatterService.FormatTimeString(new Date(appointment.appointmentDate))}
+                    </ThemedText>
                 </View>
             </View>
 
-            {/* Footer */}
-            <View style={styles.footer}>
-                <ThemedText style={styles.idText} type="dusked">
-                    ID: {DataFormatterService.toReadableString(id)}
+            <View style={styles.itemSection}>
+                <View style={styles.itemHeader}>
+                    <MaterialIcons size={16} name="health-and-safety" color="#ef4444" />
+                    <ThemedText style={styles.itemLabel} type="greyed">Main Concern:</ThemedText>
+                </View>
+                <ThemedText style={styles.itemText} type="whitened">
+                    {appointment.mainConcern}
+                </ThemedText>
+            </View>
+
+            <View style={styles.itemSection}>
+                <View style={styles.itemHeader}>
+                    <MaterialIcons size={16} name="flag" color="#3b82f6" />
+                    <ThemedText style={styles.itemLabel} type="greyed">Goal:</ThemedText>
+                </View>
+                <ThemedText style={styles.itemText} type="whitened">
+                    {DataFormatterService.toReadableString(appointment.visitGoal)}
                 </ThemedText>
             </View>
         </ThemedView>
@@ -107,91 +96,88 @@ export default function AppointmentCard({
 }
 
 const styles = StyleSheet.create({
-    card: {
-        borderRadius: 10,
+    appointmentCard: {
+        borderRadius: 12,
         padding: 16,
+        marginBottom: 12,
         shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
-        shadowRadius: 10,
+        shadowRadius: 8,
     },
-    header: {
+    appointmentHeader: {
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: 16,
+        alignItems: 'flex-start',
+        marginBottom: 12,
     },
-    headerLeft: {
+    appointmentInfo: {
+        flex: 1,
+    },
+    doctorName: {
+        fontSize: 18,
+        fontWeight: '600',
+        marginBottom: 4,
+    },
+    specialty: {
+        fontSize: 14,
+    },
+    statusBadge: {
         flexDirection: 'row',
         alignItems: 'center',
-        flex: 1,
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        borderRadius: 12,
+        gap: 4,
+        backgroundColor: '#3b82f622',
     },
-    iconContainer: {
-        width: 40,
-        height: 40,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: 12,
-    },
-    headerInfo: {
-        flex: 1,
-    },
-    appointmentType: {
-        fontSize: 16,
+    statusText: {
+        fontSize: 12,
         fontWeight: '600',
-        marginBottom: 2,
+        color: '#3b82f6',
     },
-    dateText: {
-        fontSize: 14,
-        fontWeight: '400',
-    },
-    details: {
-        gap: 12,
-        paddingBottom: 12,
+    appointmentDetails: {
+        flexDirection: 'row',
         borderBottomWidth: 1,
-        borderBottomColor: '#f1f5f9',
+        borderColor: '#e5e7eb33',
+        gap: 16,
+        paddingBottom: 12,
     },
     detailRow: {
         flexDirection: 'row',
-        alignItems: 'flex-start',
+        alignItems: 'center',
+        gap: 6,
     },
-    detailItem: {
+    detailText: {
+        fontSize: 14,
+    },
+    itemSection: {
+        paddingTop: 6,
+        marginTop: 4,
+    },
+    itemHeader: {
         flexDirection: 'row',
-        alignItems: 'flex-start',
-        flex: 1,
+        alignItems: 'center',
+        gap: 6,
+        marginBottom: 4,
     },
-    detailIcon: {
-        marginRight: 8,
-        marginTop: 2,
-        opacity: 0.7,
-    },
-    detailLabel: {
+    itemLabel: {
         fontSize: 12,
-        fontWeight: '500',
-        marginBottom: 2,
+        fontWeight: '600',
         textTransform: 'uppercase',
         letterSpacing: 0.5,
     },
-    detailValue: {
-        fontSize: 14,
-        fontWeight: '500',
-        lineHeight: 18,
+    itemText: {
+        fontSize: 15,
+        lineHeight: 20,
     },
-    concernContainer: {
-        flex: 1,
+    goalSection: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        marginTop: 8,
     },
-    footer: {
-        paddingTop: 12,
-        alignItems: 'flex-start',
-    },
-    idText: {
-        fontSize: 11,
-        fontWeight: '400',
-        fontStyle: 'italic',
-        textAlign: "left",
+    goalText: {
+        fontSize: 13,
     },
 });

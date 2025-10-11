@@ -1,4 +1,5 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
+import DataFormatterService from "@/services/dataFormatter";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import React, { useEffect, useState } from "react";
@@ -12,16 +13,6 @@ export type DatePickerProps = {
     value?: Date | null;
     setValue?: (date: Date) => void;
     placeholderText?: string;
-};
-
-export function FormatDateString(rawDate: Date) {
-    let date = new Date(rawDate)
-
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-
-    return `${month}/${day}/${year}`
 };
 
 export function DatePicker({
@@ -38,11 +29,17 @@ export function DatePicker({
     const textColor = value ? selectionColor : placeholderColor;
 
     const [dateString, setDateString] = useState("");
-    const [selection, setSelection] = useState(new Date())
+    const [selection, setSelection] = useState(new Date());
     const [isOpen, setIsOpen] = useState(false);
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showTimePicker, setShowTimePicker] = useState(false);
 
     const toggleDatePicker = () => {
-        setIsOpen(!isOpen);
+        if (Platform.OS === 'android' && mode === 'datetime') {
+            setShowDatePicker(true);
+        } else {
+            setIsOpen(!isOpen);
+        }
     };
 
     const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
@@ -52,77 +49,128 @@ export function DatePicker({
             setSelection(selectedDate);
 
             if (Platform.OS === "android") {
-                toggleDatePicker();
+                if (mode === 'datetime' && showDatePicker) {
+                    setShowDatePicker(false);
+                    setShowTimePicker(true);
+                } else {
+                    setShowDatePicker(false);
+                    setShowTimePicker(false);
 
-                if (setValue) {
-                    setValue(selectedDate)
-                };
+                    if (setValue) {
+                        setValue(selectedDate);
+                    }
+                }
             }
         } else {
-            toggleDatePicker();
+            setShowDatePicker(false);
+            setShowTimePicker(false);
+            setIsOpen(false);
         }
     };
 
     const confirmIOSDate = () => {
-        toggleDatePicker();
+        setIsOpen(false);
 
         if (setValue) {
             setValue(selection);
-        };
+        }
     };
 
     useEffect(() => {
         if (value) {
-            setDateString(FormatDateString(value));
+            if (mode === 'date') {
+                setDateString(DataFormatterService.FormatDateString(value));
+            } else if (mode === 'time') {
+                setDateString(DataFormatterService.FormatTimeString(value));
+            } else {
+                setDateString(DataFormatterService.FormatDateTimeString(value));
+            }
+        } else {
+            setDateString("");
         }
-    }, [value]);
+    }, [value, mode]);
 
     return (
-        <>
-            {(!isOpen || Platform.OS === "android") && (
-                <Button
-                    type="bordered"
-                    style={styles.button}
-                    onPress={toggleDatePicker}
-                >
-                    <Text style={[styles.text, { color: textColor }]}>
-                        {dateString ? dateString : placeholderText}
-                    </Text>
-                    <MaterialIcons
-                        name={isOpen ? "keyboard-arrow-up" : "keyboard-arrow-down"}
-                        size={25}
-                        color={iconColor}
-                    />
-                </Button>
-            )}
-            {isOpen && (
-                <View style={styles.pickerWrapper}>
-                    <DateTimePicker
-                        mode={mode as any}
-                        display={display}
-                        value={selection}
-                        onChange={onChange}
-                        {...otherProps}
-                    />
-                </View>
-            )}
-            {isOpen && Platform.OS === "ios" && (
-                <ThemedView style={styles.buttonContainer} type="bordered">
-                    <TouchableOpacity style={styles.cancelButton} onPress={toggleDatePicker}>
-                        <Text style={styles.cancelButtonText}>
-                            Cancel
-                        </Text>
-                    </TouchableOpacity>
+        <View>
+            <Button
+                type="bordered"
+                style={styles.button}
+                onPress={toggleDatePicker}
+            >
+                <Text style={[styles.text, { color: textColor }]}>
+                    {dateString ? dateString : placeholderText}
+                </Text>
+                <MaterialIcons
+                    name={isOpen || showDatePicker || showTimePicker ? "keyboard-arrow-up" : "keyboard-arrow-down"}
+                    size={25}
+                    color={iconColor}
+                />
+            </Button>
 
-                    <TouchableOpacity style={styles.confirmButton} onPress={confirmIOSDate}>
-                        <Text style={styles.confirmButtonText}>
-                            Confirm
-                        </Text>
-                        <MaterialIcons name="check" size={16} color="#ffffff" />
-                    </TouchableOpacity>
-                </ThemedView>
+            {Platform.OS === 'android' && mode === 'datetime' && showDatePicker && (
+                <DateTimePicker
+                    mode="date"
+                    display={display}
+                    value={selection}
+                    onChange={onChange}
+                    {...otherProps}
+                />
             )}
-        </>
+
+            {Platform.OS === 'android' && mode === 'datetime' && showTimePicker && (
+                <DateTimePicker
+                    mode="time"
+                    display={display}
+                    value={selection}
+                    onChange={onChange}
+                    {...otherProps}
+                />
+            )}
+
+            {Platform.OS === 'android' && isOpen && mode !== 'datetime' && (
+                <DateTimePicker
+                    mode={mode}
+                    display={display}
+                    value={selection}
+                    onChange={onChange}
+                    {...otherProps}
+                />
+            )}
+
+            {isOpen && Platform.OS === "ios" && (
+                <>
+                    <View style={styles.pickerWrapper}>
+                        <DateTimePicker
+                            mode={mode as any}
+                            display={display}
+                            value={selection}
+                            onChange={(event, date) => {
+                                if (date) setSelection(date);
+                            }}
+                            {...otherProps}
+                        />
+                    </View>
+
+                    <ThemedView style={styles.buttonContainer} type="bordered">
+                        <TouchableOpacity
+                            style={styles.cancelButton}
+                            onPress={() => setIsOpen(false)}
+                        >
+                            <Text style={styles.cancelButtonText}>
+                                Cancel
+                            </Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.confirmButton} onPress={confirmIOSDate}>
+                            <Text style={styles.confirmButtonText}>
+                                Confirm
+                            </Text>
+                            <MaterialIcons name="check" size={16} color="#ffffff" />
+                        </TouchableOpacity>
+                    </ThemedView>
+                </>
+            )}
+        </View>
     );
 }
 
@@ -196,5 +244,6 @@ const styles = StyleSheet.create({
     pickerWrapper: {
         alignItems: "center",
         justifyContent: "center",
+        marginBottom: 10,
     },
 });

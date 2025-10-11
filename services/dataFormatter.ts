@@ -1,4 +1,3 @@
-import { FormatDateString } from '@/components/DatePicker';
 import { ValueToLabel } from '@/types/labels';
 
 export const DataFormatterService = {
@@ -8,14 +7,6 @@ export const DataFormatterService = {
   ): string {
     if (input === null || input === undefined || input === '') {
       return 'N/A';
-    }
-
-    if (input instanceof Date || type === 'DOB' || type === 'appointmentDate') {
-      try {
-        return FormatDateString(input);
-      } catch {
-        return 'N/A';
-      }
     }
 
     const inputString = String(input).toLowerCase();
@@ -62,6 +53,38 @@ export const DataFormatterService = {
     if (ValueToLabel.specificWorries[input]) return ValueToLabel.specificWorries[input];
     if (ValueToLabel.priority[input]) return ValueToLabel.priority[input];
     return null;
+  },
+
+  FormatDateString(rawDate: Date) {
+    return rawDate.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  },
+
+  FormatTimeString(rawTime: Date) {
+    return rawTime.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+  },
+
+  FormatDateTimeString(rawDate: Date) {
+    const date = rawDate.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+
+    const time = rawDate.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+
+    return `${date}, ${time}`
   },
 
   toReadableStrings(

@@ -65,8 +65,8 @@ export default function SettingsScreen() {
     ]);
   };
 
-  const userDataEntries = Object.entries(signup ? signup : {}).filter(([key, value]) => {
-    return typeof value !== "function" && key !== "acceptedTerms";
+  const userDataEntries = Object.entries(signup ? signup : {}).filter(([key]) => {
+    return key !== "acceptedTerms";
   });
 
   return (
@@ -99,9 +99,8 @@ export default function SettingsScreen() {
 
             <View style={styles.profileDetails}>
               {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
-                if (key === "DOB" && typeof value === 'string') {
-                  value = new Date(value);
-                }
+                if (key === "DOB" && typeof value === 'string') value = DataFormatterService.FormatDateString(new Date(value))
+
                 return (
                   <ThemedView type="list" key={key} style={styles.profileItem}>
                     <ThemedText style={styles.profileLabel} type="greyed">

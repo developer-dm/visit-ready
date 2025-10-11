@@ -5,7 +5,7 @@ import { useDataStore } from "@/stores/dataStore";
 import { useTempStore } from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Stack, useRouter, useSegments } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -15,6 +15,8 @@ export default function AppointmentPrepLayout() {
     const { addAppointment } = useDataStore();
     const segments = useSegments();
     const currentRoute = segments[segments.length - 1];
+    const [debounce, setDebounce] = useState(false);
+
     const { id, appointment, resetTempContext, assignNewId } = useTempStore();
 
     const handleClose = () => {
@@ -35,14 +37,22 @@ export default function AppointmentPrepLayout() {
     };
 
     const handleBack = () => {
+        if (debounce) return;
+        setDebounce(true);
+
         if (currentRoute === "prep") {
             handleClose();
         } else {
-            router.dismiss();
+            router.back();
         };
+
+        setTimeout(() => { setDebounce(false) }, 500);
     };
 
     const handleNext = () => {
+        if (debounce) return;
+        setDebounce(true);
+
         switch (currentRoute) {
             case 'prep':
                 router.push('/prep/second');
@@ -59,12 +69,14 @@ export default function AppointmentPrepLayout() {
                 router.replace("/results")
                 break;
         }
+
+        setTimeout(() => { setDebounce(false) }, 500);
     };
 
     const checkRequirements = () => {
         switch (currentRoute) {
             case 'prep':
-                if (appointment.appointmentType) return true;
+                if (appointment.appointmentType && appointment.appointmentDate && appointment.provider) return true;
                 break;
             case 'second':
                 if (appointment.mainConcern) return true;

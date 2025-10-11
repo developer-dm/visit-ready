@@ -7,14 +7,14 @@ import { Image, ScrollView, StyleSheet, View } from "react-native";
 export default function AboutScreen() {
   const features = [
     {
-      icon: "quiz",
-      title: "Question Generation",
-      description: "Get personalized questions to ask your doctor based on your symptoms"
+      icon: "calendar-today",
+      title: "Track your Appointments",
+      description: "Keep a record of all your medical appointments in one place"
     },
     {
-      icon: "history",
-      title: "Track Your Visits",
-      description: "Keep a record of all your appointments and progress"
+      icon: "show-chart",
+      title: "Be prepared",
+      description: "Generate discussion questions and goals based on your symptoms and priorities"
     },
     {
       icon: "lock",
@@ -30,7 +30,6 @@ export default function AboutScreen() {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header Section */}
         <View style={styles.header}>
           <ThemedView style={styles.logoContainer} type="dusked">
             <Image source={require("@/assets/images/favicon.png")} style={styles.logo} />
@@ -43,7 +42,6 @@ export default function AboutScreen() {
           </ThemedText>
         </View>
 
-        {/* About Card */}
         <ThemedView style={styles.aboutCard}>
           <View style={styles.cardContent}>
             <View style={styles.aboutSection}>
@@ -61,7 +59,6 @@ export default function AboutScreen() {
           </View>
         </ThemedView>
 
-        {/* Features Card */}
         <ThemedView style={styles.featuresCard}>
           <View style={styles.cardContent}>
             <View style={styles.featuresHeader}>
@@ -96,7 +93,6 @@ export default function AboutScreen() {
           </View>
         </ThemedView>
 
-        {/* Credits Card */}
         <ThemedView style={styles.creditsCard}>
           <View style={styles.cardContent}>
             <View style={styles.creditsSection}>
@@ -116,7 +112,6 @@ export default function AboutScreen() {
           </View>
         </ThemedView>
 
-        {/* Contact Section */}
         <View style={styles.contactSection}>
           <ThemedText style={styles.contactTitle} type="whitened">
             Questions or Feedback?

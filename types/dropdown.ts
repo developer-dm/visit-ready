@@ -4,21 +4,31 @@ export const DropdownValues = {
         { label: 'Male', value: 'male' },
         { label: 'Female', value: 'female' },
         { label: 'Other', value: 'other' },
-        { label: 'I do not wish to respond', value: 'no-response' },
+        { label: 'Prefer not to say', value: 'no-response' },
     ],
 
     language: [
         { label: 'English', value: 'en' },
-        { label: 'Spanish (Español)', value: 'es' },
-        { label: 'Chinese (中文)', value: 'zh' },
-        { label: 'Tagalog (Filipino)', value: 'tl' },
-        { label: 'Vietnamese (Tiếng Việt)', value: 'vi' },
-        { label: 'Arabic (العربية)', value: 'ar' },
-        { label: 'French (Français)', value: 'fr' },
-        { label: 'Haitian Creole (Kreyòl Ayisyen)', value: 'ht' },
-        { label: 'Korean (한국어)', value: 'ko' },
-        { label: 'Russian (Русский)', value: 'ru' },
-        { label: 'I do not wish to respond', value: 'no-response' },
+        { label: 'Spanish', value: 'es' },
+        { label: 'French', value: 'fr' },
+        { label: 'German', value: 'de' },
+        { label: 'Italian', value: 'it' },
+        { label: 'Portuguese', value: 'pt' },
+        { label: 'Russian', value: 'ru' },
+        { label: 'Japanese', value: 'ja' },
+        { label: 'Korean', value: 'ko' },
+        { label: 'Chinese (Simplified)', value: 'zh-CN' },
+        { label: 'Chinese (Traditional)', value: 'zh-TW' },
+        { label: 'Arabic', value: 'ar' },
+        { label: 'Hindi', value: 'hi' },
+        { label: 'Dutch', value: 'nl' },
+        { label: 'Polish', value: 'pl' },
+        { label: 'Turkish', value: 'tr' },
+        { label: 'Swedish', value: 'sv' },
+        { label: 'Indonesian', value: 'id' },
+        { label: 'Vietnamese', value: 'vi' },
+        { label: 'Thai', value: 'th' },
+        { label: 'Prefer not to say', value: 'no-response' },
     ],
 
     appointmentType: [
@@ -30,7 +40,7 @@ export const DropdownValues = {
         { label: 'Urgent Concern', value: 'urgent-concern' },
         { label: 'Telehealth', value: 'telehealth' },
         { label: 'Other', value: 'other' },
-        { label: 'I do not wish to respond', value: 'no-response' },
+        { label: 'Prefer not to say', value: 'no-response' },
     ],
 
     concernStart: [
@@ -43,7 +53,7 @@ export const DropdownValues = {
         { label: 'Ongoing / Chronic', value: 'chronic' },
         { label: 'Unsure', value: 'unsure' },
         { label: 'Other', value: 'other' },
-        { label: 'I do not wish to respond', value: 'no-response' },
+        { label: 'Prefer not to say', value: 'no-response' },
     ],
 
     concernSeverity: [
@@ -57,7 +67,7 @@ export const DropdownValues = {
         { label: '8', value: '8' },
         { label: '9', value: '9' },
         { label: '10 - Severe / Worst Pain', value: '10' },
-        { label: 'I do not wish to respond', value: 'no-response' },
+        { label: 'Prefer not to say', value: 'no-response' },
     ],
 
     visitGoal: [
@@ -70,7 +80,7 @@ export const DropdownValues = {
         { label: 'Discuss Treatment Options', value: 'discuss-treatment-options' },
         { label: 'Plan Future Appointments', value: 'plan-future-appointments' },
         { label: 'Other', value: 'other' },
-        { label: 'I do not wish to respond', value: 'no-response' },
+        { label: 'Prefer not to say', value: 'no-response' },
     ],
 
     specificWorries: [
@@ -84,6 +94,6 @@ export const DropdownValues = {
         { label: 'Lab or Test Results', value: 'lab-test-results' },
         { label: 'Preventive Care', value: 'preventive-care' },
         { label: 'Other', value: 'other' },
-        { label: 'I do not wish to respond', value: 'no-response' },
+        { label: 'Prefer not to say', value: 'no-response' },
     ],
 };

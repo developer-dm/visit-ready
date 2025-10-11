@@ -17,7 +17,7 @@ const typeColors: Record<
   bordered: { light: "", dark: "", lightBorder: "#d1d1d1ff", darkBorder: "#393939ff" },
   dusked: { light: "#f1f5f9", dark: "#242424ff", lightBorder: "", darkBorder: "" },
   container: { light: "#e6e6e6ff", dark: "#101010ff", lightBorder: "", darkBorder: "" },
-  list: { light: "", dark: "", lightBorder: "#d1d1d1ff", darkBorder: "#393939ff" },
+  list: { light: "", dark: "", lightBorder: "#64748b", darkBorder: "#393939ff" },
 };
 
 export function ThemedView({

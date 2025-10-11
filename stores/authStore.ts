@@ -9,54 +9,43 @@ const isWeb = Platform.OS === "web";
 export const useAuthStore = create(
   persist<AuthStore>(
     (set) => ({
+      // Authentication States
       isLoggedIn: false,
       hasCompletedOnboarding: false,
       isVip: false,
       _hasHydrated: false,
 
-      logIn: () => set((state) => {
-        return {
-          ...state,
-          isLoggedIn: true,
-        };
-      }),
+      // Login Actions
+      logIn: () => set((state) => ({
+        ...state,
+        isLoggedIn: true,
+      })),
+      logInAsVip: () => set((state) => ({
+        ...state,
+        isVip: true,
+        isLoggedIn: true,
+      })),
+      logOut: () => set((state) => ({
+        ...state,
+        isVip: false,
+        isLoggedIn: false,
+      })),
 
-      logInAsVip: () => set((state) => {
-        return {
-          ...state,
-          isVip: true,
-          isLoggedIn: true,
-        };
-      }),
+      // Onboarding Actions
+      completeOnboarding: () => set((state) => ({
+        ...state,
+        hasCompletedOnboarding: true,
+      })),
+      resetOnboarding: () => set((state) => ({
+        ...state,
+        hasCompletedOnboarding: false,
+      })),
 
-      logOut: () => set((state) => {
-        return {
-          ...state,
-          isVip: false,
-          isLoggedIn: false,
-        };
-      }),
-
-      completeOnboarding: () => set((state) => {
-        return {
-          ...state,
-          hasCompletedOnboarding: true,
-        };
-      }),
-
-      resetOnboarding: () => set((state) => {
-        return {
-          ...state,
-          hasCompletedOnboarding: false,
-        };
-      }),
-
-      setHasHydrated: (value: boolean) => set((state) => {
-        return {
-          ...state,
-          _hasHydrated: value,
-        };
-      }),
+      // Utility Actions
+      setHasHydrated: (value: boolean) => set((state) => ({
+        ...state,
+        _hasHydrated: value,
+      })),
     }),
     {
       name: "auth-store",

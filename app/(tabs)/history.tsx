@@ -15,7 +15,7 @@ export default function HistoryScreen() {
         router.push({
             pathname: "/past",
             params: {
-                id: JSON.stringify(id)
+                id: id
             },
         });
     };
@@ -62,26 +62,20 @@ export default function HistoryScreen() {
             <View style={styles.appointmentsSection}>
                 <ThemedText style={styles.sectionTitle} type="whitened">Recent Appointments</ThemedText>
 
-                <ThemedView style={styles.appointmentsContainer}>
+                <View style={styles.appointmentsContainer}>
                     {appointments && Object.keys(appointments).length > 0 ? (
-                        <ScrollView style={styles.appointmentsList} contentContainerStyle={styles.appointmentsContentList}>
+                        <>
                             {Object.entries(appointments).map(([key, value]) => {
                                 return (
                                     <TouchableOpacity
                                         key={key}
                                         onPress={() => handleAppointmentView(key)}
                                     >
-                                        <AppointmentCard
-                                            appointmentType={value.appointmentType ? value.appointmentType : "other"}
-                                            appointmentDate={value.appointmentDate ? new Date(value.appointmentDate) : ""}
-                                            provider={value.provider}
-                                            mainConcern={value.mainConcern}
-                                            id={key}
-                                        />
+                                        <AppointmentCard appointment={value} />
                                     </TouchableOpacity>
                                 );
                             })}
-                        </ScrollView>
+                        </>
                     ) : (
                         <View style={styles.emptyState}>
                             <ThemedView style={styles.emptyIconContainer} type="dusked">
@@ -97,7 +91,7 @@ export default function HistoryScreen() {
                             </ThemedText>
                         </View>
                     )}
-                </ThemedView>
+                </View>
             </View>
 
             <Footer text={`This service does not book appointments for you.\nIt is intended only for tracking purposes.`} />
@@ -196,6 +190,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     appointmentsContainer: {
+        gap: 6,
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: {
@@ -204,14 +199,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.1,
         shadowRadius: 10,
-    },
-    appointmentsList: {
-        minHeight: 100,
-        padding: 16,
-    },
-    appointmentsContentList: {
-        gap: 16,
-        marginBottom: 16,
     },
     emptyState: {
         alignItems: 'center',

@@ -9,7 +9,7 @@ export default function PrepFinalScreen() {
     const { appointment } = useTempStore();
 
     const userDataEntries = Object.entries(appointment).filter(([key, value]) => {
-        return typeof value !== "function" && key !== "id" && key !== "questions";
+        return key;
     });
 
     return (
@@ -30,9 +30,8 @@ export default function PrepFinalScreen() {
 
                     <ThemedView type="bordered" style={styles.detailsSection}>
                         {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
-                            if (key === "appointmentDate" && typeof value === 'string') {
-                                value = new Date(value);
-                            }
+                            if (key === "appointmentDate") value = DataFormatterService.FormatDateTimeString(new Date(value));
+
                             return (
                                 <ThemedView type="list" key={key} style={styles.detailItem}>
                                     <ThemedText style={styles.detailLabel} type="greyed">

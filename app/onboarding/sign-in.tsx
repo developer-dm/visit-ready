@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function OnboardingAuthScreen() {
-  const { logInAsVip, completeOnboarding } = useAuthStore();
+  const { /*logInAsVip,*/ completeOnboarding } = useAuthStore();
   const [authType, setAuthType] = useState<'biometric' | 'passcode' | 'none'>('none');
   const [isLoading, setIsLoading] = useState(true);
 

@@ -1,14 +1,12 @@
-import { Button } from "@/components/Button";
 import { DatePicker } from "@/components/DatePicker";
 import { Dropdown } from "@/components/Dropdown";
-import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTempStore } from "@/stores/tempStore";
 import { DropdownValues } from "@/types/dropdown";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function OnboardingFirstScreen() {
@@ -46,78 +44,50 @@ export default function OnboardingFirstScreen() {
         enableResetScrollToCoords={false}
         extraScrollHeight={10}
       >
-        <>
-          <View style={styles.formSection}>
-            <View style={styles.headerSection}>
-              <ThemedView style={styles.headerIconContainer} type="dusked">
-                <MaterialIcons name="person-outline" size={32} color="#3b82f6" />
-              </ThemedView>
-              <ThemedText style={styles.title} type="whitened">Demographics</ThemedText>
-              <ThemedText style={styles.subtitle} type="greyed">
-                We do not collect your private health data.{"\n"}All information is stored on your device.
-              </ThemedText>
-            </View>
-
-            <View style={styles.formGap}>
-              <View style={styles.formField}>
-                <ThemedText type="overheader">Date of Birth</ThemedText>
-                <DatePicker
-                  mode="date"
-                  display="spinner"
-                  value={signup.DOB}
-                  setValue={setDOB}
-                />
-              </View>
-
-              <View style={styles.formField}>
-                <ThemedText type="overheader">Gender</ThemedText>
-                <Dropdown
-                  items={DropdownValues.sex}
-                  value={signup.sex}
-                  setValue={setSex}
-                />
-              </View>
-
-              <View style={styles.formField}>
-                <ThemedText type="overheader">Primary language</ThemedText>
-                <Dropdown
-                  placeholder="Required"
-                  items={DropdownValues.language}
-                  value={signup.language}
-                  setValue={setLanguage}
-                />
-              </View>
-            </View>
+        <View style={styles.cardContent}>
+          <View style={styles.headerSection}>
+            <ThemedView style={styles.headerIconContainer} type="dusked">
+              <MaterialIcons name="person-outline" size={32} color="#3b82f6" />
+            </ThemedView>
+            <ThemedText style={styles.title} type="whitened">Demographics</ThemedText>
+            <ThemedText style={styles.subtitle} type="greyed">
+              We do not collect your private health data.{"\n"}All information is stored on your device.
+            </ThemedText>
           </View>
 
-          <View style={styles.navigationSection}>
-            <View style={styles.buttonRow}>
-              <Button type="bordered" style={styles.backButton} onPress={handleClose}>
-                <MaterialIcons name="close" size={20} color="#64748b" />
-                <Text style={styles.backButtonText}>Exit</Text>
-              </Button>
+          <View style={styles.formGap}>
+            <View style={styles.formField}>
+              <ThemedText type="overheader">Date of Birth</ThemedText>
+              <DatePicker
+                placeholderText="Required"
+                mode="date"
+                display="spinner"
+                value={signup.DOB}
+                setValue={setDOB}
+              />
+            </View>
 
-              <Button
-                style={[styles.primaryButton, !signup.language && styles.primaryButtonDisabled]}
-                onPress={handleNext}
-                disabled={!signup.language}
-              >
-                <Text style={[styles.primaryButtonText, !signup.language && styles.primaryButtonTextDisabled]}>
-                  Continue
-                </Text>
-                <View style={styles.buttonIcon}>
-                  <MaterialIcons
-                    name="arrow-forward"
-                    size={20}
-                    color={signup.language ? "#ffffff" : "#94a3b8"}
-                  />
-                </View>
-              </Button>
+            <View style={styles.formField}>
+              <ThemedText type="overheader">Gender</ThemedText>
+              <Dropdown
+                placeholder="Required"
+                items={DropdownValues.sex}
+                value={signup.sex}
+                setValue={setSex}
+              />
+            </View>
+
+            <View style={styles.formField}>
+              <ThemedText type="overheader">Preferred language</ThemedText>
+              <Dropdown
+                placeholder="Required"
+                items={DropdownValues.language}
+                value={signup.language}
+                setValue={setLanguage}
+              />
             </View>
           </View>
-
-          <Footer hasSpacer={true} />
-        </>
+        </View>
       </KeyboardAwareScrollView>
     </ThemedView>
   );
@@ -129,11 +99,11 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingVertical: 30,
+    paddingBottom: 150,
   },
-  formSection: {
+  cardContent: {
     padding: 24,
-    marginBottom: 24,
+    marginTop: 24,
   },
   headerSection: {
     alignItems: 'center',

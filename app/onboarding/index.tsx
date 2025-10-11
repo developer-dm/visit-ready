@@ -26,19 +26,19 @@ export default function LandingScreen() {
                         <View style={styles.featureContent}>
                             <ThemedText style={styles.featureTitle} type="whitened">Track your Appointments</ThemedText>
                             <ThemedText style={styles.featureDescription} type="greyed">
-                                Keep a record of all your medical appointment dates and providers
+                                Keep a record of all your medical appointments in one place
                             </ThemedText>
                         </View>
                     </View>
 
                     <View style={styles.featureItem}>
                         <ThemedView style={styles.featureIconContainer} type="dusked">
-                            <MaterialIcons name="check" size={24} color="#3b82f6" />
+                            <MaterialIcons name="show-chart" size={24} color="#3b82f6" />
                         </ThemedView>
                         <View style={styles.featureContent}>
                             <ThemedText style={styles.featureTitle} type="whitened">Be prepared</ThemedText>
                             <ThemedText style={styles.featureDescription} type="greyed">
-                                Get reminders on items to bring and questions to ask the provider
+                                Generate discussion questions and goals based on your symptoms and priorities
                             </ThemedText>
                         </View>
                     </View>
