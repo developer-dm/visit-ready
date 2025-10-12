@@ -1,6 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import DataFormatterService from "@/services/dataFormatter";
+import { DataFormatterService } from "@/services/dataFormatter";
 import { AppointmentData } from "@/types/models";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { StyleSheet, View } from "react-native";
@@ -32,6 +32,8 @@ export const getAppointmentIcon = (type: string) => {
 export default function AppointmentCard({
     appointment,
 }: AppointmentCardProps) {
+    const date = appointment.appointmentDate ? new Date(appointment.appointmentDate) : new Date()
+
     return (
         <ThemedView type="bordered" style={styles.appointmentCard}>
             <View style={styles.appointmentHeader}>
@@ -61,13 +63,13 @@ export default function AppointmentCard({
                 <View style={styles.detailRow}>
                     <MaterialIcons size={16} name="calendar-today" color="#6b7280" />
                     <ThemedText style={styles.detailText} type="greyed">
-                        {DataFormatterService.FormatDateString(new Date(appointment.appointmentDate))}
+                        {DataFormatterService.FormatDateString(date)}
                     </ThemedText>
                 </View>
                 <View style={styles.detailRow}>
                     <MaterialIcons size={16} name="schedule" color="#6b7280" />
                     <ThemedText style={styles.detailText} type="greyed">
-                        {DataFormatterService.FormatTimeString(new Date(appointment.appointmentDate))}
+                        {DataFormatterService.FormatTimeString(date)}
                     </ThemedText>
                 </View>
             </View>

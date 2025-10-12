@@ -95,7 +95,7 @@ export default function AppointmentPrepLayout() {
         if (id === "") {
             assignNewId();
         };
-    }, [])
+    })
 
     return (
         <>

@@ -1,5 +1,5 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
-import DataFormatterService from "@/services/dataFormatter";
+import { DataFormatterService } from "@/services/dataFormatter";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import React, { useEffect, useState } from "react";
@@ -210,7 +210,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#d1d1d1ff',
         backgroundColor: '#f8fafc',
-        minWidth: 140,
     },
     cancelButtonText: {
         fontSize: 16,
@@ -221,7 +220,7 @@ const styles = StyleSheet.create({
     confirmButton: {
         backgroundColor: '#3b82f6',
         paddingVertical: 12,
-        paddingHorizontal: 24,
+        paddingHorizontal: 32,
         borderRadius: 6,
         flexDirection: 'row',
         alignItems: 'center',
@@ -233,7 +232,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.3,
         shadowRadius: 8,
-        minWidth: 140,
     },
     confirmButtonText: {
         fontSize: 16,

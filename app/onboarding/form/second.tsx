@@ -1,32 +1,17 @@
 import { Button } from "@/components/Button";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useDataStore } from "@/stores/dataStore";
 import { useTempStore } from "@/stores/tempStore";
 import { AppInfo } from "@/types/app";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Checkbox from "expo-checkbox";
-import { useRouter } from "expo-router";
+import { Checkbox } from "expo-checkbox";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function OnboardingFinalScreen() {
-  const router = useRouter();
-  const { signup, setAcceptedTerms, resetTempContext } = useTempStore();
-  const { addSignupData } = useDataStore();
-
-  const handleNext = () => {
-    addSignupData(signup);
-    router.dismissTo("/onboarding")
-    router.replace("/onboarding/sign-in")
-    resetTempContext();
-  };
+  const { signup, setAcceptedTerms } = useTempStore();
 
   const toggleAcceptedTerms = () => {
     setAcceptedTerms(!signup.acceptedTerms)
-  };
-
-  const handleBack = () => {
-    router.back();
   };
 
   return (
@@ -48,14 +33,9 @@ export default function OnboardingFinalScreen() {
 
             <View style={styles.termsSection}>
               <ThemedView type="bordered" style={styles.termsCard}>
-                <ScrollView
-                  nestedScrollEnabled={true}
-                  showsVerticalScrollIndicator={false}
-                >
-                  <ThemedText>
-                    {AppInfo.terms_privacy}
-                  </ThemedText>
-                </ScrollView>
+                <ThemedText type="whitened">
+                  {AppInfo.terms_privacy}
+                </ThemedText>
               </ThemedView>
 
               <Button
@@ -135,10 +115,9 @@ const styles = StyleSheet.create({
   termsCard: {
     borderRadius: 10,
     borderWidth: 1,
-    paddingLeft: 10,
-    paddingRight: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
     marginBottom: 20,
-    height: 400,
   },
   termsContainer: {
     borderRadius: 10,

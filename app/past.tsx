@@ -3,7 +3,7 @@ import { CustomButton } from "@/components/CustomButton";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import DataFormatterService from "@/services/dataFormatter";
+import { DataFormatterService } from "@/services/dataFormatter";
 import { useDataStore } from "@/stores/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { RouteProp, useRoute } from '@react-navigation/native';
@@ -22,12 +22,13 @@ export default function PrepFinalScreen() {
 
     if (!appointment) return null;
 
-    const appointmentDate = new Date(appointment.appointmentDate)
+    const appointmentDate = appointment.appointmentDate
+        ? DataFormatterService.FormatDateTimeString(new Date(appointment.appointmentDate))
+        : "No Appointment Date";
     const appointmentType = appointment.appointmentType;
 
-    const userDataEntries = Object.entries(appointment).filter(([key, value]) => {
-        return typeof value !== "function" &&
-            key !== "id" &&
+    const userDataEntries = Object.entries(appointment).filter(([key]) => {
+        return key !== "id" &&
             key !== "appointmentType" &&
             key !== "appointmentDate";
     });
@@ -44,18 +45,13 @@ export default function PrepFinalScreen() {
         }
 
         return userDataEntries.map(([key, value]) => {
-            let formattedValue = value;
-            if (key === "appointmentDate" && typeof value === 'string') {
-                formattedValue = new Date(value);
-            }
-
             return (
                 <ThemedView type="list" key={key} style={styles.detailItem}>
                     <ThemedText style={styles.detailLabel} type="greyed">
                         {DataFormatterService.toReadableString(key, 'label')}
                     </ThemedText>
                     <ThemedText style={styles.detailValue} type="whitened">
-                        {DataFormatterService.toReadableString(formattedValue)}
+                        {DataFormatterService.toReadableString(value)}
                     </ThemedText>
                 </ThemedView>
             );
@@ -150,7 +146,7 @@ export default function PrepFinalScreen() {
                                     {DataFormatterService.toReadableString(appointmentType)}
                                 </ThemedText>
                                 <ThemedText style={styles.infoSubtitle} type="greyed">
-                                    {DataFormatterService.FormatDateTimeString(appointmentDate)}
+                                    {appointmentDate}
                                 </ThemedText>
                             </View>
                         </View>

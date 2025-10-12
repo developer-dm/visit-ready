@@ -1,4 +1,4 @@
-import DataFormatterService from '@/services/dataFormatter';
+import { DataFormatterService } from '@/services/dataFormatter';
 import { AppointmentData, SignupData } from '@/types/models';
 import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';

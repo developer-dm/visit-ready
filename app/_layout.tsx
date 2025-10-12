@@ -14,10 +14,6 @@ SplashScreen.preventAutoHideAsync();
 const isWeb = Platform.OS === "web";
 
 export default function RootLayout() {
-  if (isWeb) {
-    return <WebScreen />
-  };
-
   const colorScheme = useColorScheme();
   const { isLoggedIn, hasCompletedOnboarding, _hasHydrated } = useAuthStore();
 
@@ -26,6 +22,10 @@ export default function RootLayout() {
       SplashScreen.hideAsync()
     }
   }, [_hasHydrated]);
+
+  if (isWeb) {
+    return <WebScreen />
+  };
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>

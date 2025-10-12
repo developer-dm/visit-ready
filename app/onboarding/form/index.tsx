@@ -5,34 +5,11 @@ import { ThemedView } from "@/components/ThemedView";
 import { useTempStore } from "@/stores/tempStore";
 import { DropdownValues } from "@/types/dropdown";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useRouter } from "expo-router";
-import { Alert, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function OnboardingFirstScreen() {
-  const router = useRouter()
-  const { signup, setDOB, setSex, setLanguage, resetTempContext } = useTempStore();
-
-  const handleClose = () => {
-    Alert.alert('Close Form', 'Are you sure you want to discard this form?', [
-      {
-        text: 'Discard',
-        onPress: () => {
-          router.dismissAll();
-          resetTempContext();
-        },
-        style: "destructive",
-      },
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-    ]);
-  };
-
-  const handleNext = () => {
-    router.push("/onboarding/form/second");
-  };
+  const { signup, setDOB, setSex, setLanguage } = useTempStore();
 
   return (
     <ThemedView type="container">

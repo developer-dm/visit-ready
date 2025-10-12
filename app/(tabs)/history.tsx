@@ -77,19 +77,13 @@ export default function HistoryScreen() {
                             })}
                         </>
                     ) : (
-                        <View style={styles.emptyState}>
-                            <ThemedView style={styles.emptyIconContainer} type="dusked">
-                                <MaterialIcons
-                                    size={48}
-                                    name="event-note"
-                                    color="#94a3b8"
-                                />
-                            </ThemedView>
-                            <ThemedText style={styles.emptyTitle} type="whitened">No appointments yet</ThemedText>
-                            <ThemedText style={styles.emptySubtitle} type="greyed">
+                        <ThemedView style={styles.emptyState}>
+                            <MaterialIcons size={48} name="event-available" color="#6b7280" />
+                            <ThemedText style={styles.emptyStateTitle} type="whitened">No appointments yet</ThemedText>
+                            <ThemedText style={styles.emptyStateText} type="greyed">
                                 Go to the dashboard to create your first appointment
                             </ThemedText>
-                        </View>
+                        </ThemedView>
                     )}
                 </View>
             </View>
@@ -202,26 +196,18 @@ const styles = StyleSheet.create({
     },
     emptyState: {
         alignItems: 'center',
-        padding: 48,
-    },
-    emptyIconContainer: {
-        width: 80,
-        height: 80,
+        padding: 30,
         borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 16,
     },
-    emptyTitle: {
+    emptyStateTitle: {
         fontSize: 18,
         fontWeight: '600',
+        marginTop: 16,
         marginBottom: 8,
-        textAlign: 'center',
     },
-    emptySubtitle: {
+    emptyStateText: {
         fontSize: 14,
         textAlign: 'center',
-        lineHeight: 20,
     },
     disclaimerSection: {
         paddingHorizontal: 24,

@@ -1,6 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import DataFormatterService from "@/services/dataFormatter";
+import { DataFormatterService } from "@/services/dataFormatter";
 import { useTempStore } from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -8,7 +8,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 export default function PrepFinalScreen() {
     const { appointment } = useTempStore();
 
-    const userDataEntries = Object.entries(appointment).filter(([key, value]) => {
+    const userDataEntries = Object.entries(appointment).filter(([key]) => {
         return key;
     });
 
@@ -30,7 +30,7 @@ export default function PrepFinalScreen() {
 
                     <ThemedView type="bordered" style={styles.detailsSection}>
                         {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
-                            if (key === "appointmentDate") value = DataFormatterService.FormatDateTimeString(new Date(value));
+                            if (key === "appointmentDate" && value) value = DataFormatterService.FormatDateTimeString(new Date(value));
 
                             return (
                                 <ThemedView type="list" key={key} style={styles.detailItem}>

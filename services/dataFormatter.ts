@@ -94,5 +94,3 @@ export const DataFormatterService = {
     return inputs.map(input => this.toReadableString(input, type));
   },
 };
-
-export default DataFormatterService;

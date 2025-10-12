@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { logOut } from "@/services/auth";
-import DataFormatterService from "@/services/dataFormatter";
+import { DataFormatterService } from "@/services/dataFormatter";
 import { useAuthStore } from "@/stores/authStore";
 import { useDataStore } from "@/stores/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -99,7 +99,7 @@ export default function SettingsScreen() {
 
             <View style={styles.profileDetails}>
               {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
-                if (key === "DOB" && typeof value === 'string') value = DataFormatterService.FormatDateString(new Date(value))
+                if (key === "DOB" && typeof value !== "boolean" && value) value = DataFormatterService.FormatDateString(new Date(value));
 
                 return (
                   <ThemedView type="list" key={key} style={styles.profileItem}>

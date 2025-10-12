@@ -1,7 +1,7 @@
 
 // Onboarding Data
 export type SignupData = {
-    DOB: Date;
+    DOB: Date | null;
     sex: string;
     language: string;
     acceptedTerms: boolean;
@@ -25,7 +25,7 @@ export type CompletionData = {
 // Appointment Preparation Data
 export type AppointmentData = {
     appointmentType: string;
-    appointmentDate: Date;
+    appointmentDate: Date | null;
     provider: string;
     mainConcern: string;
     concernStart: string;
@@ -83,7 +83,7 @@ export type AuthStore = {
 
 // User Data State
 export type UserDataStore = {
-    signup: SignupData;
+    signup: SignupData | null;
     appointments: { [id: string]: AppointmentData };
     completions: { [id: string]: CompletionData }
 

@@ -117,7 +117,7 @@ export default function AboutScreen() {
             Questions or Feedback?
           </ThemedText>
           <ThemedText style={styles.contactText} type="greyed">
-            We'd love to hear from you to make Visit Ready even better.
+            {"We'd love to hear from you to make Visit Ready even better."}
           </ThemedText>
         </View>
       </ScrollView>

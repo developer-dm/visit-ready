@@ -104,7 +104,7 @@ export default function OnboardingAuthScreen() {
               <View style={styles.infoContainer}>
                 <MaterialIcons name="info-outline" size={22} color="#64748b" />
                 <ThemedText style={styles.infoText} type="greyed">
-                  This device doesn't support secure authentication. Please enable device lock screen security in your device settings.
+                  {"This device doesn't support secure authentication. Please enable device lock screen security in your device settings."}
                 </ThemedText>
               </View>
 

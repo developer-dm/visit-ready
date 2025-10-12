@@ -5,7 +5,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { useDataStore } from '@/stores/dataStore';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from 'expo-router';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function DashboardScreen() {
   const router = useRouter();
@@ -16,23 +16,23 @@ export default function DashboardScreen() {
   const appointmentArray = Object.entries(appointments).map(([id, data]) => ({
     id,
     ...data,
-    appointmentDate: new Date(data.appointmentDate)
+    appointmentDate: new Date(data.appointmentDate || "")
   })).sort((a, b) => a.appointmentDate.getTime() - b.appointmentDate.getTime());
 
   const now = new Date();
 
-  // Get upcoming appointment (next appointment after now)
+  // Get upcoming appointment
   const upcomingAppointment = appointmentArray.find(
     apt => apt.appointmentDate > now
   );
 
-  // Get monthly appointments (appointments in the next 30 days)
+  // Get monthly appointments
   const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
   const monthlyAppointments = appointmentArray.filter(
     apt => apt.appointmentDate > now && apt.appointmentDate <= thirtyDaysFromNow
   );
 
-  // Get weekly appointments (appointments in the next 7 days)
+  // Get weekly appointments
   const sevenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
   const weeklyAppointments = appointmentArray.filter(
     apt => apt.appointmentDate > now && apt.appointmentDate <= sevenDaysFromNow
@@ -84,8 +84,20 @@ export default function DashboardScreen() {
             <MaterialIcons size={48} name="event-available" color="#6b7280" />
             <ThemedText style={styles.emptyStateTitle} type="whitened">No upcoming visits</ThemedText>
             <ThemedText style={styles.emptyStateText} type="greyed">
-              Your scheduled appointments will appear here
+              Fill out a short form to start your preparation
             </ThemedText>
+            <TouchableOpacity style={styles.newVisitButton} onPress={handleVisitPrep}>
+              <Text style={styles.newVisitButtonText}>
+                Start Visit Prep
+              </Text>
+              <View style={styles.newVisitButtonIcon}>
+                <MaterialIcons
+                  size={16}
+                  name="arrow-forward"
+                  color="#ffffffff"
+                />
+              </View>
+            </TouchableOpacity>
           </ThemedView>
         )}
       </View>
@@ -199,8 +211,8 @@ const styles = StyleSheet.create({
   },
   emptyState: {
     alignItems: 'center',
-    padding: 40,
-    borderRadius: 12,
+    padding: 30,
+    borderRadius: 10,
   },
   emptyStateTitle: {
     fontSize: 18,
@@ -211,6 +223,37 @@ const styles = StyleSheet.create({
   emptyStateText: {
     fontSize: 14,
     textAlign: 'center',
+    marginBottom: 12,
+  },
+  newVisitButton: {
+    backgroundColor: '#3b82f6',
+    borderRadius: 10,
+    paddingVertical: 16,
+    paddingHorizontal: 36,
+    gap: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#3b82f6',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+  },
+  newVisitButtonText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#ffffff',
+  },
+  newVisitButtonIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 10,
+    backgroundColor: '#ffffff33',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   actionGrid: {
     flexDirection: 'row',
@@ -218,7 +261,7 @@ const styles = StyleSheet.create({
   },
   actionCard: {
     flex: 1,
-    borderRadius: 12,
+    borderRadius: 10,
     padding: 16,
     alignItems: 'center',
     shadowColor: '#000',
@@ -229,7 +272,7 @@ const styles = StyleSheet.create({
   actionIconContainer: {
     width: 48,
     height: 48,
-    borderRadius: 12,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
@@ -241,7 +284,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   tipsCard: {
-    borderRadius: 12,
+    borderRadius: 10,
     padding: 16,
   },
   tipItem: {
@@ -265,7 +308,7 @@ const styles = StyleSheet.create({
   },
   statCard: {
     flex: 1,
-    borderRadius: 12,
+    borderRadius: 10,
     padding: 16,
     alignItems: 'center',
     shadowColor: '#000',

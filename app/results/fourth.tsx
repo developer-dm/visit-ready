@@ -1,7 +1,7 @@
 import { CustomButton } from "@/components/CustomButton";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import DataFormatterService from "@/services/dataFormatter";
+import { DataFormatterService } from "@/services/dataFormatter";
 import { useTempStore } from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React from "react";
@@ -26,7 +26,7 @@ export default function FourthResultsScreen() {
                     <View style={styles.numberBadge}>
                         <ThemedText style={styles.numberText}>{key + 1}</ThemedText>
                     </View>
-                    
+
                     <ThemedText style={styles.questionText} type="whitened">
                         {item.question}
                     </ThemedText>
