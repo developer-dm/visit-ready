@@ -3,7 +3,7 @@ import { ValueToLabel } from '@/types/labels';
 export const DataFormatterService = {
   toReadableString(
     input: any,
-    type?: 'DOB' | 'priority' | 'appointmentDate' | 'appointmentType' | 'concernStart' | 'concernSeverity' | 'sex' | 'label' | 'language' | 'notifications' | 'visitGoal' | 'specificWorries',
+    type?: keyof typeof ValueToLabel,
   ): string {
     if (input === null || input === undefined || input === '') {
       return 'N/A';
@@ -85,12 +85,5 @@ export const DataFormatterService = {
     });
 
     return `${date}, ${time}`
-  },
-
-  toReadableStrings(
-    inputs: any[],
-    type?: 'DOB' | 'priority' | 'appointmentDate' | 'appointmentType' | 'concernStart' | 'concernSeverity' | 'sex' | 'label' | 'language' | 'notifications' | 'visitGoal' | 'specificWorries',
-  ): string[] {
-    return inputs.map(input => this.toReadableString(input, type));
   },
 };

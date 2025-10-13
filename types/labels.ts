@@ -99,8 +99,8 @@ export const ValueToLabel = {
     } as Record<string, string>,
 
     notifications: {
-        'false': 'Denied',
-        'true': 'Allowed',
+        'false': 'Disabled',
+        'true': 'Enabled',
     } as Record<string, string>,
 
     visitGoal: {

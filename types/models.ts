@@ -4,7 +4,7 @@ export type SignupData = {
     DOB: Date | null;
     sex: string;
     language: string;
-    acceptedTerms: boolean;
+    notifications: boolean;
 };
 
 // Completion Data
@@ -46,7 +46,7 @@ export type TempStore = {
     setDOB: (value: Date) => void;
     setSex: (value: string) => void;
     setLanguage: (value: string) => void;
-    setAcceptedTerms: (value: boolean) => void;
+    setNotifications: (value: boolean) => void;
 
     setId: (id: string) => void;
     setAppointmentType: (value: string) => void;

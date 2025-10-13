@@ -63,73 +63,71 @@ export default function SignInScreen() {
 
   return (
     <View style={styles.content}>
-      <View style={styles.cardContent}>
-        <View style={styles.header}>
-          <View style={styles.brandingContainer}>
-            <ThemedView style={styles.logoContainer} type="dusked">
-              <Image source={require("@/assets/images/favicon.png")} style={styles.logo} />
+      <View style={styles.header}>
+        <View style={styles.brandingContainer}>
+          <ThemedView style={styles.logoContainer} type="dusked">
+            <Image source={require("@/assets/images/favicon.png")} style={styles.logo} />
+          </ThemedView>
+          <ThemedText style={styles.appTitle} type="whitened">
+            Visit Ready
+          </ThemedText>
+          <ThemedText style={styles.appSubtitle} type="greyed">
+            Make the most of every visit
+          </ThemedText>
+        </View>
+      </View>
+
+      {/* Login Options */}
+      <View style={styles.loginOptions}>
+        <TouchableOpacity
+          style={[
+            styles.primaryLoginButton,
+            authType === 'none' && styles.disabledButton
+          ]}
+          onPress={handleLogin}
+          disabled={authType === 'none'}
+        >
+          <View style={styles.loginButtonContent}>
+            <ThemedView style={styles.loginIconContainer} lightColor='#ffffff33' darkColor='#ffffff33'>
+              <MaterialIcons name={authConfig.icon as 'fingerprint' | 'lock' | 'login'} size={24} color="#ffffff" />
             </ThemedView>
-            <ThemedText style={styles.appTitle} type="whitened">
-              Visit Ready
-            </ThemedText>
-            <ThemedText style={styles.appSubtitle} type="greyed">
-              Make the most of every visit
-            </ThemedText>
+            <View style={styles.loginTextContainer}>
+              <Text style={styles.primaryLoginText}>{authConfig.title}</Text>
+              <Text style={styles.loginSubtext}>{authConfig.subtitle}</Text>
+            </View>
+            <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
           </View>
-        </View>
+        </TouchableOpacity>
 
-        {/* Login Options */}
-        <View style={styles.loginOptions}>
-          <TouchableOpacity
-            style={[
-              styles.primaryLoginButton,
-              authType === 'none' && styles.disabledButton
-            ]}
-            onPress={handleLogin}
-            disabled={authType === 'none'}
-          >
-            <View style={styles.loginButtonContent}>
-              <ThemedView style={styles.loginIconContainer} lightColor='#ffffff33' darkColor='#ffffff33'>
-                <MaterialIcons name={authConfig.icon as 'fingerprint' | 'lock' | 'login'} size={24} color="#ffffff" />
-              </ThemedView>
-              <View style={styles.loginTextContainer}>
-                <Text style={styles.primaryLoginText}>{authConfig.title}</Text>
-                <Text style={styles.loginSubtext}>{authConfig.subtitle}</Text>
-              </View>
-              <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
-            </View>
-          </TouchableOpacity>
-
-          {authType === 'none' && (
-            <View style={styles.noLoginSection}>
-              <View style={styles.infoContainer}>
-                <MaterialIcons name="info-outline" size={22} color="#64748b" />
-                <ThemedText style={styles.infoText} type="greyed">
-                  {"This device doesn't support secure authentication. Please enable device lock screen security in your device settings."}
-                </ThemedText>
-              </View>
-
-              <Button type="bordered" style={styles.infoIconContainer} onPress={preliminaryCheck}>
-                <MaterialIcons
-                  name="refresh"
-                  size={25}
-                  color="#64748b"
-                />
-              </Button>
-            </View>
-          )}
-        </View>
-
-        <View style={styles.additionalOptions}>
-          <Link asChild push href="/about">
-            <TouchableOpacity style={styles.linkButton}>
-              <MaterialIcons name="info-outline" size={20} color="#64748b" />
-              <ThemedText style={styles.linkText} type="greyed">
-                About Visit Ready
+        {authType === 'none' && (
+          <View style={styles.noLoginSection}>
+            <View style={styles.infoContainer}>
+              <MaterialIcons name="info-outline" size={22} color="#64748b" />
+              <ThemedText style={styles.infoText} type="greyed">
+                {"This device doesn't support secure authentication. Please enable device lock screen security in your device settings."}
               </ThemedText>
-            </TouchableOpacity>
-          </Link>
-        </View>
+            </View>
+
+            <Button type="bordered" style={styles.infoIconContainer} onPress={preliminaryCheck}>
+              <MaterialIcons
+                name="refresh"
+                size={25}
+                color="#64748b"
+              />
+            </Button>
+          </View>
+        )}
+      </View>
+
+      <View style={styles.additionalOptions}>
+        <Link asChild push href="/about">
+          <TouchableOpacity style={styles.linkButton}>
+            <MaterialIcons name="info-outline" size={20} color="#64748b" />
+            <ThemedText style={styles.linkText} type="greyed">
+              About Visit Ready
+            </ThemedText>
+          </TouchableOpacity>
+        </Link>
       </View>
     </View>
   );
@@ -139,12 +137,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: 'center',
-  },
-  cardContent: {
     padding: 24,
-  },
-  loadingContainer: {
-    alignItems: 'center',
   },
   header: {
     paddingHorizontal: 24,
@@ -156,23 +149,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
   },
   logo: {
-    width: 50,
-    height: 50,
+    width: 80,
+    height: 80,
   },
   appTitle: {
     fontSize: 32,
@@ -194,17 +185,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#3b82f6',
     borderRadius: 10,
     padding: 20,
-    shadowColor: '#3b82f6',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
   },
   disabledButton: {
     backgroundColor: '#94a3b8',
-    shadowOpacity: 0.1,
   },
   loginButtonContent: {
     flexDirection: 'row',

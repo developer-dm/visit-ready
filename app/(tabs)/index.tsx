@@ -4,11 +4,10 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useDataStore } from '@/stores/dataStore';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function DashboardScreen() {
-  const router = useRouter();
   const { appointments } = useDataStore();
 
   const totalAppointments = Object.keys(appointments).length;
@@ -184,7 +183,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 24,
     paddingTop: 40,
-    paddingBottom: 24,
+    paddingBottom: 12,
   },
   appTitle: {
     fontSize: 32,
@@ -213,6 +212,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 30,
     borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
   },
   emptyStateTitle: {
     fontSize: 18,
@@ -234,13 +238,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#3b82f6',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
   },
   newVisitButtonText: {
     fontSize: 18,
@@ -264,10 +261,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 16,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
   },
   actionIconContainer: {
     width: 48,
@@ -286,6 +279,11 @@ const styles = StyleSheet.create({
   tipsCard: {
     borderRadius: 10,
     padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
   },
   tipItem: {
     flexDirection: 'row',
@@ -313,8 +311,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
   },
   statNumber: {
     fontSize: 24,

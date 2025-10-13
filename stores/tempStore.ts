@@ -6,7 +6,7 @@ const initialSignupState: SignupData = {
     DOB: null,
     sex: "",
     language: "",
-    acceptedTerms: false,
+    notifications: false,
 };
 
 const initialAppointmentState: AppointmentData = {
@@ -58,9 +58,9 @@ export const useTempStore = create<TempStore>(
                 signup: { ...state.signup, language: value },
             })),
 
-        setAcceptedTerms: (value: boolean) =>
+        setNotifications: (value: boolean) =>
             set((state) => ({
-                signup: { ...state.signup, acceptedTerms: value },
+                signup: { ...state.signup, notifications: value },
             })),
 
         // Appointment Actions

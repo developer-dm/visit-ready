@@ -1,6 +1,5 @@
 import { AppointmentData, CompletionData, SignupData, UserDataStore } from "@/types/models";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -8,7 +7,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 const isWeb = Platform.OS === "web";
 
 /*
-// Production Encryption
+// Production Storage
 
 import { Buffer } from 'buffer';
 import crypto from "react-native-quick-crypto";
@@ -119,104 +118,11 @@ const createEncryptedAsyncStorage = () => ({
 });
 */
 
-// Development Storage
-import * as Crypto from "expo-crypto";
-
-// Development
-class EncryptionService {
-    private static ENCRYPTION_KEY = "app_encryption_key";
-
-    static async getOrCreateEncryptionKey(): Promise<string> {
-        try {
-            let key = await SecureStore.getItemAsync(this.ENCRYPTION_KEY);
-            if (!key) {
-                const randomBytes = await Crypto.getRandomBytesAsync(32);
-                key = Array.from(randomBytes, byte => byte.toString(16).padStart(2, '0')).join('');
-                await SecureStore.setItemAsync(this.ENCRYPTION_KEY, key);
-            }
-            return key;
-        } catch (error) {
-            console.error("Error managing encryption key:", error);
-            throw error;
-        }
-    }
-
-    static async encrypt(data: string): Promise<string> {
-        try {
-            const key = await this.getOrCreateEncryptionKey();
-            const result = await this.simpleEncrypt(data, key);
-            return result;
-        } catch (error) {
-            console.error("Error encrypting data:", error);
-            throw error;
-        }
-    }
-
-    static async decrypt(encryptedData: string): Promise<string> {
-        try {
-            const key = await this.getOrCreateEncryptionKey();
-            const result = await this.simpleDecrypt(encryptedData, key);
-            return result;
-        } catch (error) {
-            console.error("Error decrypting data:", error);
-            throw error;
-        }
-    }
-
-    private static async simpleEncrypt(data: string, key: string): Promise<string> {
-        const dataBytes = new TextEncoder().encode(data);
-        const keyBytes = new TextEncoder().encode(key);
-        const encrypted = new Uint8Array(dataBytes.length);
-
-        for (let i = 0; i < dataBytes.length; i++) {
-            encrypted[i] = dataBytes[i] ^ keyBytes[i % keyBytes.length];
-        }
-
-        return Array.from(encrypted, byte => byte.toString(16).padStart(2, '0')).join('');
-    }
-
-    private static async simpleDecrypt(encryptedHex: string, key: string): Promise<string> {
-        const encryptedBytes = new Uint8Array(encryptedHex.match(/.{2}/g)!.map(byte => parseInt(byte, 16)));
-        const keyBytes = new TextEncoder().encode(key);
-        const decrypted = new Uint8Array(encryptedBytes.length);
-
-        for (let i = 0; i < encryptedBytes.length; i++) {
-            decrypted[i] = encryptedBytes[i] ^ keyBytes[i % keyBytes.length];
-        }
-
-        return new TextDecoder().decode(decrypted);
-    }
-}
-
-// Development
+// Development Use
 const createEncryptedAsyncStorage = () => ({
-    setItem: async (key: string, value: string) => {
-        try {
-            const encryptedValue = await EncryptionService.encrypt(value);
-            await AsyncStorage.setItem(key, encryptedValue);
-        } catch (error) {
-            console.error("Error setting encrypted item:", error);
-            throw error;
-        }
-    },
-    getItem: async (key: string) => {
-        try {
-            const encryptedValue = await AsyncStorage.getItem(key);
-            if (!encryptedValue) return null;
-            return await EncryptionService.decrypt(encryptedValue);
-        } catch (error) {
-            console.error("Error getting encrypted item:", error);
-            return null;
-        }
-    },
-    removeItem: async (key: string) => {
-        try {
-            await AsyncStorage.removeItem(key);
-        } catch (error) {
-            console.error("Error removing encrypted item:", error);
-            throw error;
-        }
-    },
+    setItem: (key: string, value: string) => AsyncStorage.setItem(key, value),
+    getItem: (key: string) => AsyncStorage.getItem(key),
+    removeItem: (key: string) => AsyncStorage.removeItem(key),
 });
 
 export const useDataStore = create(

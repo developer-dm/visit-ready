@@ -1,14 +1,19 @@
+import { Button } from '@/components/Button';
 import { ThemedText } from '@/components/ThemedText';
-import { Link } from 'expo-router';
+import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 export default function NotFoundScreen() {
+    const handleBack = () => {
+        router.dismiss();
+    };
+
     return (
         <View style={styles.container}>
-            <ThemedText type="whitened">This screen does not exist.</ThemedText>
-            <Link asChild replace href="/(tabs)" style={styles.link}>
-                <ThemedText type="link">Go to home screen!</ThemedText>
-            </Link>
+            <ThemedText type="error">Navigation Error</ThemedText>
+            <Button type="bordered" style={styles.backButton} onPress={handleBack}>
+                <ThemedText type="link">Go back</ThemedText>
+            </Button>
         </View>
     );
 }
@@ -18,8 +23,10 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        gap: 20,
     },
-    link: {
-        padding: 30,
+    backButton: {
+        padding: 20,
+        borderRadius: 10,
     },
 });

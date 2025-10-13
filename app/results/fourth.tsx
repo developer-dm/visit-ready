@@ -36,7 +36,11 @@ export default function FourthResultsScreen() {
 
                 <View style={styles.detailsSection}>
                     <View style={styles.detailRow}>
-                        <MaterialIcons name="flag" size={16} color="#64748b" />
+                        <MaterialIcons
+                            name="flag"
+                            size={16}
+                            color={item.priority === 'high' ? "#ef4444" : item.priority === 'medium' ? "#e6a313ff" : "#64748b"}
+                        />
                         <ThemedText style={styles.detailText} type="greyed">
                             {DataFormatterService.toReadableString(item.priority, 'priority')}
                         </ThemedText>
@@ -94,12 +98,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         gap: 10,
         shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
     },
     resultsText: {
         fontSize: 16,
@@ -118,13 +120,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#3b82f6',
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#3b82f6',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
     },
     detailsSection: {
         gap: 12,

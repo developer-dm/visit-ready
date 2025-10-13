@@ -76,7 +76,11 @@ export default function PrepFinalScreen() {
                 </View>
                 <View style={styles.detailsSection}>
                     <View style={styles.detailRow}>
-                        <MaterialIcons name="flag" size={16} color="#64748b" />
+                        <MaterialIcons
+                            name="flag"
+                            size={16}
+                            color={item.priority === 'high' ? "#ef4444" : item.priority === 'medium' ? "#e6a313ff" : "#64748b"}
+                        />
                         <ThemedText style={styles.detailText} type="greyed">
                             {DataFormatterService.toReadableString(item.priority, 'priority')}
                         </ThemedText>
@@ -263,6 +267,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 16,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
     },
     profileInfo: {
         flex: 1,
@@ -289,8 +298,9 @@ const styles = StyleSheet.create({
         padding: 16,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
     },
     summaryText: {
         flex: 1,
@@ -304,8 +314,9 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
     },
     questionHeader: {
         flexDirection: 'row',
@@ -328,8 +339,9 @@ const styles = StyleSheet.create({
         gap: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
     },
     numberBadge: {
         width: 32,
@@ -338,10 +350,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#3b82f6',
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#3b82f6',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
     },
     numberText: {
         fontSize: 16,

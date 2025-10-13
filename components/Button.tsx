@@ -39,6 +39,7 @@ export function Button({
         style,
       ]}
       {...rest}
+      activeOpacity={0.3}
     >
       {children}
     </TouchableOpacity >

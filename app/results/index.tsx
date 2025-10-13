@@ -9,10 +9,10 @@ import { CompletionData } from '@/types/models';
 import { generateAPIUrl } from '@/utils/utils';
 import { useCompletion } from '@ai-sdk/react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 import { fetch as expoFetch } from 'expo/fetch';
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 function trimResponse(text: string): string {
 	const codeBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/;
@@ -21,7 +21,6 @@ function trimResponse(text: string): string {
 }
 
 export default function IndexResultsScreen() {
-	const router = useRouter();
 	const [hasSubmitted, setHasSubmitted] = useState(false);
 	const { id, appointment, setCompletion, resetTempContext } = useTempStore();
 	const { signup, addCompletion } = useDataStore();
@@ -42,20 +41,8 @@ export default function IndexResultsScreen() {
 	};
 
 	const handleReturn = () => {
-		Alert.alert('Exit', 'Are you sure you want to exit?', [
-			{
-				text: 'Exit',
-				onPress: () => {
-					router.replace("/(tabs)");
-					resetTempContext();
-				},
-				style: "destructive",
-			},
-			{
-				text: 'Cancel',
-				style: 'cancel',
-			},
-		]);
+		router.replace("/(tabs)");
+		resetTempContext();
 	};
 
 	useEffect(() => {
@@ -141,24 +128,20 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		marginBottom: 16,
 		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 2
-		},
-		shadowOpacity: 0.1,
-		shadowRadius: 10,
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.2,
+		shadowRadius: 3,
+		elevation: 3,
 	},
 	loadingCard: {
 		marginHorizontal: 24,
 		marginBottom: 24,
 		borderRadius: 10,
 		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 4
-		},
-		shadowOpacity: 0.1,
-		shadowRadius: 10,
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.2,
+		shadowRadius: 3,
+		elevation: 3,
 	},
 	loadingContent: {
 		padding: 32,
@@ -196,10 +179,6 @@ const styles = StyleSheet.create({
 	},
 	primaryButton: {
 		backgroundColor: '#3b82f6',
-		shadowColor: '#3b82f6',
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.1,
-		shadowRadius: 10,
 	},
 	primaryButtonText: {
 		fontSize: 16,

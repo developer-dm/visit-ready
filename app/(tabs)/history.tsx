@@ -4,11 +4,10 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useDataStore } from "@/stores/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function HistoryScreen() {
-    const router = useRouter();
     const { appointments } = useDataStore();
 
     const handleAppointmentView = (id: string) => {
@@ -121,12 +120,10 @@ const styles = StyleSheet.create({
         marginBottom: 24,
         borderRadius: 10,
         shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
     },
     cardContent: {
         padding: 24,
@@ -185,14 +182,6 @@ const styles = StyleSheet.create({
     },
     appointmentsContainer: {
         gap: 6,
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
     },
     emptyState: {
         alignItems: 'center',

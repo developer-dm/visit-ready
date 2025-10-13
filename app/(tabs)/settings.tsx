@@ -4,6 +4,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { logOut } from "@/services/auth";
 import { DataFormatterService } from "@/services/dataFormatter";
+import { clearAllNotifications, getAllNotifications } from "@/services/notifications";
 import { useAuthStore } from "@/stores/authStore";
 import { useDataStore } from "@/stores/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -14,11 +15,39 @@ export default function SettingsScreen() {
   const { resetOnboarding } = useAuthStore();
   const { signup, resetAppointments, resetAll, resetCompletions } = useDataStore();
 
+  const showNotifications = async () => {
+    const notifications = await getAllNotifications();
+
+    notifications.forEach((notif) => {
+      console.log('ID:', notif.identifier);
+      console.log('Title:', notif.content.title);
+      console.log('Body:', notif.content.body);
+      console.log('Scheduled for:', notif.trigger);
+    });
+  };
+
   const clearData = () => {
     resetAll();
+    clearAllNotifications();
     resetOnboarding();
     logOut();
   };
+
+  const clearNotifications = () => {
+    Alert.alert('Clear Notifications', 'Are you sure you want to clear all scheduled notifications? This action CANNOT be reversed.', [
+      {
+        text: 'Confirm',
+        onPress: () => {
+          clearAllNotifications();
+        },
+        style: "destructive",
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
+  }
 
   const clearVisits = () => {
     Alert.alert('Clear Visits', 'Are you sure you want to clear all visits? This action CANNOT be reversed.', [
@@ -66,7 +95,7 @@ export default function SettingsScreen() {
   };
 
   const userDataEntries = Object.entries(signup ? signup : {}).filter(([key]) => {
-    return key !== "acceptedTerms";
+    return key === 'DOB' || key === 'sex' || key === 'language';
   });
 
   return (
@@ -80,53 +109,99 @@ export default function SettingsScreen() {
         </View>
 
         <ThemedView style={styles.profileCard}>
-          <View style={styles.cardContent}>
-            <View style={styles.cardHeader}>
-              <ThemedView style={styles.profileIconContainer} type="dusked">
-                <MaterialIcons
-                  size={32}
-                  name="person"
-                  color="#3b82f6"
-                />
-              </ThemedView>
-              <View style={styles.profileInfo}>
-                <ThemedText style={styles.cardTitle} type="whitened">Profile Information</ThemedText>
-                <ThemedText style={styles.cardSubtitle} type="greyed">
-                  Your personal details
-                </ThemedText>
-              </View>
-            </View>
-
-            <View style={styles.profileDetails}>
-              {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
-                if (key === "DOB" && typeof value !== "boolean" && value) value = DataFormatterService.FormatDateString(new Date(value));
-
-                return (
-                  <ThemedView type="list" key={key} style={styles.profileItem}>
-                    <ThemedText style={styles.profileLabel} type="greyed">
-                      {DataFormatterService.toReadableString(key, 'label')}
-                    </ThemedText>
-                    <ThemedText style={styles.profileValue} type="whitened">
-                      {DataFormatterService.toReadableString(value)}
-                    </ThemedText>
-                  </ThemedView>
-                );
-              })
-              ) : (
-                <View style={styles.noDataContainer}>
-                  <ThemedText style={styles.noDataText} type="greyed">
-                    No profile information available
-                  </ThemedText>
-                </View>
-              )}
+          <View style={styles.cardHeader}>
+            <ThemedView style={styles.profileIconContainer} type="dusked">
+              <MaterialIcons
+                size={32}
+                name="person"
+                color="#3b82f6"
+              />
+            </ThemedView>
+            <View style={styles.profileInfo}>
+              <ThemedText style={styles.cardTitle} type="whitened">Profile Information</ThemedText>
+              <ThemedText style={styles.cardSubtitle} type="greyed">
+                Your personal details
+              </ThemedText>
             </View>
           </View>
+
+          <View style={styles.profileDetails}>
+            {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
+              if (key === "DOB" && typeof value !== "boolean" && value) value = DataFormatterService.FormatDateString(new Date(value));
+
+              return (
+                <ThemedView type="list" key={key} style={styles.profileItem}>
+                  <ThemedText style={styles.profileLabel} type="greyed">
+                    {DataFormatterService.toReadableString(key, 'label')}
+                  </ThemedText>
+                  <ThemedText style={styles.profileValue} type="whitened">
+                    {DataFormatterService.toReadableString(value)}
+                  </ThemedText>
+                </ThemedView>
+              );
+            })
+            ) : (
+              <View style={styles.noDataContainer}>
+                <ThemedText style={styles.noDataText} type="greyed">
+                  No profile information available
+                </ThemedText>
+              </View>
+            )}
+          </View>
         </ThemedView>
+
+        <View style={styles.preferencesSection}>
+          <ThemedText style={styles.sectionTitle} type="whitened">Preferences</ThemedText>
+
+          {/* Notifications */}
+          <Button type="bordered" style={styles.actionCard} onPress={showNotifications}>
+            <View style={styles.preferenceContent}>
+              <View style={styles.preferenceIconLabel}>
+                <MaterialIcons
+                  size={22}
+                  name="notifications"
+                  color="#64748b"
+                />
+                <ThemedText style={styles.preferenceText}>Notifications</ThemedText>
+              </View>
+              <ThemedText style={styles.preferenceText} type="greyed">
+                {DataFormatterService.toReadableString(signup?.notifications, 'notifications')}
+              </ThemedText>
+            </View>
+            <MaterialIcons
+              size={20}
+              name="chevron-right"
+              color="#94a3b8"
+            />
+          </Button>
+        </View>
 
         <View style={styles.actionsSection}>
           <ThemedText style={styles.sectionTitle} type="whitened">Account Actions</ThemedText>
 
           <View style={styles.actionGrid}>
+            {/* Delete all notifications */}
+            <Button style={styles.actionCard} type="bordered" onPress={clearNotifications}>
+              <ThemedView style={styles.actionIconContainer} type="dusked">
+                <MaterialIcons
+                  size={24}
+                  name="notifications-off"
+                  color="#64748b"
+                />
+              </ThemedView>
+              <View style={styles.actionContent}>
+                <ThemedText style={styles.actionTitle} type="whitened">Delete Scheduled Notifications</ThemedText>
+                <ThemedText style={styles.actionSubtitle} type="greyed">
+                  Permanently remove every scheduled notification
+                </ThemedText>
+              </View>
+              <MaterialIcons
+                size={20}
+                name="chevron-right"
+                color="#94a3b8"
+              />
+            </Button>
+
             {/* Delete all visits */}
             <Button style={styles.actionCard} type="bordered" onPress={clearVisits}>
               <ThemedView style={styles.actionIconContainer} type="dusked">
@@ -233,19 +308,15 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   profileCard: {
+    padding: 24,
     marginHorizontal: 24,
     marginBottom: 24,
     borderRadius: 10,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-  },
-  cardContent: {
-    padding: 24,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -302,6 +373,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     marginBottom: 24,
   },
+  preferencesSection: {
+    paddingHorizontal: 24,
+    marginBottom: 24,
+  },
   sectionTitle: {
     fontSize: 20,
     fontWeight: '600',
@@ -316,13 +391,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     padding: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
   },
   dangerCard: {
     backgroundColor: '#ffdbdbff',
@@ -365,6 +433,21 @@ const styles = StyleSheet.create({
   },
   actionContent: {
     flex: 1,
+  },
+  preferenceContent: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: 10,
+  },
+  preferenceIconLabel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  preferenceText: {
+    fontSize: 16,
+    fontWeight: '600',
   },
   actionTitle: {
     fontSize: 16,

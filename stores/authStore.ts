@@ -6,6 +6,12 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 const isWeb = Platform.OS === "web";
 
+const createAuthStore = () => ({
+  setItem: (key: string, value: string) => SecureStore.setItemAsync(key, value),
+  getItem: (key: string) => SecureStore.getItemAsync(key),
+  removeItem: (key: string) => SecureStore.deleteItemAsync(key),
+})
+
 export const useAuthStore = create(
   persist<AuthStore>(
     (set) => ({
@@ -51,12 +57,7 @@ export const useAuthStore = create(
       name: "auth-store",
       storage: isWeb
         ? createJSONStorage(() => localStorage)
-        : createJSONStorage(() => ({
-          setItem: (key: string, value: string) =>
-            SecureStore.setItemAsync(key, value),
-          getItem: (key: string) => SecureStore.getItemAsync(key),
-          removeItem: (key: string) => SecureStore.deleteItemAsync(key),
-        })),
+        : createJSONStorage(() => createAuthStore()),
       onRehydrateStorage: () => {
         return (state) => {
           state?.setHasHydrated(true);

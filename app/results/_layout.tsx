@@ -3,13 +3,12 @@ import { Footer } from "@/components/Footer";
 import { ThemedView } from "@/components/ThemedView";
 import { useTempStore } from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Stack, useRouter, useSegments } from "expo-router";
+import { Stack, router, useSegments } from "expo-router";
 import { useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ResultsLayout() {
-    const router = useRouter();
     const insets = useSafeAreaInsets();
     const segments = useSegments();
     const currentRoute = segments[segments.length - 1];
@@ -157,13 +156,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#3b82f6',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
         minWidth: 160,
         minHeight: 60,
     },

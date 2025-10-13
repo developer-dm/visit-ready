@@ -12,6 +12,33 @@ export default function PrepFinalScreen() {
         return key;
     });
 
+    const renderDetails = () => {
+        if (userDataEntries.length === 0) {
+            return (
+                <View style={styles.noDataContainer}>
+                    <ThemedText style={styles.noDataText} type="greyed">
+                        No information available
+                    </ThemedText>
+                </View>
+            );
+        }
+
+        return userDataEntries.map(([key, value]) => {
+            if (key === "appointmentDate" && value) value = DataFormatterService.FormatDateTimeString(new Date(value));
+
+            return (
+                <ThemedView type="list" key={key} style={styles.detailItem}>
+                    <ThemedText style={styles.detailLabel} type="greyed">
+                        {DataFormatterService.toReadableString(key, 'label')}
+                    </ThemedText>
+                    <ThemedText style={styles.detailValue} type="whitened">
+                        {DataFormatterService.toReadableString(value)}
+                    </ThemedText>
+                </ThemedView>
+            );
+        });
+    };
+
     return (
         <ThemedView type="container">
             <ScrollView
@@ -28,29 +55,9 @@ export default function PrepFinalScreen() {
                         <ThemedText style={styles.headerSubtitle} type="greyed">Confirm your appointment details are correct</ThemedText>
                     </View>
 
-                    <ThemedView type="bordered" style={styles.detailsSection}>
-                        {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
-                            if (key === "appointmentDate" && value) value = DataFormatterService.FormatDateTimeString(new Date(value));
-
-                            return (
-                                <ThemedView type="list" key={key} style={styles.detailItem}>
-                                    <ThemedText style={styles.detailLabel} type="greyed">
-                                        {DataFormatterService.toReadableString(key, 'label')}
-                                    </ThemedText>
-                                    <ThemedText style={styles.detailValue} type="whitened">
-                                        {DataFormatterService.toReadableString(value)}
-                                    </ThemedText>
-                                </ThemedView>
-                            );
-                        })
-                        ) : (
-                            <View style={styles.noDataContainer}>
-                                <ThemedText style={styles.noDataText} type="greyed">
-                                    No information available
-                                </ThemedText>
-                            </View>
-                        )}
-                    </ThemedView>
+                    <View style={styles.detailsSection}>
+                        {renderDetails()}
+                    </View>
                 </View>
             </ScrollView>
         </ThemedView>
@@ -82,14 +89,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 8,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
         marginBottom: 16,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
     },
     headerTitle: {
         fontSize: 20,
@@ -105,14 +110,12 @@ const styles = StyleSheet.create({
         maxWidth: 280,
     },
     detailsSection: {
-        gap: 16,
-        borderRadius: 10,
-        paddingVertical: 30,
-        paddingHorizontal: 16,
+        gap: 6,
     },
     detailItem: {
+        paddingTop: 16,
+        paddingBottom: 6,
         borderBottomWidth: 1,
-        padding: 5,
     },
     detailLabel: {
         fontSize: 14,

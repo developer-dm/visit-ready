@@ -1,7 +1,7 @@
 import * as LocalAuthentication from "expo-local-authentication";
 import { useAuthStore } from "../stores/authStore";
 
-export const authenticateWithBiometrics = async (): Promise<boolean> => {
+export const authenticateWithBiometrics = async () => {
     try {
         const result = await LocalAuthentication.authenticateAsync({
             promptMessage: "Authenticate to continue",
@@ -57,6 +57,6 @@ export const checkAuthenticationCapabilities = async () => {
     }
 };
 
-export function logOut() {
+export const logOut = () => {
     useAuthStore.getState().logOut();
 }

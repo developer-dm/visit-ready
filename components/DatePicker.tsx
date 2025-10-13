@@ -34,12 +34,12 @@ export function DatePicker({
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
 
-    const toggleDatePicker = () => {
+    const toggleIsOpen = () => {
         if (Platform.OS === 'android' && mode === 'datetime') {
             setShowDatePicker(true);
         } else {
             setIsOpen(!isOpen);
-        }
+        };
     };
 
     const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
@@ -55,12 +55,11 @@ export function DatePicker({
                 } else {
                     setShowDatePicker(false);
                     setShowTimePicker(false);
+                    setIsOpen(false);
 
-                    if (setValue) {
-                        setValue(selectedDate);
-                    }
-                }
-            }
+                    if (setValue) setValue(selectedDate);
+                };
+            };
         } else {
             setShowDatePicker(false);
             setShowTimePicker(false);
@@ -95,7 +94,7 @@ export function DatePicker({
             <Button
                 type="bordered"
                 style={styles.button}
-                onPress={toggleDatePicker}
+                onPress={toggleIsOpen}
             >
                 <Text style={[styles.text, { color: textColor }]}>
                     {dateString ? dateString : placeholderText}
@@ -106,6 +105,16 @@ export function DatePicker({
                     color={iconColor}
                 />
             </Button>
+
+            {Platform.OS === 'android' && isOpen && mode !== 'datetime' && (
+                <DateTimePicker
+                    mode={mode}
+                    display={display}
+                    value={selection}
+                    onChange={onChange}
+                    {...otherProps}
+                />
+            )}
 
             {Platform.OS === 'android' && mode === 'datetime' && showDatePicker && (
                 <DateTimePicker
@@ -120,16 +129,6 @@ export function DatePicker({
             {Platform.OS === 'android' && mode === 'datetime' && showTimePicker && (
                 <DateTimePicker
                     mode="time"
-                    display={display}
-                    value={selection}
-                    onChange={onChange}
-                    {...otherProps}
-                />
-            )}
-
-            {Platform.OS === 'android' && isOpen && mode !== 'datetime' && (
-                <DateTimePicker
-                    mode={mode}
                     display={display}
                     value={selection}
                     onChange={onChange}
@@ -155,13 +154,18 @@ export function DatePicker({
                         <TouchableOpacity
                             style={styles.cancelButton}
                             onPress={() => setIsOpen(false)}
+                            activeOpacity={0.3}
                         >
                             <Text style={styles.cancelButtonText}>
                                 Cancel
                             </Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.confirmButton} onPress={confirmIOSDate}>
+                        <TouchableOpacity
+                            style={styles.confirmButton}
+                            onPress={confirmIOSDate}
+                            activeOpacity={0.3}
+                        >
                             <Text style={styles.confirmButtonText}>
                                 Confirm
                             </Text>
@@ -195,12 +199,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         borderRadius: 10,
         shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 8,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
         minHeight: 48,
     },
     cancelButton: {
@@ -225,13 +227,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#3b82f6',
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
     },
     confirmButtonText: {
         fontSize: 16,

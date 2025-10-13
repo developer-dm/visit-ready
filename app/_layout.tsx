@@ -1,4 +1,5 @@
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { initializeNotifications } from '@/services/notifications';
 import { useAuthStore } from "@/stores/authStore";
 import "@/utils/polyfills";
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
@@ -16,6 +17,8 @@ const isWeb = Platform.OS === "web";
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const { isLoggedIn, hasCompletedOnboarding, _hasHydrated } = useAuthStore();
+
+  initializeNotifications();
 
   useEffect(() => {
     if (_hasHydrated) {

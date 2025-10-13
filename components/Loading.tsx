@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         backgroundColor: '#000000',
         zIndex: 10000,
-        elevation: 10000,
     },
     content: {
         alignItems: 'center',

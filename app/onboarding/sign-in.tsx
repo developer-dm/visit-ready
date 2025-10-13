@@ -155,17 +155,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#3b82f6',
     borderRadius: 10,
     padding: 20,
-    shadowColor: '#3b82f6',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
   },
   disabledButton: {
     backgroundColor: '#94a3b8',
-    shadowOpacity: 0.1,
   },
   loginButtonContent: {
     flexDirection: 'row',

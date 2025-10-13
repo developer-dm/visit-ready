@@ -1,18 +1,19 @@
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { ThemedView } from "@/components/ThemedView";
+import { DataFormatterService } from "@/services/dataFormatter";
+import { scheduleNotification } from "@/services/notifications";
 import { useDataStore } from "@/stores/dataStore";
 import { useTempStore } from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Stack, useRouter, useSegments } from "expo-router";
+import { Stack, router, useSegments } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function AppointmentPrepLayout() {
-    const router = useRouter();
     const insets = useSafeAreaInsets();
-    const { addAppointment } = useDataStore();
+    const { signup, addAppointment } = useDataStore();
     const segments = useSegments();
     const currentRoute = segments[segments.length - 1];
     const [debounce, setDebounce] = useState(false);
@@ -65,8 +66,15 @@ export default function AppointmentPrepLayout() {
                 break;
             case 'final':
                 addAppointment(appointment, id);
-                router.dismissTo("/(tabs)")
-                router.replace("/results")
+                if (signup?.notifications && appointment.appointmentDate) {
+                    scheduleNotification(
+                        appointment.provider,
+                        DataFormatterService.toReadableString(appointment.appointmentType),
+                        appointment.appointmentDate,
+                    )
+                };
+                router.dismissTo("/(tabs)");
+                router.replace("/results");
                 break;
         }
 
@@ -184,19 +192,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#3b82f6',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
         minWidth: 160,
         minHeight: 60,
     },
     primaryButtonDisabled: {
         backgroundColor: '#b4b6bcff',
-        shadowOpacity: 0,
     },
     primaryButtonText: {
         fontSize: 18,

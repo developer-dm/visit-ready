@@ -4,13 +4,12 @@ import { ThemedView } from "@/components/ThemedView";
 import { useDataStore } from "@/stores/dataStore";
 import { useTempStore } from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Stack, useRouter, useSegments } from "expo-router";
+import { Stack, router, useSegments } from "expo-router";
 import { useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ModalLayout() {
-    const router = useRouter();
     const insets = useSafeAreaInsets();
     const segments = useSegments();
     const currentRoute = segments[segments.length - 1];
@@ -73,8 +72,7 @@ export default function ModalLayout() {
                 if (signup.DOB && signup.sex && signup.language) return true;
                 break;
             case 'second':
-                if (signup.acceptedTerms) return true;
-                break;
+                return true;
         }
     };
 
@@ -165,19 +163,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#3b82f6',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
         minWidth: 160,
         minHeight: 60,
     },
     primaryButtonDisabled: {
         backgroundColor: '#b4b6bcff',
-        shadowOpacity: 0,
     },
     primaryButtonText: {
         fontSize: 18,

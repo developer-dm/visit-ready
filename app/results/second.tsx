@@ -81,13 +81,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#3b82f6',
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#3b82f6',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
     },
     numberText: {
         fontSize: 16,
@@ -102,12 +95,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 10,
         shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
     },
     resultsText: {
         flex: 1,

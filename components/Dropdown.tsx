@@ -81,6 +81,7 @@ export function Dropdown({
                                 { borderColor: borderColor }
                             ]}
                             onPress={() => handleSelect(item.value)}
+                            activeOpacity={0.3}
                         >
                             <Text style={[styles.listItemText, { color: selectionColor }]}>
                                 {item.label}
