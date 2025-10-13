@@ -37,10 +37,8 @@ Using the data above, produce a JSON object that follows exactly the schema and 
 - "what_to_bring": 5-8 practical items tailored to this appointment (IDs such as insurance, med list, previous test results, a symptom diary, translator if needed). If appointment is virtual, adapt items accordingly (e.g., stable internet, list of medications).
 - "summary_for_provider": a concise HPI-style summary including the following information:
     - chief complaint (one short sentence)
-    - history of present illness (brief chronological facts: onset, severity, what makes it better/worse, treatments tried)
     - current remedies (short list text or "")
     - visit goal (one line echoing the user's stated goal)
-    - red flags (possible urgent symptoms to tell the clinician about; non-diagnostic flags, short list)
 
 Rules:
 - If a field (e.g., specific worries) is the literal string "null" or empty, treat it as unavailable.

@@ -27,6 +27,7 @@ export type AppointmentData = {
     appointmentType: string;
     appointmentDate: Date | null;
     provider: string;
+    notified: boolean;
     mainConcern: string;
     concernStart: string;
     concernSeverity: string;
@@ -52,6 +53,7 @@ export type TempStore = {
     setAppointmentType: (value: string) => void;
     setAppointmentDate: (value: Date) => void;
     setProvider: (value: string) => void;
+    setNotified: (value: boolean) => void;
     setMainConcern: (value: string) => void;
     setConcernStart: (value: string) => void;
     setConcernSeverity: (value: string) => void;

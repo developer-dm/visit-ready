@@ -12,6 +12,7 @@ export const ValueToLabel = {
         'appointmenttype': 'Appointment Type',
         'appointmentdate': 'Appointment Date',
         'provider': 'Provider',
+        'notified': 'Receive Notification',
         'mainconcern': 'Main Concern',
         'concernstart': 'Concern Start Date',
         'concernseverity': 'Severity',

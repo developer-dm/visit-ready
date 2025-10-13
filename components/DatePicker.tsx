@@ -21,7 +21,6 @@ export function DatePicker({
     value,
     setValue,
     placeholderText = "Optional",
-    ...otherProps
 }: DatePickerProps) {
     const iconColor = useThemeColor({}, "icon");
     const placeholderColor = useThemeColor({}, "placeholderText");
@@ -45,7 +44,7 @@ export function DatePicker({
     const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
         const { type } = event;
 
-        if (type === "set" && selectedDate) {
+        if ((type === "set" || type === "dismissed") && selectedDate) {
             setSelection(selectedDate);
 
             if (Platform.OS === "android") {
@@ -112,7 +111,6 @@ export function DatePicker({
                     display={display}
                     value={selection}
                     onChange={onChange}
-                    {...otherProps}
                 />
             )}
 
@@ -122,7 +120,6 @@ export function DatePicker({
                     display={display}
                     value={selection}
                     onChange={onChange}
-                    {...otherProps}
                 />
             )}
 
@@ -132,7 +129,6 @@ export function DatePicker({
                     display={display}
                     value={selection}
                     onChange={onChange}
-                    {...otherProps}
                 />
             )}
 
@@ -143,17 +139,14 @@ export function DatePicker({
                             mode={mode as any}
                             display={display}
                             value={selection}
-                            onChange={(event, date) => {
-                                if (date) setSelection(date);
-                            }}
-                            {...otherProps}
+                            onChange={onChange}
                         />
                     </View>
 
                     <ThemedView style={styles.buttonContainer} type="bordered">
                         <TouchableOpacity
                             style={styles.cancelButton}
-                            onPress={() => setIsOpen(false)}
+                            onPress={toggleIsOpen}
                             activeOpacity={0.3}
                         >
                             <Text style={styles.cancelButtonText}>

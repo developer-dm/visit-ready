@@ -8,63 +8,58 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function LandingScreen() {
     return (
-        <View style={styles.container}>
-            <View style={styles.content}>
-                <View style={styles.logoSection}>
-                    <ThemedView style={styles.logoContainer} type="dusked">
-                        <Image source={require("@/assets/images/favicon.png")} style={styles.icon} />
+        <View style={styles.content}>
+            <View style={styles.logoSection}>
+                <ThemedView style={styles.logoContainer} type="dusked">
+                    <Image source={require("@/assets/images/favicon.png")} style={styles.icon} />
+                </ThemedView>
+                <ThemedText style={styles.title} type="whitened">{AppInfo.name}</ThemedText>
+                <ThemedText style={styles.slogan} type="greyed">{AppInfo.slogan}</ThemedText>
+            </View>
+
+            <View style={styles.featuresSection}>
+                <View style={styles.featureItem}>
+                    <ThemedView style={styles.featureIconContainer} type="dusked">
+                        <MaterialIcons name="calendar-today" size={24} color="#3b82f6" />
                     </ThemedView>
-                    <ThemedText style={styles.title} type="whitened">{AppInfo.name}</ThemedText>
-                    <ThemedText style={styles.slogan} type="greyed">{AppInfo.slogan}</ThemedText>
-                </View>
-
-                <View style={styles.featuresSection}>
-                    <View style={styles.featureItem}>
-                        <ThemedView style={styles.featureIconContainer} type="dusked">
-                            <MaterialIcons name="calendar-today" size={24} color="#3b82f6" />
-                        </ThemedView>
-                        <View style={styles.featureContent}>
-                            <ThemedText style={styles.featureTitle} type="whitened">Track your Appointments</ThemedText>
-                            <ThemedText style={styles.featureDescription} type="greyed">
-                                Keep a record of all your medical appointments in one place
-                            </ThemedText>
-                        </View>
-                    </View>
-
-                    <View style={styles.featureItem}>
-                        <ThemedView style={styles.featureIconContainer} type="dusked">
-                            <MaterialIcons name="show-chart" size={24} color="#3b82f6" />
-                        </ThemedView>
-                        <View style={styles.featureContent}>
-                            <ThemedText style={styles.featureTitle} type="whitened">Be prepared</ThemedText>
-                            <ThemedText style={styles.featureDescription} type="greyed">
-                                Generate discussion questions and goals based on your symptoms and priorities
-                            </ThemedText>
-                        </View>
+                    <View style={styles.featureContent}>
+                        <ThemedText style={styles.featureTitle} type="whitened">Track your Appointments</ThemedText>
+                        <ThemedText style={styles.featureDescription} type="greyed">
+                            Keep a record of all your medical appointments in one place
+                        </ThemedText>
                     </View>
                 </View>
 
-                <View style={styles.startSection}>
-                    <Link asChild push href="/onboarding/form">
-                        <TouchableOpacity style={styles.startButton}>
-                            <Text style={styles.startButtonText}>Start Setup</Text>
-                            <View style={styles.buttonIcon}>
-                                <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
-                            </View>
-                        </TouchableOpacity>
-                    </Link>
-
-                    <Footer text="Setup takes less than 2 minutes" hasSpacer={true} />
+                <View style={styles.featureItem}>
+                    <ThemedView style={styles.featureIconContainer} type="dusked">
+                        <MaterialIcons name="show-chart" size={24} color="#3b82f6" />
+                    </ThemedView>
+                    <View style={styles.featureContent}>
+                        <ThemedText style={styles.featureTitle} type="whitened">Be prepared</ThemedText>
+                        <ThemedText style={styles.featureDescription} type="greyed">
+                            Generate discussion questions and goals based on your symptoms and priorities
+                        </ThemedText>
+                    </View>
                 </View>
+            </View>
+
+            <View style={styles.startSection}>
+                <Link asChild push href="/onboarding/form">
+                    <TouchableOpacity style={styles.startButton}>
+                        <Text style={styles.startButtonText}>Start Setup</Text>
+                        <View style={styles.buttonIcon}>
+                            <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
+                        </View>
+                    </TouchableOpacity>
+                </Link>
+
+                <Footer text="Setup takes less than 2 minutes" hasSpacer={true} />
             </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     content: {
         flex: 1,
         paddingHorizontal: 24,

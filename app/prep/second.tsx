@@ -21,50 +21,48 @@ export default function PrepSecondScreen() {
                 enableResetScrollToCoords={false}
                 extraScrollHeight={10}
             >
-                <View style={styles.cardContent}>
-                    <View style={styles.welcomeSection}>
-                        <ThemedView style={styles.welcomeIconContainer} type="dusked">
-                            <MaterialIcons name="checklist" size={32} color="#3b82f6" />
-                        </ThemedView>
-                        <ThemedText style={styles.welcomeTitle} type="whitened">Appointment Focus</ThemedText>
-                        <ThemedText style={styles.welcomeSubtitle} type="greyed">Tell us about your main health concern</ThemedText>
+                <View style={styles.welcomeSection}>
+                    <ThemedView style={styles.welcomeIconContainer} type="dusked">
+                        <MaterialIcons name="checklist" size={32} color="#3b82f6" />
+                    </ThemedView>
+                    <ThemedText style={styles.welcomeTitle} type="whitened">Appointment Focus</ThemedText>
+                    <ThemedText style={styles.welcomeSubtitle} type="greyed">Tell us about your main health concern</ThemedText>
+                </View>
+
+                <View style={styles.formFields}>
+                    <View style={styles.fieldGroup}>
+                        <ThemedText type="overheader">What are the main health concerns of your appointment?</ThemedText>
+                        <Textbox
+                            placeholder="Required"
+                            onChangeText={setMainConcern}
+                            value={appointment.mainConcern}
+                        />
                     </View>
 
-                    <View style={styles.formFields}>
-                        <View style={styles.fieldGroup}>
-                            <ThemedText type="overheader">What are the main health concerns of your appointment?</ThemedText>
-                            <Textbox
-                                placeholder="Required"
-                                onChangeText={setMainConcern}
-                                value={appointment.mainConcern}
-                            />
-                        </View>
+                    <View style={styles.fieldGroup}>
+                        <ThemedText type="overheader">When did your concerns begin?</ThemedText>
+                        <Dropdown
+                            items={DropdownValues.concernStart}
+                            value={appointment.concernStart}
+                            setValue={setConcernStart}
+                        />
+                    </View>
 
-                        <View style={styles.fieldGroup}>
-                            <ThemedText type="overheader">When did your concerns begin?</ThemedText>
-                            <Dropdown
-                                items={DropdownValues.concernStart}
-                                value={appointment.concernStart}
-                                setValue={setConcernStart}
-                            />
-                        </View>
+                    <View style={styles.fieldGroup}>
+                        <ThemedText type="overheader">How would you rate the severity of your concerns 1-10?</ThemedText>
+                        <Dropdown
+                            items={DropdownValues.concernSeverity}
+                            value={appointment.concernSeverity}
+                            setValue={setConcernSeverity}
+                        />
+                    </View>
 
-                        <View style={styles.fieldGroup}>
-                            <ThemedText type="overheader">How would you rate the severity of your concerns 1-10?</ThemedText>
-                            <Dropdown
-                                items={DropdownValues.concernSeverity}
-                                value={appointment.concernSeverity}
-                                setValue={setConcernSeverity}
-                            />
-                        </View>
-
-                        <View style={styles.fieldGroup}>
-                            <ThemedText type="overheader">Have you tried any treatments or remedies?</ThemedText>
-                            <Textbox
-                                onChangeText={setRemedies}
-                                value={appointment.remedies}
-                            />
-                        </View>
+                    <View style={styles.fieldGroup}>
+                        <ThemedText type="overheader">Have you tried any treatments or remedies?</ThemedText>
+                        <Textbox
+                            onChangeText={setRemedies}
+                            value={appointment.remedies}
+                        />
                     </View>
                 </View>
             </KeyboardAwareScrollView>
@@ -79,10 +77,8 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         paddingBottom: 150,
-    },
-    cardContent: {
-        padding: 24,
-        marginVertical: 24,
+        paddingTop: 48,
+        paddingHorizontal: 24,
     },
     welcomeSection: {
         alignItems: 'center',

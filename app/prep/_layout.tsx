@@ -66,13 +66,13 @@ export default function AppointmentPrepLayout() {
                 break;
             case 'final':
                 addAppointment(appointment, id);
-                if (signup?.notifications && appointment.appointmentDate) {
-                    scheduleNotification(
-                        appointment.provider,
-                        DataFormatterService.toReadableString(appointment.appointmentType),
-                        appointment.appointmentDate,
-                    )
-                };
+                if (signup?.notifications && appointment.notified && appointment.appointmentDate) scheduleNotification(
+                    id,
+                    appointment.provider,
+                    DataFormatterService.toReadableString(appointment.appointmentType),
+                    appointment.appointmentDate,
+                    { date: appointment.appointmentDate.toISOString() },
+                );
                 router.dismissTo("/(tabs)");
                 router.replace("/results");
                 break;
@@ -103,7 +103,7 @@ export default function AppointmentPrepLayout() {
         if (id === "") {
             assignNewId();
         };
-    })
+    }, [id])
 
     return (
         <>

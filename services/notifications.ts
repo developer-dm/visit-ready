@@ -11,8 +11,11 @@ export const initializeNotifications = () => {
     });
 };
 
-export const scheduleNotification = async (title: string, body: string, date: Date, data?: Record<string, unknown> | undefined) => {
-    const result = await Notifications.scheduleNotificationAsync({
+export const scheduleNotification = async (id: string, title: string, body: string, date: Date, data?: Record<string, string>) => {
+    if (date.getTime() < new Date().getTime()) return;
+
+    Notifications.scheduleNotificationAsync({
+        identifier: id,
         content: {
             title: title,
             body: body,
@@ -23,8 +26,6 @@ export const scheduleNotification = async (title: string, body: string, date: Da
             date: date,
         },
     });
-
-    console.log(result)
 };
 
 export const clearAllNotifications = () => {
@@ -44,4 +45,12 @@ export const requestNotifications = async () => {
 export const getNotificationsGranted = async () => {
     const result = await Notifications.getPermissionsAsync();
     return result.granted ? true : false;
-}
+};
+
+export const checkWhichAppointmentsHaveNotifications = async (ids: string[]) => {
+    const result = await Notifications.getAllScheduledNotificationsAsync();
+    const notificationIdList = result.map(notif => notif.identifier)
+    const matchingNotifications = ids.filter(id => notificationIdList.includes(id));
+
+    return matchingNotifications;
+};

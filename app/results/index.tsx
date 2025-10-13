@@ -58,7 +58,7 @@ export default function IndexResultsScreen() {
 		} catch (error) {
 			console.error('Failed to parse completion:', error);
 		}
-	}, [completion, id, addCompletion, setCompletion, router]);
+	}, [completion, id, addCompletion, setCompletion]);
 
 	if (hasSubmitted) {
 		return (

@@ -13,6 +13,7 @@ const initialAppointmentState: AppointmentData = {
     appointmentType: "",
     appointmentDate: null,
     provider: "",
+    notified: false,
     mainConcern: "",
     concernStart: "",
     concernSeverity: "",
@@ -82,6 +83,11 @@ export const useTempStore = create<TempStore>(
         setProvider: (value: string) =>
             set((state) => ({
                 appointment: { ...state.appointment, provider: value },
+            })),
+
+        setNotified: (value: boolean) =>
+            set((state) => ({
+                appointment: { ...state.appointment, notified: value },
             })),
 
         setMainConcern: (value: string) =>

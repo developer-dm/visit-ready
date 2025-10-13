@@ -38,20 +38,18 @@ export default function SecondResultsScreen() {
             contentContainerStyle={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
         >
-            <View style={styles.resultsSection}>
-                <ThemedText style={styles.sectionTitle}>
-                    What to Expect at Your Visit
+            <ThemedText style={styles.sectionTitle}>
+                What to Expect at Your Visit
+            </ThemedText>
+
+            <ThemedView style={styles.resultsCard}>
+                <ThemedText style={styles.resultsText} type="whitened">
+                    {brief}
                 </ThemedText>
+                <CustomButton type="copy" copyText={brief} />
+            </ThemedView>
 
-                <ThemedView style={styles.resultsCard}>
-                    <ThemedText style={styles.resultsText} type="whitened">
-                        {brief}
-                    </ThemedText>
-                    <CustomButton type="copy" copyText={brief} />
-                </ThemedView>
-
-                {renderSteps()}
-            </View>
+            {renderSteps()}
         </ScrollView>
     )
 };
@@ -63,10 +61,7 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         paddingVertical: 150,
-    },
-    resultsSection: {
         paddingHorizontal: 24,
-        marginBottom: 24,
     },
     sectionTitle: {
         fontSize: 24,

@@ -24,7 +24,7 @@ export default function PrepFinalScreen() {
         }
 
         return userDataEntries.map(([key, value]) => {
-            if (key === "appointmentDate" && value) value = DataFormatterService.FormatDateTimeString(new Date(value));
+            if (key === "appointmentDate" && value) value = DataFormatterService.FormatDateTimeString(value);
 
             return (
                 <ThemedView type="list" key={key} style={styles.detailItem}>
@@ -46,18 +46,16 @@ export default function PrepFinalScreen() {
                 contentContainerStyle={styles.scrollContainer}
                 showsVerticalScrollIndicator={false}
             >
-                <View style={styles.cardContent}>
-                    <View style={styles.headerSection}>
-                        <ThemedView style={styles.headerIconContainer} type="dusked">
-                            <MaterialIcons name="check-circle" size={32} color="#10b981" />
-                        </ThemedView>
-                        <ThemedText style={styles.headerTitle} type="whitened">Review Your Information</ThemedText>
-                        <ThemedText style={styles.headerSubtitle} type="greyed">Confirm your appointment details are correct</ThemedText>
-                    </View>
+                <View style={styles.headerSection}>
+                    <ThemedView style={styles.headerIconContainer} type="dusked">
+                        <MaterialIcons name="check-circle" size={32} color="#10b981" />
+                    </ThemedView>
+                    <ThemedText style={styles.headerTitle} type="whitened">Review Your Information</ThemedText>
+                    <ThemedText style={styles.headerSubtitle} type="greyed">Confirm your appointment details are correct</ThemedText>
+                </View>
 
-                    <View style={styles.detailsSection}>
-                        {renderDetails()}
-                    </View>
+                <View style={styles.detailsSection}>
+                    {renderDetails()}
                 </View>
             </ScrollView>
         </ThemedView>
@@ -74,10 +72,8 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         paddingBottom: 150,
-    },
-    cardContent: {
-        padding: 24,
-        marginVertical: 24,
+        paddingTop: 48,
+        paddingHorizontal: 24,
     },
     headerSection: {
         alignItems: 'center',

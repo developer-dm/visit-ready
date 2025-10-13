@@ -63,13 +63,11 @@ export default function FourthResultsScreen() {
             contentContainerStyle={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
         >
-            <View style={styles.resultsSection}>
-                <ThemedText style={styles.sectionTitle}>
-                    Questions to Ask Your Doctor
-                </ThemedText>
+            <ThemedText style={styles.sectionTitle}>
+                Questions to Ask Your Doctor
+            </ThemedText>
 
-                {renderQuestions()}
-            </View>
+            {renderQuestions()}
         </ScrollView>
     );
 }
@@ -81,10 +79,7 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         paddingVertical: 150,
-    },
-    resultsSection: {
         paddingHorizontal: 24,
-        marginBottom: 24,
     },
     sectionTitle: {
         fontSize: 24,

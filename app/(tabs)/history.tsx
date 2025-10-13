@@ -63,18 +63,16 @@ export default function HistoryScreen() {
 
                 <View style={styles.appointmentsContainer}>
                     {appointments && Object.keys(appointments).length > 0 ? (
-                        <>
-                            {Object.entries(appointments).map(([key, value]) => {
-                                return (
-                                    <TouchableOpacity
-                                        key={key}
-                                        onPress={() => handleAppointmentView(key)}
-                                    >
-                                        <AppointmentCard appointment={value} />
-                                    </TouchableOpacity>
-                                );
-                            })}
-                        </>
+                        Object.entries(appointments).map(([key, value]) => {
+                            return (
+                                <TouchableOpacity
+                                    key={key}
+                                    onPress={() => handleAppointmentView(key)}
+                                >
+                                    <AppointmentCard appointment={value} />
+                                </TouchableOpacity>
+                            );
+                        })
                     ) : (
                         <ThemedView style={styles.emptyState}>
                             <MaterialIcons size={48} name="event-available" color="#6b7280" />

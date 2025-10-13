@@ -3,7 +3,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { DataFormatterService } from "@/services/dataFormatter";
 import { AppointmentData } from "@/types/models";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 type AppointmentCardProps = {
     appointment: AppointmentData;
@@ -33,6 +33,7 @@ export default function AppointmentCard({
     appointment,
 }: AppointmentCardProps) {
     const date = appointment.appointmentDate ? new Date(appointment.appointmentDate) : new Date()
+    const isNotified = appointment.notified
 
     return (
         <ThemedView type="bordered" style={styles.appointmentCard}>
@@ -45,18 +46,17 @@ export default function AppointmentCard({
                         {DataFormatterService.toReadableString(appointment.appointmentType)}
                     </ThemedText>
                 </View>
-                {/* 
-                <View style={styles.statusBadge}>
-                    <MaterialIcons
-                        size={14}
-                        name="schedule"
-                        color="#3b82f6"
-                    />
-                    <Text style={styles.statusText}>
-                        Scheduled
-                    </Text>
-                </View>
-                 */}
+                {date > new Date() && (
+                    <View style={[styles.statusBadge, isNotified ? { backgroundColor: '#3b82f622' } : { backgroundColor: '#1f1f1fff' }]}>
+                        <MaterialIcons
+                            size={14}
+                            name={isNotified ? "notifications" : "notifications-off"}
+                            color={isNotified ? "#3b82f6" : "#6b7280"}
+                        />
+                        <Text style={[styles.statusText, isNotified ? { color: '#3b82f6' } : { color: '#6b7280' }]}>
+                            {isNotified ? "Notified" : "Not Notified"}
+                        </Text>
+                    </View>)}
             </View>
 
             <View style={styles.appointmentDetails}>
@@ -127,12 +127,10 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         borderRadius: 12,
         gap: 4,
-        backgroundColor: '#3b82f622',
     },
     statusText: {
         fontSize: 12,
         fontWeight: '600',
-        color: '#3b82f6',
     },
     appointmentDetails: {
         flexDirection: 'row',

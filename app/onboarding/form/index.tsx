@@ -21,48 +21,46 @@ export default function OnboardingFirstScreen() {
         enableResetScrollToCoords={false}
         extraScrollHeight={10}
       >
-        <View style={styles.cardContent}>
-          <View style={styles.headerSection}>
-            <ThemedView style={styles.headerIconContainer} type="dusked">
-              <MaterialIcons name="person-outline" size={32} color="#3b82f6" />
-            </ThemedView>
-            <ThemedText style={styles.title} type="whitened">Demographics</ThemedText>
-            <ThemedText style={styles.subtitle} type="greyed">
-              We do not collect your private health data.{"\n"}All information is stored on your device.
-            </ThemedText>
+        <View style={styles.headerSection}>
+          <ThemedView style={styles.headerIconContainer} type="dusked">
+            <MaterialIcons name="person-outline" size={32} color="#3b82f6" />
+          </ThemedView>
+          <ThemedText style={styles.title} type="whitened">Demographics</ThemedText>
+          <ThemedText style={styles.subtitle} type="greyed">
+            We do not collect your private health data.{"\n"}All information is stored on your device.
+          </ThemedText>
+        </View>
+
+        <View style={styles.formGap}>
+          <View style={styles.formField}>
+            <ThemedText type="overheader">Date of Birth</ThemedText>
+            <DatePicker
+              placeholderText="Required"
+              mode="date"
+              display="spinner"
+              value={signup.DOB}
+              setValue={setDOB}
+            />
           </View>
 
-          <View style={styles.formGap}>
-            <View style={styles.formField}>
-              <ThemedText type="overheader">Date of Birth</ThemedText>
-              <DatePicker
-                placeholderText="Required"
-                mode="date"
-                display="spinner"
-                value={signup.DOB}
-                setValue={setDOB}
-              />
-            </View>
+          <View style={styles.formField}>
+            <ThemedText type="overheader">Gender</ThemedText>
+            <Dropdown
+              placeholder="Required"
+              items={DropdownValues.sex}
+              value={signup.sex}
+              setValue={setSex}
+            />
+          </View>
 
-            <View style={styles.formField}>
-              <ThemedText type="overheader">Gender</ThemedText>
-              <Dropdown
-                placeholder="Required"
-                items={DropdownValues.sex}
-                value={signup.sex}
-                setValue={setSex}
-              />
-            </View>
-
-            <View style={styles.formField}>
-              <ThemedText type="overheader">Preferred language</ThemedText>
-              <Dropdown
-                placeholder="Required"
-                items={DropdownValues.language}
-                value={signup.language}
-                setValue={setLanguage}
-              />
-            </View>
+          <View style={styles.formField}>
+            <ThemedText type="overheader">Preferred language</ThemedText>
+            <Dropdown
+              placeholder="Required"
+              items={DropdownValues.language}
+              value={signup.language}
+              setValue={setLanguage}
+            />
           </View>
         </View>
       </KeyboardAwareScrollView>
@@ -77,10 +75,8 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     paddingBottom: 150,
-  },
-  cardContent: {
-    padding: 24,
-    marginTop: 24,
+    paddingTop: 48,
+    paddingHorizontal: 24,
   },
   headerSection: {
     alignItems: 'center',

@@ -55,30 +55,36 @@ export const DataFormatterService = {
     return null;
   },
 
-  FormatDateString(rawDate: Date) {
-    return rawDate.toLocaleDateString('en-US', {
+  FormatDateString(rawDate: Date | object | string) {
+    const date = rawDate instanceof Date ? rawDate : new Date(rawDate.toString());
+
+    return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
     });
   },
 
-  FormatTimeString(rawTime: Date) {
-    return rawTime.toLocaleTimeString('en-US', {
+  FormatTimeString(rawTime: Date | object | string) {
+    const date = rawTime instanceof Date ? rawTime : new Date(rawTime.toString());
+
+    return date.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
       hour12: true
     });
   },
 
-  FormatDateTimeString(rawDate: Date) {
-    const date = rawDate.toLocaleDateString('en-US', {
+  FormatDateTimeString(rawDate: Date | object | string) {
+    const newDate = rawDate instanceof Date ? rawDate : new Date(rawDate.toString());
+
+    const date = newDate.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
     });
 
-    const time = rawDate.toLocaleTimeString('en-US', {
+    const time = newDate.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
       hour12: true

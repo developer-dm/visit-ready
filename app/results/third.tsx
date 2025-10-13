@@ -36,13 +36,11 @@ export default function ThirdResultsScreen() {
             contentContainerStyle={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
         >
-            <View style={styles.resultsSection}>
-                <ThemedText style={styles.sectionTitle}>
-                    What to Bring to Your Visit
-                </ThemedText>
+            <ThemedText style={styles.sectionTitle}>
+                What to Bring to Your Visit
+            </ThemedText>
 
-                {renderItems()}
-            </View>
+            {renderItems()}
         </ScrollView>
     )
 };
@@ -54,10 +52,7 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         paddingVertical: 150,
-    },
-    resultsSection: {
         paddingHorizontal: 24,
-        marginBottom: 24,
     },
     sectionTitle: {
         fontSize: 24,

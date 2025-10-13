@@ -103,47 +103,6 @@ export default function DashboardScreen() {
 
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
-          <ThemedText style={styles.sectionTitle}>Your Progress</ThemedText>
-        </View>
-        <View style={styles.statsGrid}>
-          <ThemedView style={styles.statCard}>
-            <ThemedText style={styles.statNumber}>{totalAppointments}</ThemedText>
-            <ThemedText style={styles.statLabel} type="greyed">Total Visits</ThemedText>
-          </ThemedView>
-          <ThemedView style={styles.statCard}>
-            <ThemedText style={styles.statNumber}>{monthlyAppointments.length}</ThemedText>
-            <ThemedText style={styles.statLabel} type="greyed">This Month</ThemedText>
-          </ThemedView>
-          <ThemedView style={styles.statCard}>
-            <ThemedText style={styles.statNumber}>{weeklyAppointments.length}</ThemedText>
-            <ThemedText style={styles.statLabel} type="greyed">This Week</ThemedText>
-          </ThemedView>
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <ThemedText style={styles.sectionTitle}>Preparation Tips</ThemedText>
-        </View>
-        <ThemedView style={styles.tipsCard}>
-          <View style={styles.tipItem}>
-            <MaterialIcons size={20} name="lightbulb-outline" color="#f59e0b" />
-            <ThemedText style={styles.tipText} type="greyed">
-              Prepare 24-48 hours before your visit for best results.
-            </ThemedText>
-          </View>
-          <View style={styles.tipDivider} />
-          <View style={styles.tipItem}>
-            <MaterialIcons size={20} name="priority-high" color="#ef4444" />
-            <ThemedText style={styles.tipText} type="greyed">
-              Focus on your top 3 concerns. Quality over quantity!
-            </ThemedText>
-          </View>
-        </ThemedView>
-      </View>
-
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
           <ThemedText style={styles.sectionTitle}>Quick Actions</ThemedText>
         </View>
         <View style={styles.actionGrid}>
@@ -167,6 +126,47 @@ export default function DashboardScreen() {
             </ThemedView>
             <ThemedText style={styles.actionTitle} type="whitened">Settings</ThemedText>
           </Button>
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <ThemedText style={styles.sectionTitle}>Preparation Tips</ThemedText>
+        </View>
+        <ThemedView style={styles.tipsCard}>
+          <View style={styles.tipItem}>
+            <MaterialIcons size={20} name="lightbulb-outline" color="#f59e0b" />
+            <ThemedText style={styles.tipText} type="greyed">
+              Prepare 24-48 hours before your visit for best results.
+            </ThemedText>
+          </View>
+          <View style={styles.tipDivider} />
+          <View style={styles.tipItem}>
+            <MaterialIcons size={20} name="priority-high" color="#ef4444" />
+            <ThemedText style={styles.tipText} type="greyed">
+              Keep track of your past health and medication history.
+            </ThemedText>
+          </View>
+        </ThemedView>
+      </View>
+
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <ThemedText style={styles.sectionTitle}>Your Progress</ThemedText>
+        </View>
+        <View style={styles.statsGrid}>
+          <ThemedView style={styles.statCard}>
+            <ThemedText style={styles.statNumber}>{totalAppointments}</ThemedText>
+            <ThemedText style={styles.statLabel} type="greyed">Total Visits</ThemedText>
+          </ThemedView>
+          <ThemedView style={styles.statCard}>
+            <ThemedText style={styles.statNumber}>{monthlyAppointments.length}</ThemedText>
+            <ThemedText style={styles.statLabel} type="greyed">This Month</ThemedText>
+          </ThemedView>
+          <ThemedView style={styles.statCard}>
+            <ThemedText style={styles.statNumber}>{weeklyAppointments.length}</ThemedText>
+            <ThemedText style={styles.statLabel} type="greyed">This Week</ThemedText>
+          </ThemedView>
         </View>
       </View>
     </ScrollView>

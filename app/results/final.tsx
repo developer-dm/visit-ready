@@ -2,7 +2,7 @@ import { CustomButton } from "@/components/CustomButton";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTempStore } from "@/stores/tempStore";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 export default function FinalResultsScreen() {
     const { tempCompletion } = useTempStore();
@@ -14,19 +14,17 @@ export default function FinalResultsScreen() {
             contentContainerStyle={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
         >
-            <View style={styles.resultsSection}>
-                <ThemedText style={styles.sectionTitle}>
-                    Summary for your provider
+            <ThemedText style={styles.sectionTitle}>
+                Summary for your provider
+            </ThemedText>
+
+            <ThemedView style={styles.resultsCard}>
+                <ThemedText style={styles.resultsText} type="whitened">
+                    {summary}
                 </ThemedText>
 
-                <ThemedView style={styles.resultsCard}>
-                    <ThemedText style={styles.resultsText} type="whitened">
-                        {summary}
-                    </ThemedText>
-
-                    <CustomButton type="copy" copyText={summary} />
-                </ThemedView>
-            </View>
+                <CustomButton type="copy" copyText={summary} />
+            </ThemedView>
         </ScrollView>
     )
 };
@@ -38,10 +36,7 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         paddingVertical: 150,
-    },
-    resultsSection: {
         paddingHorizontal: 24,
-        marginBottom: 24,
     },
     sectionTitle: {
         fontSize: 24,

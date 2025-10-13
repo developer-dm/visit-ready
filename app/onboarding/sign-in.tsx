@@ -67,57 +67,55 @@ export default function OnboardingAuthScreen() {
 
   return (
     <View style={styles.content}>
-      <View style={styles.cardContent}>
-        <View style={styles.welcomeSection}>
-          <ThemedText style={styles.welcomeTitle} type="whitened">
-            Authentication
-          </ThemedText>
-          <ThemedText style={styles.welcomeSubtitle} type="greyed">
-            Set up your account access method
-          </ThemedText>
-        </View>
+      <View style={styles.welcomeSection}>
+        <ThemedText style={styles.welcomeTitle} type="whitened">
+          Authentication
+        </ThemedText>
+        <ThemedText style={styles.welcomeSubtitle} type="greyed">
+          Set up your account access method
+        </ThemedText>
+      </View>
 
-        {/* Login Options */}
-        <View style={styles.loginOptions}>
-          <TouchableOpacity
-            style={[
-              styles.primaryLoginButton,
-              authType === 'none' && styles.disabledButton
-            ]}
-            onPress={handleLogin}
-            disabled={authType === 'none'}
-          >
-            <View style={styles.loginButtonContent}>
-              <ThemedView style={styles.loginIconContainer} lightColor='#ffffff33' darkColor='#ffffff33'>
-                <MaterialIcons name={authConfig.icon as 'fingerprint' | 'lock' | 'login'} size={24} color="#ffffff" />
-              </ThemedView>
-              <View style={styles.loginTextContainer}>
-                <Text style={styles.primaryLoginText}>{authConfig.title}</Text>
-                <Text style={styles.loginSubtext}>{authConfig.subtitle}</Text>
-              </View>
-              <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
+      {/* Login Options */}
+      <View style={styles.loginOptions}>
+        <TouchableOpacity
+          style={[
+            styles.primaryLoginButton,
+            authType === 'none' && styles.disabledButton
+          ]}
+          onPress={handleLogin}
+          disabled={authType === 'none'}
+        >
+          <View style={styles.loginButtonContent}>
+            <ThemedView style={styles.loginIconContainer} lightColor='#ffffff33' darkColor='#ffffff33'>
+              <MaterialIcons name={authConfig.icon as 'fingerprint' | 'lock' | 'login'} size={24} color="#ffffff" />
+            </ThemedView>
+            <View style={styles.loginTextContainer}>
+              <Text style={styles.primaryLoginText}>{authConfig.title}</Text>
+              <Text style={styles.loginSubtext}>{authConfig.subtitle}</Text>
             </View>
-          </TouchableOpacity>
+            <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
+          </View>
+        </TouchableOpacity>
 
-          {authType === 'none' && (
-            <View style={styles.noLoginSection}>
-              <View style={styles.infoContainer}>
-                <MaterialIcons name="info-outline" size={22} color="#64748b" />
-                <ThemedText style={styles.infoText} type="greyed">
-                  {"This device doesn't support secure authentication. Please enable device lock screen security in your device settings."}
-                </ThemedText>
-              </View>
-
-              <Button type="bordered" style={styles.infoIconContainer} onPress={preliminaryCheck}>
-                <MaterialIcons
-                  name="refresh"
-                  size={25}
-                  color="#64748b"
-                />
-              </Button>
+        {authType === 'none' && (
+          <View style={styles.noLoginSection}>
+            <View style={styles.infoContainer}>
+              <MaterialIcons name="info-outline" size={22} color="#64748b" />
+              <ThemedText style={styles.infoText} type="greyed">
+                {"This device doesn't support secure authentication. Please enable device lock screen security in your device settings."}
+              </ThemedText>
             </View>
-          )}
-        </View>
+
+            <Button type="bordered" style={styles.infoIconContainer} onPress={preliminaryCheck}>
+              <MaterialIcons
+                name="refresh"
+                size={25}
+                color="#64748b"
+              />
+            </Button>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -127,8 +125,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: 'center',
-  },
-  cardContent: {
     padding: 24,
   },
   welcomeSection: {

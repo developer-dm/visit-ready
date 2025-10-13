@@ -21,42 +21,40 @@ export default function PrepThirdScreen() {
                 enableResetScrollToCoords={false}
                 extraScrollHeight={10}
             >
-                <View style={styles.cardContent}>
-                    <View style={styles.welcomeSection}>
-                        <ThemedView style={styles.welcomeIconContainer} type="dusked">
-                            <MaterialIcons name="timeline" size={32} color="#3b82f6" />
-                        </ThemedView>
-                        <ThemedText style={styles.welcomeTitle} type="whitened">Your Expectations</ThemedText>
-                        <ThemedText style={styles.welcomeSubtitle} type="greyed">What do you hope to achieve from this visit?</ThemedText>
+                <View style={styles.welcomeSection}>
+                    <ThemedView style={styles.welcomeIconContainer} type="dusked">
+                        <MaterialIcons name="timeline" size={32} color="#3b82f6" />
+                    </ThemedView>
+                    <ThemedText style={styles.welcomeTitle} type="whitened">Your Expectations</ThemedText>
+                    <ThemedText style={styles.welcomeSubtitle} type="greyed">What do you hope to achieve from this visit?</ThemedText>
+                </View>
+
+                <View style={styles.formFields}>
+                    <View style={styles.fieldGroup}>
+                        <ThemedText type="overheader">What do you hope to get out of this visit?</ThemedText>
+                        <Dropdown
+                            placeholder="Required"
+                            items={DropdownValues.visitGoal}
+                            value={appointment.visitGoal}
+                            setValue={setVisitGoal}
+                        />
                     </View>
 
-                    <View style={styles.formFields}>
-                        <View style={styles.fieldGroup}>
-                            <ThemedText type="overheader">What do you hope to get out of this visit?</ThemedText>
-                            <Dropdown
-                                placeholder="Required"
-                                items={DropdownValues.visitGoal}
-                                value={appointment.visitGoal}
-                                setValue={setVisitGoal}
-                            />
-                        </View>
+                    <View style={styles.fieldGroup}>
+                        <ThemedText type="overheader">Do you have any specific worries?</ThemedText>
+                        <Dropdown
+                            items={DropdownValues.specificWorries}
+                            value={appointment.specificWorries}
+                            setValue={setSpecificWorries}
+                        />
+                    </View>
 
-                        <View style={styles.fieldGroup}>
-                            <ThemedText type="overheader">Do you have any specific worries?</ThemedText>
-                            <Dropdown
-                                items={DropdownValues.specificWorries}
-                                value={appointment.specificWorries}
-                                setValue={setSpecificWorries}
-                            />
-                        </View>
-
-                        <View style={styles.fieldGroup}>
-                            <ThemedText type="overheader">Any other issues you would like to discuss?</ThemedText>
-                            <Textbox
-                                onChangeText={setMiscDiscussion}
-                                value={appointment.miscDiscussion}
-                            />
-                        </View>
+                    <View style={styles.fieldGroup}>
+                        <ThemedText type="overheader">Any other issues you would like to discuss?</ThemedText>
+                        <Textbox
+                            onChangeText={setMiscDiscussion}
+                            value={appointment.miscDiscussion}
+                        />
                     </View>
                 </View>
             </KeyboardAwareScrollView>
@@ -71,10 +69,8 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         paddingBottom: 150,
-    },
-    cardContent: {
-        padding: 24,
-        marginVertical: 24,
+        paddingTop: 48,
+        paddingHorizontal: 24,
     },
     welcomeSection: {
         alignItems: 'center',

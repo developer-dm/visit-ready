@@ -28,9 +28,11 @@ export default function PrepFinalScreen() {
     const appointmentType = appointment.appointmentType;
 
     const userDataEntries = Object.entries(appointment).filter(([key]) => {
-        return key !== "id" &&
+        return (
+            key !== "id" &&
             key !== "appointmentType" &&
-            key !== "appointmentDate";
+            key !== "appointmentDate"
+        )
     });
 
     const renderDetails = () => {
@@ -135,78 +137,76 @@ export default function PrepFinalScreen() {
                 contentContainerStyle={styles.scrollContainer}
                 showsVerticalScrollIndicator={false}
             >
-                <View style={styles.content}>
-                    <View style={styles.cardContent}>
-                        <View style={styles.infoSection}>
-                            <ThemedView style={styles.infoIconContainer} type="dusked">
-                                <MaterialIcons
-                                    name={appointmentType ? getAppointmentIcon(appointmentType) : "event-note"}
-                                    size={24}
-                                    color="#3b82f6"
-                                />
-                            </ThemedView>
-                            <View style={styles.profileInfo}>
-                                <ThemedText style={styles.infoTitle} type="whitened">
-                                    {DataFormatterService.toReadableString(appointmentType)}
-                                </ThemedText>
-                                <ThemedText style={styles.infoSubtitle} type="greyed">
-                                    {appointmentDate}
-                                </ThemedText>
-                            </View>
+                <View style={styles.cardContent}>
+                    <View style={styles.infoSection}>
+                        <ThemedView style={styles.infoIconContainer} type="dusked">
+                            <MaterialIcons
+                                name={appointmentType ? getAppointmentIcon(appointmentType) : "event-note"}
+                                size={24}
+                                color="#3b82f6"
+                            />
+                        </ThemedView>
+                        <View style={styles.profileInfo}>
+                            <ThemedText style={styles.infoTitle} type="whitened">
+                                {DataFormatterService.toReadableString(appointmentType)}
+                            </ThemedText>
+                            <ThemedText style={styles.infoSubtitle} type="greyed">
+                                {appointmentDate}
+                            </ThemedText>
                         </View>
-
-                        {activeTab === 'summary' && (
-                            <View style={styles.firstDetailsSection}>
-                                {renderDetails()}
-                            </View>
-                        )}
-
-                        {activeTab === 'preparation' && completion && (
-                            <View style={styles.resultsContent}>
-                                <ThemedText type="greyed" style={styles.detailLabel}>
-                                    Questions for your provider:
-                                </ThemedText>
-                                {renderQuestions()}
-
-                                <ThemedText type="greyed" style={styles.detailLabel}>
-                                    What to expect at your appointment:
-                                </ThemedText>
-                                <ThemedView style={styles.summaryCard}>
-                                    <ThemedText type="whitened" style={styles.summaryText}>
-                                        {completion.what_to_expect.brief}
-                                    </ThemedText>
-                                    <CustomButton type="copy" copyText={completion.what_to_expect.brief} />
-                                </ThemedView>
-                                {renderArray(completion.what_to_expect.steps)}
-
-                                <ThemedText type="greyed" style={styles.detailLabel}>
-                                    What to bring to your appointment:
-                                </ThemedText>
-                                {renderArray(completion.what_to_bring)}
-
-                                <ThemedText type="greyed" style={styles.detailLabel}>
-                                    Summary for your provider:
-                                </ThemedText>
-                                <ThemedView style={styles.summaryCard}>
-                                    <ThemedText type="whitened" style={styles.summaryText}>
-                                        {completion.summary_for_provider}
-                                    </ThemedText>
-                                    <CustomButton type="copy" copyText={completion.summary_for_provider} />
-                                </ThemedView>
-                            </View>
-                        )}
-
-                        {activeTab === 'preparation' && !completion && (
-                            <View style={styles.noDataContainer}>
-                                <ThemedText style={styles.noDataText} type="greyed">
-                                    No preparation information available
-                                </ThemedText>
-                            </View>
-                        )}
                     </View>
 
-                    <Footer text={`ID: ${DataFormatterService.toReadableString(id)}`} hasSpacer={true} />
+                    {activeTab === 'summary' && (
+                        <View style={styles.firstDetailsSection}>
+                            {renderDetails()}
+                        </View>
+                    )}
+
+                    {activeTab === 'preparation' && completion && (
+                        <View style={styles.resultsContent}>
+                            <ThemedText type="greyed" style={styles.detailLabel}>
+                                Questions for your provider:
+                            </ThemedText>
+                            {renderQuestions()}
+
+                            <ThemedText type="greyed" style={styles.detailLabel}>
+                                What to expect at your appointment:
+                            </ThemedText>
+                            <ThemedView style={styles.summaryCard}>
+                                <ThemedText type="whitened" style={styles.summaryText}>
+                                    {completion.what_to_expect.brief}
+                                </ThemedText>
+                                <CustomButton type="copy" copyText={completion.what_to_expect.brief} />
+                            </ThemedView>
+                            {renderArray(completion.what_to_expect.steps)}
+
+                            <ThemedText type="greyed" style={styles.detailLabel}>
+                                What to bring to your appointment:
+                            </ThemedText>
+                            {renderArray(completion.what_to_bring)}
+
+                            <ThemedText type="greyed" style={styles.detailLabel}>
+                                Summary for your provider:
+                            </ThemedText>
+                            <ThemedView style={styles.summaryCard}>
+                                <ThemedText type="whitened" style={styles.summaryText}>
+                                    {completion.summary_for_provider}
+                                </ThemedText>
+                                <CustomButton type="copy" copyText={completion.summary_for_provider} />
+                            </ThemedView>
+                        </View>
+                    )}
+
+                    {activeTab === 'preparation' && !completion && (
+                        <View style={styles.noDataContainer}>
+                            <ThemedText style={styles.noDataText} type="greyed">
+                                No preparation information available
+                            </ThemedText>
+                        </View>
+                    )}
                 </View>
+
+                <Footer text={`ID: ${DataFormatterService.toReadableString(id)}`} hasSpacer={true} />
             </ScrollView>
         </ThemedView>
     );
@@ -219,10 +219,7 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         paddingVertical: 30,
-    },
-    content: {
         paddingHorizontal: 24,
-        flex: 1,
     },
     tabContainer: {
         flexDirection: 'row',

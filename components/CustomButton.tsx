@@ -1,19 +1,29 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Checkbox } from "expo-checkbox";
 import * as Clipboard from 'expo-clipboard';
 import { useState } from "react";
-import { TouchableOpacity, type TouchableOpacityProps } from "react-native";
+import { StyleSheet, TouchableOpacity, type TouchableOpacityProps } from "react-native";
+import { Button } from "./Button";
+import { ThemedText } from "./ThemedText";
 
 export type ButtonProps = TouchableOpacityProps & {
+    value?: any;
+    setValue?: (value: any) => void;
+    placeholderText?: string;
     copyText?: string;
-    type?: "copy";
+    type: "copy" | 'checker';
 };
 
 export function CustomButton({
+    value,
+    setValue,
+    placeholderText,
     copyText,
     type,
 }: ButtonProps) {
     const [color, setColor] = useState('#64748b');
 
+    // Copy Button Actions
     const copyToClipboard = async () => {
         if (copyText) await Clipboard.setStringAsync(copyText);
     };
@@ -34,4 +44,40 @@ export function CustomButton({
             <MaterialIcons name="content-copy" size={20} color={color} />
         </TouchableOpacity>
     );
+
+    if (type === "checker") return (
+        <Button
+            type="bordered"
+            style={styles.settingsContainer}
+            onPress={setValue}
+            activeOpacity={0.7}
+        >
+            <Checkbox
+                value={value}
+                onValueChange={setValue}
+                color={value ? "#3b82f6" : undefined}
+            />
+            <ThemedText style={styles.termsText} type="whitened">
+                {placeholderText}
+            </ThemedText>
+        </Button>
+    );
 }
+
+const styles = StyleSheet.create({
+    settingsContainer: {
+        borderRadius: 10,
+        borderWidth: 1,
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        paddingHorizontal: 18,
+        paddingVertical: 14,
+        gap: 10,
+    },
+    termsText: {
+        fontSize: 14,
+        fontWeight: '400',
+        lineHeight: 20,
+        flexWrap: "wrap",
+    },
+});

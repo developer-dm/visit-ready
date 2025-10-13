@@ -4,11 +4,11 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { logOut } from "@/services/auth";
 import { DataFormatterService } from "@/services/dataFormatter";
-import { clearAllNotifications, getAllNotifications } from "@/services/notifications";
+import { clearAllNotifications } from "@/services/notifications";
 import { useAuthStore } from "@/stores/authStore";
 import { useDataStore } from "@/stores/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function SettingsScreen() {
@@ -16,14 +16,7 @@ export default function SettingsScreen() {
   const { signup, resetAppointments, resetAll, resetCompletions } = useDataStore();
 
   const showNotifications = async () => {
-    const notifications = await getAllNotifications();
-
-    notifications.forEach((notif) => {
-      console.log('ID:', notif.identifier);
-      console.log('Title:', notif.content.title);
-      console.log('Body:', notif.content.body);
-      console.log('Scheduled for:', notif.trigger);
-    });
+    router.push("/notifications")
   };
 
   const clearData = () => {
@@ -33,27 +26,12 @@ export default function SettingsScreen() {
     logOut();
   };
 
-  const clearNotifications = () => {
-    Alert.alert('Clear Notifications', 'Are you sure you want to clear all scheduled notifications? This action CANNOT be reversed.', [
-      {
-        text: 'Confirm',
-        onPress: () => {
-          clearAllNotifications();
-        },
-        style: "destructive",
-      },
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-    ]);
-  }
-
   const clearVisits = () => {
     Alert.alert('Clear Visits', 'Are you sure you want to clear all visits? This action CANNOT be reversed.', [
       {
         text: 'Confirm',
         onPress: () => {
+          clearAllNotifications();
           resetAppointments();
           resetCompletions();
         },
@@ -127,7 +105,7 @@ export default function SettingsScreen() {
 
           <View style={styles.profileDetails}>
             {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
-              if (key === "DOB" && typeof value !== "boolean" && value) value = DataFormatterService.FormatDateString(new Date(value));
+              if (key === "DOB" && value) value = DataFormatterService.FormatDateString(value);
 
               return (
                 <ThemedView type="list" key={key} style={styles.profileItem}>
@@ -180,29 +158,7 @@ export default function SettingsScreen() {
           <ThemedText style={styles.sectionTitle} type="whitened">Account Actions</ThemedText>
 
           <View style={styles.actionGrid}>
-            {/* Delete all notifications */}
-            <Button style={styles.actionCard} type="bordered" onPress={clearNotifications}>
-              <ThemedView style={styles.actionIconContainer} type="dusked">
-                <MaterialIcons
-                  size={24}
-                  name="notifications-off"
-                  color="#64748b"
-                />
-              </ThemedView>
-              <View style={styles.actionContent}>
-                <ThemedText style={styles.actionTitle} type="whitened">Delete Scheduled Notifications</ThemedText>
-                <ThemedText style={styles.actionSubtitle} type="greyed">
-                  Permanently remove every scheduled notification
-                </ThemedText>
-              </View>
-              <MaterialIcons
-                size={20}
-                name="chevron-right"
-                color="#94a3b8"
-              />
-            </Button>
-
-            {/* Delete all visits */}
+            {/* Delete all visits and notifications */}
             <Button style={styles.actionCard} type="bordered" onPress={clearVisits}>
               <ThemedView style={styles.actionIconContainer} type="dusked">
                 <MaterialIcons
@@ -214,7 +170,7 @@ export default function SettingsScreen() {
               <View style={styles.actionContent}>
                 <ThemedText style={styles.actionTitle} type="whitened">Delete Visits</ThemedText>
                 <ThemedText style={styles.actionSubtitle} type="greyed">
-                  Permanently remove every visit
+                  {"Permanently remove every visit and scheduled notification"}
                 </ThemedText>
               </View>
               <MaterialIcons
@@ -433,6 +389,7 @@ const styles = StyleSheet.create({
   },
   actionContent: {
     flex: 1,
+    paddingRight: 10,
   },
   preferenceContent: {
     flex: 1,
