@@ -18,17 +18,13 @@ export default function ResultsLayout() {
     const handleClose = () => {
         Alert.alert('Exit', 'Are you sure you want to exit?', [
             {
-                text: 'Exit',
+                text: 'Exit', style: "destructive",
                 onPress: () => {
                     resetTempContext();
                     router.replace("/(tabs)");
                 },
-                style: "destructive",
             },
-            {
-                text: 'Cancel',
-                style: 'cancel',
-            },
+            { text: 'Cancel', style: 'cancel' },
         ]);
     };
 

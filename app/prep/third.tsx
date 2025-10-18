@@ -30,7 +30,7 @@ export default function PrepThirdScreen() {
                 </View>
 
                 <View style={styles.formFields}>
-                    <View style={styles.fieldGroup}>
+                    <View>
                         <ThemedText type="overheader">What do you hope to get out of this visit?</ThemedText>
                         <Dropdown
                             placeholder="Required"
@@ -40,7 +40,7 @@ export default function PrepThirdScreen() {
                         />
                     </View>
 
-                    <View style={styles.fieldGroup}>
+                    <View>
                         <ThemedText type="overheader">Do you have any specific worries?</ThemedText>
                         <Dropdown
                             items={DropdownValues.specificWorries}
@@ -49,7 +49,7 @@ export default function PrepThirdScreen() {
                         />
                     </View>
 
-                    <View style={styles.fieldGroup}>
+                    <View>
                         <ThemedText type="overheader">Any other issues you would like to discuss?</ThemedText>
                         <Textbox
                             onChangeText={setMiscDiscussion}
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         flexGrow: 1,
-        paddingBottom: 150,
+        paddingBottom: 300,
         paddingTop: 48,
         paddingHorizontal: 24,
     },
@@ -104,8 +104,5 @@ const styles = StyleSheet.create({
     },
     formFields: {
         gap: 24,
-    },
-    fieldGroup: {
-        width: '100%',
     },
 });

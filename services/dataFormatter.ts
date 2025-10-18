@@ -32,6 +32,8 @@ export const DataFormatterService = {
         return ValueToLabel.specificWorries[inputString] || 'N/A';
       case 'priority':
         return ValueToLabel.priority[inputString] || 'N/A';
+      case 'reminderTimes':
+        return ValueToLabel.reminderTimes[inputString] || 'N/A';
     }
 
     const autoDetected = this.autoDetectAndConvert(inputString);
@@ -52,6 +54,7 @@ export const DataFormatterService = {
     if (ValueToLabel.visitGoal[input]) return ValueToLabel.visitGoal[input];
     if (ValueToLabel.specificWorries[input]) return ValueToLabel.specificWorries[input];
     if (ValueToLabel.priority[input]) return ValueToLabel.priority[input];
+    if (ValueToLabel.reminderTimes[input]) return ValueToLabel.reminderTimes[input];
     return null;
   },
 

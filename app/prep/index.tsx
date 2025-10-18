@@ -1,9 +1,9 @@
-import { CustomButton } from "@/components/CustomButton";
 import { DatePicker } from "@/components/DatePicker";
 import { Dropdown } from "@/components/Dropdown";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useDataStore } from "@/stores/dataStore";
 import { useTempStore } from "@/stores/tempStore";
 import { DropdownValues } from "@/types/dropdown";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -11,7 +11,8 @@ import { Platform, StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function PrepFirstScreen() {
-  const { appointment, setAppointmentType, setAppointmentDate, setProvider, setNotified } = useTempStore();
+  const { appointment, setAppointmentType, setAppointmentDate, setProvider, setNotified, setAddress } = useTempStore();
+  const { signup } = useDataStore();
 
   return (
     <ThemedView type="container" style={styles.container}>
@@ -32,8 +33,8 @@ export default function PrepFirstScreen() {
         </View>
 
         <View style={styles.formFields}>
-          <View style={styles.fieldGroup}>
-            <ThemedText type="overheader">What type of appointment is this?</ThemedText>
+          <View>
+            <ThemedText type="overheader">Type of Appointment</ThemedText>
             <Dropdown
               placeholder="Required"
               items={DropdownValues.appointmentType}
@@ -42,8 +43,8 @@ export default function PrepFirstScreen() {
             />
           </View>
 
-          <View style={styles.fieldGroup}>
-            <ThemedText type="overheader">When is your appointment?</ThemedText>
+          <View>
+            <ThemedText type="overheader">Date of Appointment</ThemedText>
             <DatePicker
               placeholderText="Required"
               value={appointment.appointmentDate}
@@ -53,24 +54,32 @@ export default function PrepFirstScreen() {
             />
           </View>
 
-          <View style={styles.fieldGroup}>
-            <ThemedText type="overheader">Who is the provider in your appointment?</ThemedText>
+          <View>
+            <ThemedText type="overheader">Appointment Location</ThemedText>
             <Textbox
-              placeholder="Required"
+              onChangeText={setAddress}
+              value={appointment.address}
+            />
+          </View>
+
+          <View>
+            <ThemedText type="overheader">Provider</ThemedText>
+            <Textbox
               onChangeText={setProvider}
               value={appointment.provider}
             />
           </View>
 
-          <View style={styles.fieldGroup}>
-            <ThemedText type="overheader">Appointment Notification</ThemedText>
-            <CustomButton
-              type="checker"
-              value={appointment.notified}
-              setValue={() => setNotified(!appointment.notified)}
-              placeholderText="Receive Notification for Appointment"
-            />
-          </View>
+          {signup?.notifications && (
+            <View>
+              <ThemedText type="overheader">Notification</ThemedText>
+              <Dropdown
+                items={DropdownValues.notified}
+                value={appointment.notified}
+                setValue={setNotified}
+              />
+            </View>
+          )}
         </View>
       </KeyboardAwareScrollView>
     </ThemedView>
@@ -86,7 +95,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 150,
+    paddingBottom: 300,
     paddingTop: 48,
     paddingHorizontal: 24,
   },
@@ -122,8 +131,5 @@ const styles = StyleSheet.create({
   },
   formFields: {
     gap: 24,
-  },
-  fieldGroup: {
-    width: '100%',
   },
 });

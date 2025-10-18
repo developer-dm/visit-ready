@@ -77,7 +77,6 @@ export default function SignInScreen() {
         </View>
       </View>
 
-      {/* Login Options */}
       <View style={styles.loginOptions}>
         <TouchableOpacity
           style={[

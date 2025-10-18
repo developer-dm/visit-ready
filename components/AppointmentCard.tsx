@@ -1,5 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import { DataFormatterService } from "@/services/dataFormatter";
 import { AppointmentData } from "@/types/models";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -32,6 +33,8 @@ export const getAppointmentIcon = (type: string) => {
 export default function AppointmentCard({
     appointment,
 }: AppointmentCardProps) {
+    const borderColor = useThemeColor({}, "border");
+
     const date = appointment.appointmentDate ? new Date(appointment.appointmentDate) : new Date()
     const isNotified = appointment.notified
 
@@ -40,26 +43,26 @@ export default function AppointmentCard({
             <View style={styles.appointmentHeader}>
                 <View style={styles.appointmentInfo}>
                     <ThemedText style={styles.doctorName} type="whitened">
-                        {appointment.provider}
+                        {appointment.provider || DataFormatterService.toReadableString(appointment.appointmentType)}
                     </ThemedText>
                     <ThemedText style={styles.specialty} type="greyed">
-                        {DataFormatterService.toReadableString(appointment.appointmentType)}
+                        {appointment.address || "Location not provided"}
                     </ThemedText>
                 </View>
                 {date > new Date() && (
-                    <View style={[styles.statusBadge, isNotified ? { backgroundColor: '#3b82f622' } : { backgroundColor: '#1f1f1fff' }]}>
+                    <View style={[styles.statusBadge, isNotified && { backgroundColor: '#3b82f622' }]}>
                         <MaterialIcons
                             size={14}
                             name={isNotified ? "notifications" : "notifications-off"}
-                            color={isNotified ? "#3b82f6" : "#6b7280"}
+                            color={isNotified ? "#3b82f6" : "#6e6e6eff"}
                         />
-                        <Text style={[styles.statusText, isNotified ? { color: '#3b82f6' } : { color: '#6b7280' }]}>
+                        <Text style={[styles.statusText, isNotified ? { color: '#3b82f6' } : { color: '#6e6e6eff' }]}>
                             {isNotified ? "Notified" : "Not Notified"}
                         </Text>
                     </View>)}
             </View>
 
-            <View style={styles.appointmentDetails}>
+            <View style={[styles.appointmentDetails, { borderColor: borderColor }]}>
                 <View style={styles.detailRow}>
                     <MaterialIcons size={16} name="calendar-today" color="#6b7280" />
                     <ThemedText style={styles.detailText} type="greyed">
@@ -76,21 +79,21 @@ export default function AppointmentCard({
 
             <View style={styles.itemSection}>
                 <View style={styles.itemHeader}>
-                    <MaterialIcons size={16} name="health-and-safety" color="#ef4444" />
-                    <ThemedText style={styles.itemLabel} type="greyed">Main Concern:</ThemedText>
+                    <MaterialIcons size={16} name="home" color="#3b82f6" />
+                    <ThemedText style={styles.itemLabel} type="greyed">Appointment Type:</ThemedText>
                 </View>
                 <ThemedText style={styles.itemText} type="whitened">
-                    {appointment.mainConcern}
+                    {DataFormatterService.toReadableString(appointment.appointmentType)}
                 </ThemedText>
             </View>
 
             <View style={styles.itemSection}>
                 <View style={styles.itemHeader}>
-                    <MaterialIcons size={16} name="flag" color="#3b82f6" />
-                    <ThemedText style={styles.itemLabel} type="greyed">Goal:</ThemedText>
+                    <MaterialIcons size={16} name="health-and-safety" color="#ef4444" />
+                    <ThemedText style={styles.itemLabel} type="greyed">Main Concern:</ThemedText>
                 </View>
                 <ThemedText style={styles.itemText} type="whitened">
-                    {DataFormatterService.toReadableString(appointment.visitGoal)}
+                    {appointment.mainConcern}
                 </ThemedText>
             </View>
         </ThemedView>
@@ -135,7 +138,6 @@ const styles = StyleSheet.create({
     appointmentDetails: {
         flexDirection: 'row',
         borderBottomWidth: 1,
-        borderColor: '#e5e7eb33',
         gap: 16,
         paddingBottom: 12,
     },

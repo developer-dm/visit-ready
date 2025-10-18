@@ -1,13 +1,14 @@
 import { CustomButton } from "@/components/CustomButton";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { getCalendarGranted, requestCalendar } from "@/services/calendar";
 import { getNotificationsGranted, requestNotifications } from "@/services/notifications";
 import { useTempStore } from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function OnboardingFinalScreen() {
-  const { signup, setNotifications } = useTempStore();
+  const { signup, setNotifications, setCalendar } = useTempStore();
 
   const handleNotifications = async () => {
     const notificationsAllowed = await getNotificationsGranted();
@@ -17,6 +18,17 @@ export default function OnboardingFinalScreen() {
     } else {
       const result = await requestNotifications();
       setNotifications(result);
+    };
+  }
+
+  const handleCalendar = async () => {
+    const calendarAllowed = await getCalendarGranted();
+
+    if (calendarAllowed) {
+      setCalendar(!signup.calendar)
+    } else {
+      const result = await requestCalendar();
+      setCalendar(result);
     };
   }
 
@@ -35,7 +47,10 @@ export default function OnboardingFinalScreen() {
           <ThemedText style={styles.subtitle} type="greyed">Personalize your app settings</ThemedText>
         </View>
 
-        <CustomButton type="checker" value={signup.notifications} setValue={handleNotifications} placeholderText="Allow Notifications" />
+        <View style={styles.formGap}>
+          <CustomButton type="checker" value={signup.notifications} setValue={handleNotifications} placeholderText="Allow Notifications" />
+          <CustomButton type="checker" value={signup.calendar} setValue={handleCalendar} placeholderText="Allow Calendar Sync" />
+        </View>
       </ScrollView>
     </ThemedView>
   );
@@ -47,7 +62,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 150,
+    paddingBottom: 300,
     paddingTop: 48,
     paddingHorizontal: 24,
   },
@@ -80,5 +95,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
     maxWidth: 280,
+  },
+  formGap: {
+    gap: 12,
   },
 });

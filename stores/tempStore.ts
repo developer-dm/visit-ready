@@ -7,13 +7,15 @@ const initialSignupState: SignupData = {
     sex: "",
     language: "",
     notifications: false,
+    calendar: false,
 };
 
 const initialAppointmentState: AppointmentData = {
     appointmentType: "",
-    appointmentDate: null,
+    address: "",
     provider: "",
-    notified: false,
+    appointmentDate: null,
+    notified: "",
     mainConcern: "",
     concernStart: "",
     concernSeverity: "",
@@ -64,6 +66,11 @@ export const useTempStore = create<TempStore>(
                 signup: { ...state.signup, notifications: value },
             })),
 
+        setCalendar: (value: boolean) =>
+            set((state) => ({
+                signup: { ...state.signup, calendar: value },
+            })),
+
         // Appointment Actions
         setId: (id: string) =>
             set((state) => ({
@@ -85,9 +92,14 @@ export const useTempStore = create<TempStore>(
                 appointment: { ...state.appointment, provider: value },
             })),
 
-        setNotified: (value: boolean) =>
+        setNotified: (value: string) =>
             set((state) => ({
                 appointment: { ...state.appointment, notified: value },
+            })),
+
+        setAddress: (value: string) =>
+            set((state) => ({
+                appointment: { ...state.appointment, address: value },
             })),
 
         setMainConcern: (value: string) =>

@@ -20,17 +20,13 @@ export default function ModalLayout() {
     const handleClose = () => {
         Alert.alert('Close Form', 'Are you sure you want to discard this form?', [
             {
-                text: 'Discard',
+                text: 'Discard', style: "destructive",
                 onPress: () => {
                     resetTempContext();
                     router.dismiss();
                 },
-                style: "destructive",
             },
-            {
-                text: 'Cancel',
-                style: 'cancel',
-            },
+            { text: 'Cancel', style: 'cancel' },
         ]);
     };
 

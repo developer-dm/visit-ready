@@ -5,6 +5,7 @@ export type SignupData = {
     sex: string;
     language: string;
     notifications: boolean;
+    calendar: boolean;
 };
 
 // Completion Data
@@ -20,14 +21,15 @@ export type CompletionData = {
     };
     what_to_bring: string[];
     summary_for_provider: string;
-}
+};
 
 // Appointment Preparation Data
 export type AppointmentData = {
     appointmentType: string;
     appointmentDate: Date | null;
     provider: string;
-    notified: boolean;
+    notified: string;
+    address: string;
     mainConcern: string;
     concernStart: string;
     concernSeverity: string;
@@ -48,12 +50,13 @@ export type TempStore = {
     setSex: (value: string) => void;
     setLanguage: (value: string) => void;
     setNotifications: (value: boolean) => void;
+    setCalendar: (ValidityState: boolean) => void;
 
     setId: (id: string) => void;
     setAppointmentType: (value: string) => void;
     setAppointmentDate: (value: Date) => void;
     setProvider: (value: string) => void;
-    setNotified: (value: boolean) => void;
+    setNotified: (value: string) => void;
     setMainConcern: (value: string) => void;
     setConcernStart: (value: string) => void;
     setConcernSeverity: (value: string) => void;
@@ -61,6 +64,7 @@ export type TempStore = {
     setVisitGoal: (value: string) => void;
     setSpecificWorries: (value: string) => void;
     setMiscDiscussion: (value: string) => void;
+    setAddress: (value: string) => void;
 
     setCompletion: (value: CompletionData) => void;
 

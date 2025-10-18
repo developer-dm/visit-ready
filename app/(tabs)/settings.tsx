@@ -9,14 +9,39 @@ import { useAuthStore } from "@/stores/authStore";
 import { useDataStore } from "@/stores/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Link, router } from "expo-router";
-import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
+import { Alert, Linking, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function SettingsScreen() {
   const { resetOnboarding } = useAuthStore();
   const { signup, resetAppointments, resetAll, resetCompletions } = useDataStore();
+  const [debounce, setDebounce] = useState(false); // Calendar debounce
 
   const showNotifications = async () => {
     router.push("/notifications")
+  };
+
+  const showCalendar = async () => {
+    if (debounce) return;
+    setDebounce(true);
+
+    try {
+      const supported = await Linking.canOpenURL('calshow://');
+      if (supported) {
+        await Linking.openURL('calshow://');
+      } else {
+        Alert.alert(
+          'Calendar',
+          'Unable to open calendar app. Please open it manually.',
+        );
+      }
+    } catch (error) {
+      throw error;
+    }
+
+    setTimeout(() => {
+      setDebounce(false);
+    }, 2000);
   };
 
   const clearData = () => {
@@ -29,46 +54,34 @@ export default function SettingsScreen() {
   const clearVisits = () => {
     Alert.alert('Clear Visits', 'Are you sure you want to clear all visits? This action CANNOT be reversed.', [
       {
-        text: 'Confirm',
+        text: 'Confirm', style: "destructive",
         onPress: () => {
           clearAllNotifications();
           resetAppointments();
           resetCompletions();
         },
-        style: "destructive",
       },
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
+      { text: 'Cancel', style: 'cancel' },
     ]);
   }
 
   const handleDeletion = () => {
     Alert.alert('Delete account', 'Are you sure you want to delete your account? This action CANNOT be reversed once initiated.', [
       {
-        text: 'Delete Account',
+        text: 'Delete Account', style: "destructive",
         onPress: () => clearData(),
-        style: "destructive",
       },
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
+      { text: 'Cancel', style: 'cancel' },
     ]);
   };
 
   const handleLogout = () => {
     Alert.alert('Logout', 'Are you sure you want to logout of your account?', [
       {
-        text: 'Logout',
+        text: 'Logout', style: "destructive",
         onPress: () => logOut(),
-        style: "destructive",
       },
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
+      { text: 'Cancel', style: 'cancel' },
     ]);
   };
 
@@ -105,7 +118,7 @@ export default function SettingsScreen() {
 
           <View style={styles.profileDetails}>
             {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
-              if (key === "DOB" && value) value = DataFormatterService.FormatDateString(value);
+              if (key === "DOB" && value && typeof value !== "boolean") value = DataFormatterService.FormatDateString(value);
 
               return (
                 <ThemedView type="list" key={key} style={styles.profileItem}>
@@ -131,27 +144,51 @@ export default function SettingsScreen() {
         <View style={styles.preferencesSection}>
           <ThemedText style={styles.sectionTitle} type="whitened">Preferences</ThemedText>
 
-          {/* Notifications */}
-          <Button type="bordered" style={styles.actionCard} onPress={showNotifications}>
-            <View style={styles.preferenceContent}>
-              <View style={styles.preferenceIconLabel}>
-                <MaterialIcons
-                  size={22}
-                  name="notifications"
-                  color="#64748b"
-                />
-                <ThemedText style={styles.preferenceText}>Notifications</ThemedText>
+          <View style={styles.preferencesGap}>
+            {/* Notifications */}
+            <Button type="bordered" style={styles.actionCard} onPress={showNotifications}>
+              <View style={styles.preferenceContent}>
+                <View style={styles.preferenceIconLabel}>
+                  <MaterialIcons
+                    size={22}
+                    name="notifications"
+                    color="#64748b"
+                  />
+                  <ThemedText style={styles.preferenceText}>Notifications</ThemedText>
+                </View>
+                <ThemedText style={styles.preferenceText} type="greyed">
+                  {DataFormatterService.toReadableString(signup?.notifications, 'notifications')}
+                </ThemedText>
               </View>
-              <ThemedText style={styles.preferenceText} type="greyed">
-                {DataFormatterService.toReadableString(signup?.notifications, 'notifications')}
-              </ThemedText>
-            </View>
-            <MaterialIcons
-              size={20}
-              name="chevron-right"
-              color="#94a3b8"
-            />
-          </Button>
+              <MaterialIcons
+                size={20}
+                name="chevron-right"
+                color="#94a3b8"
+              />
+            </Button>
+
+            {/* Calendar */}
+            <Button type="bordered" style={styles.actionCard} onPress={showCalendar}>
+              <View style={styles.preferenceContent}>
+                <View style={styles.preferenceIconLabel}>
+                  <MaterialIcons
+                    size={22}
+                    name="calendar-today"
+                    color="#64748b"
+                  />
+                  <ThemedText style={styles.preferenceText}>Calendar Sync</ThemedText>
+                </View>
+                <ThemedText style={styles.preferenceText} type="greyed">
+                  {DataFormatterService.toReadableString(signup?.calendar, 'notifications')}
+                </ThemedText>
+              </View>
+              <MaterialIcons
+                size={20}
+                name="chevron-right"
+                color="#94a3b8"
+              />
+            </Button>
+          </View>
         </View>
 
         <View style={styles.actionsSection}>
@@ -332,6 +369,9 @@ const styles = StyleSheet.create({
   preferencesSection: {
     paddingHorizontal: 24,
     marginBottom: 24,
+  },
+  preferencesGap: {
+    gap: 12,
   },
   sectionTitle: {
     fontSize: 20,

@@ -12,7 +12,7 @@ export type DropdownItem = {
 export type CustomDropdownProps = {
     items: DropdownItem[];
     placeholder?: string;
-    value?: string;
+    value: string;
     setValue: (value: string) => void;
     lightColor?: string;
     darkColor?: string;
@@ -69,19 +69,15 @@ export function Dropdown({
             {isOpen && (
                 <ScrollView
                     style={[styles.dropdownList, { backgroundColor, borderColor }]}
-                    showsVerticalScrollIndicator={false}
+                    showsVerticalScrollIndicator={true}
                     nestedScrollEnabled={true}
                 >
-                    {items.map((item, index) => (
+                    {items.map((item) => (
                         <TouchableOpacity
                             key={item.value}
-                            style={[
-                                styles.listItem,
-                                index !== items.length - 1 && styles.listItemBorder,
-                                { borderColor: borderColor }
-                            ]}
+                            style={[styles.listItem, { borderBlockColor: borderColor }]}
                             onPress={() => handleSelect(item.value)}
-                            activeOpacity={0.3}
+                            activeOpacity={0.2}
                         >
                             <Text style={[styles.listItemText, { color: selectionColor }]}>
                                 {item.label}
@@ -111,7 +107,7 @@ const styles = StyleSheet.create({
     buttonOpen: {
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
-        borderBottomWidth: 5,
+        borderBottomWidth: 1,
     },
     dropdownList: {
         borderBottomLeftRadius: 10,
@@ -131,8 +127,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-    },
-    listItemBorder: {
         borderBottomWidth: 1,
     },
     listItemText: {

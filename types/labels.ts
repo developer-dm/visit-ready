@@ -12,6 +12,7 @@ export const ValueToLabel = {
         'appointmenttype': 'Appointment Type',
         'appointmentdate': 'Appointment Date',
         'provider': 'Provider',
+        'address': 'Address',
         'notified': 'Receive Notification',
         'mainconcern': 'Main Concern',
         'concernstart': 'Concern Start Date',
@@ -129,5 +130,17 @@ export const ValueToLabel = {
         'preventive-care': 'Preventive Care',
         'other': 'Other',
         'no-response': 'Unknown',
+    } as Record<string, string>,
+
+    reminderTimes: {
+        '0': 'At time of appointment',
+        '300': '5 minutes before',
+        '900': '15 minutes before',
+        '1800': '30 minutes before',
+        '3600': '1 hour before',
+        '7200': '2 hours before',
+        '86400': '1 day before',
+        '172800': '2 days before',
+        '604800': '1 week before',
     } as Record<string, string>,
 };

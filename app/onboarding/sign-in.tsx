@@ -76,7 +76,6 @@ export default function OnboardingAuthScreen() {
         </ThemedText>
       </View>
 
-      {/* Login Options */}
       <View style={styles.loginOptions}>
         <TouchableOpacity
           style={[

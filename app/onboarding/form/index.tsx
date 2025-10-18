@@ -27,12 +27,12 @@ export default function OnboardingFirstScreen() {
           </ThemedView>
           <ThemedText style={styles.title} type="whitened">Demographics</ThemedText>
           <ThemedText style={styles.subtitle} type="greyed">
-            We do not collect your private health data.{"\n"}All information is stored on your device.
+            We do not collect your private health data.
           </ThemedText>
         </View>
 
         <View style={styles.formGap}>
-          <View style={styles.formField}>
+          <View>
             <ThemedText type="overheader">Date of Birth</ThemedText>
             <DatePicker
               placeholderText="Required"
@@ -43,7 +43,7 @@ export default function OnboardingFirstScreen() {
             />
           </View>
 
-          <View style={styles.formField}>
+          <View>
             <ThemedText type="overheader">Gender</ThemedText>
             <Dropdown
               placeholder="Required"
@@ -53,7 +53,7 @@ export default function OnboardingFirstScreen() {
             />
           </View>
 
-          <View style={styles.formField}>
+          <View>
             <ThemedText type="overheader">Preferred language</ThemedText>
             <Dropdown
               placeholder="Required"
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 150,
+    paddingBottom: 300,
     paddingTop: 48,
     paddingHorizontal: 24,
   },
@@ -106,8 +106,5 @@ const styles = StyleSheet.create({
   },
   formGap: {
     gap: 24,
-  },
-  formField: {
-    width: '100%',
   },
 });

@@ -12,6 +12,7 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSFaceIDUsageDescription": "We use Face ID to securely authenticate you and protect your data.",
+        "NSCalendarsUsageDescription": "We use calendar to sync your medical appointments.",
         "ITSAppUsesNonExemptEncryption": false
       },
       "icon": {

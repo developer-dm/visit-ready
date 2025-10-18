@@ -96,4 +96,16 @@ export const DropdownValues = {
         { label: 'Other', value: 'other' },
         { label: 'Prefer not to say', value: 'no-response' },
     ],
+
+    notified: [
+        { label: 'At time of appointment', value: '0' },
+        { label: '5 minutes before', value: '300' },
+        { label: '15 minutes before', value: '900' },
+        { label: '30 minutes before', value: '1800' },
+        { label: '1 hour before', value: '3600' },
+        { label: '2 hours before', value: '7200' },
+        { label: '1 day before', value: '86400' },
+        { label: '2 days before', value: '172800' },
+        { label: '1 week before', value: '604800' },
+    ],
 };

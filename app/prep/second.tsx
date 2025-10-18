@@ -30,8 +30,8 @@ export default function PrepSecondScreen() {
                 </View>
 
                 <View style={styles.formFields}>
-                    <View style={styles.fieldGroup}>
-                        <ThemedText type="overheader">What are the main health concerns of your appointment?</ThemedText>
+                    <View>
+                        <ThemedText type="overheader">What is the main health concern of your appointment?</ThemedText>
                         <Textbox
                             placeholder="Required"
                             onChangeText={setMainConcern}
@@ -39,8 +39,8 @@ export default function PrepSecondScreen() {
                         />
                     </View>
 
-                    <View style={styles.fieldGroup}>
-                        <ThemedText type="overheader">When did your concerns begin?</ThemedText>
+                    <View>
+                        <ThemedText type="overheader">When did your concern begin?</ThemedText>
                         <Dropdown
                             items={DropdownValues.concernStart}
                             value={appointment.concernStart}
@@ -48,8 +48,8 @@ export default function PrepSecondScreen() {
                         />
                     </View>
 
-                    <View style={styles.fieldGroup}>
-                        <ThemedText type="overheader">How would you rate the severity of your concerns 1-10?</ThemedText>
+                    <View>
+                        <ThemedText type="overheader">How would you rate the severity of your concern 1-10?</ThemedText>
                         <Dropdown
                             items={DropdownValues.concernSeverity}
                             value={appointment.concernSeverity}
@@ -57,7 +57,7 @@ export default function PrepSecondScreen() {
                         />
                     </View>
 
-                    <View style={styles.fieldGroup}>
+                    <View>
                         <ThemedText type="overheader">Have you tried any treatments or remedies?</ThemedText>
                         <Textbox
                             onChangeText={setRemedies}
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         flexGrow: 1,
-        paddingBottom: 150,
+        paddingBottom: 300,
         paddingTop: 48,
         paddingHorizontal: 24,
     },
@@ -113,7 +113,5 @@ const styles = StyleSheet.create({
     formFields: {
         gap: 24,
     },
-    fieldGroup: {
-        width: '100%',
-    },
 });
+

@@ -1,6 +1,7 @@
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { ThemedView } from "@/components/ThemedView";
+import { createCalendarEvent } from "@/services/calendar";
 import { DataFormatterService } from "@/services/dataFormatter";
 import { scheduleNotification } from "@/services/notifications";
 import { useDataStore } from "@/stores/dataStore";
@@ -23,17 +24,13 @@ export default function AppointmentPrepLayout() {
     const handleClose = () => {
         Alert.alert('Close Form', 'Are you sure you want to discard this form?', [
             {
-                text: 'Discard',
+                text: 'Discard', style: "destructive",
                 onPress: () => {
                     resetTempContext();
                     router.dismiss();
                 },
-                style: "destructive",
             },
-            {
-                text: 'Cancel',
-                style: 'cancel',
-            },
+            { text: 'Cancel', style: 'cancel' },
         ]);
     };
 
@@ -48,6 +45,39 @@ export default function AppointmentPrepLayout() {
         };
 
         setTimeout(() => { setDebounce(false) }, 500);
+    };
+
+    const scheduleNotif = () => {
+        if (signup?.notifications && appointment.notified && appointment.appointmentDate) {
+            const notifDate = new Date(appointment.appointmentDate.getTime() - Number(appointment.notified) * 1000);
+
+            if (notifDate.getTime() < new Date().getTime()) return;
+
+            const header = appointment.provider || DataFormatterService.toReadableString(appointment.appointmentType);
+            const body = appointment.address || "Appointment";
+
+            scheduleNotification(
+                id,
+                header,
+                body,
+                notifDate,
+                { date: notifDate.toISOString() },
+            );
+        };
+    };
+
+    const scheduleCalendar = () => {
+        if (signup?.calendar && appointment.appointmentDate) {
+            Alert.alert('Calendar Event', 'Add appointment to your calendar?', [
+                {
+                    text: 'Create', style: "default",
+                    onPress: () => {
+                        createCalendarEvent(appointment);
+                    },
+                },
+                { text: 'Cancel', style: 'cancel' },
+            ]);
+        };
     };
 
     const handleNext = () => {
@@ -66,13 +96,8 @@ export default function AppointmentPrepLayout() {
                 break;
             case 'final':
                 addAppointment(appointment, id);
-                if (signup?.notifications && appointment.notified && appointment.appointmentDate) scheduleNotification(
-                    id,
-                    appointment.provider,
-                    DataFormatterService.toReadableString(appointment.appointmentType),
-                    appointment.appointmentDate,
-                    { date: appointment.appointmentDate.toISOString() },
-                );
+                scheduleNotif();
+                scheduleCalendar();
                 router.dismissTo("/(tabs)");
                 router.replace("/results");
                 break;
@@ -84,7 +109,7 @@ export default function AppointmentPrepLayout() {
     const checkRequirements = () => {
         switch (currentRoute) {
             case 'prep':
-                if (appointment.appointmentType && appointment.appointmentDate && appointment.provider) return true;
+                if (appointment.appointmentType && appointment.appointmentDate) return true;
                 break;
             case 'second':
                 if (appointment.mainConcern) return true;
