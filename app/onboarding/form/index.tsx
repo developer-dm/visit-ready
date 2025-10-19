@@ -9,7 +9,7 @@ import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function OnboardingFirstScreen() {
-  const { signup, setDOB, setSex, setLanguage } = useTempStore();
+  const { signup, updateSignup } = useTempStore();
 
   return (
     <ThemedView type="container">
@@ -25,9 +25,11 @@ export default function OnboardingFirstScreen() {
           <ThemedView style={styles.headerIconContainer} type="dusked">
             <MaterialIcons name="person-outline" size={32} color="#3b82f6" />
           </ThemedView>
-          <ThemedText style={styles.title} type="whitened">Demographics</ThemedText>
+          <ThemedText style={styles.title} type="whitened">
+            Demographics
+          </ThemedText>
           <ThemedText style={styles.subtitle} type="greyed">
-            We do not collect your private health data.
+            Your basic health information
           </ThemedText>
         </View>
 
@@ -39,7 +41,7 @@ export default function OnboardingFirstScreen() {
               mode="date"
               display="spinner"
               value={signup.DOB}
-              setValue={setDOB}
+              setValue={(value) => updateSignup({ DOB: value })}
             />
           </View>
 
@@ -49,7 +51,7 @@ export default function OnboardingFirstScreen() {
               placeholder="Required"
               items={DropdownValues.sex}
               value={signup.sex}
-              setValue={setSex}
+              setValue={(value) => updateSignup({ sex: value })}
             />
           </View>
 
@@ -59,7 +61,7 @@ export default function OnboardingFirstScreen() {
               placeholder="Required"
               items={DropdownValues.language}
               value={signup.language}
-              setValue={setLanguage}
+              setValue={(value) => updateSignup({ language: value })}
             />
           </View>
         </View>

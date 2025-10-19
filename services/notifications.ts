@@ -11,6 +11,7 @@ export const initializeNotifications = () => {
     });
 };
 
+// Create an appointment notification
 export const scheduleNotification = async (id: string, title: string, body: string, date: Date, data?: Record<string, string>) => {
     if (date.getTime() < new Date().getTime()) return;
 
@@ -47,6 +48,7 @@ export const getNotificationsGranted = async () => {
     return result.granted ? true : false;
 };
 
+// Unused
 export const checkWhichAppointmentsHaveNotifications = async (ids: string[]) => {
     const result = await Notifications.getAllScheduledNotificationsAsync();
     const notificationIdList = result.map(notif => notif.identifier)

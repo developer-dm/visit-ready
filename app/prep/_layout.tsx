@@ -4,6 +4,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { createCalendarEvent } from "@/services/calendar";
 import { DataFormatterService } from "@/services/dataFormatter";
 import { scheduleNotification } from "@/services/notifications";
+import { useAuthStore } from "@/stores/authStore";
 import { useDataStore } from "@/stores/dataStore";
 import { useTempStore } from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -14,7 +15,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function AppointmentPrepLayout() {
     const insets = useSafeAreaInsets();
-    const { signup, addAppointment } = useDataStore();
+    const { addAppointment } = useDataStore();
+    const { calendar, notifications } = useAuthStore();
     const segments = useSegments();
     const currentRoute = segments[segments.length - 1];
     const [debounce, setDebounce] = useState(false);
@@ -48,7 +50,7 @@ export default function AppointmentPrepLayout() {
     };
 
     const scheduleNotif = () => {
-        if (signup?.notifications && appointment.notified && appointment.appointmentDate) {
+        if (notifications && appointment.notified && appointment.appointmentDate) {
             const notifDate = new Date(appointment.appointmentDate.getTime() - Number(appointment.notified) * 1000);
 
             if (notifDate.getTime() < new Date().getTime()) return;
@@ -67,7 +69,7 @@ export default function AppointmentPrepLayout() {
     };
 
     const scheduleCalendar = () => {
-        if (signup?.calendar && appointment.appointmentDate) {
+        if (calendar && appointment.appointmentDate) {
             Alert.alert('Calendar Event', 'Add appointment to your calendar?', [
                 {
                     text: 'Create', style: "default",
@@ -128,7 +130,7 @@ export default function AppointmentPrepLayout() {
         if (id === "") {
             assignNewId();
         };
-    }, [id])
+    }, [])
 
     return (
         <>
@@ -170,7 +172,7 @@ export default function AppointmentPrepLayout() {
                     </Button>
                 </View>
 
-                <Footer hasSpacer={false} text="Your information is encrypted and stored on your device" />
+                <Footer type="bottom" text="Your information is encrypted and stored on your device" />
             </ThemedView>
         </>
     );

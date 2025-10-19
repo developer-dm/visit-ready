@@ -20,38 +20,60 @@ export const useAuthStore = create(
       hasCompletedOnboarding: false,
       isVip: false,
       _hasHydrated: false,
+      notifications: false,
+      calendar: false,
 
       // Login Actions
-      logIn: () => set((state) => ({
-        ...state,
-        isLoggedIn: true,
-      })),
-      logInAsVip: () => set((state) => ({
-        ...state,
-        isVip: true,
-        isLoggedIn: true,
-      })),
-      logOut: () => set((state) => ({
-        ...state,
-        isVip: false,
-        isLoggedIn: false,
-      })),
+      logIn: () =>
+        set((state) => ({
+          ...state,
+          isLoggedIn: true,
+        })),
+      logInAsVip: () =>
+        set((state) => ({
+          ...state,
+          isVip: true,
+          isLoggedIn: true,
+        })),
+      logOut: () =>
+        set((state) => ({
+          ...state,
+          isVip: false,
+          isLoggedIn: false,
+        })),
 
       // Onboarding Actions
-      completeOnboarding: () => set((state) => ({
-        ...state,
-        hasCompletedOnboarding: true,
-      })),
-      resetOnboarding: () => set((state) => ({
-        ...state,
-        hasCompletedOnboarding: false,
-      })),
+      completeOnboarding: () =>
+        set((state) => ({
+          ...state,
+          hasCompletedOnboarding: true,
+        })),
+      resetOnboarding: () =>
+        set((state) => ({
+          ...state,
+          hasCompletedOnboarding: false,
+          notifications: false,
+          calendar: false,
+        })),
+
+      // Settings Actions
+      setNotifications: (value: boolean) =>
+        set((state) => ({
+          ...state,
+          notifications: value,
+        })),
+      setCalendar: (value: boolean) =>
+        set((state) => ({
+          ...state,
+          calendar: value,
+        })),
 
       // Utility Actions
-      setHasHydrated: (value: boolean) => set((state) => ({
-        ...state,
-        _hasHydrated: value,
-      })),
+      setHasHydrated: (value: boolean) =>
+        set((state) => ({
+          ...state,
+          _hasHydrated: value,
+        })),
     }),
     {
       name: "auth-store",

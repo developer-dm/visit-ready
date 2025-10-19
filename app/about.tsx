@@ -5,6 +5,8 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 
 export default function AboutScreen() {
+  const appIcon = require("@/assets/images/favicon.png")
+
   const features = [
     {
       icon: "calendar-today",
@@ -32,7 +34,7 @@ export default function AboutScreen() {
       >
         <View style={styles.header}>
           <ThemedView style={styles.logoContainer} type="dusked">
-            <Image source={require("@/assets/images/favicon.png")} style={styles.logo} />
+            <Image source={appIcon} style={styles.logo} />
           </ThemedView>
           <ThemedText style={styles.appTitle} type="whitened">
             Visit Ready
@@ -315,7 +317,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   contactText: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '400',
     textAlign: 'center',
     lineHeight: 20,

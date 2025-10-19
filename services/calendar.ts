@@ -2,16 +2,19 @@ import { AppointmentData } from '@/types/models';
 import * as Calendar from 'expo-calendar';
 import { DataFormatterService } from './dataFormatter';
 
+// Request Calendar Permissions
 export const requestCalendar = async () => {
     const result = await Calendar.requestCalendarPermissionsAsync();
     return result.granted ? true : false;
 };
 
+// Get Calendar Permissions
 export const getCalendarGranted = async () => {
     const result = await Calendar.getCalendarPermissionsAsync();
     return result.granted ? true : false;
 };
 
+// Create Visit Ready Calendar within default calendar app
 const getOrCreateVisitReadyCalendar = async () => {
     const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
 
@@ -45,6 +48,7 @@ const getOrCreateVisitReadyCalendar = async () => {
     return newCalendarId;
 };
 
+// Save appointment to calendar
 export const createCalendarEvent = async (appointment: AppointmentData) => {
     try {
         const calendarId = await getOrCreateVisitReadyCalendar();

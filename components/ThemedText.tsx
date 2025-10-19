@@ -48,7 +48,7 @@ export function ThemedText({
 
 const styles = StyleSheet.create({
   overheader: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     marginBottom: 8,
   },

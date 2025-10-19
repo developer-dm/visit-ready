@@ -106,7 +106,7 @@ export default function ResultsLayout() {
                         </Button>
                     </View>
 
-                    <Footer hasSpacer={false} text="AI can make mistakes. This is not medical advice." />
+                    <Footer type="bottom" text="AI can make mistakes. This is not medical advice." />
                 </ThemedView >
             )}
         </>

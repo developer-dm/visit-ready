@@ -9,7 +9,7 @@ import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function PrepThirdScreen() {
-    const { appointment, setVisitGoal, setSpecificWorries, setMiscDiscussion } = useTempStore();
+    const { appointment, updateAppointment } = useTempStore();
 
     return (
         <ThemedView type="container">
@@ -36,7 +36,7 @@ export default function PrepThirdScreen() {
                             placeholder="Required"
                             items={DropdownValues.visitGoal}
                             value={appointment.visitGoal}
-                            setValue={setVisitGoal}
+                            setValue={(value) => updateAppointment({ visitGoal: value })}
                         />
                     </View>
 
@@ -45,14 +45,14 @@ export default function PrepThirdScreen() {
                         <Dropdown
                             items={DropdownValues.specificWorries}
                             value={appointment.specificWorries}
-                            setValue={setSpecificWorries}
+                            setValue={(value) => updateAppointment({ specificWorries: value })}
                         />
                     </View>
 
                     <View>
                         <ThemedText type="overheader">Any other issues you would like to discuss?</ThemedText>
                         <Textbox
-                            onChangeText={setMiscDiscussion}
+                            onChangeText={(value) => updateAppointment({ miscDiscussion: value })}
                             value={appointment.miscDiscussion}
                         />
                     </View>

@@ -1,5 +1,6 @@
 import AppointmentCard from '@/components/AppointmentCard';
 import { Button } from '@/components/Button';
+import { Divider } from '@/components/Divider';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useDataStore } from '@/stores/dataStore';
@@ -140,7 +141,7 @@ export default function DashboardScreen() {
               Prepare 24-48 hours before your visit for best results.
             </ThemedText>
           </View>
-          <View style={styles.tipDivider} />
+          <Divider type='horizontal' top={10} bottom={10} />
           <View style={styles.tipItem}>
             <MaterialIcons size={20} name="priority-high" color="#ef4444" />
             <ThemedText style={styles.tipText} type="greyed">
@@ -289,11 +290,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
-  },
-  tipDivider: {
-    height: 1,
-    backgroundColor: '#e5e7eb33',
-    marginVertical: 12,
   },
   tipText: {
     flex: 1,

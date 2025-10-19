@@ -4,8 +4,6 @@ export type SignupData = {
     DOB: Date | null;
     sex: string;
     language: string;
-    notifications: boolean;
-    calendar: boolean;
 };
 
 // Completion Data
@@ -46,26 +44,8 @@ export type TempStore = {
     appointment: AppointmentData;
     tempCompletion: CompletionData;
 
-    setDOB: (value: Date) => void;
-    setSex: (value: string) => void;
-    setLanguage: (value: string) => void;
-    setNotifications: (value: boolean) => void;
-    setCalendar: (ValidityState: boolean) => void;
-
-    setId: (id: string) => void;
-    setAppointmentType: (value: string) => void;
-    setAppointmentDate: (value: Date) => void;
-    setProvider: (value: string) => void;
-    setNotified: (value: string) => void;
-    setMainConcern: (value: string) => void;
-    setConcernStart: (value: string) => void;
-    setConcernSeverity: (value: string) => void;
-    setRemedies: (value: string) => void;
-    setVisitGoal: (value: string) => void;
-    setSpecificWorries: (value: string) => void;
-    setMiscDiscussion: (value: string) => void;
-    setAddress: (value: string) => void;
-
+    updateSignup: (data: Partial<SignupData>) => void;
+    updateAppointment: (data: Partial<AppointmentData>) => void;
     setCompletion: (value: CompletionData) => void;
 
     assignNewId: () => void;
@@ -79,12 +59,17 @@ export type AuthStore = {
     isVip: boolean;
     _hasHydrated: boolean;
 
+    notifications: boolean;
+    calendar: boolean;
+
     logIn: () => void;
     logOut: () => void;
     completeOnboarding: () => void;
     resetOnboarding: () => void;
     logInAsVip: () => void;
     setHasHydrated: (value: boolean) => void;
+    setNotifications: (value: boolean) => void;
+    setCalendar: (value: boolean) => void;
 };
 
 // User Data State

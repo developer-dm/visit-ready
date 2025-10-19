@@ -14,13 +14,12 @@ export async function POST(req: Request) {
     const appointment: AppointmentData = parsedMessage.appointment;
     const signup: SignupData = parsedMessage.signup;
 
-    //console.log('Parsed data:', { signup, appointment });
-
     if (!signup || !appointment) return new Response('Data not found', { status: 404 });
 
     const completion_prompt = `
 Language: ${DataFormatterService.toReadableString(signup.language, 'language')}
 Gender: ${DataFormatterService.toReadableString(signup.sex, 'sex')}
+Age: ${DataFormatterService.FormatAge(signup.DOB)}
 Main health concern: ${appointment.mainConcern}
 Specific worries: ${DataFormatterService.toReadableString(appointment.specificWorries, 'specificWorries')}
 Goal for this visit: ${DataFormatterService.toReadableString(appointment.visitGoal, 'visitGoal')}

@@ -13,7 +13,7 @@ export type CustomDropdownProps = {
     items: DropdownItem[];
     placeholder?: string;
     value: string;
-    setValue: (value: string) => void;
+    setValue: (data: string) => void;
     lightColor?: string;
     darkColor?: string;
     lightBorder?: string;
@@ -72,10 +72,13 @@ export function Dropdown({
                     showsVerticalScrollIndicator={true}
                     nestedScrollEnabled={true}
                 >
-                    {items.map((item) => (
+                    {items.map((item, index) => (
                         <TouchableOpacity
                             key={item.value}
-                            style={[styles.listItem, { borderBlockColor: borderColor }]}
+                            style={[
+                                styles.listItem,
+                                index !== items.length - 1 && { borderBottomWidth: 1, borderColor: borderColor },
+                            ]}
                             onPress={() => handleSelect(item.value)}
                             activeOpacity={0.2}
                         >
@@ -127,7 +130,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderBottomWidth: 1,
     },
     listItemText: {
         fontSize: 16,

@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function SignInScreen() {
+  const appIcon = require("@/assets/images/favicon.png")
+
   const [authType, setAuthType] = useState<'biometric' | 'passcode' | 'none'>('none');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -66,7 +68,7 @@ export default function SignInScreen() {
       <View style={styles.header}>
         <View style={styles.brandingContainer}>
           <ThemedView style={styles.logoContainer} type="dusked">
-            <Image source={require("@/assets/images/favicon.png")} style={styles.logo} />
+            <Image source={appIcon} style={styles.logo} />
           </ThemedView>
           <ThemedText style={styles.appTitle} type="whitened">
             Visit Ready

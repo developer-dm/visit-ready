@@ -3,8 +3,9 @@ import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { logOut } from "@/services/auth";
+import { getCalendarGranted, requestCalendar } from "@/services/calendar";
 import { DataFormatterService } from "@/services/dataFormatter";
-import { clearAllNotifications } from "@/services/notifications";
+import { clearAllNotifications, getNotificationsGranted, requestNotifications } from "@/services/notifications";
 import { useAuthStore } from "@/stores/authStore";
 import { useDataStore } from "@/stores/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -13,35 +14,76 @@ import { useState } from "react";
 import { Alert, Linking, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function SettingsScreen() {
-  const { resetOnboarding } = useAuthStore();
+  const { resetOnboarding, calendar, notifications, setCalendar, setNotifications } = useAuthStore();
   const { signup, resetAppointments, resetAll, resetCompletions } = useDataStore();
-  const [debounce, setDebounce] = useState(false); // Calendar debounce
+  const [debounce, setDebounce] = useState(false); // Calendar and notif debounce
 
   const showNotifications = async () => {
-    router.push("/notifications")
+    if (debounce) return;
+    setDebounce(true);
+
+    if (notifications) {
+      router.push("/notifications")
+    } else {
+      const notificationsAllowed = await getNotificationsGranted();
+
+      if (notificationsAllowed) {
+        Alert.alert('Enable Notifications', 'Allow appointment notifications?', [
+          {
+            text: 'Confirm', style: "default",
+            onPress: () => setNotifications(true),
+          },
+          { text: 'Cancel', style: 'cancel' },
+        ]);
+      } else {
+        const result = await requestNotifications();
+        setNotifications(result);
+      };
+    };
+
+    setTimeout(() => {
+      setDebounce(false);
+    }, 1000);
   };
 
   const showCalendar = async () => {
     if (debounce) return;
     setDebounce(true);
 
-    try {
-      const supported = await Linking.canOpenURL('calshow://');
-      if (supported) {
-        await Linking.openURL('calshow://');
-      } else {
-        Alert.alert(
-          'Calendar',
-          'Unable to open calendar app. Please open it manually.',
-        );
+    if (calendar) {
+      try { // Open link if calendar is allowed
+        const supported = await Linking.canOpenURL('calshow://');
+        if (supported) {
+          await Linking.openURL('calshow://');
+        } else {
+          Alert.alert(
+            'Calendar',
+            'Unable to open calendar app. Please open it manually.',
+          );
+        }
+      } catch (error) {
+        throw error;
       }
-    } catch (error) {
-      throw error;
-    }
+    } else { // Calendar not allowed
+      const calendarAllowed = await getCalendarGranted();
+
+      if (calendarAllowed) { // If app permissions are granted
+        Alert.alert('Enable Calendar', 'Sync calendar with appointments?', [
+          {
+            text: 'Confirm', style: "default",
+            onPress: () => setCalendar(true),
+          },
+          { text: 'Cancel', style: 'cancel' },
+        ]);
+      } else { // Request app permissions
+        const result = await requestCalendar();
+        setCalendar(result);
+      };
+    };
 
     setTimeout(() => {
       setDebounce(false);
-    }, 2000);
+    }, 1000);
   };
 
   const clearData = () => {
@@ -157,7 +199,7 @@ export default function SettingsScreen() {
                   <ThemedText style={styles.preferenceText}>Notifications</ThemedText>
                 </View>
                 <ThemedText style={styles.preferenceText} type="greyed">
-                  {DataFormatterService.toReadableString(signup?.notifications, 'notifications')}
+                  {DataFormatterService.toReadableString(notifications, 'notifications')}
                 </ThemedText>
               </View>
               <MaterialIcons
@@ -179,7 +221,7 @@ export default function SettingsScreen() {
                   <ThemedText style={styles.preferenceText}>Calendar Sync</ThemedText>
                 </View>
                 <ThemedText style={styles.preferenceText} type="greyed">
-                  {DataFormatterService.toReadableString(signup?.calendar, 'notifications')}
+                  {DataFormatterService.toReadableString(calendar, 'notifications')}
                 </ThemedText>
               </View>
               <MaterialIcons

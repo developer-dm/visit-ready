@@ -30,8 +30,6 @@ export default function FourthResultsScreen() {
                     <ThemedText style={styles.questionText} type="whitened">
                         {item.question}
                     </ThemedText>
-
-                    <CustomButton type="copy" copyText={item.question} />
                 </View>
 
                 <View style={styles.detailsSection}>
@@ -53,6 +51,7 @@ export default function FourthResultsScreen() {
                         </ThemedText>
                     </View>
                 </View>
+                <CustomButton type="copy" copyText={item.question} />
             </ThemedView>
         ));
     };
@@ -66,7 +65,6 @@ export default function FourthResultsScreen() {
             <ThemedText style={styles.sectionTitle}>
                 Questions to Ask Your Doctor
             </ThemedText>
-
             {renderQuestions()}
         </ScrollView>
     );

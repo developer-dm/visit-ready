@@ -6,8 +6,6 @@ const initialSignupState: SignupData = {
     DOB: null,
     sex: "",
     language: "",
-    notifications: false,
-    calendar: false,
 };
 
 const initialAppointmentState: AppointmentData = {
@@ -46,95 +44,15 @@ export const useTempStore = create<TempStore>(
         tempCompletion: initialCompletionState,
 
         // Signup Actions
-        setDOB: (value: Date) =>
+        updateSignup: (data: Partial<SignupData>) =>
             set((state) => ({
-                signup: { ...state.signup, DOB: value },
-            })),
-
-        setSex: (value: string) =>
-            set((state) => ({
-                signup: { ...state.signup, sex: value },
-            })),
-
-        setLanguage: (value: string) =>
-            set((state) => ({
-                signup: { ...state.signup, language: value },
-            })),
-
-        setNotifications: (value: boolean) =>
-            set((state) => ({
-                signup: { ...state.signup, notifications: value },
-            })),
-
-        setCalendar: (value: boolean) =>
-            set((state) => ({
-                signup: { ...state.signup, calendar: value },
+                signup: { ...state.signup, ...data },
             })),
 
         // Appointment Actions
-        setId: (id: string) =>
+        updateAppointment: (data: Partial<AppointmentData>) =>
             set((state) => ({
-                appointment: { ...state.appointment, id },
-            })),
-
-        setAppointmentType: (value: string) =>
-            set((state) => ({
-                appointment: { ...state.appointment, appointmentType: value },
-            })),
-
-        setAppointmentDate: (value: Date) =>
-            set((state) => ({
-                appointment: { ...state.appointment, appointmentDate: value },
-            })),
-
-        setProvider: (value: string) =>
-            set((state) => ({
-                appointment: { ...state.appointment, provider: value },
-            })),
-
-        setNotified: (value: string) =>
-            set((state) => ({
-                appointment: { ...state.appointment, notified: value },
-            })),
-
-        setAddress: (value: string) =>
-            set((state) => ({
-                appointment: { ...state.appointment, address: value },
-            })),
-
-        setMainConcern: (value: string) =>
-            set((state) => ({
-                appointment: { ...state.appointment, mainConcern: value },
-            })),
-
-        setConcernStart: (value: string) =>
-            set((state) => ({
-                appointment: { ...state.appointment, concernStart: value },
-            })),
-
-        setConcernSeverity: (value: string) =>
-            set((state) => ({
-                appointment: { ...state.appointment, concernSeverity: value },
-            })),
-
-        setRemedies: (value: string) =>
-            set((state) => ({
-                appointment: { ...state.appointment, remedies: value },
-            })),
-
-        setVisitGoal: (value: string) =>
-            set((state) => ({
-                appointment: { ...state.appointment, visitGoal: value },
-            })),
-
-        setSpecificWorries: (value: string) =>
-            set((state) => ({
-                appointment: { ...state.appointment, specificWorries: value },
-            })),
-
-        setMiscDiscussion: (value: string) =>
-            set((state) => ({
-                appointment: { ...state.appointment, miscDiscussion: value },
+                appointment: { ...state.appointment, ...data },
             })),
 
         // Completion Actions

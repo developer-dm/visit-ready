@@ -11,51 +11,19 @@ export const DataFormatterService = {
 
     const inputString = String(input).toLowerCase();
 
-    switch (type) {
-      case 'appointmentType':
-        return ValueToLabel.appointmentType[inputString] || 'N/A';
-      case 'concernStart':
-        return ValueToLabel.concernStart[inputString] || 'N/A';
-      case 'concernSeverity':
-        return ValueToLabel.concernSeverity[inputString] || 'N/A';
-      case 'sex':
-        return ValueToLabel.sex[inputString] || 'N/A';
-      case 'label':
-        return ValueToLabel.label[inputString] || inputString;
-      case 'language':
-        return ValueToLabel.language[inputString] || 'N/A';
-      case 'notifications':
-        return ValueToLabel.notifications[inputString] || 'N/A';
-      case 'visitGoal':
-        return ValueToLabel.visitGoal[inputString] || 'N/A';
-      case 'specificWorries':
-        return ValueToLabel.specificWorries[inputString] || 'N/A';
-      case 'priority':
-        return ValueToLabel.priority[inputString] || 'N/A';
-      case 'reminderTimes':
-        return ValueToLabel.reminderTimes[inputString] || 'N/A';
+    if (type) {
+      return ValueToLabel[type]?.[inputString] || (type === 'label' ? inputString : 'N/A');
     }
 
-    const autoDetected = this.autoDetectAndConvert(inputString);
-    if (autoDetected !== null) return autoDetected;
+    for (const key in ValueToLabel) {
+      const labelKey = key as keyof typeof ValueToLabel;
+      if (Object.prototype.hasOwnProperty.call(ValueToLabel[labelKey], inputString)) {
+        return ValueToLabel[labelKey][inputString];
+      }
+    }
 
     const originalString = String(input);
     return originalString.trim() !== '' ? originalString : 'N/A';
-  },
-
-  autoDetectAndConvert(input: string): string | null {
-    if (ValueToLabel.appointmentType[input]) return ValueToLabel.appointmentType[input];
-    if (ValueToLabel.concernStart[input]) return ValueToLabel.concernStart[input];
-    if (ValueToLabel.concernSeverity[input]) return ValueToLabel.concernSeverity[input];
-    if (ValueToLabel.sex[input]) return ValueToLabel.sex[input];
-    if (ValueToLabel.label[input]) return ValueToLabel.label[input];
-    if (ValueToLabel.language[input]) return ValueToLabel.language[input];
-    if (ValueToLabel.notifications[input]) return ValueToLabel.notifications[input];
-    if (ValueToLabel.visitGoal[input]) return ValueToLabel.visitGoal[input];
-    if (ValueToLabel.specificWorries[input]) return ValueToLabel.specificWorries[input];
-    if (ValueToLabel.priority[input]) return ValueToLabel.priority[input];
-    if (ValueToLabel.reminderTimes[input]) return ValueToLabel.reminderTimes[input];
-    return null;
   },
 
   FormatDateString(rawDate: Date | object | string) {
@@ -94,5 +62,21 @@ export const DataFormatterService = {
     });
 
     return `${date}, ${time}`
+  },
+
+  FormatAge(rawDate: Date | null) {
+    if (!rawDate || new Date(rawDate).getTime() > new Date().getTime()) return "Unknown";
+
+    const dob = new Date(rawDate)
+    const now = new Date();
+    let age = now.getFullYear() - dob.getFullYear();
+    const monthDiff = now.getMonth() - dob.getMonth();
+    const dayDiff = now.getDate() - dob.getDate();
+
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) age--; // Month and day check
+    if (age > 90) return "90+"; // 90+ check
+    if (age < 1) return "<1"; // Less than a year check
+
+    return age.toString();
   },
 };

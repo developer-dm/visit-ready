@@ -4,7 +4,7 @@ import { StyleSheet, TextProps } from "react-native";
 
 export type FooterTextProps = TextProps & {
     text?: string;
-    type?: "absolute" | "relative";
+    type?: "absolute" | "relative" | "bottom";
     hasSpacer?: boolean;
 };
 
@@ -19,6 +19,7 @@ export function Footer({
             style={[
                 type === "absolute" ? styles.absoluteFooterText : undefined,
                 type === "relative" ? styles.relativeFooterText : undefined,
+                type === "bottom" ? styles.bottomFooterText : undefined,
                 hasSpacer ? styles.bottomSpacer : undefined,
             ]}
         >
@@ -40,6 +41,12 @@ const styles = StyleSheet.create({
     },
     relativeFooterText: {
         fontSize: 10,
+        fontWeight: '400',
+        textAlign: 'center',
+        fontStyle: 'italic',
+    },
+    bottomFooterText: {
+        fontSize: 7,
         fontWeight: '400',
         textAlign: 'center',
         fontStyle: 'italic',

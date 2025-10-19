@@ -1,4 +1,5 @@
 import AppointmentCard from "@/components/AppointmentCard";
+import { Divider } from "@/components/Divider";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -43,7 +44,7 @@ export default function HistoryScreen() {
                             <ThemedText style={styles.statNumber}>{Object.keys(appointments).length}</ThemedText>
                             <ThemedText style={styles.statLabel} type="greyed">Total Visits</ThemedText>
                         </View>
-                        <View style={styles.statDivider} />
+                        <Divider type="vertical" top={25} bottom={25} />
                         <TouchableOpacity style={styles.addContainer} onPress={handleVisitPrep}>
                             <ThemedView style={styles.addIconContainer} type="bordered">
                                 <MaterialIcons
@@ -145,12 +146,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textAlign: 'center',
         fontWeight: '500',
-    },
-    statDivider: {
-        width: 1,
-        height: 40,
-        backgroundColor: '#e2e8f0',
-        marginHorizontal: 20,
     },
     addContainer: {
         alignItems: 'center',

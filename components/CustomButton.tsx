@@ -35,13 +35,14 @@ export function CustomButton({
 
     if (type === "copy") return (
         <TouchableOpacity
-            activeOpacity={0.7}
+            style={styles.copyButton}
+            activeOpacity={0.3}
             onPress={() => {
                 copyToClipboard();
                 copyColor();
             }}
         >
-            <MaterialIcons name="content-copy" size={20} color={color} />
+            <MaterialIcons name="content-copy" size={15} color={color} />
         </TouchableOpacity>
     );
 
@@ -65,6 +66,13 @@ export function CustomButton({
 }
 
 const styles = StyleSheet.create({
+    copyButton: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        padding: 6,
+        opacity: 0.5,
+    },
     settingsContainer: {
         borderRadius: 10,
         borderWidth: 1,

@@ -112,7 +112,7 @@ export default function ModalLayout() {
                     </Button>
                 </View>
 
-                <Footer hasSpacer={false} text="Your information is encrypted and stored on your device" />
+                <Footer type="bottom" text="Your information is encrypted and stored on your device" />
             </ThemedView>
         </>
     );

@@ -3,18 +3,18 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { getCalendarGranted, requestCalendar } from "@/services/calendar";
 import { getNotificationsGranted, requestNotifications } from "@/services/notifications";
-import { useTempStore } from "@/stores/tempStore";
+import { useAuthStore } from "@/stores/authStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function OnboardingFinalScreen() {
-  const { signup, setNotifications, setCalendar } = useTempStore();
+  const { calendar, notifications, setNotifications, setCalendar } = useAuthStore();
 
   const handleNotifications = async () => {
     const notificationsAllowed = await getNotificationsGranted();
 
     if (notificationsAllowed) {
-      setNotifications(!signup.notifications)
+      setNotifications(!notifications)
     } else {
       const result = await requestNotifications();
       setNotifications(result);
@@ -25,7 +25,7 @@ export default function OnboardingFinalScreen() {
     const calendarAllowed = await getCalendarGranted();
 
     if (calendarAllowed) {
-      setCalendar(!signup.calendar)
+      setCalendar(!calendar)
     } else {
       const result = await requestCalendar();
       setCalendar(result);
@@ -48,8 +48,14 @@ export default function OnboardingFinalScreen() {
         </View>
 
         <View style={styles.formGap}>
-          <CustomButton type="checker" value={signup.notifications} setValue={handleNotifications} placeholderText="Allow Notifications" />
-          <CustomButton type="checker" value={signup.calendar} setValue={handleCalendar} placeholderText="Allow Calendar Sync" />
+          <View>
+            <ThemedText type="overheader">Notifications</ThemedText>
+            <CustomButton type="checker" value={notifications} setValue={handleNotifications} placeholderText="Allow Notifications" />
+          </View>
+          <View>
+            <ThemedText type="overheader">Calendar</ThemedText>
+            <CustomButton type="checker" value={calendar} setValue={handleCalendar} placeholderText="Allow Calendar Sync" />
+          </View>
         </View>
       </ScrollView>
     </ThemedView>
@@ -97,6 +103,6 @@ const styles = StyleSheet.create({
     maxWidth: 280,
   },
   formGap: {
-    gap: 12,
+    gap: 24,
   },
 });

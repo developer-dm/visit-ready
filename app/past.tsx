@@ -47,6 +47,8 @@ export default function PrepFinalScreen() {
         }
 
         return userDataEntries.map(([key, value]) => {
+            if (!value) return;
+
             return (
                 <ThemedView type="list" key={key} style={styles.detailItem}>
                     <ThemedText style={styles.detailLabel} type="greyed">
@@ -74,7 +76,6 @@ export default function PrepFinalScreen() {
                     <ThemedText style={styles.questionText} type="whitened">
                         {item.question}
                     </ThemedText>
-                    <CustomButton type="copy" copyText={item.question} />
                 </View>
                 <View style={styles.detailsSection}>
                     <View style={styles.detailRow}>
@@ -94,6 +95,7 @@ export default function PrepFinalScreen() {
                         </ThemedText>
                     </View>
                 </View>
+                <CustomButton type="copy" copyText={item.question} />
             </ThemedView>
         ));
     };
@@ -164,11 +166,7 @@ export default function PrepFinalScreen() {
 
                     {activeTab === 'preparation' && completion && (
                         <View style={styles.resultsContent}>
-                            <ThemedText type="greyed" style={styles.detailLabel}>
-                                Questions for your provider:
-                            </ThemedText>
-                            {renderQuestions()}
-
+                            {/* Expectations */}
                             <ThemedText type="greyed" style={styles.detailLabel}>
                                 What to expect at your appointment:
                             </ThemedText>
@@ -179,12 +177,17 @@ export default function PrepFinalScreen() {
                                 <CustomButton type="copy" copyText={completion.what_to_expect.brief} />
                             </ThemedView>
                             {renderArray(completion.what_to_expect.steps)}
-
+                            {/* What to bring */}
                             <ThemedText type="greyed" style={styles.detailLabel}>
                                 What to bring to your appointment:
                             </ThemedText>
                             {renderArray(completion.what_to_bring)}
-
+                            {/* Provider Question */}
+                            <ThemedText type="greyed" style={styles.detailLabel}>
+                                Questions for your provider:
+                            </ThemedText>
+                            {renderQuestions()}
+                            {/* Summary */}
                             <ThemedText type="greyed" style={styles.detailLabel}>
                                 Summary for your provider:
                             </ThemedText>
@@ -284,13 +287,12 @@ const styles = StyleSheet.create({
     },
     resultsContent: {
         flexDirection: 'column',
-        gap: 12,
+        gap: 14,
     },
     summaryCard: {
         flexDirection: 'column',
         alignItems: 'center',
         gap: 10,
-        marginBottom: 12,
         borderRadius: 10,
         padding: 16,
         shadowColor: '#000',
@@ -306,7 +308,6 @@ const styles = StyleSheet.create({
         lineHeight: 22,
     },
     questionContainer: {
-        marginBottom: 6,
         padding: 20,
         borderRadius: 10,
         shadowColor: '#000',
@@ -328,7 +329,6 @@ const styles = StyleSheet.create({
         lineHeight: 22,
     },
     detailContainer: {
-        marginBottom: 12,
         padding: 16,
         borderRadius: 10,
         flexDirection: 'row',

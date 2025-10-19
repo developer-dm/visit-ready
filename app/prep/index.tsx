@@ -3,7 +3,7 @@ import { Dropdown } from "@/components/Dropdown";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useDataStore } from "@/stores/dataStore";
+import { useAuthStore } from "@/stores/authStore";
 import { useTempStore } from "@/stores/tempStore";
 import { DropdownValues } from "@/types/dropdown";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -11,8 +11,8 @@ import { Platform, StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function PrepFirstScreen() {
-  const { appointment, setAppointmentType, setAppointmentDate, setProvider, setNotified, setAddress } = useTempStore();
-  const { signup } = useDataStore();
+  const { appointment, updateAppointment } = useTempStore();
+  const { notifications } = useAuthStore();
 
   return (
     <ThemedView type="container" style={styles.container}>
@@ -39,7 +39,7 @@ export default function PrepFirstScreen() {
               placeholder="Required"
               items={DropdownValues.appointmentType}
               value={appointment.appointmentType}
-              setValue={setAppointmentType}
+              setValue={(value) => updateAppointment({ appointmentType: value })}
             />
           </View>
 
@@ -48,7 +48,7 @@ export default function PrepFirstScreen() {
             <DatePicker
               placeholderText="Required"
               value={appointment.appointmentDate}
-              setValue={setAppointmentDate}
+              setValue={(value) => updateAppointment({ appointmentDate: value })}
               mode="datetime"
               display={Platform.OS === "ios" ? "inline" : "default"}
             />
@@ -57,7 +57,7 @@ export default function PrepFirstScreen() {
           <View>
             <ThemedText type="overheader">Appointment Location</ThemedText>
             <Textbox
-              onChangeText={setAddress}
+              onChangeText={(value) => updateAppointment({ address: value })}
               value={appointment.address}
             />
           </View>
@@ -65,18 +65,18 @@ export default function PrepFirstScreen() {
           <View>
             <ThemedText type="overheader">Provider</ThemedText>
             <Textbox
-              onChangeText={setProvider}
+              onChangeText={(value) => updateAppointment({ provider: value })}
               value={appointment.provider}
             />
           </View>
 
-          {signup?.notifications && (
+          {notifications && (
             <View>
               <ThemedText type="overheader">Notification</ThemedText>
               <Dropdown
                 items={DropdownValues.notified}
                 value={appointment.notified}
-                setValue={setNotified}
+                setValue={(value) => updateAppointment({ notified: value })}
               />
             </View>
           )}

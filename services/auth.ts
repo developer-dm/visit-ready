@@ -47,7 +47,7 @@ export const checkAuthenticationCapabilities = async () => {
 
             if (securityLevel === LocalAuthentication.SecurityLevel.SECRET) { // Has password
                 return 'passcode'
-            } else {
+            } else { // No auth method
                 return 'none'
             }
         }

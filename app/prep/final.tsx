@@ -24,6 +24,7 @@ export default function PrepFinalScreen() {
         }
 
         return userDataEntries.map(([key, value]) => {
+            if (!value) return;
             if (key === "appointmentDate" && value) value = DataFormatterService.FormatDateTimeString(value);
 
             return (

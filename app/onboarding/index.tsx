@@ -1,20 +1,21 @@
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { AppInfo } from "@/types/app";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Link } from "expo-router";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function LandingScreen() {
+    const appIcon = require("@/assets/images/favicon.png")
+
     return (
         <View style={styles.content}>
             <View style={styles.logoSection}>
                 <ThemedView style={styles.logoContainer} type="dusked">
-                    <Image source={require("@/assets/images/favicon.png")} style={styles.icon} />
+                    <Image source={appIcon} style={styles.icon} />
                 </ThemedView>
-                <ThemedText style={styles.title} type="whitened">{AppInfo.name}</ThemedText>
-                <ThemedText style={styles.slogan} type="greyed">{AppInfo.slogan}</ThemedText>
+                <ThemedText style={styles.title} type="whitened">Visit Ready</ThemedText>
+                <ThemedText style={styles.slogan} type="greyed">Make the most of every visit</ThemedText>
             </View>
 
             <View style={styles.featuresSection}>
@@ -53,7 +54,7 @@ export default function LandingScreen() {
                     </TouchableOpacity>
                 </Link>
 
-                <Footer text="Setup takes less than 2 minutes" hasSpacer={true} />
+                <Footer text="Setup takes less than 2 minutes" />
             </View>
         </View>
     );
@@ -63,13 +64,11 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         paddingHorizontal: 24,
-        paddingTop: 100,
-        paddingBottom: 40,
         justifyContent: 'center',
     },
     logoSection: {
-        alignItems: 'center',
         paddingTop: 40,
+        alignItems: 'center',
     },
     logoContainer: {
         width: 120,
@@ -85,8 +84,8 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     icon: {
-        width: 80,
-        height: 80,
+        width: 100,
+        height: 100,
     },
     title: {
         fontSize: 36,
@@ -103,12 +102,11 @@ const styles = StyleSheet.create({
     },
     featuresSection: {
         paddingVertical: 40,
-        gap: 24,
+        gap: 30,
     },
     featureItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 8,
     },
     featureIconContainer: {
         width: 48,

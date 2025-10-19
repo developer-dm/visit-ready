@@ -41,14 +41,12 @@ export default function SecondResultsScreen() {
             <ThemedText style={styles.sectionTitle}>
                 What to Expect at Your Visit
             </ThemedText>
-
             <ThemedView style={styles.resultsCard}>
                 <ThemedText style={styles.resultsText} type="whitened">
                     {brief}
                 </ThemedText>
                 <CustomButton type="copy" copyText={brief} />
             </ThemedView>
-
             {renderSteps()}
         </ScrollView>
     )

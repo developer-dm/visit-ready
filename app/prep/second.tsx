@@ -9,7 +9,7 @@ import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function PrepSecondScreen() {
-    const { appointment, setMainConcern, setConcernStart, setConcernSeverity, setRemedies } = useTempStore();
+    const { appointment, updateAppointment } = useTempStore();
 
     return (
         <ThemedView type="container" style={styles.container}>
@@ -34,17 +34,17 @@ export default function PrepSecondScreen() {
                         <ThemedText type="overheader">What is the main health concern of your appointment?</ThemedText>
                         <Textbox
                             placeholder="Required"
-                            onChangeText={setMainConcern}
+                            onChangeText={(value) => updateAppointment({ mainConcern: value })}
                             value={appointment.mainConcern}
                         />
                     </View>
 
                     <View>
-                        <ThemedText type="overheader">When did your concern begin?</ThemedText>
+                        <ThemedText type="overheader">When did your concerns begin?</ThemedText>
                         <Dropdown
                             items={DropdownValues.concernStart}
                             value={appointment.concernStart}
-                            setValue={setConcernStart}
+                            setValue={(value) => updateAppointment({ concernStart: value })}
                         />
                     </View>
 
@@ -53,14 +53,14 @@ export default function PrepSecondScreen() {
                         <Dropdown
                             items={DropdownValues.concernSeverity}
                             value={appointment.concernSeverity}
-                            setValue={setConcernSeverity}
+                            setValue={(value) => updateAppointment({ concernSeverity: value })}
                         />
                     </View>
 
                     <View>
                         <ThemedText type="overheader">Have you tried any treatments or remedies?</ThemedText>
                         <Textbox
-                            onChangeText={setRemedies}
+                            onChangeText={(value) => updateAppointment({ remedies: value })}
                             value={appointment.remedies}
                         />
                     </View>
