@@ -1,167 +1,112 @@
-import { Footer } from "@/components/Footer";
+import { DatePicker } from "@/components/DatePicker";
+import { Dropdown } from "@/components/Dropdown";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Link } from "expo-router";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useTempStore } from "@/stores/tempStore";
+import { DropdownValues } from "@/types/dropdown";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { StyleSheet, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-export default function LandingScreen() {
-    const appIcon = require("@/assets/images/favicon.png")
+export default function OnboardingFirstScreen() {
+  const { signup, updateSignup } = useTempStore();
 
-    return (
-        <View style={styles.content}>
-            <View style={styles.logoSection}>
-                <ThemedView style={styles.logoContainer} type="dusked">
-                    <Image source={appIcon} style={styles.icon} />
-                </ThemedView>
-                <ThemedText style={styles.title} type="whitened">Visit Ready</ThemedText>
-                <ThemedText style={styles.slogan} type="greyed">Make the most of every visit</ThemedText>
-            </View>
-
-            <View style={styles.featuresSection}>
-                <View style={styles.featureItem}>
-                    <ThemedView style={styles.featureIconContainer} type="dusked">
-                        <MaterialIcons name="calendar-today" size={24} color="#3b82f6" />
-                    </ThemedView>
-                    <View style={styles.featureContent}>
-                        <ThemedText style={styles.featureTitle} type="whitened">Track your Appointments</ThemedText>
-                        <ThemedText style={styles.featureDescription} type="greyed">
-                            Keep a record of all your medical appointments in one place
-                        </ThemedText>
-                    </View>
-                </View>
-
-                <View style={styles.featureItem}>
-                    <ThemedView style={styles.featureIconContainer} type="dusked">
-                        <MaterialIcons name="show-chart" size={24} color="#3b82f6" />
-                    </ThemedView>
-                    <View style={styles.featureContent}>
-                        <ThemedText style={styles.featureTitle} type="whitened">Be prepared</ThemedText>
-                        <ThemedText style={styles.featureDescription} type="greyed">
-                            Generate discussion questions and goals based on your symptoms and priorities
-                        </ThemedText>
-                    </View>
-                </View>
-            </View>
-
-            <View style={styles.startSection}>
-                <Link asChild push href="/onboarding/form">
-                    <TouchableOpacity style={styles.startButton}>
-                        <Text style={styles.startButtonText}>Start Setup</Text>
-                        <View style={styles.buttonIcon}>
-                            <MaterialIcons name="arrow-forward" size={20} color="#ffffff" />
-                        </View>
-                    </TouchableOpacity>
-                </Link>
-
-                <Footer text="Setup takes less than 2 minutes" />
-            </View>
+  return (
+    <ThemedView type="container">
+      <KeyboardAwareScrollView
+        style={styles.container}
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="never"
+        showsVerticalScrollIndicator={false}
+        enableResetScrollToCoords={false}
+        extraScrollHeight={10}
+      >
+        <View style={styles.headerSection}>
+          <ThemedView style={styles.headerIconContainer} type="dusked">
+            <MaterialIcons name="person-outline" size={32} color="#3b82f6" />
+          </ThemedView>
+          <ThemedText style={styles.title} type="whitened">
+            Demographics
+          </ThemedText>
+          <ThemedText style={styles.subtitle} type="greyed">
+            Your basic health information
+          </ThemedText>
         </View>
-    );
+
+        <View style={styles.formGap}>
+          <View>
+            <ThemedText type="overheader">Date of Birth</ThemedText>
+            <DatePicker
+              placeholderText="Required"
+              mode="date"
+              display="spinner"
+              value={signup.DOB}
+              setValue={(value) => updateSignup({ DOB: value })}
+            />
+          </View>
+
+          <View>
+            <ThemedText type="overheader">Gender</ThemedText>
+            <Dropdown
+              placeholder="Required"
+              items={DropdownValues.sex}
+              value={signup.sex}
+              setValue={(value) => updateSignup({ sex: value })}
+            />
+          </View>
+
+          <View>
+            <ThemedText type="overheader">Preferred language</ThemedText>
+            <Dropdown
+              placeholder="Required"
+              items={DropdownValues.language}
+              value={signup.language}
+              setValue={(value) => updateSignup({ language: value })}
+            />
+          </View>
+        </View>
+      </KeyboardAwareScrollView>
+    </ThemedView>
+  );
 }
 
 const styles = StyleSheet.create({
-    content: {
-        flex: 1,
-        paddingHorizontal: 24,
-        justifyContent: 'center',
-    },
-    logoSection: {
-        paddingTop: 40,
-        alignItems: 'center',
-    },
-    logoContainer: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 24,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-        elevation: 5,
-    },
-    icon: {
-        width: 100,
-        height: 100,
-    },
-    title: {
-        fontSize: 36,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 12,
-    },
-    slogan: {
-        fontSize: 18,
-        fontWeight: '400',
-        textAlign: 'center',
-        lineHeight: 24,
-        maxWidth: 400,
-    },
-    featuresSection: {
-        paddingVertical: 40,
-        gap: 30,
-    },
-    featureItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    featureIconContainer: {
-        width: 48,
-        height: 48,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: 16,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-        elevation: 3,
-    },
-    featureContent: {
-        flex: 1,
-    },
-    featureTitle: {
-        fontSize: 16,
-        fontWeight: '600',
-        marginBottom: 4,
-    },
-    featureDescription: {
-        fontSize: 14,
-        fontWeight: '400',
-        lineHeight: 20,
-    },
-    startSection: {
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    startButton: {
-        backgroundColor: '#3b82f6',
-        borderRadius: 10,
-        paddingVertical: 18,
-        paddingHorizontal: 32,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: 200,
-        minHeight: 60,
-        marginBottom: 16,
-    },
-    startButtonText: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#ffffff',
-        marginRight: 12,
-    },
-    buttonIcon: {
-        width: 28,
-        height: 28,
-        borderRadius: 14,
-        backgroundColor: '#ffffff33',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+  container: {
+    flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    paddingBottom: 300,
+    paddingTop: 48,
+    paddingHorizontal: 24,
+  },
+  headerSection: {
+    alignItems: 'center',
+    marginBottom: 32,
+  },
+  headerIconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+    elevation: 3,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 14,
+    fontWeight: '400',
+    textAlign: 'center',
+    lineHeight: 20,
+    maxWidth: 280,
+  },
+  formGap: {
+    gap: 24,
+  },
 });

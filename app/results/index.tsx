@@ -104,12 +104,7 @@ export default function IndexResultsScreen() {
 					<Text style={styles.secondaryButtonText}>Return</Text>
 				</Button>
 			</View>
-
-			<View style={styles.midSpacer} />
-			<Footer
-				text="AI can make mistakes. Check important info. This is not medical advice."
-				hasSpacer={true}
-			/>
+			<Footer text="AI can make mistakes. Check important info. This is not medical advice." top={40} hasSpacer={true} />
 		</View>
 	);
 }
@@ -194,8 +189,5 @@ const styles = StyleSheet.create({
 	},
 	buttonIcon: {
 		marginRight: 8,
-	},
-	midSpacer: {
-		height: 40,
 	},
 });

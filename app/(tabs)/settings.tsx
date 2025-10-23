@@ -3,7 +3,6 @@ import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { logOut } from "@/services/auth";
-import { getCalendarGranted, requestCalendar } from "@/services/calendar";
 import { DataFormatterService } from "@/services/dataFormatter";
 import { clearAllNotifications, getNotificationsGranted, requestNotifications } from "@/services/notifications";
 import { useAuthStore } from "@/stores/authStore";
@@ -11,7 +10,7 @@ import { useDataStore } from "@/stores/dataStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Link, router } from "expo-router";
 import { useState } from "react";
-import { Alert, Linking, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, Linking, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function SettingsScreen() {
   const { resetOnboarding, calendar, notifications, setCalendar, setNotifications } = useAuthStore();
@@ -22,12 +21,11 @@ export default function SettingsScreen() {
     if (debounce) return;
     setDebounce(true);
 
-    if (notifications) {
-      router.push("/notifications")
-    } else {
+    if (notifications) { // Notifications are turned on
+      router.push("/modals/notifications")
+    } else { // Notifications are disabled
       const notificationsAllowed = await getNotificationsGranted();
-
-      if (notificationsAllowed) {
+      if (notificationsAllowed) { // Turn on notifications
         Alert.alert('Enable Notifications', 'Allow appointment notifications?', [
           {
             text: 'Confirm', style: "default",
@@ -35,7 +33,7 @@ export default function SettingsScreen() {
           },
           { text: 'Cancel', style: 'cancel' },
         ]);
-      } else {
+      } else { // Request notifications
         const result = await requestNotifications();
         setNotifications(result);
       };
@@ -50,36 +48,31 @@ export default function SettingsScreen() {
     if (debounce) return;
     setDebounce(true);
 
-    if (calendar) {
-      try { // Open link if calendar is allowed
-        const supported = await Linking.canOpenURL('calshow://');
-        if (supported) {
-          await Linking.openURL('calshow://');
-        } else {
-          Alert.alert(
-            'Calendar',
-            'Unable to open calendar app. Please open it manually.',
-          );
+    if (calendar) { // Open Calendar
+      try {
+        if (Platform.OS === "ios") { // iOS Calendar
+          const supported = await Linking.canOpenURL('calshow://');
+          if (supported) Linking.openURL('calshow://');
+        } else if (Platform.OS === 'android') { // Android calendar
+          const supported = await Linking.canOpenURL('content://com.android.calendar/time/');
+          if (supported) Linking.openURL('content://com.android.calendar/time/');
         }
-      } catch (error) {
-        throw error;
+      } catch (error) { // Error opening calendar
+        Alert.alert(
+          'Calendar',
+          'Unable to open calendar app. Please open it manually.',
+        );
       }
-    } else { // Calendar not allowed
-      const calendarAllowed = await getCalendarGranted();
-
-      if (calendarAllowed) { // If app permissions are granted
-        Alert.alert('Enable Calendar', 'Sync calendar with appointments?', [
-          {
-            text: 'Confirm', style: "default",
-            onPress: () => setCalendar(true),
-          },
-          { text: 'Cancel', style: 'cancel' },
-        ]);
-      } else { // Request app permissions
-        const result = await requestCalendar();
-        setCalendar(result);
-      };
-    };
+    } else {
+      Alert.alert('Enable Calendar', 'Add appointments to calendar?', [
+        {
+          text: 'Confirm',
+          style: 'default',
+          onPress: () => setCalendar(true),
+        },
+        { text: 'Cancel', style: 'cancel' },
+      ]);
+    }
 
     setTimeout(() => {
       setDebounce(false);

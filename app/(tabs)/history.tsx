@@ -13,7 +13,7 @@ export default function HistoryScreen() {
 
     const handleAppointmentView = (id: string) => {
         router.push({
-            pathname: "/past",
+            pathname: "/modals/past",
             params: {
                 id: id
             },

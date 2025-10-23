@@ -26,9 +26,7 @@ export default function RootLayout() {
     }
   }, [_hasHydrated]);
 
-  if (isWeb) {
-    return <WebScreen />
-  };
+  if (isWeb) return <WebScreen />;
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -36,16 +34,16 @@ export default function RootLayout() {
       <Stack>
         <Stack.Protected guard={isLoggedIn}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modals" options={{ presentation: "modal", headerShown: false, gestureEnabled: true }} />
           <Stack.Screen name="prep" options={{ presentation: "modal", headerShown: false, gestureEnabled: false }} />
-          <Stack.Screen name="past" options={{ presentation: "modal", headerShown: false, gestureEnabled: true }} />
-          <Stack.Screen name="notifications" options={{ presentation: "modal", headerShown: false, gestureEnabled: true }} />
           <Stack.Screen name="results" options={{ headerShown: false }} />
         </Stack.Protected>
         <Stack.Protected guard={!isLoggedIn && hasCompletedOnboarding}>
           <Stack.Screen name="sign-in" options={{ headerShown: false }} />
         </Stack.Protected>
         <Stack.Protected guard={!hasCompletedOnboarding}>
-          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="onboarding" options={{ presentation: "modal", headerShown: false, gestureEnabled: false }} />
         </Stack.Protected>
         <Stack.Screen name="about" options={{ presentation: "modal", headerShown: false, gestureEnabled: true }} />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />

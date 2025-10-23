@@ -7,18 +7,28 @@ import { Button } from "./Button";
 import { ThemedText } from "./ThemedText";
 
 export type ButtonProps = TouchableOpacityProps & {
+    // Copy
+    copyText?: string;
+    // Checker
+    placeholderText?: string;
     value?: any;
     setValue?: (value: any) => void;
-    placeholderText?: string;
-    copyText?: string;
-    type: "copy" | 'checker';
+    // Round
+    onPress?: () => void;
+    size?: number;
+    icon?: string;
+    // Types
+    type: "copy" | 'checker' | 'round';
 };
 
 export function CustomButton({
+    copyText,
     value,
     setValue,
     placeholderText,
-    copyText,
+    onPress,
+    size = 60,
+    icon,
     type,
 }: ButtonProps) {
     const [color, setColor] = useState('#64748b');
@@ -33,7 +43,7 @@ export function CustomButton({
         setTimeout(() => setColor('#64748b'), 500);
     };
 
-    if (type === "copy") return (
+    if (type === "copy") return ( // Copy Button
         <TouchableOpacity
             style={styles.copyButton}
             activeOpacity={0.3}
@@ -45,8 +55,7 @@ export function CustomButton({
             <MaterialIcons name="content-copy" size={15} color={color} />
         </TouchableOpacity>
     );
-
-    if (type === "checker") return (
+    if (type === "checker") return ( // Checker Button
         <Button
             type="bordered"
             style={styles.settingsContainer}
@@ -63,6 +72,20 @@ export function CustomButton({
             </ThemedText>
         </Button>
     );
+    if (type === 'round') return ( // Round button
+        <Button
+            type="bordered"
+            style={[styles.roundIcon, { width: size, height: size, borderRadius: size }]}
+            onPress={onPress}
+        >
+            <MaterialIcons
+                name={icon as any}
+                size={25}
+                color="#64748b"
+            />
+        </Button>
+    );
+    return null;
 }
 
 const styles = StyleSheet.create({
@@ -87,5 +110,9 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         lineHeight: 20,
         flexWrap: "wrap",
+    },
+    roundIcon: {
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });

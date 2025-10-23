@@ -45,9 +45,11 @@ export default function AppointmentCard({
                     <ThemedText style={styles.doctorName} type="whitened">
                         {appointment.provider || DataFormatterService.toReadableString(appointment.appointmentType)}
                     </ThemedText>
-                    <ThemedText style={styles.specialty} type="greyed">
-                        {appointment.address || "Location not provided"}
-                    </ThemedText>
+                    {appointment.address && (
+                        <ThemedText style={styles.specialty} type="greyed">
+                            {appointment.address}
+                        </ThemedText>
+                    )}
                 </View>
                 {date > new Date() && (
                     <View style={[styles.statusBadge, isNotified && { backgroundColor: '#3b82f622' }]}>

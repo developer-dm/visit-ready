@@ -4,26 +4,26 @@ import { ThemedView } from "@/components/ThemedView";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 
-export default function AboutScreen() {
-  const appIcon = require("@/assets/images/favicon.png")
+const FEATURES = [
+  {
+    icon: "calendar-today",
+    title: "Track your Appointments",
+    description: "Keep a record of all your medical appointments in one place"
+  },
+  {
+    icon: "show-chart",
+    title: "Be prepared",
+    description: "Generate discussion questions and goals based on your symptoms and priorities"
+  },
+  {
+    icon: "lock",
+    title: "Your Health Data is Secure",
+    description: "All health data is encrypted and stored on your device"
+  },
+];
 
-  const features = [
-    {
-      icon: "calendar-today",
-      title: "Track your Appointments",
-      description: "Keep a record of all your medical appointments in one place"
-    },
-    {
-      icon: "show-chart",
-      title: "Be prepared",
-      description: "Generate discussion questions and goals based on your symptoms and priorities"
-    },
-    {
-      icon: "lock",
-      title: "Your Health Data is Secure",
-      description: "All health data is encrypted and stored on your device"
-    },
-  ];
+export default function AboutScreen() {
+  const appIcon = require("@/assets/images/favicon.png");
 
   return (
     <ThemedView type="container">
@@ -44,10 +44,10 @@ export default function AboutScreen() {
           </ThemedText>
         </View>
 
-        <ThemedView style={styles.aboutCard}>
+        <ThemedView style={styles.card}>
           <View style={styles.cardContent}>
-            <View style={styles.aboutSection}>
-              <ThemedView style={styles.aboutIconContainer} type="dusked">
+            <View style={styles.centeredSection}>
+              <ThemedView style={styles.iconContainer} type="dusked">
                 <MaterialIcons name="medical-services" size={24} color="#3b82f6" />
               </ThemedView>
               <ThemedText style={styles.sectionTitle} type="whitened">
@@ -61,22 +61,22 @@ export default function AboutScreen() {
           </View>
         </ThemedView>
 
-        <ThemedView style={styles.featuresCard}>
+        <ThemedView style={styles.card}>
           <View style={styles.cardContent}>
-            <View style={styles.featuresHeader}>
-              <ThemedView style={styles.featuresIconContainer} type="dusked">
+            <View style={styles.centeredSection}>
+              <ThemedView style={styles.iconContainer} type="dusked">
                 <MaterialIcons name="stars" size={24} color="#10b981" />
               </ThemedView>
               <ThemedText style={styles.sectionTitle} type="whitened">
                 Key Features
               </ThemedText>
-              <ThemedText style={styles.featuresSubtitle} type="greyed">
+              <ThemedText style={styles.subtitle} type="greyed">
                 Everything you need to prepare for your medical visits
               </ThemedText>
             </View>
 
             <View style={styles.featuresList}>
-              {features.map((feature, index) => (
+              {FEATURES.map((feature, index) => (
                 <View key={index} style={styles.featureItem}>
                   <ThemedView style={styles.featureIconContainer} type="dusked">
                     <MaterialIcons name={feature.icon as any} size={20} color="#3b82f6" />
@@ -95,10 +95,10 @@ export default function AboutScreen() {
           </View>
         </ThemedView>
 
-        <ThemedView style={styles.creditsCard}>
+        <ThemedView style={styles.card}>
           <View style={styles.cardContent}>
-            <View style={styles.creditsSection}>
-              <ThemedView style={styles.creditsIconContainer} type="dusked">
+            <View style={styles.centeredSection}>
+              <ThemedView style={styles.iconContainer} type="dusked">
                 <MaterialIcons name="code" size={24} color="#8b5cf6" />
               </ThemedView>
               <ThemedText style={styles.sectionTitle} type="whitened">
@@ -154,8 +154,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   logo: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
   },
   appTitle: {
     fontSize: 28,
@@ -168,29 +168,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
   },
-  aboutCard: {
+  card: {
     marginHorizontal: 24,
     marginBottom: 20,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  featuresCard: {
-    marginHorizontal: 24,
-    marginBottom: 20,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  creditsCard: {
-    marginHorizontal: 24,
-    marginBottom: 24,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -201,10 +181,10 @@ const styles = StyleSheet.create({
   cardContent: {
     padding: 24,
   },
-  aboutSection: {
+  centeredSection: {
     alignItems: 'center',
   },
-  aboutIconContainer: {
+  iconContainer: {
     width: 56,
     height: 56,
     borderRadius: 10,
@@ -224,19 +204,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     lineHeight: 22,
   },
-  featuresHeader: {
-    alignItems: 'center',
-    marginBottom: 28,
-  },
-  featuresIconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  featuresSubtitle: {
+  subtitle: {
     fontSize: 14,
     fontWeight: '400',
     textAlign: 'center',
@@ -244,6 +212,7 @@ const styles = StyleSheet.create({
   },
   featuresList: {
     gap: 20,
+    marginTop: 28,
   },
   featureItem: {
     flexDirection: 'row',
@@ -270,28 +239,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 20,
-  },
-  missionSection: {
-    alignItems: 'center',
-  },
-  missionIconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  creditsSection: {
-    alignItems: 'center',
-  },
-  creditsIconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
   },
   creditsText: {
     fontSize: 16,

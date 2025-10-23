@@ -29,8 +29,7 @@ export default function LoadingScreen({
                     {subMessage && (
                         <Text style={styles.subMessage}>{subMessage}</Text>
                     )}
-                    <View style={styles.midSpacer} />
-                    <CircleFade size={spinnerSize} color={spinnerColor} />
+                    <CircleFade style={styles.loader} size={spinnerSize} color={spinnerColor} />
                 </View>
             </View>
         </Modal>
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         lineHeight: 24,
     },
-    midSpacer: {
-        height: 40,
+    loader: {
+        marginTop: 40,
     },
 });

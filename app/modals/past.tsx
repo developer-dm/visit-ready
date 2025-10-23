@@ -133,83 +133,76 @@ export default function PrepFinalScreen() {
                 {renderTab('summary', 'Summary')}
                 {renderTab('preparation', 'Preparation')}
             </View>
-
             <ScrollView
                 style={styles.container}
                 contentContainerStyle={styles.scrollContainer}
                 showsVerticalScrollIndicator={false}
             >
-                <View style={styles.cardContent}>
-                    <View style={styles.infoSection}>
-                        <ThemedView style={styles.infoIconContainer} type="dusked">
-                            <MaterialIcons
-                                name={appointmentType ? getAppointmentIcon(appointmentType) : "event-note"}
-                                size={24}
-                                color="#3b82f6"
-                            />
-                        </ThemedView>
-                        <View style={styles.profileInfo}>
-                            <ThemedText style={styles.infoTitle} type="whitened">
-                                {DataFormatterService.toReadableString(appointmentType)}
-                            </ThemedText>
-                            <ThemedText style={styles.infoSubtitle} type="greyed">
-                                {appointmentDate}
-                            </ThemedText>
-                        </View>
+                <View style={styles.infoSection}>
+                    <ThemedView style={styles.infoIconContainer} type="dusked">
+                        <MaterialIcons
+                            name={appointmentType ? getAppointmentIcon(appointmentType) : "event-note"}
+                            size={24}
+                            color="#3b82f6"
+                        />
+                    </ThemedView>
+                    <View style={styles.profileInfo}>
+                        <ThemedText style={styles.infoTitle} type="whitened">
+                            {DataFormatterService.toReadableString(appointmentType)}
+                        </ThemedText>
+                        <ThemedText style={styles.infoSubtitle} type="greyed">
+                            {appointmentDate}
+                        </ThemedText>
                     </View>
-
-                    {activeTab === 'summary' && (
-                        <View style={styles.firstDetailsSection}>
-                            {renderDetails()}
-                        </View>
-                    )}
-
-                    {activeTab === 'preparation' && completion && (
-                        <View style={styles.resultsContent}>
-                            {/* Expectations */}
-                            <ThemedText type="greyed" style={styles.detailLabel}>
-                                What to expect at your appointment:
-                            </ThemedText>
-                            <ThemedView style={styles.summaryCard}>
-                                <ThemedText type="whitened" style={styles.summaryText}>
-                                    {completion.what_to_expect.brief}
-                                </ThemedText>
-                                <CustomButton type="copy" copyText={completion.what_to_expect.brief} />
-                            </ThemedView>
-                            {renderArray(completion.what_to_expect.steps)}
-                            {/* What to bring */}
-                            <ThemedText type="greyed" style={styles.detailLabel}>
-                                What to bring to your appointment:
-                            </ThemedText>
-                            {renderArray(completion.what_to_bring)}
-                            {/* Provider Question */}
-                            <ThemedText type="greyed" style={styles.detailLabel}>
-                                Questions for your provider:
-                            </ThemedText>
-                            {renderQuestions()}
-                            {/* Summary */}
-                            <ThemedText type="greyed" style={styles.detailLabel}>
-                                Summary for your provider:
-                            </ThemedText>
-                            <ThemedView style={styles.summaryCard}>
-                                <ThemedText type="whitened" style={styles.summaryText}>
-                                    {completion.summary_for_provider}
-                                </ThemedText>
-                                <CustomButton type="copy" copyText={completion.summary_for_provider} />
-                            </ThemedView>
-                        </View>
-                    )}
-
-                    {activeTab === 'preparation' && !completion && (
-                        <View style={styles.noDataContainer}>
-                            <ThemedText style={styles.noDataText} type="greyed">
-                                No preparation information available
-                            </ThemedText>
-                        </View>
-                    )}
                 </View>
-
-                <Footer text={`ID: ${DataFormatterService.toReadableString(id)}`} hasSpacer={true} />
+                {activeTab === 'summary' && ( // Summary Section
+                    <View style={styles.gapDetailSection}>
+                        {renderDetails()}
+                    </View>
+                )}
+                {activeTab === 'preparation' && completion && ( // Completion Section
+                    <View style={styles.resultsContent}>
+                        {/* Expectations */}
+                        <ThemedText type="greyed" style={styles.detailLabel}>
+                            What to expect at your appointment:
+                        </ThemedText>
+                        <ThemedView style={styles.summaryCard}>
+                            <ThemedText type="whitened" style={styles.summaryText}>
+                                {completion.what_to_expect.brief}
+                            </ThemedText>
+                            <CustomButton type="copy" copyText={completion.what_to_expect.brief} />
+                        </ThemedView>
+                        {renderArray(completion.what_to_expect.steps)}
+                        {/* What to bring */}
+                        <ThemedText type="greyed" style={styles.detailLabel}>
+                            What to bring to your appointment:
+                        </ThemedText>
+                        {renderArray(completion.what_to_bring)}
+                        {/* Provider Question */}
+                        <ThemedText type="greyed" style={styles.detailLabel}>
+                            Questions for your provider:
+                        </ThemedText>
+                        {renderQuestions()}
+                        {/* Summary */}
+                        <ThemedText type="greyed" style={styles.detailLabel}>
+                            Summary for your provider:
+                        </ThemedText>
+                        <ThemedView style={styles.summaryCard}>
+                            <ThemedText type="whitened" style={styles.summaryText}>
+                                {completion.summary_for_provider}
+                            </ThemedText>
+                            <CustomButton type="copy" copyText={completion.summary_for_provider} />
+                        </ThemedView>
+                    </View>
+                )}
+                {activeTab === 'preparation' && !completion && ( // No Info section
+                    <View style={styles.noDataContainer}>
+                        <ThemedText style={styles.noDataText} type="greyed">
+                            No preparation information available
+                        </ThemedText>
+                    </View>
+                )}
+                <Footer text={`ID: ${DataFormatterService.toReadableString(id)}`} top={40} hasSpacer={true} />
             </ScrollView>
         </ThemedView>
     );
@@ -251,10 +244,6 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontWeight: '600',
     },
-    cardContent: {
-        paddingHorizontal: 12,
-        paddingVertical: 24,
-    },
     infoSection: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -274,7 +263,7 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     profileInfo: {
-        flex: 1,
+        flexDirection: 'column',
     },
     infoTitle: {
         fontSize: 18,
@@ -353,8 +342,8 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: '#ffffff',
     },
-    firstDetailsSection: {
-        gap: 6,
+    gapDetailSection: {
+        gap: 24,
     },
     detailsSection: {
         gap: 12,
@@ -377,8 +366,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     detailItem: {
-        paddingTop: 16,
-        paddingBottom: 6,
+        paddingBottom: 2,
         borderBottomWidth: 1,
     },
     detailLabel: {

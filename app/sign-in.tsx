@@ -4,18 +4,15 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { authenticateWithBiometrics, checkAuthenticationCapabilities } from "@/services/auth";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Link } from "expo-router";
 import { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function SignInScreen() {
-  const appIcon = require("@/assets/images/favicon.png")
-
   const [authType, setAuthType] = useState<'biometric' | 'passcode' | 'none'>('none');
   const [isLoading, setIsLoading] = useState(true);
 
   const handleLogin = async () => {
-    await authenticateWithBiometrics();
+    authenticateWithBiometrics();
   };
 
   const getAuthButtonConfig = () => {
@@ -45,7 +42,7 @@ export default function SignInScreen() {
 
   const preliminaryCheck = async () => {
     const result = await checkAuthenticationCapabilities();
-    setAuthType(result)
+    setAuthType(result);
     setIsLoading(false);
   }
 
@@ -53,30 +50,23 @@ export default function SignInScreen() {
     preliminaryCheck();
   }, []);
 
-  if (isLoading) {
-    return (
-      <LoadingScreen
-        visible={true}
-        message={'Loading...'}
-        subMessage={'Authentication'}
-      />
-    );
-  }
+  if (isLoading) return (
+    <LoadingScreen
+      visible={true}
+      message={'Loading...'}
+      subMessage={'Authentication'}
+    />
+  );
 
   return (
     <View style={styles.content}>
-      <View style={styles.header}>
-        <View style={styles.brandingContainer}>
-          <ThemedView style={styles.logoContainer} type="dusked">
-            <Image source={appIcon} style={styles.logo} />
-          </ThemedView>
-          <ThemedText style={styles.appTitle} type="whitened">
-            Visit Ready
-          </ThemedText>
-          <ThemedText style={styles.appSubtitle} type="greyed">
-            Make the most of every visit
-          </ThemedText>
-        </View>
+      <View style={styles.welcomeSection}>
+        <ThemedText style={styles.welcomeTitle} type="whitened">
+          Visit Ready
+        </ThemedText>
+        <ThemedText style={styles.welcomeSubtitle} type="greyed">
+          Sign in to your account to continue
+        </ThemedText>
       </View>
 
       <View style={styles.loginOptions}>
@@ -119,17 +109,6 @@ export default function SignInScreen() {
           </View>
         )}
       </View>
-
-      <View style={styles.additionalOptions}>
-        <Link asChild push href="/about">
-          <TouchableOpacity style={styles.linkButton}>
-            <MaterialIcons name="info-outline" size={20} color="#64748b" />
-            <ThemedText style={styles.linkText} type="greyed">
-              About Visit Ready
-            </ThemedText>
-          </TouchableOpacity>
-        </Link>
-      </View>
     </View>
   );
 }
@@ -140,44 +119,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 24,
   },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 60,
-    paddingBottom: 20,
+  welcomeSection: {
     alignItems: 'center',
+    marginBottom: 32,
   },
-  brandingContainer: {
-    alignItems: 'center',
-  },
-  logoContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 5,
-  },
-  logo: {
-    width: 80,
-    height: 80,
-  },
-  appTitle: {
-    fontSize: 32,
-    fontWeight: 'bold',
+  welcomeTitle: {
+    fontSize: 28,
+    fontWeight: '600',
     textAlign: 'center',
     marginBottom: 8,
   },
-  appSubtitle: {
-    fontSize: 16,
+  welcomeSubtitle: {
+    fontSize: 14,
     fontWeight: '400',
     textAlign: 'center',
-    lineHeight: 22,
-    maxWidth: 280,
+    lineHeight: 20,
+    maxWidth: 400,
   },
   loginOptions: {
     gap: 16,
@@ -241,22 +198,5 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  additionalOptions: {
-    paddingHorizontal: 24,
-    alignItems: 'center',
-    gap: 12,
-    marginTop: 24,
-  },
-  linkButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  linkText: {
-    fontSize: 14,
-    fontWeight: '500',
-    marginLeft: 8,
   },
 });

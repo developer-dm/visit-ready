@@ -1,7 +1,6 @@
 import { CustomButton } from "@/components/CustomButton";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { getCalendarGranted, requestCalendar } from "@/services/calendar";
 import { getNotificationsGranted, requestNotifications } from "@/services/notifications";
 import { useAuthStore } from "@/stores/authStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -22,14 +21,7 @@ export default function OnboardingFinalScreen() {
   }
 
   const handleCalendar = async () => {
-    const calendarAllowed = await getCalendarGranted();
-
-    if (calendarAllowed) {
-      setCalendar(!calendar)
-    } else {
-      const result = await requestCalendar();
-      setCalendar(result);
-    };
+    setCalendar(!calendar);
   }
 
   return (

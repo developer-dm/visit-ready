@@ -38,6 +38,7 @@ export function DatePicker({
             setShowDatePicker(true);
         } else {
             setIsOpen(!isOpen);
+            if (value) setSelection(value);
         };
     };
 
@@ -86,7 +87,7 @@ export function DatePicker({
         } else {
             setDateString("");
         }
-    }, [value, mode]);
+    }, [value]);
 
     return (
         <View>

@@ -52,7 +52,7 @@ export default function DashboardScreen() {
 
   const handleUpcomingAppointment = (id: string) => {
     router.push({
-      pathname: "/past",
+      pathname: "/modals/past",
       params: {
         id: id
       },

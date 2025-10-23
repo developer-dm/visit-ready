@@ -12,7 +12,6 @@ import { Buffer } from 'buffer';
 import * as SecureStore from 'expo-secure-store';
 import crypto from "react-native-quick-crypto";
 
-// Production
 class EncryptionService {
     private static ENCRYPTION_KEY = "app_encryption_key";
     private static IV_LENGTH = 16;
@@ -86,7 +85,6 @@ class EncryptionService {
     }
 }
 
-// Production
 const createEncryptedAsyncStorage = () => ({
     setItem: async (key: string, value: string) => {
         try {

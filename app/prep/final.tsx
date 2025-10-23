@@ -107,11 +107,10 @@ const styles = StyleSheet.create({
         maxWidth: 280,
     },
     detailsSection: {
-        gap: 6,
+        gap: 24,
     },
     detailItem: {
-        paddingTop: 16,
-        paddingBottom: 6,
+        paddingBottom: 2,
         borderBottomWidth: 1,
     },
     detailLabel: {

@@ -10,10 +10,10 @@ export default function NotFoundScreen() {
 
     return (
         <View style={styles.container}>
-            <ThemedText type="error">Navigation Error</ThemedText>
             <Button type="bordered" style={styles.backButton} onPress={handleBack}>
-                <ThemedText type="link">Go back</ThemedText>
+                <ThemedText type="whitened">Go back</ThemedText>
             </Button>
+            <ThemedText type="error">Navigation Error</ThemedText>
         </View>
     );
 }

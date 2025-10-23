@@ -5,22 +5,27 @@ import { StyleSheet, TextProps } from "react-native";
 export type FooterTextProps = TextProps & {
     text?: string;
     type?: "absolute" | "relative" | "bottom";
+    top?: number;
+    bottom?: number;
     hasSpacer?: boolean;
 };
 
 export function Footer({
     text,
     type = "relative",
+    top,
+    bottom,
     hasSpacer = false,
 }: FooterTextProps) {
     return (
         <ThemedText
-            type="greyed"
+            type="dusked"
             style={[
                 type === "absolute" ? styles.absoluteFooterText : undefined,
                 type === "relative" ? styles.relativeFooterText : undefined,
                 type === "bottom" ? styles.bottomFooterText : undefined,
                 hasSpacer ? styles.bottomSpacer : undefined,
+                { marginTop: top, marginBottom: bottom }
             ]}
         >
             {text ? text : null}

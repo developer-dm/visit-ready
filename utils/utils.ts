@@ -1,6 +1,4 @@
-/*
 // For Production
-
 export const generateAPIUrl = (relativePath: string) => {
     if (!process.env.EXPO_PUBLIC_API_BASE_URL) {
         throw new Error('EXPO_PUBLIC_API_BASE_URL environment variable is not defined');
@@ -9,8 +7,8 @@ export const generateAPIUrl = (relativePath: string) => {
     const path = relativePath.startsWith('/') ? relativePath : `/${relativePath}`;
     return process.env.EXPO_PUBLIC_API_BASE_URL.concat(path);
 };
-*/
 
+/*
 // For Development
 import Constants from 'expo-constants';
 
@@ -28,3 +26,4 @@ export const generateAPIUrl = (relativePath: string) => {
 
     return process.env.EXPO_PUBLIC_API_BASE_URL.concat(path);
 };
+*/
