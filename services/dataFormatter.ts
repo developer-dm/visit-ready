@@ -1,6 +1,7 @@
 import { ValueToLabel } from '@/types/labels';
 
 export const DataFormatterService = {
+  // Format values
   toReadableString(
     input: any,
     type?: keyof typeof ValueToLabel,
@@ -26,6 +27,7 @@ export const DataFormatterService = {
     return originalString.trim() !== '' ? originalString : 'N/A';
   },
 
+  // Turn date into readable date
   FormatDateString(rawDate: Date | object | string) {
     const date = rawDate instanceof Date ? rawDate : new Date(rawDate.toString());
 
@@ -36,6 +38,7 @@ export const DataFormatterService = {
     });
   },
 
+  // Turn date into readable time
   FormatTimeString(rawTime: Date | object | string) {
     const date = rawTime instanceof Date ? rawTime : new Date(rawTime.toString());
 
@@ -46,6 +49,7 @@ export const DataFormatterService = {
     });
   },
 
+  // Turn date into date and time
   FormatDateTimeString(rawDate: Date | object | string) {
     const newDate = rawDate instanceof Date ? rawDate : new Date(rawDate.toString());
 
@@ -64,6 +68,7 @@ export const DataFormatterService = {
     return `${date}, ${time}`
   },
 
+  // Turn date into years
   FormatAge(rawDate: Date | null) {
     if (!rawDate || new Date(rawDate).getTime() > new Date().getTime()) return "Unknown";
 

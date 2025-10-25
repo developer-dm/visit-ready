@@ -49,19 +49,12 @@ export default function SettingsScreen() {
     setDebounce(true);
 
     if (calendar) { // Open Calendar
-      try {
-        if (Platform.OS === "ios") { // iOS Calendar
-          const supported = await Linking.canOpenURL('calshow://');
-          if (supported) Linking.openURL('calshow://');
-        } else if (Platform.OS === 'android') { // Android calendar
-          const supported = await Linking.canOpenURL('content://com.android.calendar/time/');
-          if (supported) Linking.openURL('content://com.android.calendar/time/');
-        }
-      } catch (error) { // Error opening calendar
-        Alert.alert(
-          'Calendar',
-          'Unable to open calendar app. Please open it manually.',
-        );
+      if (Platform.OS === "ios") { // iOS Calendar
+        const supported = await Linking.canOpenURL('calshow://');
+        if (supported) Linking.openURL('calshow://');
+      } else if (Platform.OS === 'android') { // Android calendar
+        const supported = await Linking.canOpenURL('content://com.android.calendar/time/');
+        if (supported) Linking.openURL('content://com.android.calendar/time/');
       }
     } else {
       Alert.alert('Enable Calendar', 'Add appointments to calendar?', [

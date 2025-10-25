@@ -130,7 +130,7 @@ export default function AppointmentPrepLayout() {
         if (id === "") {
             assignNewId();
         };
-    }, [])
+    }, [id, assignNewId])
 
     return (
         <>

@@ -87,7 +87,7 @@ export function DatePicker({
         } else {
             setDateString("");
         }
-    }, [value]);
+    }, [value, mode]);
 
     return (
         <View>

@@ -5,9 +5,8 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 const isWeb = Platform.OS === "web";
-/*
-// Production Storage
 
+/*
 import { Buffer } from 'buffer';
 import * as SecureStore from 'expo-secure-store';
 import crypto from "react-native-quick-crypto";
@@ -116,7 +115,7 @@ const createEncryptedAsyncStorage = () => ({
 });
 */
 
-// Development Use
+// For Development
 const createEncryptedAsyncStorage = () => ({
     setItem: (key: string, value: string) => AsyncStorage.setItem(key, value),
     getItem: (key: string) => AsyncStorage.getItem(key),

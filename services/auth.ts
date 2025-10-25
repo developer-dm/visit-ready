@@ -1,6 +1,7 @@
 import * as LocalAuthentication from "expo-local-authentication";
 import { useAuthStore } from "../stores/authStore";
 
+// Authenticate User
 export const authenticateWithBiometrics = async () => {
     try {
         const result = await LocalAuthentication.authenticateAsync({
@@ -21,6 +22,7 @@ export const authenticateWithBiometrics = async () => {
     }
 }
 
+// Check authentication methods
 export const checkAuthenticationCapabilities = async () => {
     try {
         const hasHardware = await LocalAuthentication.hasHardwareAsync();
