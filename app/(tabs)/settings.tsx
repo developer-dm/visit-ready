@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { CustomButton } from "@/components/CustomButton";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -7,6 +8,7 @@ import { DataFormatterService } from "@/services/dataFormatter";
 import { clearAllNotifications, getNotificationsGranted, requestNotifications } from "@/services/notifications";
 import { useAuthStore } from "@/stores/authStore";
 import { useDataStore } from "@/stores/dataStore";
+import { useTempStore } from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Link, router } from "expo-router";
 import { useState } from "react";
@@ -15,6 +17,7 @@ import { Alert, Linking, Platform, ScrollView, StyleSheet, TouchableOpacity, Vie
 export default function SettingsScreen() {
   const { resetOnboarding, calendar, notifications, setCalendar, setNotifications } = useAuthStore();
   const { signup, resetAppointments, resetAll, resetCompletions } = useDataStore();
+  const { updateSignup } = useTempStore();
   const [debounce, setDebounce] = useState(false); // Calendar and notif debounce
 
   const showNotifications = async () => {
@@ -113,6 +116,11 @@ export default function SettingsScreen() {
     ]);
   };
 
+  const handleEditSignup = () => {
+    updateSignup({ ...signup, DOB: new Date(signup?.DOB || "") });
+    router.push("/onboarding");
+  };
+
   const userDataEntries = Object.entries(signup ? signup : {}).filter(([key]) => {
     return key === 'DOB' || key === 'sex' || key === 'language';
   });
@@ -167,6 +175,7 @@ export default function SettingsScreen() {
               </View>
             )}
           </View>
+          <CustomButton type="icon" iconName="edit" iconSize={20} onPress={handleEditSignup} />
         </ThemedView>
 
         <View style={styles.preferencesSection}>

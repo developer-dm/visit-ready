@@ -191,14 +191,4 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textAlign: 'center',
     },
-    disclaimerSection: {
-        paddingHorizontal: 24,
-        marginBottom: 24,
-    },
-    disclaimer: {
-        fontSize: 12,
-        textAlign: 'center',
-        lineHeight: 16,
-        fontStyle: 'italic',
-    },
 });

@@ -54,6 +54,8 @@ export default function ModalLayout() {
                 router.push('/onboarding/second');
                 break;
             case 'second':
+                router.dismissAll();
+                router.dismiss();
                 addSignupData(signup);
                 completeOnboarding();
                 resetTempContext();

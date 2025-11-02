@@ -90,9 +90,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  content: {
-    flex: 1,
-  },
   scrollContainer: {
     flexGrow: 1,
     paddingBottom: 300,

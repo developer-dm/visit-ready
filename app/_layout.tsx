@@ -7,12 +7,8 @@ import { Stack } from "expo-router";
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar, } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { Platform } from "react-native";
-import WebScreen from './web';
 
 SplashScreen.preventAutoHideAsync();
-
-const isWeb = Platform.OS === "web";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -25,8 +21,6 @@ export default function RootLayout() {
       SplashScreen.hideAsync()
     }
   }, [_hasHydrated]);
-
-  if (isWeb) return <WebScreen />;
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -43,11 +37,11 @@ export default function RootLayout() {
         </Stack.Protected>
         <Stack.Protected guard={!hasCompletedOnboarding}>
           <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="onboarding" options={{ presentation: "modal", headerShown: false, gestureEnabled: false }} />
         </Stack.Protected>
+        <Stack.Screen name="onboarding" options={{ presentation: "modal", headerShown: false, gestureEnabled: false }} />
         <Stack.Screen name="about" options={{ presentation: "modal", headerShown: false, gestureEnabled: true }} />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );
-}
+};

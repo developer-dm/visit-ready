@@ -1,5 +1,6 @@
 import { getAppointmentIcon } from "@/components/AppointmentCard";
 import { CustomButton } from "@/components/CustomButton";
+import { Divider } from "@/components/Divider";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -129,10 +130,12 @@ export default function PrepFinalScreen() {
 
     return (
         <ThemedView type="container">
-            <View style={styles.tabContainer}>
-                {renderTab('summary', 'Summary')}
-                {renderTab('preparation', 'Preparation')}
-            </View>
+            {completion && (
+                <View style={styles.tabContainer}>
+                    {renderTab('summary', 'Summary')}
+                    {renderTab('preparation', 'Preparation')}
+                </View>
+            )}
             <ScrollView
                 style={styles.container}
                 contentContainerStyle={styles.scrollContainer}
@@ -163,8 +166,8 @@ export default function PrepFinalScreen() {
                 {activeTab === 'preparation' && completion && ( // Completion Section
                     <View style={styles.resultsContent}>
                         {/* Expectations */}
-                        <ThemedText type="greyed" style={styles.detailLabel}>
-                            What to expect at your appointment:
+                        <ThemedText type="whitened" style={styles.detailTitle}>
+                            What to expect at your appointment
                         </ThemedText>
                         <ThemedView style={styles.summaryCard}>
                             <ThemedText type="whitened" style={styles.summaryText}>
@@ -174,18 +177,21 @@ export default function PrepFinalScreen() {
                         </ThemedView>
                         {renderArray(completion.what_to_expect.steps)}
                         {/* What to bring */}
-                        <ThemedText type="greyed" style={styles.detailLabel}>
-                            What to bring to your appointment:
+                        <Divider type="horizontal" top={40} bottom={40} />
+                        <ThemedText type="whitened" style={styles.detailTitle}>
+                            What to bring to your appointment
                         </ThemedText>
                         {renderArray(completion.what_to_bring)}
                         {/* Provider Question */}
-                        <ThemedText type="greyed" style={styles.detailLabel}>
-                            Questions for your provider:
+                        <Divider type="horizontal" top={40} bottom={40} />
+                        <ThemedText type="whitened" style={styles.detailTitle}>
+                            Questions for your provider
                         </ThemedText>
                         {renderQuestions()}
                         {/* Summary */}
-                        <ThemedText type="greyed" style={styles.detailLabel}>
-                            Summary for your provider:
+                        <Divider type="horizontal" top={40} bottom={40} />
+                        <ThemedText type="whitened" style={styles.detailTitle}>
+                            Summary for your provider
                         </ThemedText>
                         <ThemedView style={styles.summaryCard}>
                             <ThemedText type="whitened" style={styles.summaryText}>
@@ -373,6 +379,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '500',
         marginBottom: 4,
+    },
+    detailTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        textAlign: 'center',
     },
     detailValue: {
         fontSize: 16,

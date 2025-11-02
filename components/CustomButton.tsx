@@ -13,12 +13,12 @@ export type ButtonProps = TouchableOpacityProps & {
     placeholderText?: string;
     value?: any;
     setValue?: (value: any) => void;
-    // Round
+    // Icon
     onPress?: () => void;
-    size?: number;
-    icon?: string;
+    iconName?: string;
+    iconSize?: number;
     // Types
-    type: "copy" | 'checker' | 'round';
+    type: "copy" | 'checker' | 'icon';
 };
 
 export function CustomButton({
@@ -27,8 +27,8 @@ export function CustomButton({
     setValue,
     placeholderText,
     onPress,
-    size = 60,
-    icon,
+    iconName,
+    iconSize,
     type,
 }: ButtonProps) {
     const [color, setColor] = useState('#64748b');
@@ -72,18 +72,14 @@ export function CustomButton({
             </ThemedText>
         </Button>
     );
-    if (type === 'round') return ( // Round button
-        <Button
-            type="bordered"
-            style={[styles.roundIcon, { width: size, height: size, borderRadius: size }]}
+    if (type === "icon") return ( // Icon Button
+        <TouchableOpacity
+            style={styles.iconButton}
+            activeOpacity={0.3}
             onPress={onPress}
         >
-            <MaterialIcons
-                name={icon as any}
-                size={25}
-                color="#64748b"
-            />
-        </Button>
+            <MaterialIcons name={iconName as any} size={iconSize} color={color} />
+        </TouchableOpacity>
     );
     return null;
 }
@@ -95,6 +91,12 @@ const styles = StyleSheet.create({
         right: 0,
         padding: 6,
         opacity: 0.5,
+    },
+    iconButton: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        padding: 10,
     },
     settingsContainer: {
         borderRadius: 10,
@@ -109,10 +111,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '400',
         lineHeight: 20,
+        flex: 1,
         flexWrap: "wrap",
-    },
-    roundIcon: {
-        alignItems: 'center',
-        justifyContent: 'center',
     },
 });

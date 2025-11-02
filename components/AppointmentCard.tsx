@@ -61,7 +61,8 @@ export default function AppointmentCard({
                         <Text style={[styles.statusText, isNotified ? { color: '#3b82f6' } : { color: '#6e6e6eff' }]}>
                             {isNotified ? "Notified" : "Not Notified"}
                         </Text>
-                    </View>)}
+                    </View>
+                )}
             </View>
 
             <View style={[styles.appointmentDetails, { borderColor: borderColor }]}>

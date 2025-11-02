@@ -36,17 +36,27 @@ export default function OnboardingFinalScreen() {
             <MaterialIcons name="settings" size={32} color="#3b82f6" />
           </ThemedView>
           <ThemedText style={styles.title} type="whitened">Settings</ThemedText>
-          <ThemedText style={styles.subtitle} type="greyed">Personalize your app settings</ThemedText>
+          <ThemedText style={styles.subtitle} type="greyed">Personalize your preferences</ThemedText>
         </View>
 
         <View style={styles.formGap}>
           <View>
             <ThemedText type="overheader">Notifications</ThemedText>
-            <CustomButton type="checker" value={notifications} setValue={handleNotifications} placeholderText="Allow Notifications" />
+            <CustomButton
+              type="checker"
+              value={notifications}
+              setValue={handleNotifications}
+              placeholderText="Send and create appointment notifications"
+            />
           </View>
           <View>
             <ThemedText type="overheader">Calendar</ThemedText>
-            <CustomButton type="checker" value={calendar} setValue={handleCalendar} placeholderText="Allow Calendar Sync" />
+            <CustomButton
+              type="checker"
+              value={calendar}
+              setValue={handleCalendar}
+              placeholderText="Create calendar events for your appointments"
+            />
           </View>
         </View>
       </ScrollView>

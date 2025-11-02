@@ -1,6 +1,8 @@
 import React from 'react';
-import { Modal, StyleSheet, Text, View } from 'react-native';
+import { Modal, StyleSheet } from 'react-native';
 import { CircleFade } from 'react-native-animated-spinkit';
+import { ThemedText } from './ThemedText';
+import { ThemedView } from './ThemedView';
 
 type LoadingScreenProps = {
     visible: boolean;
@@ -23,15 +25,13 @@ export default function LoadingScreen({
             animationType={"fade"}
             statusBarTranslucent={true}
         >
-            <View style={styles.overlay}>
-                <View style={styles.content}>
-                    <Text style={styles.message}>{message}</Text>
-                    {subMessage && (
-                        <Text style={styles.subMessage}>{subMessage}</Text>
-                    )}
-                    <CircleFade style={styles.loader} size={spinnerSize} color={spinnerColor} />
-                </View>
-            </View>
+            <ThemedView style={styles.overlay}>
+                <ThemedText type="whitened" style={styles.message}>{message}</ThemedText>
+                {subMessage && (
+                    <ThemedText type="greyed" style={styles.subMessage}>{subMessage}</ThemedText>
+                )}
+                <CircleFade style={styles.loader} size={spinnerSize} color={spinnerColor} />
+            </ThemedView>
         </Modal>
     );
 }
@@ -42,21 +42,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 24,
-        backgroundColor: '#000000',
-        zIndex: 10000,
-    },
-    content: {
-        alignItems: 'center',
+        zIndex: 1000,
     },
     message: {
-        color: '#ffffffff',
         fontSize: 24,
         fontWeight: '700',
         textAlign: 'center',
         marginBottom: 8,
     },
     subMessage: {
-        color: '#858585ff',
         fontSize: 16,
         fontWeight: '400',
         textAlign: 'center',
