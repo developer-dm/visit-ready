@@ -1,16 +1,7 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { StyleSheet, Text, type TextProps } from "react-native";
 
-export type ThemedTextProps = TextProps & {
-  lightColor?: string;
-  darkColor?: string;
-  type?: "custom" | "whitened" | "greyed" | "dusked" | "overheader" | "subheader" | "link" | "error";
-};
-
-const typeColors: Record<
-  NonNullable<ThemedTextProps["type"]>,
-  { light: string; dark: string } | undefined
-> = {
+const typeColors: Record<NonNullable<ThemedTextProps["type"]>, { light: string; dark: string } | undefined> = {
   custom: undefined,
   whitened: { light: "#212e43ff", dark: "#ffffffff" },
   greyed: { light: "#64748b", dark: "#858585ff" },
@@ -21,13 +12,19 @@ const typeColors: Record<
   error: undefined,
 };
 
-export function ThemedText({
+type ThemedTextProps = TextProps & {
+  lightColor?: string;
+  darkColor?: string;
+  type?: "custom" | "whitened" | "greyed" | "dusked" | "overheader" | "subheader" | "link" | "error";
+};
+
+const ThemedText = ({
   style,
   lightColor,
   darkColor,
   type = "custom",
   ...rest
-}: ThemedTextProps) {
+}: ThemedTextProps) => {
   const typeColor = typeColors[type];
   const color = useThemeColor({ light: lightColor ?? typeColor?.light, dark: darkColor ?? typeColor?.dark }, "text");
 
@@ -67,3 +64,6 @@ const styles = StyleSheet.create({
     color: "#ff0000ff",
   },
 });
+
+export { ThemedText, ThemedTextProps };
+

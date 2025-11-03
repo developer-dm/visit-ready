@@ -2,8 +2,8 @@ import { Dropdown } from "@/components/Dropdown";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useTempStore } from "@/stores/tempStore";
-import { DropdownValues } from "@/types/dropdown";
+import Dropdowns from "@/constants/Dropdowns";
+import useTempStore from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -42,7 +42,7 @@ export default function PrepSecondScreen() {
                     <View>
                         <ThemedText type="overheader">When did your concerns begin?</ThemedText>
                         <Dropdown
-                            items={DropdownValues.concernStart}
+                            items={Dropdowns.concernStart}
                             value={appointment.concernStart}
                             setValue={(value) => updateAppointment({ concernStart: value })}
                         />
@@ -51,7 +51,7 @@ export default function PrepSecondScreen() {
                     <View>
                         <ThemedText type="overheader">How would you rate the severity of your concern 1-10?</ThemedText>
                         <Dropdown
-                            items={DropdownValues.concernSeverity}
+                            items={Dropdowns.concernSeverity}
                             value={appointment.concernSeverity}
                             setValue={(value) => updateAppointment({ concernSeverity: value })}
                         />

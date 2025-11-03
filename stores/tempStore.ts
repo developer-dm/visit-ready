@@ -1,6 +1,9 @@
-import { AppointmentData, CompletionData, SignupData, TempStore } from "@/types/models";
+import { AppointmentData, CompletionData, SignupData } from "@/types/Data";
+import { TempStore } from "@/types/Stores";
 import * as Crypto from "expo-crypto";
 import { create } from "zustand";
+
+const initialIdState: string = "";
 
 const initialSignupState: SignupData = {
     DOB: null,
@@ -33,9 +36,7 @@ const initialCompletionState: CompletionData = {
     summary_for_provider: "",
 };
 
-const initialIdState: string = ""
-
-export const useTempStore = create<TempStore>(
+const useTempStore = create<TempStore>(
     (set) => ({
         // Initial states
         id: initialIdState,
@@ -48,19 +49,16 @@ export const useTempStore = create<TempStore>(
             set((state) => ({
                 signup: { ...state.signup, ...data },
             })),
-
         // Appointment Actions
         updateAppointment: (data: Partial<AppointmentData>) =>
             set((state) => ({
                 appointment: { ...state.appointment, ...data },
             })),
-
         // Completion Actions
         setCompletion: (value: CompletionData) =>
             set((state) => ({
                 tempCompletion: { ...state.tempCompletion, ...value },
             })),
-
         // Utility Actions
         assignNewId: () => {
             const newId = Crypto.randomUUID();
@@ -75,3 +73,6 @@ export const useTempStore = create<TempStore>(
             }),
     })
 );
+
+export default useTempStore;
+

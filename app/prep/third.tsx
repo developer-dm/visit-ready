@@ -2,8 +2,8 @@ import { Dropdown } from "@/components/Dropdown";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useTempStore } from "@/stores/tempStore";
-import { DropdownValues } from "@/types/dropdown";
+import Dropdowns from "@/constants/Dropdowns";
+import useTempStore from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -34,7 +34,7 @@ export default function PrepThirdScreen() {
                         <ThemedText type="overheader">What do you hope to get out of this visit?</ThemedText>
                         <Dropdown
                             placeholder="Required"
-                            items={DropdownValues.visitGoal}
+                            items={Dropdowns.visitGoal}
                             value={appointment.visitGoal}
                             setValue={(value) => updateAppointment({ visitGoal: value })}
                         />
@@ -43,7 +43,7 @@ export default function PrepThirdScreen() {
                     <View>
                         <ThemedText type="overheader">Do you have any specific worries?</ThemedText>
                         <Dropdown
-                            items={DropdownValues.specificWorries}
+                            items={Dropdowns.specificWorries}
                             value={appointment.specificWorries}
                             setValue={(value) => updateAppointment({ specificWorries: value })}
                         />

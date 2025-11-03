@@ -1,29 +1,30 @@
 import { expo } from "@/app.json";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import Features from "@/constants/Features";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 
-const FEATURES = [
-  {
-    icon: "calendar-today",
-    title: "Track your Appointments",
-    description: "Keep a record of all your medical appointments in one place"
-  },
-  {
-    icon: "show-chart",
-    title: "Be prepared",
-    description: "Generate discussion questions and goals based on your symptoms and priorities"
-  },
-  {
-    icon: "lock",
-    title: "Your Health Data is Secure",
-    description: "All health data is encrypted and stored on your device"
-  },
-];
-
 export default function AboutScreen() {
   const appIcon = require("@/assets/images/favicon.png");
+
+  const renderFeatures = () => {
+    return Features.map((feature, index) => (
+      <View key={index} style={styles.featureItem}>
+        <ThemedView style={styles.featureIconContainer} type="dusked">
+          <MaterialIcons name={feature.icon as any} size={20} color="#3b82f6" />
+        </ThemedView>
+        <View style={styles.featureContent}>
+          <ThemedText style={styles.featureTitle} type="whitened">
+            {feature.title}
+          </ThemedText>
+          <ThemedText style={styles.featureDescription} type="greyed">
+            {feature.description}
+          </ThemedText>
+        </View>
+      </View>
+    ))
+  };
 
   return (
     <ThemedView type="container">
@@ -76,21 +77,7 @@ export default function AboutScreen() {
             </View>
 
             <View style={styles.featuresList}>
-              {FEATURES.map((feature, index) => (
-                <View key={index} style={styles.featureItem}>
-                  <ThemedView style={styles.featureIconContainer} type="dusked">
-                    <MaterialIcons name={feature.icon as any} size={20} color="#3b82f6" />
-                  </ThemedView>
-                  <View style={styles.featureContent}>
-                    <ThemedText style={styles.featureTitle} type="whitened">
-                      {feature.title}
-                    </ThemedText>
-                    <ThemedText style={styles.featureDescription} type="greyed">
-                      {feature.description}
-                    </ThemedText>
-                  </View>
-                </View>
-              ))}
+              {renderFeatures()}
             </View>
           </View>
         </ThemedView>

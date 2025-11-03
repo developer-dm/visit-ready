@@ -1,10 +1,10 @@
-import { ValueToLabel } from '@/types/labels';
+import Labels from '@/constants/Labels';
 
-export const DataFormatterService = {
+const DataFormatter = {
   // Format values
   toReadableString(
     input: any,
-    type?: keyof typeof ValueToLabel,
+    type?: keyof typeof Labels,
   ): string {
     if (input === null || input === undefined || input === '') {
       return 'N/A';
@@ -13,13 +13,13 @@ export const DataFormatterService = {
     const inputString = String(input).toLowerCase();
 
     if (type) {
-      return ValueToLabel[type]?.[inputString] || (type === 'label' ? inputString : 'N/A');
+      return Labels[type]?.[inputString] || (type === 'label' ? inputString : 'N/A');
     }
 
-    for (const key in ValueToLabel) {
-      const labelKey = key as keyof typeof ValueToLabel;
-      if (Object.prototype.hasOwnProperty.call(ValueToLabel[labelKey], inputString)) {
-        return ValueToLabel[labelKey][inputString];
+    for (const key in Labels) {
+      const labelKey = key as keyof typeof Labels;
+      if (Object.prototype.hasOwnProperty.call(Labels[labelKey], inputString)) {
+        return Labels[labelKey][inputString];
       }
     }
 
@@ -85,3 +85,5 @@ export const DataFormatterService = {
     return age.toString();
   },
 };
+
+export default DataFormatter;

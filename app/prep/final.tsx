@@ -1,18 +1,16 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { DataFormatterService } from "@/services/dataFormatter";
-import { useTempStore } from "@/stores/tempStore";
+import useTempStore from "@/stores/tempStore";
+import DataFormatter from "@/utils/dataFormatter";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function PrepFinalScreen() {
     const { appointment } = useTempStore();
 
-    const userDataEntries = Object.entries(appointment).filter(([key]) => {
-        return key;
-    });
-
     const renderDetails = () => {
+        const userDataEntries = Object.entries(appointment);
+
         if (userDataEntries.length === 0) {
             return (
                 <View style={styles.noDataContainer}>
@@ -25,15 +23,15 @@ export default function PrepFinalScreen() {
 
         return userDataEntries.map(([key, value]) => {
             if (!value) return;
-            if (key === "appointmentDate" && value) value = DataFormatterService.FormatDateTimeString(value);
+            if (key === "appointmentDate" && value) value = DataFormatter.FormatDateTimeString(value);
 
             return (
                 <ThemedView type="list" key={key} style={styles.detailItem}>
                     <ThemedText style={styles.detailLabel} type="greyed">
-                        {DataFormatterService.toReadableString(key, 'label')}
+                        {DataFormatter.toReadableString(key, 'label')}
                     </ThemedText>
                     <ThemedText style={styles.detailValue} type="whitened">
-                        {DataFormatterService.toReadableString(value)}
+                        {DataFormatter.toReadableString(value)}
                     </ThemedText>
                 </ThemedView>
             );

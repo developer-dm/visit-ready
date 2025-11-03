@@ -1,7 +1,7 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { TouchableOpacity, type TouchableOpacityProps } from "react-native";
 
-export type ButtonProps = TouchableOpacityProps & {
+type ButtonProps = TouchableOpacityProps & {
   lightColor?: string;
   darkColor?: string;
   lightBorder?: string;
@@ -9,15 +9,12 @@ export type ButtonProps = TouchableOpacityProps & {
   type?: "custom" | "bordered";
 };
 
-const typeColors: Record<
-  NonNullable<ButtonProps["type"]>,
-  { lightBorder?: string; darkBorder?: string } | undefined
-> = {
+const typeColors: Record<NonNullable<ButtonProps["type"]>, { lightBorder?: string; darkBorder?: string } | undefined> = {
   custom: undefined,
   bordered: { lightBorder: "#d1d1d1ff", darkBorder: "#393939ff" },
 };
 
-export function Button({
+const Button = ({
   style,
   lightColor,
   darkColor,
@@ -26,7 +23,7 @@ export function Button({
   children,
   type = "custom",
   ...rest
-}: ButtonProps) {
+}: ButtonProps) => {
   const typeColor = typeColors[type];
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, "card");
   const borderColor = useThemeColor({ light: lightBorder ?? typeColor?.lightBorder, dark: darkBorder ?? typeColor?.darkBorder }, "border");
@@ -45,3 +42,6 @@ export function Button({
     </TouchableOpacity >
   );
 }
+
+export { Button, ButtonProps };
+

@@ -1,13 +1,9 @@
-
-// Convert Data Values to Labels
-// All conversions are lowercased
-export const ValueToLabel = {
+const Labels = {
     label: {
         'dob': 'Date of Birth',
         'sex': 'Sex',
         'language': 'Language',
         'notifications': 'Notifications',
-
         'id': "Appointment ID",
         'appointmenttype': 'Appointment Type',
         'appointmentdate': 'Appointment Date',
@@ -23,13 +19,11 @@ export const ValueToLabel = {
         'miscdiscussion': 'Other Information',
         'completion': 'Completion',
     } as Record<string, string>,
-
     priority: {
         'low': 'Low',
         'medium': 'Medium',
         'high': "High",
     } as Record<string, string>,
-
     appointmentType: {
         'new-patient': 'New Patient',
         'specialist': 'Specialist',
@@ -41,7 +35,6 @@ export const ValueToLabel = {
         'other': 'Other',
         'no-response': 'Unknown',
     } as Record<string, string>,
-
     concernStart: {
         'today': 'Today',
         'past-week': 'Within the Past Week',
@@ -54,28 +47,25 @@ export const ValueToLabel = {
         'other': 'Other',
         'no-response': 'Unknown',
     } as Record<string, string>,
-
     concernSeverity: {
-        '1': '1 - Very Mild',
-        '2': '2',
-        '3': '3',
-        '4': '4',
-        '5': '5 - Moderate',
-        '6': '6',
-        '7': '7',
-        '8': '8',
-        '9': '9',
-        '10': '10 - Severe / Worst Pain',
-        'no-response': 'Unknown',
+        '1': '1 - Very mild (barely noticeable)',
+        '2': '2 - Mild (easily ignored)',
+        '3': '3 - Noticeable (distracting)',
+        '4': '4 - Troublesome (interrupts tasks)',
+        '5': '5 - Limits activity',
+        '6': '6 - Strong (impairs focus)',
+        '7': '7 - Severe (hard to ignore)',
+        '8': '8 - Very severe (dominates attention)',
+        '9': '9 - Extreme (near unbearable)',
+        '10': '10 - Worst (unbearable — seek help)',
+        'no-response': 'Prefer not to say',
     } as Record<string, string>,
-
     sex: {
         'male': 'Male',
         'female': 'Female',
         'other': 'Other',
         'no-response': 'Unknown',
     } as Record<string, string>,
-
     language: {
         'en': 'English',
         'es': 'Spanish',
@@ -86,8 +76,8 @@ export const ValueToLabel = {
         'ru': 'Russian',
         'ja': 'Japanese',
         'ko': 'Korean',
-        'zh-CN': 'Chinese (Simplified)',
-        'zh-TW': 'Chinese (Traditional)',
+        'zh-cn': 'Chinese (Simplified)',
+        'zh-tw': 'Chinese (Traditional)',
         'ar': 'Arabic',
         'hi': 'Hindi',
         'nl': 'Dutch',
@@ -99,12 +89,10 @@ export const ValueToLabel = {
         'th': 'Thai',
         'no-response': 'Unknown',
     } as Record<string, string>,
-
     notifications: {
         'false': 'Disabled',
         'true': 'Enabled',
     } as Record<string, string>,
-
     visitGoal: {
         'get-diagnosis': 'Get a Diagnosis',
         'adjust-medication': 'Adjust Medication',
@@ -117,7 +105,6 @@ export const ValueToLabel = {
         'other': 'Other',
         'no-response': 'Unknown',
     } as Record<string, string>,
-
     specificWorries: {
         'pain-discomfort': 'Pain or Discomfort',
         'fatigue-low-energy': 'Fatigue or Low Energy',
@@ -131,7 +118,6 @@ export const ValueToLabel = {
         'other': 'Other',
         'no-response': 'Unknown',
     } as Record<string, string>,
-
     reminderTimes: {
         '0': 'At time of appointment',
         '300': '5 minutes before',
@@ -144,3 +130,5 @@ export const ValueToLabel = {
         '604800': '1 week before',
     } as Record<string, string>,
 };
+
+export default Labels;

@@ -1,44 +1,7 @@
+import { AppointmentData, CompletionData, SignupData } from "./Data";
 
-// Onboarding Data
-export type SignupData = {
-    DOB: Date | null;
-    sex: string;
-    language: string;
-};
-
-// Completion Data
-export type CompletionData = {
-    personalized_questions: {
-        question: string;
-        why: string;
-        priority: "high" | "medium" | "low";
-    }[];
-    what_to_expect: {
-        brief: string;
-        steps: string[];
-    };
-    what_to_bring: string[];
-    summary_for_provider: string;
-};
-
-// Appointment Preparation Data
-export type AppointmentData = {
-    appointmentType: string;
-    appointmentDate: Date | null;
-    provider: string;
-    notified: string;
-    address: string;
-    mainConcern: string;
-    concernStart: string;
-    concernSeverity: string;
-    remedies: string;
-    visitGoal: string;
-    specificWorries: string;
-    miscDiscussion: string;
-};
-
-// Temporary Form Data
-export type TempStore = {
+// Temporary signup, appointment, completion storage
+type TempStore = {
     id: string;
     signup: SignupData;
     appointment: AppointmentData;
@@ -52,8 +15,8 @@ export type TempStore = {
     resetTempContext: () => void;
 };
 
-// Logged in State
-export type AuthStore = {
+// Authentication, settings storage
+type AuthStore = {
     isLoggedIn: boolean;
     hasCompletedOnboarding: boolean;
     isVip: boolean;
@@ -72,8 +35,8 @@ export type AuthStore = {
     setCalendar: (value: boolean) => void;
 };
 
-// User Data State
-export type UserDataStore = {
+// Permanent signup, appointment, completion storage
+type UserDataStore = {
     signup: SignupData | null;
     appointments: { [id: string]: AppointmentData };
     completions: { [id: string]: CompletionData }
@@ -90,3 +53,6 @@ export type UserDataStore = {
     resetAll: () => void;
     setDataHasHydrated: (value: boolean) => void;
 };
+
+export { AuthStore, TempStore, UserDataStore };
+

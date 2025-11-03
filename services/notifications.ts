@@ -1,6 +1,6 @@
 import * as Notifications from 'expo-notifications';
 
-export const initializeNotifications = () => {
+const initializeNotifications = () => {
     Notifications.setNotificationHandler({
         handleNotification: async () => ({
             shouldShowBanner: true,
@@ -12,7 +12,7 @@ export const initializeNotifications = () => {
 };
 
 // Create an appointment notification
-export const scheduleNotification = async (id: string, title: string, body: string, date: Date, data?: Record<string, string>) => {
+const scheduleNotification = async (id: string, title: string, body: string, date: Date, data?: Record<string, string>) => {
     if (date.getTime() < new Date().getTime()) return;
 
     Notifications.scheduleNotificationAsync({
@@ -29,30 +29,41 @@ export const scheduleNotification = async (id: string, title: string, body: stri
     });
 };
 
-export const clearAllNotifications = () => {
+const clearAllNotifications = () => {
     Notifications.cancelAllScheduledNotificationsAsync();
 };
 
-export const getAllNotifications = async () => {
+const getAllNotifications = async () => {
     const result = await Notifications.getAllScheduledNotificationsAsync();
     return result;
 };
 
-export const requestNotifications = async () => {
+const requestNotifications = async () => {
     const result = await Notifications.requestPermissionsAsync();
     return result.granted ? true : false;
 };
 
-export const getNotificationsGranted = async () => {
+const getNotificationsGranted = async () => {
     const result = await Notifications.getPermissionsAsync();
     return result.granted ? true : false;
 };
 
 // Unused
-export const checkWhichAppointmentsHaveNotifications = async (ids: string[]) => {
+const checkWhichAppointmentsHaveNotifications = async (ids: string[]) => {
     const result = await Notifications.getAllScheduledNotificationsAsync();
     const notificationIdList = result.map(notif => notif.identifier)
     const matchingNotifications = ids.filter(id => notificationIdList.includes(id));
 
     return matchingNotifications;
 };
+
+export {
+    checkWhichAppointmentsHaveNotifications,
+    clearAllNotifications,
+    getAllNotifications,
+    getNotificationsGranted,
+    initializeNotifications,
+    requestNotifications,
+    scheduleNotification
+};
+

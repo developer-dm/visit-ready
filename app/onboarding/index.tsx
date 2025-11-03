@@ -2,8 +2,8 @@ import { DatePicker } from "@/components/DatePicker";
 import { Dropdown } from "@/components/Dropdown";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useTempStore } from "@/stores/tempStore";
-import { DropdownValues } from "@/types/dropdown";
+import Dropdowns from "@/constants/Dropdowns";
+import useTempStore from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -49,7 +49,7 @@ export default function OnboardingFirstScreen() {
             <ThemedText type="overheader">Gender</ThemedText>
             <Dropdown
               placeholder="Required"
-              items={DropdownValues.sex}
+              items={Dropdowns.sex}
               value={signup.sex}
               setValue={(value) => updateSignup({ sex: value })}
             />
@@ -59,7 +59,7 @@ export default function OnboardingFirstScreen() {
             <ThemedText type="overheader">Preferred language</ThemedText>
             <Dropdown
               placeholder="Required"
-              items={DropdownValues.language}
+              items={Dropdowns.language}
               value={signup.language}
               setValue={(value) => updateSignup({ language: value })}
             />

@@ -1,12 +1,13 @@
 import { Button } from '@/components/Button';
 import { Footer } from '@/components/Footer';
-import LoadingScreen from '@/components/Loading';
+import { LoadingScreen } from '@/components/Loading';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useDataStore } from '@/stores/dataStore';
-import { useTempStore } from '@/stores/tempStore';
-import { CompletionData } from '@/types/models';
-import { generateAPIUrl } from '@/utils/utils';
+import ROUTES from '@/constants/Routes';
+import useDataStore from '@/stores/dataStore';
+import useTempStore from '@/stores/tempStore';
+import { CompletionData } from '@/types/Data';
+import generateAPIUrl from '@/utils/generateUrl';
 import { useCompletion } from '@ai-sdk/react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
@@ -14,16 +15,16 @@ import { fetch as expoFetch } from 'expo/fetch';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-function trimResponse(text: string): string {
-	const codeBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/;
-	const match = text.match(codeBlockRegex);
-	return match?.[1]?.trim() || text.trim();
-}
-
 export default function IndexResultsScreen() {
 	const [hasSubmitted, setHasSubmitted] = useState(false);
 	const { id, appointment, setCompletion, resetTempContext } = useTempStore();
 	const { signup, addCompletion } = useDataStore();
+
+	const trimResponse = (text: string) => {
+		const codeBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/;
+		const match = text.match(codeBlockRegex);
+		return match?.[1]?.trim() || text.trim();
+	}
 
 	const { complete, completion } = useCompletion({
 		api: generateAPIUrl('/api/completion'),
@@ -41,7 +42,7 @@ export default function IndexResultsScreen() {
 	};
 
 	const handleReturn = () => {
-		router.replace("/(tabs)");
+		router.replace(ROUTES.DASHBOARD);
 		resetTempContext();
 	};
 
@@ -54,7 +55,7 @@ export default function IndexResultsScreen() {
 
 			setCompletion(parsedCompletion);
 			addCompletion(parsedCompletion, id);
-			router.replace("/results/second");
+			router.replace(ROUTES.RESULTS_2);
 		} catch (error) {
 			console.error('Failed to parse completion:', error);
 		}

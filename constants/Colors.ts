@@ -1,5 +1,4 @@
-
-export const Colors = {
+const Colors = {
   light: {
     text: '#212e43ff',
     placeholderText: '#c3c3c3ff',
@@ -23,3 +22,5 @@ export const Colors = {
     tabIconSelected: '#fff',
   },
 };
+
+export default Colors;

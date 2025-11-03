@@ -1,5 +1,5 @@
-import { DataFormatterService } from '@/services/dataFormatter';
-import { AppointmentData, SignupData } from '@/types/models';
+import { AppointmentData, SignupData } from '@/types/Data';
+import DataFormatter from '@/utils/dataFormatter';
 import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
@@ -17,15 +17,15 @@ export async function POST(req: Request) {
     if (!signup || !appointment) return new Response('Data not found', { status: 404 });
 
     const completion_prompt = `
-Language: ${DataFormatterService.toReadableString(signup.language, 'language')}
-Gender: ${DataFormatterService.toReadableString(signup.sex, 'sex')}
-Age: ${DataFormatterService.FormatAge(signup.DOB)}
+Language: ${DataFormatter.toReadableString(signup.language, 'language')}
+Gender: ${DataFormatter.toReadableString(signup.sex, 'sex')}
+Age: ${DataFormatter.FormatAge(signup.DOB)}
 Main health concern: ${appointment.mainConcern}
-Specific worries: ${DataFormatterService.toReadableString(appointment.specificWorries, 'specificWorries')}
-Goal for this visit: ${DataFormatterService.toReadableString(appointment.visitGoal, 'visitGoal')}
-Appointment type: ${DataFormatterService.toReadableString(appointment.appointmentType, 'appointmentType')}
-When the concern started: ${DataFormatterService.toReadableString(appointment.concernStart, 'concernStart')}
-Severity level: ${DataFormatterService.toReadableString(appointment.concernSeverity, 'concernSeverity')}
+Specific worries: ${DataFormatter.toReadableString(appointment.specificWorries, 'specificWorries')}
+Goal for this visit: ${DataFormatter.toReadableString(appointment.visitGoal, 'visitGoal')}
+Appointment type: ${DataFormatter.toReadableString(appointment.appointmentType, 'appointmentType')}
+When the concern started: ${DataFormatter.toReadableString(appointment.concernStart, 'concernStart')}
+Severity level: ${DataFormatter.toReadableString(appointment.concernSeverity, 'concernSeverity')}
 Treatments/remedies already tried: ${appointment.remedies}
 Additional information: ${appointment.miscDiscussion}
 

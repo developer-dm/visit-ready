@@ -1,10 +1,18 @@
-import { AppointmentData, CompletionData, SignupData, UserDataStore } from "@/types/models";
+import { AppointmentData, CompletionData, SignupData } from "@/types/Data";
+import { UserDataStore } from "@/types/Stores";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 const isWeb = Platform.OS === "web";
+
+// For Development
+const createEncryptedAsyncStorage = () => ({
+    setItem: (key: string, value: string) => AsyncStorage.setItem(key, value),
+    getItem: (key: string) => AsyncStorage.getItem(key),
+    removeItem: (key: string) => AsyncStorage.removeItem(key),
+});
 
 /*
 import { Buffer } from 'buffer';
@@ -115,14 +123,7 @@ const createEncryptedAsyncStorage = () => ({
 });
 */
 
-// For Development
-const createEncryptedAsyncStorage = () => ({
-    setItem: (key: string, value: string) => AsyncStorage.setItem(key, value),
-    getItem: (key: string) => AsyncStorage.getItem(key),
-    removeItem: (key: string) => AsyncStorage.removeItem(key),
-});
-
-export const useDataStore = create(
+const useDataStore = create(
     persist<UserDataStore>(
         (set) => ({
             signup: null,
@@ -184,3 +185,6 @@ export const useDataStore = create(
         },
     ),
 );
+
+export default useDataStore;
+

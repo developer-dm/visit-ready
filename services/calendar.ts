@@ -1,28 +1,28 @@
-import { AppointmentData } from '@/types/models';
+import { AppointmentData } from '@/types/Data';
 import * as Calendar from 'expo-calendar';
 import { Alert } from 'react-native';
-import { DataFormatterService } from './dataFormatter';
+import DataFormatter from '../utils/dataFormatter';
 
 // Request Calendar Permissions (unused)
-export const requestCalendar = async () => {
+const requestCalendar = async () => {
     const requestPermissions = await Calendar.requestCalendarPermissionsAsync();
     return requestPermissions.granted ? true : false;
 };
 
 // Get Calendar Permissions (unused)
-export const getCalendarGranted = async () => {
+const getCalendarGranted = async () => {
     const getCalendarGrantedPermissions = await Calendar.getCalendarPermissionsAsync();
     return getCalendarGrantedPermissions.granted ? true : false;
 };
 
 // Save appointment to calendar
-export const createCalendarEvent = async (appointment: AppointmentData) => {
+const createCalendarEvent = async (appointment: AppointmentData) => {
     if (!appointment || !appointment.appointmentDate) return;
 
     try {
         const title = appointment.provider
-            ? `${appointment.provider} - ${DataFormatterService.toReadableString(appointment.appointmentType)}`
-            : DataFormatterService.toReadableString(appointment.appointmentType);
+            ? `${appointment.provider} - ${DataFormatter.toReadableString(appointment.appointmentType)}`
+            : DataFormatter.toReadableString(appointment.appointmentType);
         const startDate = appointment.appointmentDate;
         const endDate = new Date(startDate.getTime() + (60 * 60 * 1000)); // Add one hour to start date
         const notes = "Created using the Visit Ready App. View specific appointment details within the app.";
@@ -58,3 +58,6 @@ export const createCalendarEvent = async (appointment: AppointmentData) => {
         throw error;
     }
 };
+
+export { createCalendarEvent, getCalendarGranted, requestCalendar };
+

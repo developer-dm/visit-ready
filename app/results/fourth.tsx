@@ -1,8 +1,8 @@
-import { CustomButton } from "@/components/CustomButton";
+import { CopyButton } from "@/components/Copy";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { DataFormatterService } from "@/services/dataFormatter";
-import { useTempStore } from "@/stores/tempStore";
+import useTempStore from "@/stores/tempStore";
+import DataFormatter from "@/utils/dataFormatter";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -40,7 +40,7 @@ export default function FourthResultsScreen() {
                             color={item.priority === 'high' ? "#ef4444" : item.priority === 'medium' ? "#e6a313ff" : "#64748b"}
                         />
                         <ThemedText style={styles.detailText} type="greyed">
-                            {DataFormatterService.toReadableString(item.priority, 'priority')}
+                            {DataFormatter.toReadableString(item.priority, 'priority')}
                         </ThemedText>
                     </View>
 
@@ -51,7 +51,7 @@ export default function FourthResultsScreen() {
                         </ThemedText>
                     </View>
                 </View>
-                <CustomButton type="copy" copyText={item.question} />
+                <CopyButton textToCopy={item.question} />
             </ThemedView>
         ));
     };

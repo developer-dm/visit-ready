@@ -1,7 +1,7 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { StyleSheet, TextInput, type TextInputProps } from "react-native";
 
-export type TextboxProps = TextInputProps & {
+type TextboxProps = TextInputProps & {
     lightColor?: string;
     darkColor?: string;
     lightBorder?: string;
@@ -9,7 +9,7 @@ export type TextboxProps = TextInputProps & {
     type?: "default";
 };
 
-export function Textbox({
+const Textbox = ({
     style,
     lightColor,
     darkColor,
@@ -17,7 +17,7 @@ export function Textbox({
     darkBorder = "#393939ff",
     type = "default",
     ...rest
-}: TextboxProps) {
+}: TextboxProps) => {
     const placeholderColor = useThemeColor({}, "placeholderText");
     const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
     const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, "card");
@@ -46,3 +46,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 });
+
+export { Textbox, TextboxProps };
+

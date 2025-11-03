@@ -3,9 +3,9 @@ import { Dropdown } from "@/components/Dropdown";
 import { Textbox } from "@/components/Textbox";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useAuthStore } from "@/stores/authStore";
-import { useTempStore } from "@/stores/tempStore";
-import { DropdownValues } from "@/types/dropdown";
+import Dropdowns from "@/constants/Dropdowns";
+import useAuthStore from '@/stores/authStore';
+import useTempStore from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Platform, StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -37,7 +37,7 @@ export default function PrepFirstScreen() {
             <ThemedText type="overheader">Type of Appointment</ThemedText>
             <Dropdown
               placeholder="Required"
-              items={DropdownValues.appointmentType}
+              items={Dropdowns.appointmentType}
               value={appointment.appointmentType}
               setValue={(value) => updateAppointment({ appointmentType: value })}
             />
@@ -74,7 +74,7 @@ export default function PrepFirstScreen() {
             <View>
               <ThemedText type="overheader">Notification</ThemedText>
               <Dropdown
-                items={DropdownValues.notified}
+                items={Dropdowns.notified}
                 value={appointment.notified}
                 setValue={(value) => updateAppointment({ notified: value })}
               />

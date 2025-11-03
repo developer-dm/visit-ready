@@ -1,14 +1,15 @@
 import { Button } from "@/components/Button";
-import { CustomButton } from "@/components/CustomButton";
 import { Footer } from "@/components/Footer";
+import { IconButton } from "@/components/IconButton";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import ROUTES from "@/constants/Routes";
 import { logOut } from "@/services/auth";
-import { DataFormatterService } from "@/services/dataFormatter";
 import { clearAllNotifications, getNotificationsGranted, requestNotifications } from "@/services/notifications";
-import { useAuthStore } from "@/stores/authStore";
-import { useDataStore } from "@/stores/dataStore";
-import { useTempStore } from "@/stores/tempStore";
+import useAuthStore from '@/stores/authStore';
+import useDataStore from "@/stores/dataStore";
+import useTempStore from "@/stores/tempStore";
+import DataFormatter from "@/utils/dataFormatter";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Link, router } from "expo-router";
 import { useState } from "react";
@@ -25,7 +26,7 @@ export default function SettingsScreen() {
     setDebounce(true);
 
     if (notifications) { // Notifications are turned on
-      router.push("/modals/notifications")
+      router.push(ROUTES.NOTIFICATIONS)
     } else { // Notifications are disabled
       const notificationsAllowed = await getNotificationsGranted();
       if (notificationsAllowed) { // Turn on notifications
@@ -118,12 +119,42 @@ export default function SettingsScreen() {
 
   const handleEditSignup = () => {
     updateSignup({ ...signup, DOB: new Date(signup?.DOB || "") });
-    router.push("/onboarding");
+    router.push(ROUTES.ONBOARDING);
   };
 
-  const userDataEntries = Object.entries(signup ? signup : {}).filter(([key]) => {
-    return key === 'DOB' || key === 'sex' || key === 'language';
-  });
+  const renderSignupData = () => {
+    const relevantKeys = ['DOB', 'sex', 'language'];
+    const userDataEntries = Object.entries(signup || {}).filter(([key]) =>
+      relevantKeys.includes(key)
+    );
+
+    if (userDataEntries.length === 0) {
+      return (
+        <View style={styles.noDataContainer}>
+          <ThemedText style={styles.noDataText} type="greyed">
+            No profile information available
+          </ThemedText>
+        </View>
+      )
+    }
+
+    return userDataEntries.map(([key, value]) => {
+      const displayValue = key === "DOB" && value && typeof value !== "boolean"
+        ? DataFormatter.FormatDateString(value)
+        : value;
+
+      return (
+        <ThemedView type="list" key={key} style={styles.profileItem}>
+          <ThemedText style={styles.profileLabel} type="greyed">
+            {DataFormatter.toReadableString(key, 'label')}
+          </ThemedText>
+          <ThemedText style={styles.profileValue} type="whitened">
+            {DataFormatter.toReadableString(displayValue)}
+          </ThemedText>
+        </ThemedView>
+      );
+    });
+  };
 
   return (
     <>
@@ -153,29 +184,9 @@ export default function SettingsScreen() {
           </View>
 
           <View style={styles.profileDetails}>
-            {userDataEntries.length > 0 ? (userDataEntries.map(([key, value]) => {
-              if (key === "DOB" && value && typeof value !== "boolean") value = DataFormatterService.FormatDateString(value);
-
-              return (
-                <ThemedView type="list" key={key} style={styles.profileItem}>
-                  <ThemedText style={styles.profileLabel} type="greyed">
-                    {DataFormatterService.toReadableString(key, 'label')}
-                  </ThemedText>
-                  <ThemedText style={styles.profileValue} type="whitened">
-                    {DataFormatterService.toReadableString(value)}
-                  </ThemedText>
-                </ThemedView>
-              );
-            })
-            ) : (
-              <View style={styles.noDataContainer}>
-                <ThemedText style={styles.noDataText} type="greyed">
-                  No profile information available
-                </ThemedText>
-              </View>
-            )}
+            {renderSignupData()}
           </View>
-          <CustomButton type="icon" iconName="edit" iconSize={20} onPress={handleEditSignup} />
+          <IconButton iconName="edit" iconSize={25} onPress={handleEditSignup} />
         </ThemedView>
 
         <View style={styles.preferencesSection}>
@@ -194,7 +205,7 @@ export default function SettingsScreen() {
                   <ThemedText style={styles.preferenceText}>Notifications</ThemedText>
                 </View>
                 <ThemedText style={styles.preferenceText} type="greyed">
-                  {DataFormatterService.toReadableString(notifications, 'notifications')}
+                  {DataFormatter.toReadableString(notifications, 'notifications')}
                 </ThemedText>
               </View>
               <MaterialIcons
@@ -216,7 +227,7 @@ export default function SettingsScreen() {
                   <ThemedText style={styles.preferenceText}>Calendar Sync</ThemedText>
                 </View>
                 <ThemedText style={styles.preferenceText} type="greyed">
-                  {DataFormatterService.toReadableString(calendar, 'notifications')}
+                  {DataFormatter.toReadableString(calendar, 'notifications')}
                 </ThemedText>
               </View>
               <MaterialIcons
@@ -301,7 +312,7 @@ export default function SettingsScreen() {
         </View>
 
         <View style={styles.additionalOptions}>
-          <Link asChild push href="/about">
+          <Link asChild push href={ROUTES.ABOUT}>
             <TouchableOpacity style={styles.linkButton}>
               <MaterialIcons name="info-outline" size={20} color="#64748b" />
               <ThemedText style={styles.linkText} type="greyed">About Visit Ready</ThemedText>

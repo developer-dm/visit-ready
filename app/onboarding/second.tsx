@@ -1,8 +1,8 @@
-import { CustomButton } from "@/components/CustomButton";
+import { CheckerButton } from "@/components/CheckerButton";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { getNotificationsGranted, requestNotifications } from "@/services/notifications";
-import { useAuthStore } from "@/stores/authStore";
+import useAuthStore from '@/stores/authStore';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ScrollView, StyleSheet, View } from "react-native";
 
@@ -42,8 +42,7 @@ export default function OnboardingFinalScreen() {
         <View style={styles.formGap}>
           <View>
             <ThemedText type="overheader">Notifications</ThemedText>
-            <CustomButton
-              type="checker"
+            <CheckerButton
               value={notifications}
               setValue={handleNotifications}
               placeholderText="Send and create appointment notifications"
@@ -51,8 +50,7 @@ export default function OnboardingFinalScreen() {
           </View>
           <View>
             <ThemedText type="overheader">Calendar</ThemedText>
-            <CustomButton
-              type="checker"
+            <CheckerButton
               value={calendar}
               setValue={handleCalendar}
               placeholderText="Create calendar events for your appointments"

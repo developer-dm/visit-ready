@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/stores/authStore";
+import useAuthStore from '@/stores/authStore';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Tabs } from "expo-router";
 

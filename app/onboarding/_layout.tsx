@@ -1,9 +1,10 @@
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { ThemedView } from "@/components/ThemedView";
-import { useAuthStore } from "@/stores/authStore";
-import { useDataStore } from "@/stores/dataStore";
-import { useTempStore } from "@/stores/tempStore";
+import ROUTES from "@/constants/Routes";
+import useAuthStore from '@/stores/authStore';
+import useDataStore from "@/stores/dataStore";
+import useTempStore from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Stack, router, useSegments } from "expo-router";
 import { useState } from "react";
@@ -14,7 +15,7 @@ export default function ModalLayout() {
     const insets = useSafeAreaInsets();
     const segments = useSegments();
     const currentRoute = segments[segments.length - 1];
-    const { completeOnboarding } = useAuthStore();
+    const { completeOnboarding, hasCompletedOnboarding } = useAuthStore();
     const { addSignupData } = useDataStore();
     const [debounce, setDebounce] = useState(false);
     const { signup, resetTempContext } = useTempStore();
@@ -51,11 +52,13 @@ export default function ModalLayout() {
 
         switch (currentRoute) {
             case 'onboarding':
-                router.push('/onboarding/second');
+                router.push(ROUTES.ONBOARDING_2);
                 break;
             case 'second':
-                router.dismissAll();
-                router.dismiss();
+                if (hasCompletedOnboarding) {
+                    router.dismissAll();
+                    router.dismiss();
+                };
                 addSignupData(signup);
                 completeOnboarding();
                 resetTempContext();

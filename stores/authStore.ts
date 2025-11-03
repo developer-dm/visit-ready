@@ -1,4 +1,4 @@
-import { AuthStore } from "@/types/models";
+import { AuthStore } from "@/types/Stores";
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 import { create } from "zustand";
@@ -12,7 +12,7 @@ const createAuthStore = () => ({
   removeItem: (key: string) => SecureStore.deleteItemAsync(key),
 })
 
-export const useAuthStore = create(
+const useAuthStore = create(
   persist<AuthStore>(
     (set) => ({
       // Authentication States
@@ -88,3 +88,6 @@ export const useAuthStore = create(
     },
   ),
 );
+
+export default useAuthStore;
+

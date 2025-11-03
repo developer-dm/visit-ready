@@ -1,7 +1,8 @@
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { ThemedView } from "@/components/ThemedView";
-import { useTempStore } from "@/stores/tempStore";
+import ROUTES from "@/constants/Routes";
+import useTempStore from "@/stores/tempStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Stack, router, useSegments } from "expo-router";
 import { useState } from "react";
@@ -21,7 +22,7 @@ export default function ResultsLayout() {
                 text: 'Exit', style: "destructive",
                 onPress: () => {
                     resetTempContext();
-                    router.replace("/(tabs)");
+                    router.replace(ROUTES.DASHBOARD);
                 },
             },
             { text: 'Cancel', style: 'cancel' },
@@ -43,13 +44,13 @@ export default function ResultsLayout() {
 
         switch (currentRoute) {
             case 'second':
-                router.push('/results/third');
+                router.push(ROUTES.RESULTS_3);
                 break;
             case 'third':
-                router.push('/results/fourth');
+                router.push(ROUTES.RESULTS_4);
                 break;
             case 'fourth':
-                router.push('/results/final');
+                router.push(ROUTES.RESULTS_FINAL);
                 break;
             case 'final':
                 handleClose();

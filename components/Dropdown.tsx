@@ -4,13 +4,8 @@ import React, { useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Button } from "./Button";
 
-export type DropdownItem = {
-    label: string;
-    value: string;
-};
-
-export type CustomDropdownProps = {
-    items: DropdownItem[];
+type CustomDropdownProps = {
+    items: Record<string, string>;
     placeholder?: string;
     value: string;
     setValue: (data: string) => void;
@@ -20,7 +15,7 @@ export type CustomDropdownProps = {
     darkBorder?: string;
 };
 
-export function Dropdown({
+const Dropdown = ({
     items,
     placeholder = "Optional",
     value,
@@ -29,7 +24,7 @@ export function Dropdown({
     darkColor,
     lightBorder = "#d1d1d1ff",
     darkBorder = "#393939ff",
-}: CustomDropdownProps) {
+}: CustomDropdownProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const placeholderColor = useThemeColor({}, "placeholderText");
@@ -38,7 +33,8 @@ export function Dropdown({
     const borderColor = useThemeColor({ light: lightBorder, dark: darkBorder }, "border");
     const iconColor = useThemeColor({}, "icon");
 
-    const selectedItem = items.find(item => item.value === value);
+    const itemsArray = Object.entries(items).map(([label, value]) => ({ label, value }));
+    const selectedItem = itemsArray.find(item => item.value === value);
     const displayText = selectedItem ? selectedItem.label : placeholder;
     const textColor = selectedItem ? selectionColor : placeholderColor;
 
@@ -49,6 +45,27 @@ export function Dropdown({
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
+    };
+
+    const renderDropdownList = () => {
+        return itemsArray.map((item, index) => (
+            <TouchableOpacity
+                key={item.value}
+                style={[
+                    styles.listItem,
+                    index !== itemsArray.length - 1 && { borderBottomWidth: 1, borderColor: borderColor },
+                ]}
+                onPress={() => handleSelect(item.value)}
+                activeOpacity={0.2}
+            >
+                <Text style={[styles.listItemText, { color: selectionColor }]}>
+                    {item.label}
+                </Text>
+                {value === item.value && (
+                    <MaterialIcons name="check" size={20} color={iconColor} />
+                )}
+            </TouchableOpacity>
+        ))
     };
 
     return (
@@ -72,24 +89,7 @@ export function Dropdown({
                     showsVerticalScrollIndicator={true}
                     nestedScrollEnabled={true}
                 >
-                    {items.map((item, index) => (
-                        <TouchableOpacity
-                            key={item.value}
-                            style={[
-                                styles.listItem,
-                                index !== items.length - 1 && { borderBottomWidth: 1, borderColor: borderColor },
-                            ]}
-                            onPress={() => handleSelect(item.value)}
-                            activeOpacity={0.2}
-                        >
-                            <Text style={[styles.listItemText, { color: selectionColor }]}>
-                                {item.label}
-                            </Text>
-                            {value === item.value && (
-                                <MaterialIcons name="check" size={20} color={iconColor} />
-                            )}
-                        </TouchableOpacity>
-                    ))}
+                    {renderDropdownList()}
                 </ScrollView>
             )}
         </View>
@@ -135,3 +135,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 });
+
+export { CustomDropdownProps, Dropdown };
+

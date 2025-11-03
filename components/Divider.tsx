@@ -2,7 +2,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-export type CustomDividerProps = {
+type CustomDividerProps = {
     type: "horizontal" | "vertical";
     top?: number;
     bottom?: number;
@@ -10,13 +10,13 @@ export type CustomDividerProps = {
     darkColor?: string;
 };
 
-export function Divider({
+const Divider = ({
     type,
     top = 0,
     bottom = 0,
     lightColor,
     darkColor,
-}: CustomDividerProps) {
+}: CustomDividerProps) => {
     const borderColor = useThemeColor({ light: lightColor, dark: darkColor }, "border");
 
     return (
@@ -39,4 +39,7 @@ const styles = StyleSheet.create({
         height: '100%',
         borderLeftWidth: 1,
     },
-});
+})
+
+export { CustomDividerProps, Divider };
+

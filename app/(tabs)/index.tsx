@@ -1,9 +1,10 @@
-import AppointmentCard from '@/components/AppointmentCard';
+import { AppointmentCard } from '@/components/AppointmentCard';
 import { Button } from '@/components/Button';
 import { Divider } from '@/components/Divider';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useDataStore } from '@/stores/dataStore';
+import ROUTES from '@/constants/Routes';
+import useDataStore from '@/stores/dataStore';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from 'expo-router';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -39,24 +40,56 @@ export default function DashboardScreen() {
   );
 
   const handleVisitPrep = () => {
-    router.push("/prep");
+    router.push(ROUTES.PREP);
   };
 
   const handleHistory = () => {
-    router.push("/(tabs)/history");
+    router.push(ROUTES.HISTORY);
   };
 
   const handleSettings = () => {
-    router.push("/(tabs)/settings");
+    router.push(ROUTES.SETTINGS);
   };
 
-  const handleUpcomingAppointment = (id: string) => {
+  const handleUpcomingAppointment = () => {
     router.push({
       pathname: "/modals/past",
       params: {
-        id: id
+        id: upcomingAppointment?.id
       },
     });
+  };
+
+  const renderUpcomingAppointment = () => {
+    if (upcomingAppointment) { // Check if upcoming appointment exists
+      return (
+        <TouchableOpacity onPress={handleUpcomingAppointment}>
+          <AppointmentCard appointment={upcomingAppointment} />
+        </TouchableOpacity>
+      );
+    } else { // No upcoming appointment
+      return (
+        <ThemedView style={styles.emptyState}>
+          <MaterialIcons size={48} name="event-available" color="#6b7280" />
+          <ThemedText style={styles.emptyStateTitle} type="whitened">No upcoming visits</ThemedText>
+          <ThemedText style={styles.emptyStateText} type="greyed">
+            Fill out a short form to start your preparation
+          </ThemedText>
+          <TouchableOpacity style={styles.newVisitButton} onPress={handleVisitPrep}>
+            <Text style={styles.newVisitButtonText}>
+              Start Visit Prep
+            </Text>
+            <View style={styles.newVisitButtonIcon}>
+              <MaterialIcons
+                size={16}
+                name="arrow-forward"
+                color="#ffffffff"
+              />
+            </View>
+          </TouchableOpacity>
+        </ThemedView>
+      );
+    }
   };
 
   return (
@@ -74,32 +107,7 @@ export default function DashboardScreen() {
         <View style={styles.sectionHeader}>
           <ThemedText style={styles.sectionTitle}>Upcoming Visit</ThemedText>
         </View>
-
-        {upcomingAppointment ? (
-          <TouchableOpacity onPress={() => { handleUpcomingAppointment(upcomingAppointment.id) }}>
-            <AppointmentCard appointment={upcomingAppointment} />
-          </TouchableOpacity>
-        ) : (
-          <ThemedView style={styles.emptyState}>
-            <MaterialIcons size={48} name="event-available" color="#6b7280" />
-            <ThemedText style={styles.emptyStateTitle} type="whitened">No upcoming visits</ThemedText>
-            <ThemedText style={styles.emptyStateText} type="greyed">
-              Fill out a short form to start your preparation
-            </ThemedText>
-            <TouchableOpacity style={styles.newVisitButton} onPress={handleVisitPrep}>
-              <Text style={styles.newVisitButtonText}>
-                Start Visit Prep
-              </Text>
-              <View style={styles.newVisitButtonIcon}>
-                <MaterialIcons
-                  size={16}
-                  name="arrow-forward"
-                  color="#ffffffff"
-                />
-              </View>
-            </TouchableOpacity>
-          </ThemedView>
-        )}
+        {renderUpcomingAppointment()}
       </View>
 
       <View style={styles.section}>

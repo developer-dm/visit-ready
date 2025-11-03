@@ -1,12 +1,36 @@
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import Features from "@/constants/Features";
+import ROUTES from "@/constants/Routes";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Link } from "expo-router";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function LandingScreen() {
     const appIcon = require("@/assets/images/favicon.png")
+
+    const renderFeatures = () => {
+        return Features.map((feature, index) => {
+            if (index > 1) return null;
+
+            return (
+                <View key={index} style={styles.featureItem}>
+                    <ThemedView style={styles.featureIconContainer} type="dusked">
+                        <MaterialIcons name={feature.icon as any} size={20} color="#3b82f6" />
+                    </ThemedView>
+                    <View style={styles.featureContent}>
+                        <ThemedText style={styles.featureTitle} type="whitened">
+                            {feature.title}
+                        </ThemedText>
+                        <ThemedText style={styles.featureDescription} type="greyed">
+                            {feature.description}
+                        </ThemedText>
+                    </View>
+                </View>
+            );
+        })
+    };
 
     return (
         <View style={styles.content}>
@@ -19,33 +43,11 @@ export default function LandingScreen() {
             </View>
 
             <View style={styles.featuresSection}>
-                <View style={styles.featureItem}>
-                    <ThemedView style={styles.featureIconContainer} type="dusked">
-                        <MaterialIcons name="calendar-today" size={24} color="#3b82f6" />
-                    </ThemedView>
-                    <View style={styles.featureContent}>
-                        <ThemedText style={styles.featureTitle} type="whitened">Track your Appointments</ThemedText>
-                        <ThemedText style={styles.featureDescription} type="greyed">
-                            Keep a record of all your medical appointments in one place
-                        </ThemedText>
-                    </View>
-                </View>
-
-                <View style={styles.featureItem}>
-                    <ThemedView style={styles.featureIconContainer} type="dusked">
-                        <MaterialIcons name="show-chart" size={24} color="#3b82f6" />
-                    </ThemedView>
-                    <View style={styles.featureContent}>
-                        <ThemedText style={styles.featureTitle} type="whitened">Be prepared</ThemedText>
-                        <ThemedText style={styles.featureDescription} type="greyed">
-                            Generate discussion questions and goals based on your symptoms and priorities
-                        </ThemedText>
-                    </View>
-                </View>
+                {renderFeatures()}
             </View>
 
             <View style={styles.startSection}>
-                <Link asChild push href="/onboarding">
+                <Link asChild push href={ROUTES.ONBOARDING}>
                     <TouchableOpacity style={styles.startButton}>
                         <Text style={styles.startButtonText}>Start Setup</Text>
                         <View style={styles.buttonIcon}>

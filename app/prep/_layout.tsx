@@ -1,12 +1,13 @@
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { ThemedView } from "@/components/ThemedView";
+import ROUTES from "@/constants/Routes";
 import { createCalendarEvent } from "@/services/calendar";
-import { DataFormatterService } from "@/services/dataFormatter";
 import { scheduleNotification } from "@/services/notifications";
-import { useAuthStore } from "@/stores/authStore";
-import { useDataStore } from "@/stores/dataStore";
-import { useTempStore } from "@/stores/tempStore";
+import useAuthStore from '@/stores/authStore';
+import useDataStore from "@/stores/dataStore";
+import useTempStore from "@/stores/tempStore";
+import DataFormatter from "@/utils/dataFormatter";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Stack, router, useSegments } from "expo-router";
 import { useEffect, useState } from "react";
@@ -20,7 +21,6 @@ export default function AppointmentPrepLayout() {
     const segments = useSegments();
     const currentRoute = segments[segments.length - 1];
     const [debounce, setDebounce] = useState(false);
-
     const { id, appointment, resetTempContext, assignNewId } = useTempStore();
 
     const handleClose = () => {
@@ -55,7 +55,7 @@ export default function AppointmentPrepLayout() {
 
             if (notifDate.getTime() < new Date().getTime()) return;
 
-            const header = appointment.provider || DataFormatterService.toReadableString(appointment.appointmentType);
+            const header = appointment.provider || DataFormatter.toReadableString(appointment.appointmentType);
             const body = appointment.address || "Appointment";
 
             scheduleNotification(
@@ -88,20 +88,21 @@ export default function AppointmentPrepLayout() {
 
         switch (currentRoute) {
             case 'prep':
-                router.push('/prep/second');
+                router.push(ROUTES.PREP_2);
                 break;
             case 'second':
-                router.push('/prep/third');
+                router.push(ROUTES.PREP_3);
                 break;
             case 'third':
-                router.push('/prep/final');
+                router.push(ROUTES.PREP_FINAL);
                 break;
             case 'final':
                 addAppointment(appointment, id);
                 scheduleNotif();
                 scheduleCalendar();
-                router.dismissTo("/(tabs)");
-                router.replace("/results");
+                router.dismissAll(); // Go to prep index
+                router.dismiss(); // Remove modal
+                router.replace(ROUTES.RESULTS);
                 break;
         }
 

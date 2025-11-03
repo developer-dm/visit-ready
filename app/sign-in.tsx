@@ -1,5 +1,5 @@
 import { Button } from "@/components/Button";
-import LoadingScreen from "@/components/Loading";
+import { LoadingScreen } from "@/components/Loading";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { authenticateWithBiometrics, checkAuthenticationCapabilities } from "@/services/auth";
@@ -9,7 +9,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function SignInScreen() {
   const [authType, setAuthType] = useState<'biometric' | 'passcode' | 'none'>('none');
-  const [isLoading, setIsLoading] = useState(true);
 
   const handleLogin = async () => {
     authenticateWithBiometrics();
@@ -43,14 +42,13 @@ export default function SignInScreen() {
   const preliminaryCheck = async () => {
     const result = await checkAuthenticationCapabilities();
     setAuthType(result);
-    setIsLoading(false);
   }
 
   useEffect(() => {
     preliminaryCheck();
   }, []);
 
-  if (isLoading) return (
+  if (!authType) return (
     <LoadingScreen
       visible={true}
       message={'Loading...'}

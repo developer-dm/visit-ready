@@ -12,13 +12,13 @@ type LoadingScreenProps = {
     spinnerColor?: string;
 };
 
-export default function LoadingScreen({
+const LoadingScreen = ({
     visible,
     message = 'Loading...',
     subMessage,
     spinnerSize = 70,
     spinnerColor = '#3b82f6',
-}: LoadingScreenProps) {
+}: LoadingScreenProps) => {
     return (
         <Modal
             visible={visible}
@@ -60,3 +60,6 @@ const styles = StyleSheet.create({
         marginTop: 40,
     },
 });
+
+export { LoadingScreen, LoadingScreenProps };
+

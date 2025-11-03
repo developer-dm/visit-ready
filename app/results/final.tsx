@@ -1,7 +1,7 @@
-import { CustomButton } from "@/components/CustomButton";
+import { CopyButton } from "@/components/Copy";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useTempStore } from "@/stores/tempStore";
+import useTempStore from "@/stores/tempStore";
 import { ScrollView, StyleSheet } from "react-native";
 
 export default function FinalResultsScreen() {
@@ -23,7 +23,7 @@ export default function FinalResultsScreen() {
                     {summary}
                 </ThemedText>
 
-                <CustomButton type="copy" copyText={summary} />
+                <CopyButton textToCopy={summary} />
             </ThemedView>
         </ScrollView>
     )

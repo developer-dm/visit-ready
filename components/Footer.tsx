@@ -2,7 +2,7 @@ import { expo } from "@/app.json";
 import { ThemedText } from "@/components/ThemedText";
 import { StyleSheet, TextProps } from "react-native";
 
-export type FooterTextProps = TextProps & {
+type FooterProps = TextProps & {
     text?: string;
     type?: "absolute" | "relative" | "bottom";
     top?: number;
@@ -10,13 +10,13 @@ export type FooterTextProps = TextProps & {
     hasSpacer?: boolean;
 };
 
-export function Footer({
+const Footer = ({
     text,
     type = "relative",
     top,
     bottom,
     hasSpacer = false,
-}: FooterTextProps) {
+}: FooterProps) => {
     return (
         <ThemedText
             type="dusked"
@@ -60,3 +60,6 @@ const styles = StyleSheet.create({
         marginBottom: 40,
     },
 })
+
+export { Footer, FooterProps };
+

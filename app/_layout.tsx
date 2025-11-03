@@ -1,6 +1,6 @@
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { initializeNotifications } from '@/services/notifications';
-import { useAuthStore } from "@/stores/authStore";
+import useAuthStore from '@/stores/authStore';
 import "@/utils/polyfills";
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from "expo-router";
@@ -38,7 +38,9 @@ export default function RootLayout() {
         <Stack.Protected guard={!hasCompletedOnboarding}>
           <Stack.Screen name="index" options={{ headerShown: false }} />
         </Stack.Protected>
-        <Stack.Screen name="onboarding" options={{ presentation: "modal", headerShown: false, gestureEnabled: false }} />
+        <Stack.Protected guard={isLoggedIn || !hasCompletedOnboarding}>
+          <Stack.Screen name="onboarding" options={{ presentation: "modal", headerShown: false, gestureEnabled: false }} />
+        </Stack.Protected>
         <Stack.Screen name="about" options={{ presentation: "modal", headerShown: false, gestureEnabled: true }} />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
       </Stack>

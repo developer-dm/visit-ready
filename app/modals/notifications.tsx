@@ -1,7 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { DataFormatterService } from "@/services/dataFormatter";
 import { getAllNotifications } from "@/services/notifications";
+import DataFormatter from "@/utils/dataFormatter";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { NotificationRequest } from "expo-notifications";
 import { useEffect, useState } from "react";
@@ -13,6 +13,51 @@ export default function NotificationsScreen() {
     const fetchNotifications = async () => {
         const notifs = await getAllNotifications();
         setNotifications(notifs);
+    };
+
+    const renderNotifications = () => {
+        if (!notifications || notifications.length === 0) {
+            return (
+                <ThemedView style={styles.emptyState}>
+                    <MaterialIcons size={48} name="notifications-off" color="#6b7280" />
+                    <ThemedText style={styles.emptyStateTitle} type="whitened">No Notifications yet</ThemedText>
+                    <ThemedText style={styles.emptyStateText} type="greyed">
+                        Create a new appointment to set a notification
+                    </ThemedText>
+                </ThemedView>
+            )
+        }
+
+        return notifications.map((notif: NotificationRequest) => {
+            const date = notif.content.data.date as string;
+            const triggerDate = new Date(date);
+
+            return (
+                <ThemedView key={notif.identifier} style={styles.detailContainer}>
+                    <ThemedText style={styles.detailTitle}>
+                        {notif.content.title}
+                    </ThemedText>
+                    <ThemedText style={styles.detailSubtitle} type="greyed">
+                        {notif.content.body}
+                    </ThemedText>
+
+                    <View style={styles.appointmentDetails}>
+                        <View style={styles.detailRow}>
+                            <MaterialIcons size={16} name="calendar-today" color="#6b7280" />
+                            <ThemedText style={styles.detailValue} type="greyed">
+                                {DataFormatter.FormatDateString(triggerDate)}
+                            </ThemedText>
+                        </View>
+                        <View style={styles.detailRow}>
+                            <MaterialIcons size={16} name="schedule" color="#6b7280" />
+                            <ThemedText style={styles.detailValue} type="greyed">
+                                {DataFormatter.FormatTimeString(triggerDate)}
+                            </ThemedText>
+                        </View>
+                    </View>
+                </ThemedView>
+            );
+        })
     };
 
     useEffect(() => {
@@ -29,46 +74,7 @@ export default function NotificationsScreen() {
                 <ThemedText style={styles.sectionTitle}>
                     Upcoming Notifications
                 </ThemedText>
-                {notifications && notifications.length > 0 ? (
-                    notifications.map((notif: NotificationRequest) => {
-                        const date = notif.content.data.date as string;
-                        const triggerDate = new Date(date);
-
-                        return (
-                            <ThemedView key={notif.identifier} style={styles.detailContainer}>
-                                <ThemedText style={styles.detailTitle}>
-                                    {notif.content.title}
-                                </ThemedText>
-                                <ThemedText style={styles.detailSubtitle} type="greyed">
-                                    {notif.content.body}
-                                </ThemedText>
-
-                                <View style={styles.appointmentDetails}>
-                                    <View style={styles.detailRow}>
-                                        <MaterialIcons size={16} name="calendar-today" color="#6b7280" />
-                                        <ThemedText style={styles.detailValue} type="greyed">
-                                            {DataFormatterService.FormatDateString(triggerDate)}
-                                        </ThemedText>
-                                    </View>
-                                    <View style={styles.detailRow}>
-                                        <MaterialIcons size={16} name="schedule" color="#6b7280" />
-                                        <ThemedText style={styles.detailValue} type="greyed">
-                                            {DataFormatterService.FormatTimeString(triggerDate)}
-                                        </ThemedText>
-                                    </View>
-                                </View>
-                            </ThemedView>
-                        );
-                    })
-                ) : (
-                    <ThemedView style={styles.emptyState}>
-                        <MaterialIcons size={48} name="notifications-off" color="#6b7280" />
-                        <ThemedText style={styles.emptyStateTitle} type="whitened">No Notifications yet</ThemedText>
-                        <ThemedText style={styles.emptyStateText} type="greyed">
-                            Create a new appointment to set a notification
-                        </ThemedText>
-                    </ThemedView>)}
-
+                {renderNotifications()}
             </ScrollView>
         </ThemedView>
     );

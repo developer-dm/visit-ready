@@ -1,17 +1,15 @@
-import { getAppointmentIcon } from "@/components/AppointmentCard";
-import { CustomButton } from "@/components/CustomButton";
+import { CopyButton } from "@/components/Copy";
 import { Divider } from "@/components/Divider";
 import { Footer } from "@/components/Footer";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { DataFormatterService } from "@/services/dataFormatter";
-import { useDataStore } from "@/stores/dataStore";
+import useDataStore from "@/stores/dataStore";
+import DataFormatter from "@/utils/dataFormatter";
+import getAppointmentIcon from "@/utils/getIcon";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-
-type TabType = 'summary' | 'preparation';
 
 export default function PrepFinalScreen() {
     const { appointments, completions } = useDataStore();
@@ -19,24 +17,21 @@ export default function PrepFinalScreen() {
     const id = route.params?.id;
     const appointment = id ? appointments[id] : null;
     const completion = id ? completions[id] : null;
-    const [activeTab, setActiveTab] = useState<TabType>('summary');
+    const [activeTab, setActiveTab] = useState<'summary' | 'preparation'>('summary');
 
     if (!appointment) return null;
 
     const appointmentDate = appointment.appointmentDate
-        ? DataFormatterService.FormatDateTimeString(new Date(appointment.appointmentDate))
+        ? DataFormatter.FormatDateTimeString(new Date(appointment.appointmentDate))
         : "No Appointment Date";
     const appointmentType = appointment.appointmentType;
 
-    const userDataEntries = Object.entries(appointment).filter(([key]) => {
-        return (
-            key !== "id" &&
-            key !== "appointmentType" &&
-            key !== "appointmentDate"
-        )
-    });
+    const renderSummary = () => {
+        const relevantKeys = ['id', 'appointmentType', 'appointmentDate'];
+        const userDataEntries = Object.entries(appointment).filter(([key]) =>
+            !relevantKeys.includes(key)
+        );
 
-    const renderDetails = () => {
         if (userDataEntries.length === 0) {
             return (
                 <View style={styles.noDataContainer}>
@@ -53,10 +48,10 @@ export default function PrepFinalScreen() {
             return (
                 <ThemedView type="list" key={key} style={styles.detailItem}>
                     <ThemedText style={styles.detailLabel} type="greyed">
-                        {DataFormatterService.toReadableString(key, 'label')}
+                        {DataFormatter.toReadableString(key, 'label')}
                     </ThemedText>
                     <ThemedText style={styles.detailValue} type="whitened">
-                        {DataFormatterService.toReadableString(value)}
+                        {DataFormatter.toReadableString(value)}
                     </ThemedText>
                 </ThemedView>
             );
@@ -86,7 +81,7 @@ export default function PrepFinalScreen() {
                             color={item.priority === 'high' ? "#ef4444" : item.priority === 'medium' ? "#e6a313ff" : "#64748b"}
                         />
                         <ThemedText style={styles.detailText} type="greyed">
-                            {DataFormatterService.toReadableString(item.priority, 'priority')}
+                            {DataFormatter.toReadableString(item.priority, 'priority')}
                         </ThemedText>
                     </View>
                     <View style={styles.detailRow}>
@@ -96,7 +91,7 @@ export default function PrepFinalScreen() {
                         </ThemedText>
                     </View>
                 </View>
-                <CustomButton type="copy" copyText={item.question} />
+                <CopyButton textToCopy={item.question} />
             </ThemedView>
         ));
     };
@@ -112,12 +107,12 @@ export default function PrepFinalScreen() {
                 <ThemedText style={styles.resultsText} type="whitened">
                     {item}
                 </ThemedText>
-                <CustomButton type="copy" copyText={item} />
+                <CopyButton textToCopy={item} />
             </ThemedView>
         ));
     };
 
-    const renderTab = (tab: TabType, label: string) => (
+    const renderTab = (tab: 'summary' | 'preparation', label: string) => (
         <TouchableOpacity
             style={[styles.tab, activeTab === tab && styles.activeTab]}
             onPress={() => setActiveTab(tab)}
@@ -151,7 +146,7 @@ export default function PrepFinalScreen() {
                     </ThemedView>
                     <View style={styles.profileInfo}>
                         <ThemedText style={styles.infoTitle} type="whitened">
-                            {DataFormatterService.toReadableString(appointmentType)}
+                            {DataFormatter.toReadableString(appointmentType)}
                         </ThemedText>
                         <ThemedText style={styles.infoSubtitle} type="greyed">
                             {appointmentDate}
@@ -160,7 +155,7 @@ export default function PrepFinalScreen() {
                 </View>
                 {activeTab === 'summary' && ( // Summary Section
                     <View style={styles.gapDetailSection}>
-                        {renderDetails()}
+                        {renderSummary()}
                     </View>
                 )}
                 {activeTab === 'preparation' && completion && ( // Completion Section
@@ -173,7 +168,7 @@ export default function PrepFinalScreen() {
                             <ThemedText type="whitened" style={styles.summaryText}>
                                 {completion.what_to_expect.brief}
                             </ThemedText>
-                            <CustomButton type="copy" copyText={completion.what_to_expect.brief} />
+                            <CopyButton textToCopy={completion.what_to_expect.brief} />
                         </ThemedView>
                         {renderArray(completion.what_to_expect.steps)}
                         {/* What to bring */}
@@ -197,7 +192,7 @@ export default function PrepFinalScreen() {
                             <ThemedText type="whitened" style={styles.summaryText}>
                                 {completion.summary_for_provider}
                             </ThemedText>
-                            <CustomButton type="copy" copyText={completion.summary_for_provider} />
+                            <CopyButton textToCopy={completion.summary_for_provider} />
                         </ThemedView>
                     </View>
                 )}
@@ -208,7 +203,7 @@ export default function PrepFinalScreen() {
                         </ThemedText>
                     </View>
                 )}
-                <Footer text={`ID: ${DataFormatterService.toReadableString(id)}`} top={40} hasSpacer={true} />
+                <Footer text={`ID: ${DataFormatter.toReadableString(id)}`} top={40} hasSpacer={true} />
             </ScrollView>
         </ThemedView>
     );
