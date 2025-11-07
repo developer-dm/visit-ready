@@ -48,7 +48,7 @@ const getNotificationsGranted = async () => {
     return result.granted ? true : false;
 };
 
-// Unused
+// (unused)
 const checkWhichAppointmentsHaveNotifications = async (ids: string[]) => {
     const result = await Notifications.getAllScheduledNotificationsAsync();
     const notificationIdList = result.map(notif => notif.identifier)

@@ -13,7 +13,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import { fetch as expoFetch } from 'expo/fetch';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 
 export default function IndexResultsScreen() {
 	const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -24,12 +24,21 @@ export default function IndexResultsScreen() {
 		const codeBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/;
 		const match = text.match(codeBlockRegex);
 		return match?.[1]?.trim() || text.trim();
-	}
+	};
+
+	const handleError = (error: Error) => {
+		Alert.alert('Error', error.message, [
+			{
+				text: 'Return', style: "destructive",
+				onPress: handleReturn,
+			},
+		]);
+	};
 
 	const { complete, completion } = useCompletion({
-		api: generateAPIUrl('/api/completion'),
+		api: generateAPIUrl(ROUTES.API_COMPLETION),
 		fetch: expoFetch as unknown as typeof globalThis.fetch,
-		onError: (error) => console.error(error, 'ERROR'),
+		onError: (error) => handleError(error),
 		streamProtocol: 'text'
 	});
 

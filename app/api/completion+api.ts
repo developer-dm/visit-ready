@@ -1,20 +1,41 @@
 import { AppointmentData, SignupData } from '@/types/Data';
 import DataFormatter from '@/utils/dataFormatter';
 import { google } from '@ai-sdk/google';
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 import { generateText } from 'ai';
 
-export async function POST(req: Request) {
+const redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+});
+
+const rateLimit = new Ratelimit({
+    redis,
+    limiter: Ratelimit.fixedWindow(2, "1 m")
+});
+
+const POST = async (req: Request) => {
     const body = await req.json();
     const message = body.prompt || "";
 
-    if (message.length > 700) return new Response('Exceeds maximum message length', { status: 413 });
+    const ip = req.headers.get("x-forwarded-for") || "unknown";
+    const { success } = await rateLimit.limit(ip);
+
+    if (!success) {
+        return new Response('Rate limit exceeded', { status: 429 });
+    }
+    if (message.length > 700) {
+        return new Response('Exceeds maximum message length', { status: 413 });
+    }
 
     const parsedMessage = JSON.parse(message) || "";
-
     const appointment: AppointmentData = parsedMessage.appointment;
     const signup: SignupData = parsedMessage.signup;
 
-    if (!signup || !appointment) return new Response('Data not found', { status: 404 });
+    if (!signup || !appointment) {
+        return new Response('Data not found', { status: 404 });
+    }
 
     const completion_prompt = `
 Language: ${DataFormatter.toReadableString(signup.language, 'language')}
@@ -99,3 +120,6 @@ If asked to produce anything outside this schema, refuse by returning valid JSON
         }
     });
 }
+
+export { POST };
+

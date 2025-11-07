@@ -1,6 +1,5 @@
 import { AppointmentData } from '@/types/Data';
 import * as Calendar from 'expo-calendar';
-import { Alert } from 'react-native';
 import DataFormatter from '../utils/dataFormatter';
 
 // Request Calendar Permissions (unused)
@@ -40,21 +39,6 @@ const createCalendarEvent = async (appointment: AppointmentData) => {
 
         return eventId;
     } catch (error) {
-        if (error instanceof Error) {
-            if (error.message === 'no-writable-calendar') {
-                Alert.alert(
-                    'No Writable Calendar',
-                    'No calendar with write permissions was found on your device.',
-                );
-                return null;
-            } else if (error.message === 'calendar-creation-failed') {
-                Alert.alert(
-                    'Could not Create Calendar',
-                    'An error occurred while trying to create a new calendar.',
-                );
-                return null;
-            }
-        }
         throw error;
     }
 };

@@ -28,34 +28,34 @@ const checkAuthenticationCapabilities = async () => {
         const hasHardware = await LocalAuthentication.hasHardwareAsync();
 
         if (!hasHardware) {
-            return 'none'
+            return 'none';
         }
 
         const isEnrolled = await LocalAuthentication.isEnrolledAsync();
 
-        if (isEnrolled) {
-            const authTypes = await LocalAuthentication.supportedAuthenticationTypesAsync();
-
-            if ( // Has biometrics
-                authTypes.includes(LocalAuthentication.AuthenticationType.FINGERPRINT) ||
-                authTypes.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION) ||
-                authTypes.includes(LocalAuthentication.AuthenticationType.IRIS)) {
-                return 'biometric'
-            } else {
-                return 'passcode'
-            }
-        } else {
+        if (!isEnrolled) {
             const securityLevel = await LocalAuthentication.getEnrolledLevelAsync();
 
             if (securityLevel === LocalAuthentication.SecurityLevel.SECRET) { // Has password
-                return 'passcode'
+                return 'passcode';
             } else { // No auth method
-                return 'none'
+                return 'none';
             }
+        }
+
+        const authTypes = await LocalAuthentication.supportedAuthenticationTypesAsync();
+
+        if ( // Has biometrics
+            authTypes.includes(LocalAuthentication.AuthenticationType.FINGERPRINT) ||
+            authTypes.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION) ||
+            authTypes.includes(LocalAuthentication.AuthenticationType.IRIS)) {
+            return 'biometric';
+        } else {
+            return 'passcode';
         }
     } catch (error) {
         console.error('Error checking authentication capabilities:', error);
-        return 'none'
+        return 'none';
     }
 };
 

@@ -18,6 +18,7 @@ const ROUTES = {
     ONBOARDING_2: '/onboarding/second',
     NOTIFICATIONS: '/modals/notifications',
     PAST_APPOINTMENT: '/modals/past',
+    API_COMPLETION: '/api/completion',
 } as const;
 
 export default ROUTES;
